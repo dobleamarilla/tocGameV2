@@ -1,7 +1,5 @@
 const path = require('path');
 const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
-const exec = require('child_process').exec;
-const os = require('os');
 var net = require('net');
 var impresora = require('./componentes/impresora');
 // var tecladoVirtual = require('./componentes/teclado');
