@@ -1,12 +1,11 @@
 const path = require('path');
 const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
 var net = require('net');
-var impresora = require('./componentes/impresora');
-// var tecladoVirtual = require('./componentes/teclado');
-// var atajos = require('./componentes/atajos');
+// var impresora = require('./componentes/impresora');
+// var atajos = require('./componentes/teclasAtajos');
 // var acciones = require('./componentes/acciones');
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
-
+console.log("el path es: ", __dirname);
 app.on('ready', () => {
     var ventanaPrincipal = new BrowserWindow({
         kiosk: true, //cambiar a true
@@ -15,9 +14,8 @@ app.on('ready', () => {
             nodeIntegration: true
         }
     });
-
     ventanaPrincipal.loadFile('./web/index.html');
-    console.log("el path es: ", path.join());
+    
     // atajos.atajos(globalShortcut, ventanaPrincipal);
 
     // /* ACCIONES IPC-MAIN */

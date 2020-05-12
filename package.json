@@ -7,13 +7,16 @@
     },
     "main": "build/main.js",
     "scripts": {
-        "compile": "tsc && copyfiles -f web/index.html build/web",
+        "compile": "tsc && copyfiles -e \"web/js/*.ts\" -a web/** build",
         "start": "npm run compile && electron build/main.js",
-        "build:windows": "npm run compile && electron-packager . tocGame --out=windowsBuild",
-        "build:linux": "npm run compile && electron-packager . tocGame --overwrite --asar=true --platform=linux --arch=x64 --prune=true --out=linuxBuild",
         "reparar": "npx electron-rebuild -f -p"
     },
-    "dependencies": {},
+    "dependencies": {
+        "escpos": "^3.0.0-alpha.3",
+        "escpos-serialport": "^3.0.0-alpha.2",
+        "escpos-usb": "^3.0.0-alpha.2",
+        "socket.io-client": "^2.3.0"
+    },
     "devDependencies": {
         "copyfiles": "2.1.1",
         "electron": "6.0.0",

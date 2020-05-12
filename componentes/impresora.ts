@@ -6,7 +6,7 @@ escpos.Serial = require('escpos-serialport');
 const TIPO_SALIDA_DINERO = 1;
 const TIPO_ENTRADA_DINERO = 2;
 
-var imprimirTicketVenta = function (event: any, numFactura: number, arrayCompra: any, total: number, visa: any, tiposIva: any, cabecera: any, pie: any, nombreDependienta: string)
+var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, visa, tiposIva, cabecera, pie, nombreDependienta) 
 {
     try 
     {
@@ -42,7 +42,6 @@ var imprimirTicketVenta = function (event: any, numFactura: number, arrayCompra:
         var detalleIva10 = '';
         var detalleIva21 = '';
         var detalleIva = '';
-
         if (tiposIva.importe1 > 0) 
         {
             detalleIva4 = `${tiposIva.base1}        4%: ${tiposIva.valor1}      ${tiposIva.importe1}\n`;
@@ -96,7 +95,7 @@ var imprimirTicketVenta = function (event: any, numFactura: number, arrayCompra:
     }
 }
 
-var salidaDinero = function (event: any, totalRetirado: number, cajaActual: number, fecha: string, nombreDependienta: string, nombreTienda: string, concepto: string) 
+var salidaDinero = function (event, totalRetirado, cajaActual, fecha, nombreDependienta, nombreTienda, concepto) 
 {
     try 
     {
@@ -138,7 +137,7 @@ var salidaDinero = function (event: any, totalRetirado: number, cajaActual: numb
     }
 }
 
-var entradaDinero = function (event: any, totalIngresado: number, cajaActual: number, fecha: string, nombreDependienta: string, nombreTienda: string) 
+var entradaDinero = function (event, totalIngresado, cajaActual, fecha, nombreDependienta, nombreTienda) 
 {
     try 
     {
@@ -179,9 +178,10 @@ var entradaDinero = function (event: any, totalIngresado: number, cajaActual: nu
         errorImpresora(err, event);
     }
 }
-var abrirCajon = function (event: any)
+var abrirCajon = function (event) 
 {
-    try {
+    try 
+    {
         exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
         var device = new escpos.USB('0x4B8', '0x202'); //USB
         //  var device = new escpos.Serial('/dev/ttyS0', {
@@ -203,7 +203,7 @@ var abrirCajon = function (event: any)
     }
 }
 
-var cierreCaja = function (event: any, calaixFet: number, nombreTrabajador: string, descuadre: number, nClientes: number, recaudado: number, arrayMovimientos: any, nombreTienda: string, fI: Date, fF: Date, cInicioCaja: number, cFinalCaja: number) 
+var cierreCaja = function (event, calaixFet, nombreTrabajador, descuadre, nClientes, recaudado, arrayMovimientos, nombreTienda, fI, fF, cInicioCaja, cFinalCaja) 
 {
     try 
     {
@@ -213,7 +213,7 @@ var cierreCaja = function (event: any, calaixFet: number, nombreTrabajador: stri
         var textoMovimientos = '';
         for (let i = 0; i < arrayMovimientos.length; i++) 
         {
-            let auxFecha = new Date(arrayMovimientos[i].timestamp);
+            var auxFecha = new Date(arrayMovimientos[i].timestamp);
             if (arrayMovimientos[i].tipo === TIPO_SALIDA_DINERO) 
             {
                 textoMovimientos += `${i + 1}: Salida:\n           Cantidad: -${arrayMovimientos[i].valor}\n           Fecha: ${auxFecha.getDate()}/${auxFecha.getMonth()}/${auxFecha.getFullYear()}  ${auxFecha.getHours()}:${auxFecha.getMinutes()}\n           Concepto: ${arrayMovimientos[i].concepto}\n`;
@@ -271,7 +271,7 @@ var cierreCaja = function (event: any, calaixFet: number, nombreTrabajador: stri
     }
 }
 
-function errorImpresora(err: any, event: any) 
+function errorImpresora(err, event) 
 {
     console.log("No se encuentra la impresora");
     console.log(err);
@@ -280,15 +280,14 @@ function errorImpresora(err: any, event: any)
     {
 
     }
-    else 
-    {
+    else {
         if (os.platform() === 'linux') 
         {
             exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
         }
     }
 }
-function errorCajon(err: any, event: any) 
+function errorCajon(err, event) 
 {
     console.log("No al abrir cajón");
     console.log(err);
@@ -306,28 +305,28 @@ function errorCajon(err: any, event: any)
     }
 }
 
-exports.imprimirTicket = function (req: any, event: any) 
+exports.imprimirTicket = function (req, event) 
 {
     imprimirTicketVenta(event, req.numFactura, req.arrayCompra, req.total, req.visa, req.tiposIva, req.cabecera, req.pie, req.nombreTrabajador);
 }
 
-exports.imprimirTicketSalida = function (req: any, event: any) 
+exports.imprimirTicketSalida = function (req, event) 
 {
     salidaDinero(event, req.cantidad, req.cajaActual, req.fecha, req.nombreTrabajador, req.nombreTienda, req.concepto);
 }
 
-exports.imprimirTicketEntrada = function (req: any, event: any) 
+exports.imprimirTicketEntrada = function (req, event) 
 {
 
     entradaDinero(event, req.cantidad, req.cajaActual, req.fecha, req.nombreTrabajador, req.nombreTienda);
 }
 
-exports.imprimirTicketCierreCaja = function (req: any, event: any) 
+exports.imprimirTicketCierreCaja = function (req, event) 
 {
     cierreCaja(event, req.calaixFet, req.nombreTrabajador, req.descuadre, req.nClientes, req.recaudado, req.arrayMovimientos, req.nombreTienda, req.fechaInicio, req.fechaFinal, req.cInicioCaja, req.cFinalCaja);
 }
 
-exports.abrirCajon = function (event: any) 
+exports.abrirCajon = function (event) 
 {
     abrirCajon(event);
 }
