@@ -1,13 +1,19 @@
-const path = require('path');
+var net         = require('net');
+var impresora   = require('./componentes/impresora');
+var atajos      = require('./componentes/teclasAtajos');
+var acciones    = require('./componentes/acciones');
+var socket      = require('socket.io-client');
+var path        = require('path');
+var params      = require('./componentes/schemas/parametros');
+
 const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
-var net = require('net');
-// var impresora = require('./componentes/impresora');
-// var atajos = require('./componentes/teclasAtajos');
-// var acciones = require('./componentes/acciones');
+
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
-console.log("el path es: ", __dirname);
-app.on('ready', () => {
-    var ventanaPrincipal = new BrowserWindow({
+
+app.on('ready', () => 
+{
+    var ventanaPrincipal = new BrowserWindow(
+    {
         kiosk: true, //cambiar a true
         frame: false, //cambiar a false
         webPreferences: {
@@ -16,84 +22,102 @@ app.on('ready', () => {
     });
     ventanaPrincipal.loadFile('./web/index.html');
     
-    // atajos.atajos(globalShortcut, ventanaPrincipal);
+    atajos.atajos(globalShortcut, ventanaPrincipal);
 
-    // /* ACCIONES IPC-MAIN */
-    // ipcMain.on('ventaDatafono', (event: any, info: any) => {
-    //     var client = new net.Socket();
-    //     client.connect(8890, '127.0.0.1', function () {
-    //         console.log('Conectado al CoLinux | Venta');
-    //         var ventaCliente = 489;
-    //         var nombreDependienta = info.nombreDependienta;
-    //         var numeroTicket = info.idTicket;
-    //         var tienda = 1;
-    //         var tpv = 1;
-    //         var tipoOperacion = 1; //1=> VENTA
-    //         var importe = info.total; //EN CENTIMOS DE EURO
-    //         var venta_t = `\x02${ventaCliente};${tienda};${tpv};${nombreDependienta};${numeroTicket};${tipoOperacion};${importe};;;;;;;\x03`;
-    //         console.log('cliente: ', ventaCliente, ' tienda: ', tienda, ' tpv: ', tpv, ' tipoOperacion: ', tipoOperacion, ' numeroTicket: ', numeroTicket, ' nombreDependienta: ', nombreDependienta, ' importe: ', importe);
-    //         client.write(venta_t);
-    //     });
+    /* ACCIONES IPC-MAIN */
+    ipcMain.on('ventaDatafono', (event: any, info: any) => 
+    {
+        var client = new net.Socket();
+        client.connect(8890, '127.0.0.1', function () 
+        {
+            console.log('Conectado al CoLinux | Venta');
+            var ventaCliente = 489;
+            var nombreDependienta = info.nombreDependienta;
+            var numeroTicket = info.idTicket;
+            var tienda = 1;
+            var tpv = 1;
+            var tipoOperacion = 1; //1=> VENTA
+            var importe = info.total; //EN CENTIMOS DE EURO
+            var venta_t = `\x02${ventaCliente};${tienda};${tpv};${nombreDependienta};${numeroTicket};${tipoOperacion};${importe};;;;;;;\x03`;
+            console.log('cliente: ', ventaCliente, ' tienda: ', tienda, ' tpv: ', tpv, ' tipoOperacion: ', tipoOperacion, ' numeroTicket: ', numeroTicket, ' nombreDependienta: ', nombreDependienta, ' importe: ', importe);
+            client.write(venta_t);
+        });
 
-    //     client.on('data', function (data: any) {
-    //         console.log('Recibido: ' + data);
-    //         event.sender.send('ventaDatafono', data);
-    //         client.write('\x02ACK\x03');
-    //         client.destroy();
-    //     });
-    //     client.on('close', function () {
-    //         console.log('Conexión cerrada');
-    //     });
-    //     //event.sender.send('canal1', 'EJEMPLO DE EVENT SENDER SEND');
-    // });
+        client.on('data', function (data: any) 
+        {
+            console.log('Recibido: ' + data);
+            event.sender.send('ventaDatafono', data);
+            client.write('\x02ACK\x03');
+            client.destroy();
+        });
+        client.on('close', function () 
+        {
+            console.log('Conexión cerrada');
+        });
+        //event.sender.send('canal1', 'EJEMPLO DE EVENT SENDER SEND');
+    });
 
-    // ipcMain.on('devolucion', (event: any, args: any) => {
+    ipcMain.on('test', (ev, args) => {
+        console.log("MA GIS TRAL EZE!!!");
+    });
 
-    // });
-    // ipcMain.on('anulacion', (event: any, args: any) => {
+    //GET PARAMETROS
+    ipcMain.on('getParametros', (ev, args) => 
+    {
+        params.parametros.find().then(res=>{
+            console.log(res);
+            ev.sender.send('getParametros', res);
+        }).catch(err=>{
+            console.log(err);
+        });
+    });
 
-    // });
-    // ipcMain.on('consulta', (event: any, args: any) => {
+    ipcMain.on('devolucion', (event: any, args: any) => 
+    {
 
-    // });
-    // ipcMain.on('imprimir', (event: any, args: any) => {
+    });
+    ipcMain.on('anulacion', (event: any, args: any) => 
+    {
 
-    //     console.log(event);
-    //     impresora.imprimirTicket(args, event);
-    // });
-    // ipcMain.on('imprimirSalidaDinero', (event: any, args: any) => {
+    });
+    ipcMain.on('consulta', (event: any, args: any) => 
+    {
 
-    //     impresora.imprimirTicketSalida(args, event);
-    // });
-    // ipcMain.on('abrirCajon', (event: any, args: any) => {
+    });
+    ipcMain.on('imprimir', (event: any, args: any) => 
+    {
 
-    //     impresora.abrirCajon(event);
-    // });
-    // ipcMain.on('imprimirEntradaDinero', (event: any, args: any) => {
+        console.log(event);
+        impresora.imprimirTicket(args, event);
+    });
+    ipcMain.on('imprimirSalidaDinero', (event: any, args: any) => 
+    {
 
-    //     impresora.imprimirTicketEntrada(args, event);
-    // });
-    // ipcMain.on('imprimirCierreCaja', (event: any, args: any) => {
+        impresora.imprimirTicketSalida(args, event);
+    });
+    ipcMain.on('abrirCajon', (event: any, args: any) => 
+    {
 
-    //     //console.log(args);
-    //     impresora.imprimirTicketCierreCaja(args, event);
-    // });
-    // ipcMain.on('tecladoVirtual', (event: any, args: any) => {
-    //     if (os.platform() === 'win32') { //
-    //         console.log("Hey, soy windows!");
-    //         tecladoVirtual.showTouchKeyboard(exec);
-    //     }
-    //     else {
-    //         if (os.platform() === 'linux') {
+        impresora.abrirCajon(event);
+    });
+    ipcMain.on('imprimirEntradaDinero', (event: any, args: any) => 
+    {
 
-    //         }
-    //     }
-    // });
+        impresora.imprimirTicketEntrada(args, event);
+    });
+    ipcMain.on('imprimirCierreCaja', (event: any, args: any) => 
+    {
 
-    // ipcMain.on('cerrarToc', (event: any, args: any) => {
-    //     acciones.cerrar(ventanaPrincipal);
-    // });
-    // ipcMain.on('refreshToc', (event: any, args: any) => {
-    //     acciones.refresh(ventanaPrincipal);
-    // });
+        //console.log(args);
+        impresora.imprimirTicketCierreCaja(args, event);
+    });
+
+    ipcMain.on('cerrarToc', (event: any, args: any) => 
+    {
+        acciones.cerrar(ventanaPrincipal);
+    });
+    ipcMain.on('refreshToc', (event: any, args: any) => 
+    {
+        acciones.refresh(ventanaPrincipal);
+    });
 });

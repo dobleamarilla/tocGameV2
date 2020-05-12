@@ -15,6 +15,8 @@
         "escpos": "^3.0.0-alpha.3",
         "escpos-serialport": "^3.0.0-alpha.2",
         "escpos-usb": "^3.0.0-alpha.2",
+        "jquery": "^3.5.1",
+        "mongoose": "^5.9.13",
         "socket.io-client": "^2.3.0"
     },
     "devDependencies": {
