@@ -16,17 +16,18 @@ class TocGame
     private tipoImpresora: string;
     private tipoDatafono: string;
 
-    constructor(params)
+    constructor()
     {
-        if(params.length === 1)
+        const info = electron.ipcRenderer.sendSync('getParametros');
+        if(info.length === 1)
         {
-            this.licencia       = params[0].licencia;
-            this.codigoTienda   = params[0].codigoTienda;
-            this.database       = params[0].database;
-            this.nombreEmpresa  = params[0].nombreEmpresa;
-            this.nombreTienda   = params[0].nombreTienda;
-            this.tipoImpresora  = params[0].tipoImpresora; //USB y SERIE
-            this.tipoDatafono   = params[0].tipoDatafono; //CLEARONE y 3G
+            this.licencia       = info[0].licencia;
+            this.codigoTienda   = info[0].codigoTienda;
+            this.database       = info[0].database;
+            this.nombreEmpresa  = info[0].nombreEmpresa;
+            this.nombreTienda   = info[0].nombreTienda;
+            this.tipoImpresora  = info[0].tipoImpresora; //USB y SERIE
+            this.tipoDatafono   = info[0].tipoDatafono; //CLEARONE y 3G
         }
         else
         {
@@ -43,13 +44,10 @@ class TocGame
     {
         if(this.licencia !== 0 && this.codigoTienda !== 0 && this.database !== '' && this.nombreEmpresa !== '' && this.nombreTienda !== '')
         {
-            console.log("Entro en el true");
             return true;
         }
         else
         {
-            console.log("Entro en el false");
-            console.log(this.licencia, this.codigoTienda, this.database, this.nombreEmpresa, this.nombreTienda);
             return false;
         }
     }

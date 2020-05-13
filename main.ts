@@ -64,9 +64,9 @@ app.on('ready', () =>
     //GET PARAMETROS
     ipcMain.on('getParametros', (ev, args) => 
     {
-        params.parametros.find().then(res=>{
+        params.parametros.find().lean().then(res=>{
             console.log(res);
-            ev.sender.send('getParametros', res);
+            ev.returnValue = res;
         }).catch(err=>{
             console.log(err);
         });
