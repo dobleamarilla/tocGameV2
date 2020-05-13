@@ -1,1 +1,2 @@
-var toc: TocGame;
+const toc = new TocGame();
+toc.iniciar();

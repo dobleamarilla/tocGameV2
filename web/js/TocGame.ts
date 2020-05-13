@@ -69,8 +69,15 @@ class TocGame
             this.setParametros(info.licencia, info.codigoTienda, info.database, info.nombreEmpresa, info.nombreTienda, info.tipoImpresora, info.tipoDatafono);
         }
     }
-    imprimo()
+    iniciar()
     {
-        console.log(this.licencia, this.codigoTienda, this.database, this.nombreEmpresa, this.nombreTienda);
+        if(this.todoInstalado())
+        {
+            //comprobar trabajador fichado
+        }
+        else
+        {
+            abrirInstallWizard();
+        }
     }
 }
