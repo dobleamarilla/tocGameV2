@@ -71,7 +71,11 @@ app.on('ready', () =>
             console.log(err);
         });
     });
-
+    //FINAL GET PARAMETROS
+    ipcMain.on('setParametros', (ev, args) => 
+    {
+        params.insertarParametros(args);
+    });
     ipcMain.on('devolucion', (event: any, args: any) => 
     {
 

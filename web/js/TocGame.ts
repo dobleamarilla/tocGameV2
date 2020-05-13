@@ -15,6 +15,7 @@ class TocGame
     private nombreTienda: string;
     private tipoImpresora: string;
     private tipoDatafono: string;
+    private ultimoTicket: number;
 
     constructor()
     {
@@ -28,6 +29,7 @@ class TocGame
             this.nombreTienda   = info[0].nombreTienda;
             this.tipoImpresora  = info[0].tipoImpresora; //USB y SERIE
             this.tipoDatafono   = info[0].tipoDatafono; //CLEARONE y 3G
+            this.ultimoTicket   = info[0].ultimoTicket;
         }
         else
         {
@@ -38,11 +40,12 @@ class TocGame
             this.nombreTienda   = '';
             this.tipoImpresora  = TIPO_USB; //USB y SERIE
             this.tipoDatafono   = TIPO_CLEARONE; //CLEARONE y 3G
+            this.ultimoTicket   = -1;
         }
     }
     todoInstalado(): boolean
     {
-        if(this.licencia !== 0 && this.codigoTienda !== 0 && this.database !== '' && this.nombreEmpresa !== '' && this.nombreTienda !== '')
+        if(this.licencia !== 0 && this.codigoTienda !== 0 && this.database !== '' && this.nombreEmpresa !== '' && this.nombreTienda !== '' && this.ultimoTicket !== -1)
         {
             return true;
         }
@@ -51,7 +54,7 @@ class TocGame
             return false;
         }
     }
-    setParametros(licencia: number, codigoTienda: number, database: string, nombreEmpresa: string, nombreTienda: string, tipoImpresora: string, tipoDatafono: string): void
+    setParametros(licencia: number, codigoTienda: number, database: string, nombreEmpresa: string, nombreTienda: string, tipoImpresora: string, tipoDatafono: string, ultimoTicket: number): void
     {
         this.licencia       = licencia;
         this.codigoTienda   = codigoTienda;
@@ -61,12 +64,12 @@ class TocGame
         this.tipoImpresora  = tipoImpresora;
         this.tipoDatafono   = tipoDatafono;
     }
-    setupToc(data)
+    setupToc(info)
     {
-        if(data.length === 1)
+        if(info.licencia > 0 && info.codigoTienda > 0 && info.database.length > 0 && info.nombreEmpresa.length > 0 && info.nombreTienda.length > 0 && info.tipoImpresora.length > 0 && info.tipoDatafono > 0 && info.ultimoTicket > -1)
         {
-            const info = data[0];
-            this.setParametros(info.licencia, info.codigoTienda, info.database, info.nombreEmpresa, info.nombreTienda, info.tipoImpresora, info.tipoDatafono);
+            electron.ipcRenderer.send('setParametros', info);
+            this.setParametros(info.licencia, info.codigoTienda, info.database, info.nombreEmpresa, info.nombreTienda, info.tipoImpresora, info.tipoDatafono, info.ultimoTicket);
         }
     }
     iniciar()

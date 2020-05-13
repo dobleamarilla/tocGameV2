@@ -6,14 +6,17 @@ var params = new conexion.mongoose.Schema({
     database: String,
     nombreEmpresa: String,
     nombreTienda: String,
-    tipoImpresora: String
+    tipoImpresora: String,
+    tipoDatafono: String,
+    ultimoTicket: Number
 });
 var Parametros = conexion.mongoose.model('Parametros', params);
 
-function nuevaPersona(name)
+function insertParams(data)
 {
-    let persona1 = new Parametros({nombre: name});
-    persona1.save();
+    let aux = new Parametros(data);
+    aux.save();
 }
 
-exports.parametros = Parametros;
+exports.parametros  = Parametros;
+exports.insertarParametros     = insertParams;
