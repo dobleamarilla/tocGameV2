@@ -7,6 +7,10 @@ var path        = require('path');
 var params      = require('./componentes/schemas/parametros');
 var trabaj      = require('./componentes/schemas/trabajadores');
 var arti        = require('./componentes/schemas/articulos');
+var cliente     = require('./componentes/schemas/clientes');
+var fami        = require('./componentes/schemas/familias');
+var promo       = require('./componentes/schemas/promociones');
+var paramtick   = require('./componentes/schemas/parametrosTicket');
 
 const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
 
@@ -78,10 +82,15 @@ app.on('ready', () =>
     //FINAL SET PARAMETROS
 
     //CARGAR TODO
-    ipcMain.on('cargar-todo', (ev, data) => 
+    ipcMain.on('cargar-todo', async (ev, data) => 
     {
-        trabaj.insertarTrabajadores(data.dependentes);
-        arti.insertarArticulos(data.articulos);
+        await trabaj.insertarTrabajadores(data.dependentes);
+        await arti.insertarArticulos(data.articulos);
+        await cliente.insertarClientes(data.clientes);
+        await fami.insertarFamilias(data.familias);
+        await promo.insertarPromociones(data.promociones);
+        await paramtick.insertarParametrosTicket(data.parametrosTicket);
+        ev.sender.send('res-cargar-todo', true);
     });
     //FINAL CARGAR TODO
 

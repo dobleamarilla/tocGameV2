@@ -77,7 +77,17 @@ class TocGame
     {
         socket.emit('cargar-todo', {licencia: this.licencia, database: this.database});
         socket.on('cargar-todo', (data)=>{
-            electron.ipcRenderer.sendSync('cargar-todo', data);
+            const res = electron.ipcRenderer.send('cargar-todo', data);
+            electron.ipcRenderer.on('res-cargar-todo', (ev, data)=>{
+                if(data)
+                {
+                    vueToast.abrir('success', "TODO CARGADO");
+                }
+                else
+                {
+                    vueToast.abrir('error', 'Error en cargar-todo');
+                }
+            });
         });
     }
     iniciar(): void

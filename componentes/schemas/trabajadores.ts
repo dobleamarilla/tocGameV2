@@ -9,7 +9,12 @@ var Trabajadores = conexion.mongoose.model('trabajadores', schemaTrabajadores);
 
 function insertarTrabajadores(data)
 {
-    Trabajadores.insertMany(data);
+    var devolver = new Promise((dev, rej)=>{
+        Trabajadores.insertMany(data).then(()=>{
+            dev(true);
+        });
+    });
+    return devolver;
 }
 
 exports.trabajadores             = Trabajadores;
