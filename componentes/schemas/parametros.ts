@@ -18,5 +18,5 @@ function insertParams(data)
     aux.save();
 }
 
-exports.parametros  = Parametros;
+exports.parametros             = Parametros;
 exports.insertarParametros     = insertParams;

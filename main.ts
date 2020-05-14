@@ -5,6 +5,8 @@ var acciones    = require('./componentes/acciones');
 var socket      = require('socket.io-client');
 var path        = require('path');
 var params      = require('./componentes/schemas/parametros');
+var trabaj      = require('./componentes/schemas/trabajadores');
+var arti        = require('./componentes/schemas/articulos');
 
 const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
 
@@ -57,25 +59,32 @@ app.on('ready', () =>
         //event.sender.send('canal1', 'EJEMPLO DE EVENT SENDER SEND');
     });
 
-    ipcMain.on('test', (ev, args) => {
-        console.log("MA GIS TRAL EZE!!!");
-    });
-
     //GET PARAMETROS
     ipcMain.on('getParametros', (ev, args) => 
     {
         params.parametros.find().lean().then(res=>{
-            console.log(res);
             ev.returnValue = res;
         }).catch(err=>{
             console.log(err);
         });
     });
     //FINAL GET PARAMETROS
-    ipcMain.on('setParametros', (ev, args) => 
+
+    //SET PARAMETROS
+    ipcMain.on('setParametros', (ev, data) => 
     {
-        params.insertarParametros(args);
+        params.insertarParametros(data);
     });
+    //FINAL SET PARAMETROS
+
+    //CARGAR TODO
+    ipcMain.on('cargar-todo', (ev, data) => 
+    {
+        trabaj.insertarTrabajadores(data.dependentes);
+        arti.insertarArticulos(data.articulos);
+    });
+    //FINAL CARGAR TODO
+
     ipcMain.on('devolucion', (event: any, args: any) => 
     {
 

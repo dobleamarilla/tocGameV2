@@ -92,7 +92,7 @@ var vueInstallWizard = new Vue({
                         nombreTienda: data.nombreTienda,
                         tipoImpresora: this.tipoImpresora,
                         tipoDatafono: this.tipoDatafono,
-                        ultimoTicket: this.ultimoTicket
+                        ultimoTicket: data.ultimoTicket
                     };
                     vueToast.abrir("success", "OK!");
                     toc.setupToc(misParams);

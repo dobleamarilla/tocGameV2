@@ -64,18 +64,27 @@ class TocGame
         this.tipoImpresora  = tipoImpresora;
         this.tipoDatafono   = tipoDatafono;
     }
-    setupToc(info)
+    setupToc(info): void
     {
-        if(info.licencia > 0 && info.codigoTienda > 0 && info.database.length > 0 && info.nombreEmpresa.length > 0 && info.nombreTienda.length > 0 && info.tipoImpresora.length > 0 && info.tipoDatafono > 0 && info.ultimoTicket > -1)
+        if(info.licencia > 0 && info.codigoTienda > 0 && info.database.length > 0 && info.nombreEmpresa.length > 0 && info.nombreTienda.length > 0 && info.tipoImpresora.length > 0 && info.tipoDatafono.length > 0 && info.ultimoTicket > -1)
         {
             electron.ipcRenderer.send('setParametros', info);
             this.setParametros(info.licencia, info.codigoTienda, info.database, info.nombreEmpresa, info.nombreTienda, info.tipoImpresora, info.tipoDatafono, info.ultimoTicket);
+            this.descargarDatos();
         }
     }
-    iniciar()
+    descargarDatos(): void
+    {
+        socket.emit('cargar-todo', {licencia: this.licencia, database: this.database});
+        socket.on('cargar-todo', (data)=>{
+            electron.ipcRenderer.sendSync('cargar-todo', data);
+        });
+    }
+    iniciar(): void
     {
         if(this.todoInstalado())
         {
+            console.log("Licencia OK");
             //comprobar trabajador fichado
         }
         else
