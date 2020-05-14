@@ -16,6 +16,7 @@ class TocGame
     private tipoImpresora: string;
     private tipoDatafono: string;
     private ultimoTicket: number;
+    private arrayFichados: any;
 
     constructor()
     {
@@ -41,6 +42,7 @@ class TocGame
             this.tipoImpresora  = TIPO_USB; //USB y SERIE
             this.tipoDatafono   = TIPO_CLEARONE; //CLEARONE y 3G
             this.ultimoTicket   = -1;
+            this.arrayFichados  = [];
         }
     }
     todoInstalado(): boolean
@@ -82,6 +84,8 @@ class TocGame
                 if(data)
                 {
                     vueToast.abrir('success', "TODO CARGADO");
+                    vueInstallWizard.cerrarModal();
+                    this.iniciar();
                 }
                 else
                 {
@@ -90,12 +94,31 @@ class TocGame
             });
         });
     }
+    getFichados(): any //SOLO PARA TRABAJAR EN ACCIONES NORMALES DEL TOC
+    {
+        return this.arrayFichados; 
+    }
+    getFichadosFromMongo(): any //SOLO PARA INICIAR LOS DATOS
+    {
+        return electron.ipcRenderer.sendSync('getFichados');
+    }
     iniciar(): void
     {
         if(this.todoInstalado())
         {
-            console.log("Licencia OK");
-            //comprobar trabajador fichado
+            const fichados: any = this.getFichadosFromMongo();
+            if(fichados.length > 0)
+            {
+                this.arrayFichados = fichados;
+                console.log("Hay trabajadores fichados");
+                //copiar datos a la clase (this.arrayFichados) y comprobar que esten fichados (por aparecer en la lista no tiene por qué estar fichado)
+            }
+            else
+            {
+                this.arrayFichados = [];
+                console.log("No encuentro trabajadores fichados :(");
+                //abrir modal de fichajes
+            }
         }
         else
         {

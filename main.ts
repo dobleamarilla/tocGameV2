@@ -11,6 +11,7 @@ var cliente     = require('./componentes/schemas/clientes');
 var fami        = require('./componentes/schemas/familias');
 var promo       = require('./componentes/schemas/promociones');
 var paramtick   = require('./componentes/schemas/parametrosTicket');
+var ficha       = require('./componentes/schemas/fichados');
 
 const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
 
@@ -93,6 +94,12 @@ app.on('ready', () =>
         ev.sender.send('res-cargar-todo', true);
     });
     //FINAL CARGAR TODO
+
+    //GET FICHADOS
+    ipcMain.on('getFichados', async (ev, data)=>{
+        ev.returnValue = await ficha.getFichados();
+    });
+    //FINAL GET FICHADOS
 
     ipcMain.on('devolucion', (event: any, args: any) => 
     {
