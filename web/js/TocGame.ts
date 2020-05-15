@@ -80,7 +80,6 @@ class TocGame {
         socket.emit('cargar-todo', { licencia: this.licencia, database: this.database });
         socket.on('cargar-todo', (data) => 
         {
-            console.log("Ya verás q me multiplico");
             const res = electron.ipcRenderer.send('cargar-todo', data);
             electron.ipcRenderer.on('res-cargar-todo', (ev, data) => 
             {
@@ -108,6 +107,10 @@ class TocGame {
     addFichado(trabajador: any): void 
     {
         this.arrayFichados.push(trabajador);
+    }
+    abrirCaja(cantidadCaja: number)
+    {
+        electron.ipcRenderer.send('abrirCaja', cantidadCaja);
     }
     iniciar(): void 
     {
