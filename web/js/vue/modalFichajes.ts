@@ -1,6 +1,6 @@
 var vueFichajes = new Vue({
     el: '#vueFichajes',
-    template: 
+    template:
     /*html*/`
     <!-- Inicio modal fichar -->
     <div class="modal" id="modalFichajes" tabindex="-1" role="dialog">
@@ -44,35 +44,37 @@ var vueFichajes = new Vue({
 </div>
     <!-- Fin modal fichar -->
     `,
-    data () {
-      return {
-        trabajadores: [],
-        fichados: [],
-        busqueda: ''
-      }
+    data() {
+        return {
+            trabajadores: [],
+            fichados: [],
+            busqueda: ''
+        }
     },
     methods: {
-        abrirModal()
-        {
-            $('#modalFichajes').modal({backdrop: 'static', keyboard: false})  
+        abrirModal() {
+            $('#modalFichajes').modal({ backdrop: 'static', keyboard: false })
         },
-        buscarTrabajador()
-        {
+        buscarTrabajador() {
             electron.ipcRenderer.send('buscar-trabajador', this.busqueda);
-            electron.ipcRenderer.on('res-buscar-trabajador', (ev, data)=>{
+            electron.ipcRenderer.on('res-buscar-trabajador', (ev, data) => {
                 this.trabajadores = data;
             });
         },
-        fichar(x)
-        {
+        fichar(trabajador) {
+            electron.ipcRenderer.send('fichar-trabajador', trabajador._id);
+            electron.ipcRenderer.on('res-fichar-trabajador', (ev, data) => {
+                toc.addFichado(trabajador);
+                vueToast.abrir('success', 'FICHAJE OK');
+            });
+        },
+        desfichar(x) {
             console.log(x);
-            //electron.ipcRenderer
         }
     },
     watch: {
-        busqueda()
-        {
+        busqueda() {
             this.buscarTrabajador();
         }
     }
-  });
+});
