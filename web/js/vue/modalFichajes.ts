@@ -37,43 +37,61 @@ var vueFichajes = new Vue({
                 </div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">OK!</button>
+				<button type="button" class="btn btn-secondary" @click="volver()">SALIR</button>
 			</div>
 		</div>
 	</div>
 </div>
     <!-- Fin modal fichar -->
     `,
-    data() {
+    data() 
+    {
         return {
             trabajadores: [],
             fichados: [],
             busqueda: ''
         }
     },
-    methods: {
-        abrirModal() {
+    methods: 
+    {
+        abrirModal() 
+        {
             $('#modalFichajes').modal({ backdrop: 'static', keyboard: false })
         },
-        buscarTrabajador() {
+        cerrarModal()
+        {
+            $('#modalFichajes').modal('hide');
+        },
+        buscarTrabajador() 
+        {
             electron.ipcRenderer.send('buscar-trabajador', this.busqueda);
             electron.ipcRenderer.on('res-buscar-trabajador', (ev, data) => {
                 this.trabajadores = data;
             });
         },
-        fichar(trabajador) {
+        fichar(trabajador) 
+        {
             electron.ipcRenderer.send('fichar-trabajador', trabajador._id);
             electron.ipcRenderer.on('res-fichar-trabajador', (ev, data) => {
                 toc.addFichado(trabajador);
+                this.busqueda = '';
                 vueToast.abrir('success', 'FICHAJE OK');
             });
         },
-        desfichar(x) {
+        desfichar(x) 
+        {
             console.log(x);
+        },
+        volver()
+        {
+            this.cerrarModal();
+            toc.ejecutarIniciar();
         }
     },
-    watch: {
-        busqueda() {
+    watch: 
+    {
+        busqueda() 
+        {
             this.buscarTrabajador();
         }
     }

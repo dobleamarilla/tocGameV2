@@ -12,7 +12,7 @@ var fami = require('./componentes/schemas/familias');
 var promo = require('./componentes/schemas/promociones');
 var paramtick = require('./componentes/schemas/parametrosTicket');
 var ficha = require('./componentes/schemas/fichados');
-
+var eventos = require('events');
 const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
@@ -87,12 +87,6 @@ app.on('ready', () => {
     });
     //FINAL CARGAR TODO
 
-    //GET FICHADOS
-    ipcMain.on('getFichados', async (ev, data) => {
-        ev.returnValue = await ficha.getFichados();
-    });
-    //FINAL GET FICHADOS
-
     //BUSCAR TRABAJADOR
     ipcMain.on('buscar-trabajador', (ev, data) => {
         trabaj.buscarTrabajador(data).then(respuesta => {
@@ -108,6 +102,14 @@ app.on('ready', () => {
         });
     });
     //FINAL FICHAR TRABAJADOR
+
+    //BUSCAR FICHADOS
+    ipcMain.on('buscar-fichados', (ev, data)=>{
+        trabaj.buscarFichados(data).then((arrayFichados)=>{
+            ev.sender.send('res-buscar-fichados', arrayFichados);
+        });
+    });
+    //FINAL BUSCAR FICHADOS
 
     ipcMain.on('devolucion', (event: any, args: any) => {
 

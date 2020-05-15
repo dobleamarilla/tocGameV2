@@ -17,9 +17,11 @@ class TocGame {
     private ultimoTicket: number;
     private arrayFichados: any;
 
-    constructor() {
+    constructor() 
+    {
         const info = electron.ipcRenderer.sendSync('getParametros');
-        if (info.length === 1) {
+        if (info.length === 1) 
+        {
             this.licencia = info[0].licencia;
             this.codigoTienda = info[0].codigoTienda;
             this.database = info[0].database;
@@ -29,7 +31,8 @@ class TocGame {
             this.tipoDatafono = info[0].tipoDatafono; //CLEARONE y 3G
             this.ultimoTicket = info[0].ultimoTicket;
         }
-        else {
+        else 
+        {
             this.licencia = 0
             this.codigoTienda = 0
             this.database = '';
@@ -41,15 +44,19 @@ class TocGame {
             this.arrayFichados = [];
         }
     }
-    todoInstalado(): boolean {
-        if (this.licencia !== 0 && this.codigoTienda !== 0 && this.database !== '' && this.nombreEmpresa !== '' && this.nombreTienda !== '' && this.ultimoTicket !== -1) {
+    todoInstalado(): boolean 
+    {
+        if (this.licencia !== 0 && this.codigoTienda !== 0 && this.database !== '' && this.nombreEmpresa !== '' && this.nombreTienda !== '' && this.ultimoTicket !== -1) 
+        {
             return true;
         }
-        else {
+        else 
+        {
             return false;
         }
     }
-    setParametros(licencia: number, codigoTienda: number, database: string, nombreEmpresa: string, nombreTienda: string, tipoImpresora: string, tipoDatafono: string, ultimoTicket: number): void {
+    setParametros(licencia: number, codigoTienda: number, database: string, nombreEmpresa: string, nombreTienda: string, tipoImpresora: string, tipoDatafono: string, ultimoTicket: number): void 
+    {
         this.licencia = licencia;
         this.codigoTienda = codigoTienda;
         this.database = database;
@@ -59,24 +66,32 @@ class TocGame {
         this.tipoDatafono = tipoDatafono;
         this.ultimoTicket = ultimoTicket;
     }
-    setupToc(info): void {
-        if (info.licencia > 0 && info.codigoTienda > 0 && info.database.length > 0 && info.nombreEmpresa.length > 0 && info.nombreTienda.length > 0 && info.tipoImpresora.length > 0 && info.tipoDatafono.length > 0 && info.ultimoTicket > -1) {
+    setupToc(info): void 
+    {
+        if (info.licencia > 0 && info.codigoTienda > 0 && info.database.length > 0 && info.nombreEmpresa.length > 0 && info.nombreTienda.length > 0 && info.tipoImpresora.length > 0 && info.tipoDatafono.length > 0 && info.ultimoTicket > -1) 
+        {
             electron.ipcRenderer.send('setParametros', info);
             this.setParametros(info.licencia, info.codigoTienda, info.database, info.nombreEmpresa, info.nombreTienda, info.tipoImpresora, info.tipoDatafono, info.ultimoTicket);
             this.descargarDatos();
         }
     }
-    descargarDatos(): void {
+    descargarDatos(): void 
+    {
         socket.emit('cargar-todo', { licencia: this.licencia, database: this.database });
-        socket.on('cargar-todo', (data) => {
+        socket.on('cargar-todo', (data) => 
+        {
+            console.log("Ya verás q me multiplico");
             const res = electron.ipcRenderer.send('cargar-todo', data);
-            electron.ipcRenderer.on('res-cargar-todo', (ev, data) => {
-                if (data) {
+            electron.ipcRenderer.on('res-cargar-todo', (ev, data) => 
+            {
+                if (data) 
+                {
                     vueToast.abrir('success', "TODO CARGADO");
                     vueInstallWizard.cerrarModal();
-                    this.iniciar();
+                    this.ejecutarIniciar();
                 }
-                else {
+                else 
+                {
                     vueToast.abrir('error', 'Error en cargar-todo');
                 }
             });
@@ -86,31 +101,37 @@ class TocGame {
     {
         return this.arrayFichados;
     }
-    getFichadosFromMongo(): any //SOLO PARA INICIAR LOS DATOS
+    ejecutarIniciar()
     {
-        return electron.ipcRenderer.sendSync('getFichados');
+        electron.ipcRenderer.send('buscar-fichados');
     }
-    addFichado(trabajador: any): void {
+    addFichado(trabajador: any): void 
+    {
         this.arrayFichados.push(trabajador);
     }
-    iniciar(): void {
-        if (this.todoInstalado()) {
-            const fichados: any = this.getFichadosFromMongo();
-            if (fichados.length > 0) {
-                this.arrayFichados = fichados;
-                console.log("Hay trabajadores fichados");
-                //copiar datos a la clase (this.arrayFichados) y comprobar que esten fichados (por aparecer en la lista no tiene por qué estar fichado)
-                //CONTINUAR CON COMPROBACIONES DE CAJA
+    iniciar(): void 
+    {
+        electron.ipcRenderer.send('buscar-fichados');
+        electron.ipcRenderer.on('res-buscar-fichados', (ev, data)=>{
+            this.arrayFichados = data;
+            if (this.todoInstalado()) 
+            {
+                if (this.arrayFichados.length > 0) 
+                {
+                    console.log("Hay trabajadores fichados");
+                    //CONTINUAR CON COMPROBACIONES DE CAJA
+                }
+                else 
+                {
+                    this.arrayFichados = [];
+                    console.log("No encuentro trabajadores fichados :(");
+                    abrirModalFichajes();
+                }
             }
-            else {
-                this.arrayFichados = [];
-                console.log("No encuentro trabajadores fichados :(");
-                abrirModalFichajes();
+            else 
+            {
+                abrirInstallWizard();
             }
-        }
-        else {
-            console.log("AJA TE PILLE");
-            abrirInstallWizard();
-        }
+        });
     }
 }
