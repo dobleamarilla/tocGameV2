@@ -6,7 +6,7 @@ var vueInstallWizard = new Vue({
     template: 
     /*html*/`
 <div class="modal" id="modalInstallWizard" tabindex="-1" role="dialog">
-	<div class="modal-dialog fullscreen" role="document">
+	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title">Configuración TOC V2</h5>

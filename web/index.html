@@ -5,13 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/toast.css">
+    <link rel="stylesheet" href="assets/css/main.css">
     <title>TOC V2</title>
 </head>
 <body>
-    <div id="vueInstallWizard"></div>
-    <!-- TOAST -->
-    <div id="vueToast"></div>
-    <!-- FIN TOAST -->    
+    <div class="container-fluid">
+        <div id="vueInstallWizard"></div>
+        <div id="vueFichajes"></div>
+        <!-- TOAST -->
+        <div id="vueToast"></div>
+        <!-- FIN TOAST -->    
+    </div>
 
     <script>var electron = require('electron');</script>
     <script>window.$ = window.jQuery = require('jquery');</script>
@@ -22,6 +26,7 @@
     <script src="js/render.js"></script>
     <script src="js/funciones.js"></script>
     <script src="js/vue/toast.ts"></script>
+    <script src="js/vue/modalFichajes.js"></script>
     <script src="js/vue/installWizard.js"></script>
     <script src="js/TocGame.js"></script>
     <script src="js/index.js"></script>

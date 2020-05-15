@@ -65,6 +65,7 @@ class TocGame
         this.nombreTienda   = nombreTienda;
         this.tipoImpresora  = tipoImpresora;
         this.tipoDatafono   = tipoDatafono;
+        this.ultimoTicket   = ultimoTicket;
     }
     setupToc(info): void
     {
@@ -112,16 +113,18 @@ class TocGame
                 this.arrayFichados = fichados;
                 console.log("Hay trabajadores fichados");
                 //copiar datos a la clase (this.arrayFichados) y comprobar que esten fichados (por aparecer en la lista no tiene por qué estar fichado)
+                //CONTINUAR CON COMPROBACIONES DE CAJA
             }
             else
             {
                 this.arrayFichados = [];
                 console.log("No encuentro trabajadores fichados :(");
-                //abrir modal de fichajes
+                abrirModalFichajes();
             }
         }
         else
         {
+            console.log("AJA TE PILLE");
             abrirInstallWizard();
         }
     }

@@ -101,6 +101,14 @@ app.on('ready', () =>
     });
     //FINAL GET FICHADOS
 
+    //BUSCAR TRABAJADOR
+    ipcMain.on('buscar-trabajador', (ev, data)=>{
+        trabaj.buscarTrabajador(data).then(respuesta=>{
+            ev.sender.send('res-buscar-trabajador', respuesta);
+        });
+    });
+    //FINAL BUSCAR TRABAJADOR
+
     ipcMain.on('devolucion', (event: any, args: any) => 
     {
 
