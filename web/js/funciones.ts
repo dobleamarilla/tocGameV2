@@ -1,8 +1,8 @@
-function abrirInstallWizard()
+function abrirInstallWizard() //COMPROBADA
 {
     vueInstallWizard.abreModal();
 }
-function abrirModalFichajes()
+function abrirModalFichajes() //COMPROBADA
 {
     vueFichajes.abrirModal();
 }

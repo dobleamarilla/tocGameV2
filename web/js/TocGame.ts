@@ -16,10 +16,13 @@ class TocGame {
     private tipoDatafono: string;
     private ultimoTicket: number;
     private arrayFichados: any;
-
+    private caja: any;
+    
     constructor() 
     {
         const info = electron.ipcRenderer.sendSync('getParametros');
+        const infoCaja = electron.ipcRenderer.sendSync('getInfoCaja');
+
         if (info.length === 1) 
         {
             this.licencia = info[0].licencia;
@@ -43,8 +46,42 @@ class TocGame {
             this.ultimoTicket = -1;
             this.arrayFichados = [];
         }
+        if(infoCaja === null)
+        {
+            this.caja  = {
+                _id: "CAJA",
+                inicioTime: null,
+                totalApertura: null,
+                detalleApertura: null
+            };
+        }
+        else
+        {
+            this.caja = infoCaja;
+        }
     }
-    todoInstalado(): boolean 
+    cajaAbierta()
+    {
+        if(this.caja.inicioTime === null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    setCaja(data)
+    {
+        this.caja  = {
+            _id: "CAJA",
+            inicioTime: data.inicioTime,
+            totalApertura: Number(data.totalApertura),
+            detalleApertura: data.detalleApertura
+        };
+    }
+    todoInstalado(): boolean //COMPROBADA
     {
         if (this.licencia !== 0 && this.codigoTienda !== 0 && this.database !== '' && this.nombreEmpresa !== '' && this.nombreTienda !== '' && this.ultimoTicket !== -1) 
         {
@@ -55,7 +92,7 @@ class TocGame {
             return false;
         }
     }
-    setParametros(licencia: number, codigoTienda: number, database: string, nombreEmpresa: string, nombreTienda: string, tipoImpresora: string, tipoDatafono: string, ultimoTicket: number): void 
+    setParametros(licencia: number, codigoTienda: number, database: string, nombreEmpresa: string, nombreTienda: string, tipoImpresora: string, tipoDatafono: string, ultimoTicket: number): void //COMPROBADA
     {
         this.licencia = licencia;
         this.codigoTienda = codigoTienda;
@@ -66,7 +103,7 @@ class TocGame {
         this.tipoDatafono = tipoDatafono;
         this.ultimoTicket = ultimoTicket;
     }
-    setupToc(info): void 
+    setupToc(info): void //COMPROBADA
     {
         if (info.licencia > 0 && info.codigoTienda > 0 && info.database.length > 0 && info.nombreEmpresa.length > 0 && info.nombreTienda.length > 0 && info.tipoImpresora.length > 0 && info.tipoDatafono.length > 0 && info.ultimoTicket > -1) 
         {
@@ -78,91 +115,86 @@ class TocGame {
     descargarDatos(): void 
     {
         socket.emit('cargar-todo', { licencia: this.licencia, database: this.database });
-        socket.on('cargar-todo', (data) => 
-        {
-            const res = electron.ipcRenderer.send('cargar-todo', data);
-            electron.ipcRenderer.on('res-cargar-todo', (ev, data) => 
-            {
-                if (data) 
-                {
-                    vueToast.abrir('success', "TODO CARGADO");
-                    vueInstallWizard.cerrarModal();
-                    this.ejecutarIniciar();
-                }
-                else 
-                {
-                    vueToast.abrir('error', 'Error en cargar-todo');
-                }
-            });
-        });
     }
-    getFichados(): any //SOLO PARA TRABAJAR EN ACCIONES NORMALES DEL TOC
+    hayFichados()
+    {
+        if(this.getArrayFichados().length > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    addFichado(trabajador: any): void //COMPROBADA
+    {
+        this.setCurrentTrabajador(trabajador._id);
+        this.arrayFichados.push(trabajador);
+        electron.ipcRenderer.send('fichar-trabajador', trabajador._id);
+
+    }
+    delFichado(trabajador: any): void //COMPROBADA
+    {
+        this.arrayFichados = this.arrayFichados.filter(item=>{
+            return item._id != trabajador._id;
+        });
+
+        electron.ipcRenderer.send('desfichar-trabajador', trabajador._id);
+    }
+    abrirCaja(data: any)
+    {
+        this.setCaja(data);
+        electron.ipcRenderer.send('actualizar-info-caja', data);
+        vueApertura.cerrarModal();
+        vueToast.abrir('success', 'CAJA ABIERTA');
+        this.iniciar();
+    }
+    setArrayFichados(arrayFichados: any): void //COMPROBADA
+    {
+        this.arrayFichados = arrayFichados;
+    }
+    getArrayFichados() //COMPROBADA
     {
         return this.arrayFichados;
     }
-    ejecutarIniciar()
+    getCurrentTrabajador(): any
     {
-        electron.ipcRenderer.send('buscar-fichados');
-    }
-    addFichado(trabajador: any, inicio: boolean = false): void 
-    {
-        if(!inicio)
+        if(this.getArrayFichados().length > 0)
         {
-            electron.ipcRenderer.send('fichar-trabajador', trabajador._id);
+            return this.getArrayFichados()[(this.getArrayFichados().length)-1];
         }
-        if(inicio)
+        else
         {
-            electron.ipcRenderer.on('res-fichar-trabajador', (ev, data) => {
-                this.arrayFichados.push(trabajador);
-                vueToast.abrir('success', 'FICHAJE OK');
-            });
+            return false;
         }
     }
-    delFichado(trabajador: any, inicio: boolean = false): void 
+    setCurrentTrabajador(idTrabajador: number): boolean
     {
-        if(!inicio)
+        var fichados = this.getArrayFichados();
+        if(fichados.length > 0)
         {
-            electron.ipcRenderer.send('desfichar-trabajador', trabajador._id);
-        }
-        if(inicio)
-        {
-            electron.ipcRenderer.on('res-desfichar-trabajador', (ev, data) => {
-                vueToast.abrir('success', 'SALIDA OK');
-                this.arrayFichados = this.arrayFichados.filter(item=>{
-                    return item._id != trabajador._id;
-                });
-            });
-        }
-    }
-    abrirCaja(cantidadCaja: number)
-    {
-        electron.ipcRenderer.send('abrirCaja', cantidadCaja);
-    }
-    iniciar(): void 
-    {
-        this.addFichado(-1, true);
-        this.delFichado(-1, true);
-        electron.ipcRenderer.send('buscar-fichados');
-        electron.ipcRenderer.on('res-buscar-fichados', (ev, data)=>{
-            this.arrayFichados = data;
-            if (this.todoInstalado()) 
+            var aux = this.getCurrentTrabajador();
+            for(let i = 0; i < fichados.length; i++)
             {
-                if (this.arrayFichados.length > 0) 
+                if(fichados[i]._id === idTrabajador)
                 {
-                    console.log("Hay trabajadores fichados");
-                    //CONTINUAR CON COMPROBACIONES DE CAJA
-                }
-                else 
-                {
-                    this.arrayFichados = [];
-                    console.log("No encuentro trabajadores fichados :(");
-                    abrirModalFichajes();
+                    fichados[fichados.length-1] = fichados[i];
+                    fichados[i] = aux;
+                    this.setArrayFichados(fichados);
+                    return true;
                 }
             }
-            else 
-            {
-                abrirInstallWizard();
-            }
-        });
+            
+        }
+        else
+        {
+            vueToast.abrir('error', 'NO HAY PERSONAL FICHADO');
+            return false
+        }
+    }
+    iniciar(): void //COMPROBADA
+    {
+        electron.ipcRenderer.send('buscar-fichados');
     }
 }

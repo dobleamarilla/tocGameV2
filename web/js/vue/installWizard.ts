@@ -76,7 +76,7 @@ var vueInstallWizard = new Vue({
             this.tipoImpresora = 'USB';
             this.tipoDatafono = 'CLEARONE';
         },
-        confirmar()
+        confirmar() //CONFIRMADA
         {
             vueToast.abrir("normal", "Petición al servidor enviada");
             socket.emit('install-licencia', {numLicencia: Number(this.licencia), password: this.password});

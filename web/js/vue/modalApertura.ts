@@ -150,7 +150,12 @@ var vueApertura = new Vue({
         {
             confirm("Se abrirá una caja nueva... ¿CAMBIO CORRECTO?")
             {
-                toc.abrirCaja(this.getTotal.toFixed(2));
+                const data: any = {
+                    inicioTime: new Date(),
+                    totalApertura: this.getTotal.toFixed(2),
+                    detalleApertura: this.getDetalle
+                }
+                toc.abrirCaja(data);
             }
         }
     },

@@ -62,27 +62,28 @@ var vueFichajes = new Vue({
         {
             $('#modalFichajes').modal('hide');
         },
-        buscarTrabajador() 
+        buscarTrabajador() //COMPROBADA
         {
             electron.ipcRenderer.send('buscar-trabajador', this.busqueda);
-            electron.ipcRenderer.on('res-buscar-trabajador', (ev, data) => {
-                this.trabajadores = data;
-            });
         },
-        fichar(trabajador) 
+        fichar(trabajador) // COMPROBADA
         {
             toc.addFichado(trabajador);
-            this.busqueda = '';
+            this.buscarTrabajador();
         },
         desfichar(trabajador) 
         {
             toc.delFichado(trabajador);
-            this.busqueda = '';
+            this.buscarTrabajador();
         },
         volver()
         {
             this.cerrarModal();
-            toc.ejecutarIniciar();
+            toc.iniciar();
+        },
+        setTrabajadores(aux)
+        {
+            this.trabajadores = aux;
         }
     },
     watch: 

@@ -1,18 +1,20 @@
-var net = require('net');
-var impresora = require('./componentes/impresora');
-var atajos = require('./componentes/teclasAtajos');
-var acciones = require('./componentes/acciones');
-var socket = require('socket.io-client');
-var path = require('path');
-var params = require('./componentes/schemas/parametros');
-var trabaj = require('./componentes/schemas/trabajadores');
-var arti = require('./componentes/schemas/articulos');
-var cliente = require('./componentes/schemas/clientes');
-var fami = require('./componentes/schemas/familias');
-var promo = require('./componentes/schemas/promociones');
-var paramtick = require('./componentes/schemas/parametrosTicket');
-var ficha = require('./componentes/schemas/fichados');
-var eventos = require('events');
+var net         = require('net');
+var impresora   = require('./componentes/impresora');
+var atajos      = require('./componentes/teclasAtajos');
+var acciones    = require('./componentes/acciones');
+var socket      = require('socket.io-client');
+var path        = require('path');
+var params      = require('./componentes/schemas/parametros');
+var trabaj      = require('./componentes/schemas/trabajadores');
+var arti        = require('./componentes/schemas/articulos');
+var cliente     = require('./componentes/schemas/clientes');
+var fami        = require('./componentes/schemas/familias');
+var promo       = require('./componentes/schemas/promociones');
+var paramtick   = require('./componentes/schemas/parametrosTicket');
+var ficha       = require('./componentes/schemas/fichados');
+var caj         = require('./componentes/schemas/cajas');
+var eventos     = require('events');
+
 const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
@@ -68,6 +70,22 @@ app.on('ready', () => {
         });
     });
     //FINAL GET PARAMETROS
+
+    //GET INFO CAJA
+    ipcMain.on('getInfoCaja', (ev, args) => {
+        caj.getInfoCaja().then(res => {
+            ev.returnValue = res;
+        }).catch(err => {
+            console.log(err);
+        });
+    });
+    //FINAL INFO CAJA
+
+    //ACTUALIZAR INFO CAJA
+    ipcMain.on('actualizar-info-caja', (ev, data) => {
+        caj.setInfoCaja(data);
+    });
+    //FINAL ACTUALIZAR INFO CAJA
 
     //SET PARAMETROS
     ipcMain.on('setParametros', (ev, data) => {
