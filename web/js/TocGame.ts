@@ -104,9 +104,35 @@ class TocGame {
     {
         electron.ipcRenderer.send('buscar-fichados');
     }
-    addFichado(trabajador: any): void 
+    addFichado(trabajador: any, inicio: boolean = false): void 
     {
-        this.arrayFichados.push(trabajador);
+        if(!inicio)
+        {
+            electron.ipcRenderer.send('fichar-trabajador', trabajador._id);
+        }
+        if(inicio)
+        {
+            electron.ipcRenderer.on('res-fichar-trabajador', (ev, data) => {
+                this.arrayFichados.push(trabajador);
+                vueToast.abrir('success', 'FICHAJE OK');
+            });
+        }
+    }
+    delFichado(trabajador: any, inicio: boolean = false): void 
+    {
+        if(!inicio)
+        {
+            electron.ipcRenderer.send('desfichar-trabajador', trabajador._id);
+        }
+        if(inicio)
+        {
+            electron.ipcRenderer.on('res-desfichar-trabajador', (ev, data) => {
+                vueToast.abrir('success', 'SALIDA OK');
+                this.arrayFichados = this.arrayFichados.filter(item=>{
+                    return item._id != trabajador._id;
+                });
+            });
+        }
     }
     abrirCaja(cantidadCaja: number)
     {
@@ -114,6 +140,8 @@ class TocGame {
     }
     iniciar(): void 
     {
+        this.addFichado(-1, true);
+        this.delFichado(-1, true);
         electron.ipcRenderer.send('buscar-fichados');
         electron.ipcRenderer.on('res-buscar-fichados', (ev, data)=>{
             this.arrayFichados = data;

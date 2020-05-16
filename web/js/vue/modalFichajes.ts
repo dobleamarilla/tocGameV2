@@ -71,16 +71,13 @@ var vueFichajes = new Vue({
         },
         fichar(trabajador) 
         {
-            electron.ipcRenderer.send('fichar-trabajador', trabajador._id);
-            electron.ipcRenderer.on('res-fichar-trabajador', (ev, data) => {
-                toc.addFichado(trabajador);
-                this.busqueda = '';
-                vueToast.abrir('success', 'FICHAJE OK');
-            });
+            toc.addFichado(trabajador);
+            this.busqueda = '';
         },
-        desfichar(x) 
+        desfichar(trabajador) 
         {
-            console.log(x);
+            toc.delFichado(trabajador);
+            this.busqueda = '';
         },
         volver()
         {

@@ -103,6 +103,14 @@ app.on('ready', () => {
     });
     //FINAL FICHAR TRABAJADOR
 
+    //DESFICHAR TRABAJADOR
+    ipcMain.on('desfichar-trabajador', (ev, data) => {
+        trabaj.desficharTrabajador(data).then(() => {
+            ev.sender.send('res-desfichar-trabajador', '');
+        });
+    });
+    //FINAL DESFICHAR TRABAJADOR
+
     //BUSCAR FICHADOS
     ipcMain.on('buscar-fichados', (ev, data)=>{
         trabaj.buscarFichados(data).then((arrayFichados)=>{

@@ -37,6 +37,16 @@ function ficharTrabajador(idTrabajador: number)
         }
     });
 }
+function desficharTrabajador(idTrabajador: number) 
+{
+    return Trabajadores.findByIdAndUpdate(idTrabajador, { fichado: false }, (err, result) => 
+    {
+        if (err) 
+        {
+            console.log(err);
+        }
+    });
+}
 function buscarFichados()
 {
     return Trabajadores.find({fichado: true}).lean();
@@ -45,4 +55,5 @@ exports.trabajadores = Trabajadores;
 exports.insertarTrabajadores = insertarTrabajadores;
 exports.buscarTrabajador = buscarTrabajador;
 exports.ficharTrabajador = ficharTrabajador;
+exports.desficharTrabajador = desficharTrabajador;
 exports.buscarFichados  = buscarFichados;
