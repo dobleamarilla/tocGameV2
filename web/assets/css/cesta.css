@@ -1,0 +1,25 @@
+.estiloCesta
+{
+    background-color: #FFFFFF;
+}
+.table-responsive
+{
+  height:200px;  
+  overflow:auto;
+}
+thead tr:nth-child(1) th
+{
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.colorFuente{
+  color: #606060 !important;
+}
+.ordenado {
+  padding-top: 2px;
+  padding-left: 3px;
+  padding-right: 0px;
+  padding-bottom: 1px;
+}

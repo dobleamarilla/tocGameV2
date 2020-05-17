@@ -17,7 +17,6 @@ var vueToast = new Vue({
 
             var x = document.getElementById("snackbar");
             x.className = "show " + tipo;
-
             setTimeout(function(){ x.setAttribute("class", ""); }, 3000);
         }
     }

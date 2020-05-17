@@ -1,0 +1,37 @@
+.teclas{
+    height: 70px;
+}
+.colJuntitas{
+    /* padding-right: 0px; */
+    padding: 2px;
+}
+.colorIvan1{
+    background-color: #DEE3E9 !important;
+    color: #5E5F61 !important;
+    border-color: #DEE3E9 !important;
+}
+.colorIvan2{
+    background-color: #EDDECB !important;
+    color: #5E5F61 !important;
+    border-color: #EDDECB !important;
+}
+.colorIvan3{
+    background-color: #FBB5B5 !important;
+    color: #5E5F61 !important;
+    border-color: #FBB5B5 !important;
+}
+.colorIvan4{
+    background-color: #DCE9D5 !important;
+    color: #5E5F61 !important;
+    border-color: #DCE9D5 !important;
+}
+.colorIvan5{
+    background-color: #EFD8A6 !important;
+    color: #5E5F61 !important;
+    border-color: #EFD8A6 !important;
+}
+.colorIvan6{
+    background-color: #B0AEC6 !important;
+    color: #5E5F61 !important;
+    border-color: #B0AEC6 !important;
+}

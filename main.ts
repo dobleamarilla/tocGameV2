@@ -13,6 +13,8 @@ var promo       = require('./componentes/schemas/promociones');
 var paramtick   = require('./componentes/schemas/parametrosTicket');
 var ficha       = require('./componentes/schemas/fichados');
 var caj         = require('./componentes/schemas/cajas');
+var tec         = require('./componentes/schemas/teclas');
+var men         = require('./componentes/schemas/menus');
 var eventos     = require('events');
 
 const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
@@ -101,9 +103,27 @@ app.on('ready', () => {
         await fami.insertarFamilias(data.familias);
         await promo.insertarPromociones(data.promociones);
         await paramtick.insertarParametrosTicket(data.parametrosTicket);
+        await men.insertarMenus(data.menus);
+        await tec.insertarTeclasMain(data.teclas);
         ev.sender.send('res-cargar-todo', true);
     });
     //FINAL CARGAR TODO
+
+    //GET TECLAS
+    ipcMain.on('get-teclas', (ev, data) => {
+        tec.getTecladoMain(data).then(respuesta => {
+            ev.sender.send('res-get-teclas', respuesta);
+        });
+    });
+    //FINAL GET TECLAS
+
+    //GET MENUS
+    ipcMain.on('get-menus', (ev, data) => {
+        men.getMenus(data).then(respuesta => {
+            ev.sender.send('res-get-menus', respuesta);
+        });
+    });
+    //FINAL MENUS
 
     //BUSCAR TRABAJADOR
     ipcMain.on('buscar-trabajador', (ev, data) => {

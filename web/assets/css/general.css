@@ -1,0 +1,10 @@
+body {
+    background-color: #fff5e9;
+}
+@font-face {
+    font-family: 'Poppins', sans-serif;
+    src: url("./Poppins-Medium.woff2");
+  }
+.fuenteIvan{
+    font-family: 'Poppins', sans-serif;
+}

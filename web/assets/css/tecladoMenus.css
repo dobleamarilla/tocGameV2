@@ -1,0 +1,52 @@
+.botonesMenu {
+    background-color: #d45600;
+    border-color: #d45600;
+    margin-right: 4px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.menus{
+    height: 70px;
+}
+.colorMenus {
+    background-color: #d45600;
+    color: #fffaee;
+    border-color: #d45600;
+}
+.activo{
+    background-color: #fff5e9;
+    color: #c95907;
+    border-color: #bf5c18;
+}
+.btn-secondary:hover {
+    color: #c95907 !important;
+    background-color: #fff5e9 !important;
+    border-color: #bf5c18 !important;
+  }
+  
+  .btn-secondary:focus, .btn-secondary.focus {
+    color: #c95907 !important;
+    background-color: #fff5e9 !important;
+    border-color: #bf5c18 !important;
+    box-shadow: none !important;
+  }
+  
+  .btn-secondary.disabled, .btn-secondary:disabled {
+    color: #fff !important;
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
+  }
+  
+  .btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active,
+  .show > .btn-secondary.dropdown-toggle {
+    color: #c95907 !important;
+    background-color: #fff5e9 !important;
+    border-color: #bf5c18 !important;
+  }
+  
+  .btn-secondary:not(:disabled):not(.disabled):active:focus, .btn-secondary:not(:disabled):not(.disabled).active:focus,
+  .show > .btn-secondary.dropdown-toggle:focus {
+    box-shadow: none !important;
+  }
+  .colJuntitasMenus {
+    padding-right: 0px;
+  }

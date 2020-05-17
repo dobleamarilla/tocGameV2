@@ -22,7 +22,7 @@ class TocGame {
     {
         const info = electron.ipcRenderer.sendSync('getParametros');
         const infoCaja = electron.ipcRenderer.sendSync('getInfoCaja');
-
+        
         if (info.length === 1) 
         {
             this.licencia = info[0].licencia;
@@ -193,8 +193,13 @@ class TocGame {
             return false
         }
     }
+    clickMenu(nombreMenu: string)
+    {
+        electron.ipcRenderer.send('get-teclas', nombreMenu);
+    }
     iniciar(): void //COMPROBADA
     {
         electron.ipcRenderer.send('buscar-fichados');
+        electron.ipcRenderer.send('get-menus');
     }
 }

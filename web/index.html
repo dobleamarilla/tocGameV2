@@ -5,17 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/toast.css">
+
     <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/cesta.css">
+    <link rel="stylesheet" href="assets/css/general.css">
+    <link rel="stylesheet" href="assets/css/tecladoMenus.css">
+    <link rel="stylesheet" href="assets/css/tecladoTeclas.css">
+    <link rel="stylesheet" href="assets/css/totalMenus.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-vue.css">
     <title>TOC V2</title>
 </head>
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid fuenteIvan">
+        <div id="vueToast"></div>
+        <div id="vuePanelVentas"></div>
         <div id="vueInstallWizard"></div>
         <div id="vueFichajes"></div>
         <div id="vueApertura"></div>
-        <!-- TOAST -->
-        <div id="vueToast"></div>
-        <!-- FIN TOAST -->    
     </div>
 
     <script>var electron = require('electron');</script>
@@ -30,6 +36,7 @@
     <script src="js/vue/modalFichajes.js"></script>
     <script src="js/vue/installWizard.js"></script>
     <script src="js/vue/modalApertura.js"></script>
+    <script src="js/vue/vuePanelVentas.js"></script>
     <script src="js/TocGame.js"></script>
     <script src="js/eventos.js"></script>
     <script src="js/index.js"></script>

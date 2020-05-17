@@ -58,3 +58,9 @@ electron.ipcRenderer.on('res-fichar-trabajador', (ev, data) => {
 electron.ipcRenderer.on('res-desfichar-trabajador', (ev, data) => {
     vueToast.abrir('success', 'SALIDA OK');
 });
+electron.ipcRenderer.on('res-get-teclas', (ev, data) => {
+    vuePanelVentas.cargarTeclado(data);
+});
+electron.ipcRenderer.on('res-get-menus', (ev, data) => {
+    vuePanelVentas.cargarMenus(data);
+});
