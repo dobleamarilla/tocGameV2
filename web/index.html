@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/toast.css">
-
+    <link rel="stylesheet" href="assets/css/all.css">
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/cesta.css">
     <link rel="stylesheet" href="assets/css/general.css">
@@ -19,6 +19,16 @@
     <div class="container-fluid fuenteIvan">
         <div id="vueToast"></div>
         <div id="vuePanelVentas"></div>
+
+        <div class="row pt-1">
+            <div class="col-md-5 ordenado">
+                <div id="vueCesta"></div>
+            </div>
+            <div class="col-md-7">
+              <div id="vueMenuControl"></div>
+            </div>
+        </div>
+
         <div id="vueInstallWizard"></div>
         <div id="vueFichajes"></div>
         <div id="vueApertura"></div>
@@ -31,12 +41,15 @@
     <script>const socket = io('http://52.213.244.62:8080');</script>
     <script src="assets/js/vue.js"></script>
     <script src="js/render.js"></script>
+    <script src="assets/js/all.min.js"></script>
     <script src="js/funciones.js"></script>
     <script src="js/vue/toast.ts"></script>
     <script src="js/vue/modalFichajes.js"></script>
     <script src="js/vue/installWizard.js"></script>
     <script src="js/vue/modalApertura.js"></script>
     <script src="js/vue/vuePanelVentas.js"></script>
+    <script src="js/vue/vueCesta.js"></script>
+    <script src="js/vue/vueMenuControl.js"></script>
     <script src="js/TocGame.js"></script>
     <script src="js/eventos.js"></script>
     <script src="js/index.js"></script>
