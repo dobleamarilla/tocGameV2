@@ -9,20 +9,22 @@ const TIPO_3G = '3G';
 class TocGame {
     private licencia: number;
     private codigoTienda: number;
-    private database: string;
-    private nombreEmpresa: string;
-    private nombreTienda: string;
-    private tipoImpresora: string;
-    private tipoDatafono: string;
+    private database: String;
+    private nombreEmpresa: String;
+    private nombreTienda: String;
+    private tipoImpresora: String;
+    private tipoDatafono: String;
     private ultimoTicket: number;
     private arrayFichados: any;
     private caja: any;
     private cesta: {
         _id: Date;
         lista: {
+            idArticulo: number,
             nombre: string,
             unidades: number,
-            subtotal: number
+            subtotal: number,
+            promocion: boolean
         }[];
     };
     constructor() 
@@ -211,6 +213,7 @@ class TocGame {
     setCesta(data)
     {
         this.cesta = data;
+        this.enviarCesta();
     }
     cargarCesta() //En memoria de la clase
     {
@@ -219,6 +222,66 @@ class TocGame {
     enviarCesta()
     {
         vueCesta.recibirCesta(this.cesta);
+    }
+    insertarArticuloCesta(infoArticulo, unidades: number)
+    {
+        var miCesta = this.getCesta();
+
+        if(miCesta.lista.length > 0)
+        {
+            let encontrado = false;
+            for(let i = 0; i < miCesta.lista.length; i++)
+            {
+                if(miCesta.lista[i].idArticulo === infoArticulo._id)
+                {
+                    miCesta.lista[i].unidades += unidades;
+                    miCesta.lista[i].subtotal += Number((unidades*infoArticulo.precioConIva).toFixed(2));
+                    encontrado = true;
+                    break;
+                }
+            }
+            if(!encontrado)
+            {
+                miCesta.lista.push({idArticulo:infoArticulo._id, nombre: infoArticulo.nombre, unidades: 1, promocion: false, subtotal: Number((unidades*infoArticulo.precioConIva).toFixed(2))});
+            }
+        }
+        else
+        {
+            miCesta.lista.push({idArticulo:infoArticulo._id, nombre: infoArticulo.nombre, unidades: 1, promocion: false, subtotal: Number((unidades*infoArticulo.precioConIva).toFixed(2))});
+        }
+        console.log("Mi cesta modificada es: ", miCesta);
+        console.log("INFO ARTICULO: ", infoArticulo);
+        this.setCesta(miCesta);
+    }
+    addItem(idArticulo: number, idBoton: String, aPeso: Boolean, peso: number, subtotal: number, unidades: number = 1)
+    {
+        try
+        {
+            $('#'+idBoton).attr('disabled', true);
+            if(!aPeso) //TIPO NORMAL
+            {
+                let infoArticulo = electron.ipcRenderer.sendSync('get-info-articulo', idArticulo);
+                if(infoArticulo) //AQUI PENSAR ALGUNA COMPROBACIÓN CUANDO NO EXISTA O FALLE ESTE GET
+                {
+                    this.insertarArticuloCesta(infoArticulo, unidades);
+                }
+                else
+                {
+                    vueToast.abrir('error', 'Este artículo tiene errores');
+                }
+            }
+            else //TIPO PESO
+            {
+                //caso a peso
+            }
+            $('#'+idBoton).attr('disabled', false);
+        }
+        catch(err)
+        {
+            console.log(err);
+            vueToast.abrir('error', 'Error al añadir el articulo');
+            $('#'+idBoton).attr('disabled', false);
+        }
     }
     iniciar(): void //COMPROBADA
     {

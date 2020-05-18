@@ -14,10 +14,10 @@ var vueCesta = new Vue({
 					</tr>
 				</thead>
 				<tbody class="tableBody">
-					<tr v-for="item of cesta.lista">
-						<td>{{item.nombre}}</td>
-						<td>{{item.unidades}}</td>
-						<td>{{item.subtotal}}</td>
+                    <tr v-for="item of listaAlReves" v-bind:class="{'estiloPromo': item.promocion}">
+                        <td>{{item.nombre}}</td>
+                        <td>{{item.unidades}}</td>
+                        <td>{{item.subtotal}}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -50,28 +50,28 @@ var vueCesta = new Vue({
       return {
           cesta: {
             _id: new Date,
-            lista: [
-              {nombre: 'CocaCola Light', unidades: 3, subtotal: 5.45},
-              {nombre: 'CocaCola Light', unidades: 3, subtotal: 5.45},
-              {nombre: 'CocaCola Light', unidades: 3, subtotal: 5.45},
-              {nombre: 'CocaCola Light', unidades: 3, subtotal: 5.45},
-              {nombre: 'CocaCola Light', unidades: 3, subtotal: 5.45},
-              {nombre: 'CocaCola Light', unidades: 3, subtotal: 5.45},
-              {nombre: 'CocaCola Light', unidades: 3, subtotal: 5.45}
-          ]},
+            lista: []
+        },
       }
     },
-    computed: {
-        getTotal(){
+    computed: 
+    {
+        getTotal()
+        {
             let suma = 0;
             for(let i = 0; i < this.cesta.lista.length; i++)
             {
                 suma += this.cesta.lista[i].subtotal;
             }
             return suma.toFixed(2);
+        },
+        listaAlReves()
+        {
+            return this.cesta.lista.reverse();
         }
     },
-    methods: {
+    methods: 
+    {
         getCesta()
         {
             this.cesta = toc.getCesta();

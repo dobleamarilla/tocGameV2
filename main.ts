@@ -18,6 +18,7 @@ var men         = require('./componentes/schemas/menus');
 var cest        = require('./componentes/schemas/cestas');
 var eventos     = require('events');
 
+require('source-map-support').install();
 const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
@@ -137,7 +138,19 @@ app.on('ready', () => {
     //GET CESTA
     ipcMain.on('get-cesta', (ev, data) => {
         cest.getUnaCesta(data).then(respuesta => {
-            ev.sender.send('res-get-cesta', respuesta);
+            if(respuesta != undefined || respuesta != null)
+            {
+                ev.sender.send('res-get-cesta', respuesta);
+            }
+            else
+            {
+                const cestaVacia = {
+                    _id: new Date(),
+                    lista: []
+                }
+                ev.sender.send('res-get-cesta', cestaVacia);
+                console.log("No hay cestas");
+            }
         });
     });
     //FINAL GET CESTA
@@ -149,6 +162,22 @@ app.on('ready', () => {
         });
     });
     //FINAL FICHAR TRABAJADOR
+
+    //GET INFO ARTICULO
+    ipcMain.on('get-info-articulo', (ev, data) => {
+        arti.getInfoArticulo(data).then(infoArticulo=>{
+            if(infoArticulo)
+            {
+                ev.returnValue = infoArticulo;
+            }
+            else
+            {
+                console.log("Algo pasa con infoArticulo: ", infoArticulo);
+            }
+        });
+
+    });
+    //FIN GET INFO ARTICULO
 
     //DESFICHAR TRABAJADOR
     ipcMain.on('desfichar-trabajador', (ev, data) => {

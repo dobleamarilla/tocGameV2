@@ -5,7 +5,8 @@ var schemaTeclas = new conexion.mongoose.Schema({
     idArticle: Number,
     nombreArticulo: String,
     pos: Number,
-    color: Number
+    color: Number,
+    esSumable: Boolean
 });
 var Teclas = conexion.mongoose.model('teclas', schemaTeclas);
 

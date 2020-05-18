@@ -1,12 +1,12 @@
 var conexion = require('../conexion');
 
 var schemaArticulos = new conexion.mongoose.Schema({
-    id: Number,
+    _id: Number,
     nombre: String,
     precioConIva: Number,
     precioBase: Number,
     tipoIva: Number,
-    aPeso: Boolean,
+    esSumable: Boolean,
     familia: String
 });
 var Articulos = conexion.mongoose.model('articulos', schemaArticulos);
@@ -20,6 +20,10 @@ function insertarArticulos(data)
     });
     return devolver;
 }
-
-exports.articulos             = Articulos;
-exports.insertarArticulos     = insertarArticulos;
+function getInfoArticulo(idArticulo: number)
+{
+    return Articulos.findById(idArticulo).lean();
+}
+exports.articulos               = Articulos;
+exports.insertarArticulos       = insertarArticulos;
+exports.getInfoArticulo         = getInfoArticulo;
