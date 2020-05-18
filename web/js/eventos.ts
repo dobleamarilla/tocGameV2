@@ -64,3 +64,7 @@ electron.ipcRenderer.on('res-get-teclas', (ev, data) => {
 electron.ipcRenderer.on('res-get-menus', (ev, data) => {
     vuePanelVentas.cargarMenus(data);
 });
+electron.ipcRenderer.on('res-get-cesta', (ev, data) => {
+    toc.setCesta(data);
+    toc.enviarCesta();
+});

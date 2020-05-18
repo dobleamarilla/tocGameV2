@@ -17,7 +17,14 @@ class TocGame {
     private ultimoTicket: number;
     private arrayFichados: any;
     private caja: any;
-    
+    private cesta: {
+        _id: Date;
+        lista: {
+            nombre: string,
+            unidades: number,
+            subtotal: number
+        }[];
+    };
     constructor() 
     {
         const info = electron.ipcRenderer.sendSync('getParametros');
@@ -197,9 +204,26 @@ class TocGame {
     {
         electron.ipcRenderer.send('get-teclas', nombreMenu);
     }
+    getCesta()
+    {
+        return this.cesta;
+    }
+    setCesta(data)
+    {
+        this.cesta = data;
+    }
+    cargarCesta() //En memoria de la clase
+    {
+        electron.ipcRenderer.send('get-cesta');
+    }
+    enviarCesta()
+    {
+        vueCesta.recibirCesta(this.cesta);
+    }
     iniciar(): void //COMPROBADA
     {
         electron.ipcRenderer.send('buscar-fichados');
         electron.ipcRenderer.send('get-menus');
+        electron.ipcRenderer.send('get-cesta');
     }
 }

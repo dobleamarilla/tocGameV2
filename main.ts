@@ -15,6 +15,7 @@ var ficha       = require('./componentes/schemas/fichados');
 var caj         = require('./componentes/schemas/cajas');
 var tec         = require('./componentes/schemas/teclas');
 var men         = require('./componentes/schemas/menus');
+var cest        = require('./componentes/schemas/cestas');
 var eventos     = require('events');
 
 const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
@@ -132,6 +133,14 @@ app.on('ready', () => {
         });
     });
     //FINAL BUSCAR TRABAJADOR
+
+    //GET CESTA
+    ipcMain.on('get-cesta', (ev, data) => {
+        cest.getUnaCesta(data).then(respuesta => {
+            ev.sender.send('res-get-cesta', respuesta);
+        });
+    });
+    //FINAL GET CESTA
 
     //FICHAR TRABAJADOR
     ipcMain.on('fichar-trabajador', (ev, data) => {
