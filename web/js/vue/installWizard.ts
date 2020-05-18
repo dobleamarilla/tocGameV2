@@ -14,20 +14,20 @@ var vueInstallWizard = new Vue({
 			</div>
 			<div class="modal-body">
 				<div class="form-group row">
-					<label for="inputLicencia" class="col-sm-2 col-form-label">Licencia</label>
-					<div class="col-sm-10">
+					<label for="inputLicencia" class="col-sm-3 col-form-label">Licencia</label>
+					<div class="col-sm-9">
 						<input v-model="licencia" type="text" class="form-control" id="xxxxxxx">
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="inputPassword" class="col-sm-2 col-form-label">Contraseña</label>
-					<div class="col-sm-10">
+					<label for="inputPassword" class="col-sm-3 col-form-label">Contraseña</label>
+					<div class="col-sm-9">
 						<input v-model="password" type="password" class="form-control" id="xxxx">
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="inputImpresora" class="col-sm-2 col-form-label">Impresora</label>
-					<div class="col-sm-10">
+					<label for="inputImpresora" class="col-sm-3 col-form-label">Impresora</label>
+					<div class="col-sm-9">
                         <select v-model="tipoImpresora" class="custom-select">
                             <option selected value="USB">USB</option>
                             <option value="SERIE">SERIE</option>
@@ -35,8 +35,8 @@ var vueInstallWizard = new Vue({
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="inputDatafono" class="col-sm-2 col-form-label">Datáfono</label>
-					<div class="col-sm-10">
+					<label for="inputDatafono" class="col-sm-3 col-form-label">Datáfono</label>
+					<div class="col-sm-9">
                         <select v-model="tipoDatafono" class="custom-select">
                             <option selected value="CLEARONE">CLEARONE</option>
                             <option value="3G">3G</option>

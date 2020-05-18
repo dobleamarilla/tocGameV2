@@ -1,7 +1,7 @@
 var conexion = require('../conexion');
 
 var schemaPromociones = new conexion.mongoose.Schema({
-    id: String,
+    _id: String,
     fechaInicio: String,
     fechaFinal: String,
     principal: String,
@@ -22,5 +22,11 @@ function insertarPromociones(data)
     return devolver;
 }
 
+function getPromociones()
+{
+    return Promociones.find().lean();
+}
+
 exports.promociones             = Promociones;
 exports.insertarPromociones     = insertarPromociones;
+exports.getPromociones          = getPromociones;

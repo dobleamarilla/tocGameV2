@@ -27,11 +27,20 @@ class TocGame {
             promocion: boolean
         }[];
     };
+    private promociones: {
+        _id: string,
+        cantidadPrincipal: number,
+        cantidadSecundario: number,
+        fechaFinal: string,
+        fechaInicio: string,
+        precioFinal: number,
+        principal: string
+    }[];
     constructor() 
     {
         const info = electron.ipcRenderer.sendSync('getParametros');
         const infoCaja = electron.ipcRenderer.sendSync('getInfoCaja');
-        
+
         if (info.length === 1) 
         {
             this.licencia = info[0].licencia;
@@ -55,6 +64,9 @@ class TocGame {
             this.ultimoTicket = -1;
             this.arrayFichados = [];
         }
+
+        this.promociones = [];
+        
         if(infoCaja === null)
         {
             this.caja  = {
@@ -226,7 +238,7 @@ class TocGame {
     }
     buscarOfertas(unaCesta)
     {
-        
+
         this.setCesta(unaCesta);
     }
     insertarArticuloCesta(infoArticulo, unidades: number)
@@ -290,6 +302,12 @@ class TocGame {
     iniciar(): void //COMPROBADA
     {
         electron.ipcRenderer.send('buscar-fichados');
+        const infoPromociones = electron.ipcRenderer.sendSync('get-promociones');
+        if(infoPromociones.length > 0)
+        {
+            this.promociones = infoPromociones;
+        }
+
         electron.ipcRenderer.send('get-menus');
         electron.ipcRenderer.send('get-cesta');
     }

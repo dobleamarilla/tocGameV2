@@ -203,6 +203,14 @@ app.on('ready', () => {
     });
     //FINAL BUSCAR FICHADOS
 
+    //GET PROMOCIONES
+    ipcMain.on('get-promociones', (ev, data)=>{
+        promo.getPromociones().then(arrayPromociones=>{
+            ev.returnValue = arrayPromociones;
+        });
+    });
+    //FINAL GET PROMOCIONES
+
     ipcMain.on('devolucion', (event: any, args: any) => {
 
     });
