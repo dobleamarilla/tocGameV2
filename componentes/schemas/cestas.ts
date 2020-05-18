@@ -1,31 +1,41 @@
 var conexion = require('../conexion');
 
 var schemaCestas = new conexion.mongoose.Schema({
-    _id: Date,
+    _id: Number,
     lista: [{
+        idArticulo: Number,
         nombre: String,
-        unidades: Number,
-        subtotal: Number
+        promocion: Boolean,
+        subtotal: Number,
+        unidades: Number
     }]
 });
 var Cestas = conexion.mongoose.model('cestas', schemaCestas);
 
 function setCesta(cesta)
 {
-    return Cestas.replaceOne({ _id: cesta._id }, cesta.lista, {upsert: true}, (err, result)=>{
-        if(err) 
-        {
-            console.log(err);
-        }
-    });
+    if(cesta.lista.length > 0)
+    {
+        Cestas.replaceOne({ _id: cesta._id }, cesta, {upsert: true}, (err, result)=>{
+            if(err) 
+            {
+                console.log(err);
+            }
+        });
+    }
 }
 function getUnaCesta()
 {
     return Cestas.findOne().lean();
 }
-function getCestaConcreta()
+function getCestaConcreta(idCesta: number)
 {
-
+    return Cestas.findById(idCesta, (err, lal)=>{
+        if(err)
+        {
+            console.log(err, lal);
+        }
+    }).lean();
 }
 
 exports.cestas                  = Cestas;

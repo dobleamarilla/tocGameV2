@@ -49,7 +49,7 @@ var vueCesta = new Vue({
     data () {
       return {
           cesta: {
-            _id: new Date,
+            _id: -1,
             lista: []
         },
       }

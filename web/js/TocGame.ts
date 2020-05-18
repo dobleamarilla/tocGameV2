@@ -18,7 +18,7 @@ class TocGame {
     private arrayFichados: any;
     private caja: any;
     private cesta: {
-        _id: Date;
+        _id: number;
         lista: {
             idArticulo: number,
             nombre: string,
@@ -212,6 +212,7 @@ class TocGame {
     }
     setCesta(data)
     {
+        electron.ipcRenderer.send('set-cesta', data);
         this.cesta = data;
         this.enviarCesta();
     }
@@ -222,6 +223,11 @@ class TocGame {
     enviarCesta()
     {
         vueCesta.recibirCesta(this.cesta);
+    }
+    buscarOfertas(unaCesta)
+    {
+        
+        this.setCesta(unaCesta);
     }
     insertarArticuloCesta(infoArticulo, unidades: number)
     {
@@ -249,9 +255,7 @@ class TocGame {
         {
             miCesta.lista.push({idArticulo:infoArticulo._id, nombre: infoArticulo.nombre, unidades: 1, promocion: false, subtotal: Number((unidades*infoArticulo.precioConIva).toFixed(2))});
         }
-        console.log("Mi cesta modificada es: ", miCesta);
-        console.log("INFO ARTICULO: ", infoArticulo);
-        this.setCesta(miCesta);
+        this.buscarOfertas(miCesta);
     }
     addItem(idArticulo: number, idBoton: String, aPeso: Boolean, peso: number, subtotal: number, unidades: number = 1)
     {

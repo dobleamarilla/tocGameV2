@@ -137,15 +137,17 @@ app.on('ready', () => {
 
     //GET CESTA
     ipcMain.on('get-cesta', (ev, data) => {
-        cest.getUnaCesta(data).then(respuesta => {
-            if(respuesta != undefined || respuesta != null)
+        cest.getUnaCesta(data).then(respuesta => 
+        {
+            console.log("respuesta es:", respuesta);
+            if(respuesta != undefined && respuesta != null && respuesta.lista.length != 0 && respuesta._id != null)
             {
                 ev.sender.send('res-get-cesta', respuesta);
             }
             else
             {
                 const cestaVacia = {
-                    _id: new Date(),
+                    _id: Date.now(),
                     lista: []
                 }
                 ev.sender.send('res-get-cesta', cestaVacia);
@@ -187,11 +189,17 @@ app.on('ready', () => {
     });
     //FINAL DESFICHAR TRABAJADOR
 
+    //SET CESTA
+    ipcMain.on('set-cesta', (ev, data) => {
+        cest.setCesta(data);
+    });
+    //FINAL SET CESTA
+
     //BUSCAR FICHADOS
     ipcMain.on('buscar-fichados', (ev, data)=>{
-        trabaj.buscarFichados(data).then((arrayFichados)=>{
+        trabaj.buscarFichados(data).then(arrayFichados=>{
             ev.sender.send('res-buscar-fichados', arrayFichados);
-        });
+        })
     });
     //FINAL BUSCAR FICHADOS
 
