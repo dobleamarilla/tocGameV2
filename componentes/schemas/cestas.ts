@@ -5,7 +5,13 @@ var schemaCestas = new conexion.mongoose.Schema({
     lista: [{
         idArticulo: Number,
         nombre: String,
-        promocion: Boolean,
+        promocion: {
+            _id: {
+                type: String,
+                default: ''
+            },
+            esPromo: Boolean
+        },
         subtotal: Number,
         unidades: Number
     }]

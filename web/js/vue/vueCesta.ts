@@ -14,7 +14,7 @@ var vueCesta = new Vue({
 					</tr>
 				</thead>
 				<tbody class="tableBody">
-                    <tr v-for="item of listaAlReves" v-bind:class="{'estiloPromo': item.promocion}">
+                    <tr v-for="item of listaAlReves" v-bind:class="{'estiloPromo': item.promocion.esPromo}">
                         <td>{{item.nombre}}</td>
                         <td>{{item.unidades}}</td>
                         <td>{{item.subtotal}}</td>

@@ -24,7 +24,10 @@ class TocGame {
             nombre: string,
             unidades: number,
             subtotal: number,
-            promocion: boolean
+            promocion: {
+                _id: string,
+                esPromo: boolean
+            }
         }[];
     };
     private promociones: {
@@ -350,12 +353,12 @@ class TocGame {
             }
             if(!encontrado)
             {
-                miCesta.lista.push({idArticulo:infoArticulo._id, nombre: infoArticulo.nombre, unidades: 1, promocion: false, subtotal: Number((unidades*infoArticulo.precioConIva).toFixed(2))});
+                miCesta.lista.push({idArticulo:infoArticulo._id, nombre: infoArticulo.nombre, unidades: 1, promocion: {esPromo: false, _id: null}, subtotal: Number((unidades*infoArticulo.precioConIva).toFixed(2))});
             }
         }
         else
         {
-            miCesta.lista.push({idArticulo:infoArticulo._id, nombre: infoArticulo.nombre, unidades: 1, promocion: false, subtotal: Number((unidades*infoArticulo.precioConIva).toFixed(2))});
+            miCesta.lista.push({idArticulo:infoArticulo._id, nombre: infoArticulo.nombre, unidades: 1, promocion: {esPromo: false, _id: null}, subtotal: Number((unidades*infoArticulo.precioConIva).toFixed(2))});
         }
         this.buscarOfertas(miCesta);
     }
