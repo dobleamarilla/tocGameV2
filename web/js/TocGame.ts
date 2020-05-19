@@ -282,6 +282,7 @@ class TocGame {
         {
             if(sobraCantidadPrincipal > 0)
             {
+                //getInfoArticulo();
                 unaCesta.lista[posicionPrincipal].unidades = sobraCantidadPrincipal;
             }
             else
@@ -315,34 +316,34 @@ class TocGame {
         {
             numeroPrincipal          = cesta.lista[posicionPrincipal].unidades/necesariasPrincipal;
             numeroSecundario         = cesta.lista[posicionSecundario].unidades/necesariasSecundario;
-            nVeces                   = Math.min(numeroPrincipal, numeroSecundario);
+            nVeces                   = Math.trunc(Math.min(numeroPrincipal, numeroSecundario));
             sobranPrincipal          = cesta.lista[posicionPrincipal].unidades-nVeces*necesariasPrincipal;
             sobranSecundario         = cesta.lista[posicionSecundario].unidades-nVeces*necesariasSecundario;
 
             cesta = this.limpiarCesta(cesta, posicionPrincipal, posicionSecundario, sobranPrincipal, sobranSecundario, pideDelA, pideDelB);
-            cesta = this.insertarLineaPromoCesta(cesta, 1, nVeces, precioPromo*nVeces, idPromo);
+            cesta = this.insertarLineaPromoCesta(cesta, 1, nVeces, Number((precioPromo*nVeces).toFixed(2)), idPromo);
         }
         else
         {
             if(pideDelA !== -1 && pideDelB === -1)
             {
                 numeroPrincipal = cesta.lista[posicionPrincipal].unidades/necesariasPrincipal;
-                nVeces          = numeroPrincipal;
+                nVeces          = Math.trunc(numeroPrincipal);
                 sobranPrincipal = cesta.lista[posicionPrincipal].unidades-nVeces*necesariasPrincipal;
 
                 cesta = this.limpiarCesta(cesta, posicionPrincipal, posicionSecundario, sobranPrincipal, sobranSecundario, pideDelA, pideDelB);
-                cesta = this.insertarLineaPromoCesta(cesta, 2, nVeces, precioPromo*nVeces*necesariasPrincipal, idPromo);
+                cesta = this.insertarLineaPromoCesta(cesta, 2, nVeces, Number((precioPromo*nVeces*necesariasPrincipal).toFixed(2)), idPromo);
             }
             else
             {
                 if(pideDelA === -1 && pideDelB !== -1)
                 {
                     numeroSecundario = cesta.lista[posicionSecundario].unidades/necesariasSecundario;
-                    nVeces          = numeroSecundario;
+                    nVeces          = Math.trunc(numeroSecundario);
                     sobranSecundario = cesta.lista[posicionSecundario].unidades-nVeces*necesariasSecundario;
 
                     cesta = this.limpiarCesta(cesta, posicionPrincipal, posicionSecundario, sobranPrincipal, sobranSecundario, pideDelA, pideDelB);
-                    cesta = this.insertarLineaPromoCesta(cesta, 2, nVeces, precioPromo*nVeces*necesariasSecundario, idPromo);
+                    cesta = this.insertarLineaPromoCesta(cesta, 2, nVeces, Number((precioPromo*nVeces*necesariasSecundario).toFixed(2)), idPromo);
                 }
             }
         }
@@ -392,12 +393,12 @@ class TocGame {
             }
             if(!encontrado)
             {
-                miCesta.lista.push({idArticulo:infoArticulo._id, nombre: infoArticulo.nombre, unidades: 1, promocion: {esPromo: false, _id: null}, subtotal: Number((unidades*infoArticulo.precioConIva).toFixed(2))});
+                miCesta.lista.push({idArticulo:infoArticulo._id, nombre: infoArticulo.nombre, unidades: unidades, promocion: {esPromo: false, _id: null}, subtotal: Number((unidades*infoArticulo.precioConIva).toFixed(2))});
             }
         }
         else
         {
-            miCesta.lista.push({idArticulo:infoArticulo._id, nombre: infoArticulo.nombre, unidades: 1, promocion: {esPromo: false, _id: null}, subtotal: Number((unidades*infoArticulo.precioConIva).toFixed(2))});
+            miCesta.lista.push({idArticulo:infoArticulo._id, nombre: infoArticulo.nombre, unidades: unidades, promocion: {esPromo: false, _id: null}, subtotal: Number((unidades*infoArticulo.precioConIva).toFixed(2))});
         }
         this.buscarOfertas(miCesta);
     }
