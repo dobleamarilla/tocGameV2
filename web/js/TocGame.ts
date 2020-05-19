@@ -271,6 +271,15 @@ class TocGame {
             nVeces                   = Math.min(numeroPrincipal, numeroSecundario);
             sobranPrincipal          = cesta.lista[posicionPrincipal].unidades-nVeces*necesariasPrincipal;
             sobranSecundario         = cesta.lista[posicionSecundario].unidades-nVeces*necesariasSecundario;
+
+            cesta.lista[posicionPrincipal].promocion = true;
+            cesta.lista[posicionPrincipal].nombre = 'Oferta combo';
+            cesta.lista[posicionPrincipal].unidades = CREAR ID PARA LAS PROMOS EN LAS CESTAS
+            // idArticulo: number,
+            // nombre: string,
+            // unidades: number,
+            // subtotal: number,
+            // promocion: boolean
         }
         else
         {
@@ -312,7 +321,7 @@ class TocGame {
                         if(this.promociones[i].secundario[z]._id === -1 || preguntaSecundario >= 0)
                         {
                             let infoAplicado = this.cuantasPuedoAplicar(this.promociones[i].cantidadPrincipal, this.promociones[i].cantidadSecundario, unaCesta, preguntaPrincipal, preguntaSecundario, this.promociones[i].principal[j]._id, this.promociones[i].secundario[z]._id);
-                            this.insertarPromocionesYCorregirCesta();
+                            unaCesta = this.insertarPromocionesYCorregirCesta(unaCesta, infoAplicado, preguntaPrincipal, preguntaSecundario);
                             break;
                         }
                     }
