@@ -30,6 +30,7 @@ electron.ipcRenderer.on('res-buscar-fichados', (ev, data)=>{
 
 socket.on('cargar-todo', (data) => 
 {
+    console.log("mis promos: ", data.promociones);
     electron.ipcRenderer.send('cargar-todo', data);
 });
 

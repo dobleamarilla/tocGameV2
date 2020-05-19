@@ -4,9 +4,13 @@ var schemaPromociones = new conexion.mongoose.Schema({
     _id: String,
     fechaInicio: String,
     fechaFinal: String,
-    principal: String,
+    principal: [{
+        _id: Number
+    }],
     cantidadPrincipal: Number,
-    secundario: String,
+    secundario: [{
+        _id: Number
+    }],
     cantidadSecundario: Number,
     precioFinal: Number
 });

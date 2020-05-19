@@ -34,7 +34,12 @@ class TocGame {
         fechaFinal: string,
         fechaInicio: string,
         precioFinal: number,
-        principal: string
+        principal: {
+            _id: number
+        }[],
+        secundario: {
+            _id: number
+        }[]
     }[];
     constructor() 
     {
@@ -236,9 +241,60 @@ class TocGame {
     {
         vueCesta.recibirCesta(this.cesta);
     }
+    deshacerOfertas(cesta)
+    {
+        return cesta;
+    }
+    existeArticuloParaOfertaEnCesta(cesta, idArticulo, unidadesNecesarias)
+    {
+        for(let i = 0; i < cesta.lista.length; i++)
+        {
+            if(cesta.lista[i].idArticulo === idArticulo && cesta.lista[i].unidades >= unidadesNecesarias)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+    cuantasPuedoAplicar(necesariasPrincipal, necesariasSecundario, cesta, posicionPrincipal, posicionSecundario, pideDelA, pideDelB)
+    {
+        let numeroPrincipal     = 0;
+        let numeroSecundario    = 0;
+        let sobranPrincipal     = 0;
+        let sobranSecundario    = 0;
+        let nVeces              = 0;
+
+        if(pideDelA !== -1 && pideDelB !== -1)
+        {
+            numeroPrincipal          = cesta.lista[posicionPrincipal].unidades/necesariasPrincipal;
+            numeroSecundario         = cesta.lista[posicionSecundario].unidades/necesariasSecundario;
+            nVeces                   = Math.min(numeroPrincipal, numeroSecundario);
+            sobranPrincipal          = cesta.lista[posicionPrincipal].unidades-nVeces*necesariasPrincipal;
+            sobranSecundario         = cesta.lista[posicionSecundario].unidades-nVeces*necesariasSecundario;
+        }
+    }
     buscarOfertas(unaCesta)
     {
-
+        unaCesta = this.deshacerOfertas(unaCesta);
+        for(let i = 0; i < this.promociones.length; i++)
+        {
+            for(let j = 0; j < this.promociones[i].principal.length ; i++)
+            {
+                let preguntaPrincipal = this.existeArticuloParaOfertaEnCesta(unaCesta, this.promociones[i].principal[j]._id, this.promociones[i].cantidadPrincipal)
+                if(this.promociones[i].principal[j]._id === -1 || preguntaPrincipal >= 0)
+                {
+                    for(let z = 0; z < this.promociones[i].secundario.length; z++)
+                    {
+                        let preguntaSecundario = this.existeArticuloParaOfertaEnCesta(unaCesta, this.promociones[i].secundario[z]._id, this.promociones[i].cantidadSecundario);
+                        if(this.promociones[i].secundario[z]._id === -1 || preguntaSecundario >= 0)
+                        {
+                            let nVeces = this.cuantasPuedoAplicar(this.promociones[i].cantidadPrincipal, this.promociones[i].cantidadSecundario, unaCesta, preguntaPrincipal, preguntaSecundario, this.promociones[i].principal[j]._id, this.promociones[i].secundario[z]._id);
+                        }
+                    }
+                }
+               
+            }
+        }
         this.setCesta(unaCesta);
     }
     insertarArticuloCesta(infoArticulo, unidades: number)
