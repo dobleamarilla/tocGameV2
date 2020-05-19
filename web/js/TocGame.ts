@@ -259,6 +259,16 @@ class TocGame {
         }
         return -1;
     }
+    limpiarCesta(unaCesta, idArticuloPrincipal, idArticuloSecundario, sobraCantidadPrincipal, sobraCantidadSecundario)
+    {
+        for(let i = 0; i < unaCesta.lista.length; i++)
+        {
+            if(unaCesta.lista[i].)
+            {
+
+            }
+        }
+    }
     cuantasPuedoAplicar(necesariasPrincipal, necesariasSecundario, cesta, posicionPrincipal, posicionSecundario, pideDelA, pideDelB)
     {
         let numeroPrincipal     = 0;
@@ -278,6 +288,7 @@ class TocGame {
             cesta.lista[posicionPrincipal].promocion = true;
             cesta.lista[posicionPrincipal].nombre = 'Oferta combo';
             cesta.lista[posicionPrincipal].unidades = CREAR ID PARA LAS PROMOS EN LAS CESTAS
+            limpiarCesta()
             // idArticulo: number,
             // nombre: string,
             // unidades: number,
