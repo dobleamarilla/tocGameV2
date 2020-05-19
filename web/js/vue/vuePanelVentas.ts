@@ -89,7 +89,6 @@ var vuePanelVentas = new Vue({
         cargarTeclado(data)
         {
             this.resetTeclado();
-            console.log("OYE PERO SI LA DATA ES: ", data);
             for(let i = 0; i < data.length; i++)
             {
                 this.listadoTeclas[data[i].pos].nombreArticulo = data[i].nombreArticulo;
