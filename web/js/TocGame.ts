@@ -210,6 +210,27 @@ class TocGame {
     {
         electron.ipcRenderer.send('get-teclas', nombreMenu);
     }
+    borrarCesta()
+    {
+        electron.ipcRenderer.send('borrar-cesta', this.cesta._id);
+        const nuevaCesta: Cesta = {
+            _id: Date.now(),
+            lista: []
+        }
+        this.setCesta(nuevaCesta);
+    }
+    borrarItemCesta(index: number)
+    {
+        this.cesta.lista.splice(index, 1);
+        if(this.cesta.lista.length > 0)
+        {
+            this.setCesta(this.cesta);
+        }
+        else
+        {
+            this.borrarCesta();
+        }
+    }
     getCesta()
     {
         return this.cesta;
@@ -282,8 +303,9 @@ class TocGame {
         {
             if(sobraCantidadPrincipal > 0)
             {
-                //getInfoArticulo();
+                const datosArticulo = this.getInfoArticulo(unaCesta.lista[posicionPrincipal].idArticulo);
                 unaCesta.lista[posicionPrincipal].unidades = sobraCantidadPrincipal;
+                unaCesta.lista[posicionPrincipal].subtotal = sobraCantidadPrincipal*datosArticulo.precioConIva;
             }
             else
             {
@@ -295,7 +317,9 @@ class TocGame {
         {
             if(sobraCantidadSecundario > 0)
             {
+                const datosArticulo = this.getInfoArticulo(unaCesta.lista[posicionSecundario].idArticulo);
                 unaCesta.lista[posicionSecundario].unidades = sobraCantidadSecundario;
+                unaCesta.lista[posicionSecundario].subtotal = sobraCantidadSecundario*datosArticulo.precioConIva;
             }
             else
             {
@@ -402,6 +426,10 @@ class TocGame {
         }
         this.buscarOfertas(miCesta);
     }
+    getInfoArticulo(idArticulo: number)
+    {
+        return electron.ipcRenderer.sendSync('get-info-articulo', idArticulo);
+    }
     addItem(idArticulo: number, idBoton: String, aPeso: Boolean, peso: number, subtotal: number, unidades: number = 1)
     {
         try
@@ -409,7 +437,7 @@ class TocGame {
             $('#'+idBoton).attr('disabled', true);
             if(!aPeso) //TIPO NORMAL
             {
-                let infoArticulo = electron.ipcRenderer.sendSync('get-info-articulo', idArticulo);
+                let infoArticulo = this.getInfoArticulo(idArticulo);
                 if(infoArticulo) //AQUI PENSAR ALGUNA COMPROBACIÓN CUANDO NO EXISTA O FALLE ESTE GET
                 {
                     this.insertarArticuloCesta(infoArticulo, unidades);

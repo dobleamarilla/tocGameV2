@@ -139,7 +139,6 @@ app.on('ready', () => {
     ipcMain.on('get-cesta', (ev, data) => {
         cest.getUnaCesta(data).then(respuesta => 
         {
-            console.log("respuesta es:", respuesta);
             if(respuesta != undefined && respuesta != null && respuesta.lista.length != 0 && respuesta._id != null)
             {
                 ev.sender.send('res-get-cesta', respuesta);
@@ -151,7 +150,6 @@ app.on('ready', () => {
                     lista: []
                 }
                 ev.sender.send('res-get-cesta', cestaVacia);
-                console.log("No hay cestas");
             }
         });
     });
@@ -164,6 +162,12 @@ app.on('ready', () => {
         });
     });
     //FINAL FICHAR TRABAJADOR
+
+    //BORRAR CESTA
+    ipcMain.on('borrar-cesta', (ev, idCesta: number) => {
+        cest.borrarCesta(idCesta);
+    });
+    //FINAL BORRAR CESTA
 
     //GET INFO ARTICULO
     ipcMain.on('get-info-articulo', (ev, data) => {
