@@ -102,7 +102,7 @@ var vueCesta = new Vue({
         {
             if(this.cesta.lista.length > 0)
             {
-                console.log("Abrir menú cobrar");
+                toc.abrirModalPago();
             }
             else
             {

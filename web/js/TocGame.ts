@@ -237,6 +237,10 @@ class TocGame {
     }
     setCesta(data: Cesta)
     {
+        for(let i = 0; i < data.lista.length; i++)
+        {
+            data.lista[i].subtotal = Number(data.lista[i].subtotal.toFixed(2));
+        }
         electron.ipcRenderer.send('set-cesta', data);
         this.cesta = data;
         this.enviarCesta();
@@ -345,7 +349,7 @@ class TocGame {
             sobranSecundario         = cesta.lista[posicionSecundario].unidades-nVeces*necesariasSecundario;
 
             cesta = this.limpiarCesta(cesta, posicionPrincipal, posicionSecundario, sobranPrincipal, sobranSecundario, pideDelA, pideDelB);
-            cesta = this.insertarLineaPromoCesta(cesta, 1, nVeces, Number((precioPromo*nVeces).toFixed(2)), idPromo);
+            cesta = this.insertarLineaPromoCesta(cesta, 1, nVeces, precioPromo*nVeces, idPromo);
         }
         else
         {
@@ -356,7 +360,7 @@ class TocGame {
                 sobranPrincipal = cesta.lista[posicionPrincipal].unidades-nVeces*necesariasPrincipal;
 
                 cesta = this.limpiarCesta(cesta, posicionPrincipal, posicionSecundario, sobranPrincipal, sobranSecundario, pideDelA, pideDelB);
-                cesta = this.insertarLineaPromoCesta(cesta, 2, nVeces, Number((precioPromo*nVeces*necesariasPrincipal).toFixed(2)), idPromo);
+                cesta = this.insertarLineaPromoCesta(cesta, 2, nVeces, precioPromo*nVeces*necesariasPrincipal, idPromo);
             }
             else
             {
@@ -367,7 +371,7 @@ class TocGame {
                     sobranSecundario = cesta.lista[posicionSecundario].unidades-nVeces*necesariasSecundario;
 
                     cesta = this.limpiarCesta(cesta, posicionPrincipal, posicionSecundario, sobranPrincipal, sobranSecundario, pideDelA, pideDelB);
-                    cesta = this.insertarLineaPromoCesta(cesta, 2, nVeces, Number((precioPromo*nVeces*necesariasSecundario).toFixed(2)), idPromo);
+                    cesta = this.insertarLineaPromoCesta(cesta, 2, nVeces, precioPromo*nVeces*necesariasSecundario, idPromo);
                 }
             }
         }
@@ -410,19 +414,19 @@ class TocGame {
                 if(miCesta.lista[i].idArticulo === infoArticulo._id)
                 {
                     miCesta.lista[i].unidades += unidades;
-                    miCesta.lista[i].subtotal += Number((unidades*infoArticulo.precioConIva).toFixed(2));
+                    miCesta.lista[i].subtotal += unidades*infoArticulo.precioConIva;
                     encontrado = true;
                     break;
                 }
             }
             if(!encontrado)
             {
-                miCesta.lista.push({idArticulo:infoArticulo._id, nombre: infoArticulo.nombre, unidades: unidades, promocion: {esPromo: false, _id: null}, subtotal: Number((unidades*infoArticulo.precioConIva).toFixed(2))});
+                miCesta.lista.push({idArticulo:infoArticulo._id, nombre: infoArticulo.nombre, unidades: unidades, promocion: {esPromo: false, _id: null}, subtotal: unidades*infoArticulo.precioConIva});
             }
         }
         else
         {
-            miCesta.lista.push({idArticulo:infoArticulo._id, nombre: infoArticulo.nombre, unidades: unidades, promocion: {esPromo: false, _id: null}, subtotal: Number((unidades*infoArticulo.precioConIva).toFixed(2))});
+            miCesta.lista.push({idArticulo:infoArticulo._id, nombre: infoArticulo.nombre, unidades: unidades, promocion: {esPromo: false, _id: null}, subtotal: unidades*infoArticulo.precioConIva});
         }
         this.buscarOfertas(miCesta);
     }
@@ -460,6 +464,18 @@ class TocGame {
             $('#'+idBoton).attr('disabled', false);
         }
     }
+    abrirModalPago()
+    {
+        let total = 0;
+        let cesta = this.getCesta();
+        for(let i = 0; i < cesta.lista.length; i++)
+        {
+            total += cesta.lista[i].subtotal;
+        }
+        vueCobrar.prepararModalVenta(total, this.getArrayFichados());
+        vueCobrar.abreModal();
+    }
+
     iniciar(): void //COMPROBADA
     {
         electron.ipcRenderer.send('buscar-fichados');

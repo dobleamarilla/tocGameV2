@@ -201,7 +201,7 @@ app.on('ready', () => {
 
     //BUSCAR FICHADOS
     ipcMain.on('buscar-fichados', (ev, data)=>{
-        trabaj.buscarFichados(data).then(arrayFichados=>{
+        trabaj.buscarFichados().then(arrayFichados=>{
             ev.sender.send('res-buscar-fichados', arrayFichados);
         })
     });

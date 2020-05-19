@@ -103,7 +103,7 @@ var vuePanelVentas = new Vue({
         },
         clickTecla(objListadoTeclas, esAPeso: boolean = false, peso: number = 0, subtotal: number = 0) //CUANDO SEA A PESO PASAR CON clickTecla(objListadoTeclas, true)
         {
-            toc.addItem(objListadoTeclas.idArticle, objListadoTeclas.idBoton, esAPeso, peso, subtotal, 200);
+            toc.addItem(objListadoTeclas.idArticle, objListadoTeclas.idBoton, esAPeso, peso, subtotal, 5);
         },
         resetTeclado()
         {
