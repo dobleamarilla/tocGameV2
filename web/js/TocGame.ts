@@ -272,6 +272,29 @@ class TocGame {
             sobranPrincipal          = cesta.lista[posicionPrincipal].unidades-nVeces*necesariasPrincipal;
             sobranSecundario         = cesta.lista[posicionSecundario].unidades-nVeces*necesariasSecundario;
         }
+        else
+        {
+            if(pideDelA !== -1 && pideDelB === -1)
+            {
+                numeroPrincipal = cesta.lista[posicionPrincipal].unidades/necesariasPrincipal;
+                nVeces          = numeroPrincipal;
+                sobranPrincipal = cesta.lista[posicionPrincipal].unidades-nVeces*necesariasPrincipal;
+            }
+            else
+            {
+                if(pideDelA === -1 && pideDelB !== -1)
+                {
+                    numeroSecundario = cesta.lista[posicionSecundario].unidades/necesariasSecundario;
+                    nVeces          = numeroSecundario;
+                    sobranSecundario = cesta.lista[posicionSecundario].unidades-nVeces*necesariasSecundario;
+                }
+            }
+        }
+        return {
+            sobranPrincipal: sobranPrincipal,
+            sobranSecundario: sobranSecundario,
+            nVeces: nVeces
+        }
     }
     buscarOfertas(unaCesta)
     {
@@ -288,7 +311,9 @@ class TocGame {
                         let preguntaSecundario = this.existeArticuloParaOfertaEnCesta(unaCesta, this.promociones[i].secundario[z]._id, this.promociones[i].cantidadSecundario);
                         if(this.promociones[i].secundario[z]._id === -1 || preguntaSecundario >= 0)
                         {
-                            let nVeces = this.cuantasPuedoAplicar(this.promociones[i].cantidadPrincipal, this.promociones[i].cantidadSecundario, unaCesta, preguntaPrincipal, preguntaSecundario, this.promociones[i].principal[j]._id, this.promociones[i].secundario[z]._id);
+                            let infoAplicado = this.cuantasPuedoAplicar(this.promociones[i].cantidadPrincipal, this.promociones[i].cantidadSecundario, unaCesta, preguntaPrincipal, preguntaSecundario, this.promociones[i].principal[j]._id, this.promociones[i].secundario[z]._id);
+                            this.insertarPromocionesYCorregirCesta();
+                            break;
                         }
                     }
                 }
