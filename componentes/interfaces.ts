@@ -1,6 +1,17 @@
 interface Cesta
 {
-    _id: number;
+    _id: number,
+    tiposIva: {
+        base1: number,
+        base2: number,
+        base3: number,
+        valorIva1: number,
+        valorIva2: number,
+        valorIva3: number,
+        importe1: number,
+        importe2: number,
+        importe3: number
+    },
     lista: {
         idArticulo: number,
         nombre: string,
@@ -27,3 +38,15 @@ interface Promociones {
         _id: number
     }[]
 };
+
+interface TiposIva {
+    base1: number,
+    base2: number,
+    base3: number,
+    valorIva1: number,
+    valorIva2: number,
+    valorIva3: number,
+    importe1: number,
+    importe2: number,
+    importe3: number
+}

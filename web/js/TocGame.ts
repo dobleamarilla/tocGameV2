@@ -215,6 +215,17 @@ class TocGame {
         electron.ipcRenderer.send('borrar-cesta', this.cesta._id);
         const nuevaCesta: Cesta = {
             _id: Date.now(),
+            tiposIva: {
+                base1: 0,
+                base2: 0,
+                base3: 0,
+                valorIva1: 0,
+                valorIva2: 0,
+                valorIva3: 0,
+                importe1: 0,
+                importe2: 0,
+                importe3: 0
+            },
             lista: []
         }
         this.setCesta(nuevaCesta);
@@ -413,8 +424,10 @@ class TocGame {
             {
                 if(miCesta.lista[i].idArticulo === infoArticulo._id)
                 {
+                    let viejoIva = miCesta.tiposIva;
                     miCesta.lista[i].unidades += unidades;
                     miCesta.lista[i].subtotal += unidades*infoArticulo.precioConIva;
+                    miCesta.tiposIva = construirObjetoIvas(infoArticulo, unidades, viejoIva);
                     encontrado = true;
                     break;
                 }
@@ -422,11 +435,13 @@ class TocGame {
             if(!encontrado)
             {
                 miCesta.lista.push({idArticulo:infoArticulo._id, nombre: infoArticulo.nombre, unidades: unidades, promocion: {esPromo: false, _id: null}, subtotal: unidades*infoArticulo.precioConIva});
+                miCesta.tiposIva = construirObjetoIvas(infoArticulo, unidades, miCesta.tiposIva);
             }
         }
         else
         {
             miCesta.lista.push({idArticulo:infoArticulo._id, nombre: infoArticulo.nombre, unidades: unidades, promocion: {esPromo: false, _id: null}, subtotal: unidades*infoArticulo.precioConIva});
+            miCesta.tiposIva = construirObjetoIvas(infoArticulo, unidades, miCesta.tiposIva);
         }
         this.buscarOfertas(miCesta);
     }
@@ -476,6 +491,32 @@ class TocGame {
         vueCobrar.abreModal();
     }
 
+    pagarEnEfectivo()
+    {
+        this.crearTicket(true);
+    }
+    pagarConTarjeta()
+    {
+        this.crearTicket(false);
+    }
+    crearTicket(efectivo: boolean)
+    {
+        let total = 0;
+        let cesta = this.getCesta();
+        for(let i = 0; i < cesta.lista.length; i++)
+        {
+            total += cesta.lista[i].subtotal;
+        }
+        if(efectivo)
+        {
+
+        }
+        else
+        {
+
+        }
+        //hacer envío asíncrono
+    }
     iniciar(): void //COMPROBADA
     {
         electron.ipcRenderer.send('buscar-fichados');

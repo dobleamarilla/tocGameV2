@@ -2,6 +2,17 @@ var conexion = require('../conexion');
 
 var schemaCestas = new conexion.mongoose.Schema({
     _id: Number,
+    tiposIva: {
+        base1: Number,
+        base2: Number,
+        base3: Number,
+        valorIva1: Number,
+        valorIva2: Number,
+        valorIva3: Number,
+        importe1: Number,
+        importe2: Number,
+        importe3: Number
+    },
     lista: [{
         idArticulo: Number,
         nombre: String,

@@ -147,6 +147,17 @@ app.on('ready', () => {
             {
                 const cestaVacia = {
                     _id: Date.now(),
+                    tiposIva: {
+                        base1: 0,
+                        base2: 0,
+                        base3: 0,
+                        valorIva1: 0,
+                        valorIva2: 0,
+                        valorIva3: 0,
+                        importe1: 0,
+                        importe2: 0,
+                        importe3: 0
+                    },
                     lista: []
                 }
                 ev.sender.send('res-get-cesta', cestaVacia);

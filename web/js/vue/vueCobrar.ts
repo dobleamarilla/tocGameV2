@@ -14,9 +14,9 @@ var vueCobrar = new Vue({
                         <img src="assets/imagenes/img-tarjetas.png" alt="Cobrar con tarjeta" width="250px">
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <span>{{total}} €</span>
+                <div class="row p-1">
+                    <div class="col-md-12 text-center">
+                        <span class="verTotal">{{total}} €</span>
                     </div>
                 </div>
 			</div>
