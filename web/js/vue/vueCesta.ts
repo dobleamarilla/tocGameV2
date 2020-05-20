@@ -37,7 +37,7 @@ var vueCesta = new Vue({
 				<button class="btn btn-primary btn-block sizeMenus"><i class="fas fa-keyboard"></i></button>
 			</div>
 			<div class="col-md-4 paraRowMenus" id="botonMenus">
-				<button class="btn btn-primary btn-block sizeMenus"><i class="fas fa-bars"></i></button>
+				<button @click="abrirModalCaja()" class="btn btn-primary btn-block sizeMenus"><i class="fas fa-bars"></i></button>
 			</div>
 			<div class="col-md-4 paraRowClientes" id="botonBorrar">
 				<button class="btn btn-primary btn-block sizeMenus"><i class="fas fa-users"></i></button>
@@ -108,6 +108,10 @@ var vueCesta = new Vue({
             {
                 vueToast.abrir('danger', 'Cesta vacía');
             }
+        },
+        abrirModalCaja()
+        {
+            toc.abrirModalCaja();
         }
     }
   });

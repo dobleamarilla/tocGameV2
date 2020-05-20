@@ -150,10 +150,20 @@ var vueApertura = new Vue({
         {
             confirm("Se abrirá una caja nueva... ¿CAMBIO CORRECTO?")
             {
-                const data: any = {
+                const data: Caja = {
+                    _id: 'CAJA',
                     inicioTime: new Date(),
-                    totalApertura: this.getTotal.toFixed(2),
-                    detalleApertura: this.getDetalle
+                    finalTime: null,
+                    idDependienta: null,
+                    totalApertura: Number(this.getTotal.toFixed(2)),
+                    totalCierre: null,
+                    descuadre: null,
+                    recaudado: null,
+                    nClientes: null,
+                    detalleApertura: this.getDetalle,
+                    detalleCierre: [],
+                    enviado: false,
+                    enTransito: false
                 }
                 toc.abrirCaja(data);
             }

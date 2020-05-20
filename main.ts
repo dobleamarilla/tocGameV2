@@ -16,6 +16,8 @@ var caj         = require('./componentes/schemas/cajas');
 var tec         = require('./componentes/schemas/teclas');
 var men         = require('./componentes/schemas/menus');
 var cest        = require('./componentes/schemas/cestas');
+var tick        = require('./componentes/schemas/tickets');
+var sincro      = require('./componentes/schemas/sincroCajas');
 var eventos     = require('events');
 
 require('source-map-support').install();
@@ -67,9 +69,10 @@ app.on('ready', () => {
 
     //GET PARAMETROS
     ipcMain.on('getParametros', (ev, args) => {
-        params.parametros.find().lean().then(res => {
+        params.getParams().then(res=>{
+            console.log("LOS PARAMETROS SON: ", res);
             ev.returnValue = res;
-        }).catch(err => {
+        }).catch(err=>{
             console.log(err);
         });
     });
@@ -225,6 +228,31 @@ app.on('ready', () => {
         });
     });
     //FINAL GET PROMOCIONES
+
+    //INSERTAR TICKET
+    ipcMain.on('set-ticket', (ev, data)=>{
+        tick.insertarTicket(data);
+    });
+    //FINAL INSERTAR TICKET
+
+    //GET TICKETS
+    ipcMain.on('get-tickets', (ev, data)=>{
+        tick.getTickets().then((arrayTickets)=>{
+            ev.returnValue = arrayTickets;
+        })
+    });
+    //FINAL GET TICKETS
+
+    //NUEVO MOVIMIENTO A SINCRO
+    ipcMain.on('nuevo-sincro', (ev, data)=>{
+        
+    });
+    //FINAL NUEVO MOVIMIENTO A SINCRO
+
+
+
+
+
 
     ipcMain.on('devolucion', (event: any, args: any) => {
 

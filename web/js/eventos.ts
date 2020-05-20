@@ -4,13 +4,7 @@ electron.ipcRenderer.on('res-buscar-fichados', (ev, data)=>{
     {
         if(toc.hayFichados()) 
         {
-            console.log("Hay trabajadores fichados");
-            if(toc.cajaAbierta())
-            {
-                //continuar con el panel de ventas :P
-                console.log("ABRIR PANEL DE VENTAS");
-            }
-            else
+            if(!toc.cajaAbierta())
             {
                 vueApertura.abreModal();
             }
@@ -18,7 +12,6 @@ electron.ipcRenderer.on('res-buscar-fichados', (ev, data)=>{
         else 
         {
             toc.setArrayFichados([]);
-            console.log("No encuentro trabajadores fichados :(");
             abrirModalFichajes();
         }
     }
@@ -67,4 +60,28 @@ electron.ipcRenderer.on('res-get-menus', (ev, data) => {
 });
 electron.ipcRenderer.on('res-get-cesta', (ev, data) => {
     toc.setCesta(data);
+});
+
+socket.on('install-licencia', (data) => {
+    if (!data.error) 
+    {
+        console.log(data);
+        const misParams: Parametros = {
+            _id: 'PARAMETROS',
+            licencia: data.licencia,
+            codigoTienda: data.codigoTienda,
+            database: data.database,
+            nombreEmpresa: data.nombreEmpresa,
+            nombreTienda: data.nombreTienda,
+            tipoImpresora: toc.getTipoImpresora(),
+            tipoDatafono: toc.getTipoDatafono(),
+            ultimoTicket: data.ultimoTicket
+        };
+        vueToast.abrir("success", "OK!");
+        toc.setupToc(misParams);
+    }
+    else 
+    {
+        vueToast.abrir("error", "Datos incorrectos");
+    }
 });

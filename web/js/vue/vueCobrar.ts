@@ -8,10 +8,10 @@ var vueCobrar = new Vue({
 			<div class="modal-body">
                 <div class="row">
                     <div class="col-md-6 text-center">
-                        <img src="assets/imagenes/img-efectivo.png" alt="Cobrar con efectivo" width="250px">
+                        <img @click="cobrar(true)" src="assets/imagenes/img-efectivo.png" alt="Cobrar con efectivo" width="250px">
                     </div>
                     <div class="col-md-6 text-center">
-                        <img src="assets/imagenes/img-tarjetas.png" alt="Cobrar con tarjeta" width="250px">
+                        <img @click="cobrar(false)" src="assets/imagenes/img-tarjetas.png" alt="Cobrar con tarjeta" width="250px">
                     </div>
                 </div>
                 <div class="row p-1">
@@ -49,6 +49,10 @@ var vueCobrar = new Vue({
         {
             this.total = total;
             this.arrayFichados = arrayFichados;
+        },
+        cobrar(efectivo: boolean)
+        {
+            toc.crearTicket(efectivo);
         }
     }
   });

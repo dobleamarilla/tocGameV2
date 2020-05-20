@@ -79,29 +79,9 @@ var vueInstallWizard = new Vue({
         confirmar() //CONFIRMADA
         {
             vueToast.abrir("normal", "Petición al servidor enviada");
+            toc.setTipoDatafono     = this.tipoDatafono;
+            toc.setTipoImpresora    = this.tipoImpresora;
             socket.emit('install-licencia', {numLicencia: Number(this.licencia), password: this.password});
-            socket.on('install-licencia', (data) => {
-                if (!data.error) 
-                {
-                    console.log(data);
-                    const misParams = {
-                        licencia: data.licencia,
-                        codigoTienda: data.codigoTienda,
-                        database: data.database,
-                        nombreEmpresa: data.nombreEmpresa,
-                        nombreTienda: data.nombreTienda,
-                        tipoImpresora: this.tipoImpresora,
-                        tipoDatafono: this.tipoDatafono,
-                        ultimoTicket: data.ultimoTicket
-                    };
-                    vueToast.abrir("success", "OK!");
-                    toc.setupToc(misParams);
-                }
-                else 
-                {
-                    vueToast.abrir("error", "Datos incorrectos");
-                }
-            });
         }
     }
   });

@@ -6,66 +6,54 @@ const TIPO_SERIE = 'SERIE';
 const TIPO_CLEARONE = 'CLEARONE';
 const TIPO_3G = '3G';
 
-class TocGame {
-    private licencia: number;
-    private codigoTienda: number;
-    private database: String;
-    private nombreEmpresa: String;
-    private nombreTienda: String;
-    private tipoImpresora: String;
-    private tipoDatafono: String;
-    private ultimoTicket: number;
-    private arrayFichados: any;
-    private caja: any;
+class TocGame 
+{
+    private arrayFichados: Trabajador[];
+    private caja: Caja;
     private cesta: Cesta
     private promociones: Promociones[];
+    private parametros: Parametros;
+
     constructor() 
     {
         const info = electron.ipcRenderer.sendSync('getParametros');
         const infoCaja = electron.ipcRenderer.sendSync('getInfoCaja');
 
-        if (info.length === 1) 
+        if (info !== null) 
         {
-            this.licencia = info[0].licencia;
-            this.codigoTienda = info[0].codigoTienda;
-            this.database = info[0].database;
-            this.nombreEmpresa = info[0].nombreEmpresa;
-            this.nombreTienda = info[0].nombreTienda;
-            this.tipoImpresora = info[0].tipoImpresora; //USB y SERIE
-            this.tipoDatafono = info[0].tipoDatafono; //CLEARONE y 3G
-            this.ultimoTicket = info[0].ultimoTicket;
+            this.parametros = info;
         }
         else 
         {
-            this.licencia = 0
-            this.codigoTienda = 0
-            this.database = '';
-            this.nombreEmpresa = '';
-            this.nombreTienda = '';
-            this.tipoImpresora = TIPO_USB; //USB y SERIE
-            this.tipoDatafono = TIPO_CLEARONE; //CLEARONE y 3G
-            this.ultimoTicket = -1;
-            this.arrayFichados = [];
+            this.parametros = {
+                _id: '',
+                licencia: 0,
+                codigoTienda: 0,
+                database: '',
+                nombreEmpresa: '',
+                nombreTienda: '',
+                tipoImpresora: TIPO_USB,
+                tipoDatafono: TIPO_CLEARONE,
+                ultimoTicket: -1
+            }
         }
-
-        // this.promociones = [{
-        //     _id: '',
-        //     cantidadPrincipal: 0,
-        //     cantidadSecundario: 0,
-        //     fechaFinal: '',
-        //     fechaInicio: '',
-        //     precioFinal: 0,
-        //     principal: [],
-        //     secundario: []
-        // }];
         
         if(infoCaja === null)
         {
             this.caja  = {
                 _id: "CAJA",
                 inicioTime: null,
+                finalTime: null,
+                idDependienta: null,
                 totalApertura: null,
-                detalleApertura: null
+                totalCierre: null,
+                descuadre: null,
+                recaudado: null,
+                nClientes: null,
+                detalleApertura: [],
+                detalleCierre: [],
+                enviado: false,
+                enTransito: false
             };
         }
         else
@@ -85,18 +73,13 @@ class TocGame {
         }
     }
 
-    setCaja(data)
+    setCaja(data: Caja)
     {
-        this.caja  = {
-            _id: "CAJA",
-            inicioTime: data.inicioTime,
-            totalApertura: Number(data.totalApertura),
-            detalleApertura: data.detalleApertura
-        };
+        this.caja  = data;
     }
     todoInstalado(): boolean //COMPROBADA
     {
-        if (this.licencia !== 0 && this.codigoTienda !== 0 && this.database !== '' && this.nombreEmpresa !== '' && this.nombreTienda !== '' && this.ultimoTicket !== -1) 
+        if (this.parametros.licencia !== 0 && this.parametros.codigoTienda !== 0 && this.parametros.database !== '' && this.parametros.nombreEmpresa !== '' && this.parametros.nombreTienda !== '' && this.parametros.ultimoTicket !== -1) 
         {
             return true;
         }
@@ -105,16 +88,32 @@ class TocGame {
             return false;
         }
     }
+    getTipoImpresora()
+    {
+        return this.parametros.tipoImpresora;
+    }
+    getTipoDatafono()
+    {
+        return this.parametros.tipoDatafono;
+    }
+    setTipoImpresora(data)
+    {
+        this.parametros.tipoImpresora = data;
+    }
+    setTipoDatafono(data)
+    {
+        this.parametros.tipoDatafono = data;
+    }
     setParametros(licencia: number, codigoTienda: number, database: string, nombreEmpresa: string, nombreTienda: string, tipoImpresora: string, tipoDatafono: string, ultimoTicket: number): void //COMPROBADA
     {
-        this.licencia = licencia;
-        this.codigoTienda = codigoTienda;
-        this.database = database;
-        this.nombreEmpresa = nombreEmpresa;
-        this.nombreTienda = nombreTienda;
-        this.tipoImpresora = tipoImpresora;
-        this.tipoDatafono = tipoDatafono;
-        this.ultimoTicket = ultimoTicket;
+        this.parametros.licencia        = licencia;
+        this.parametros.codigoTienda    = codigoTienda;
+        this.parametros.database        = database;
+        this.parametros.nombreEmpresa   = nombreEmpresa;
+        this.parametros.nombreTienda    = nombreTienda;
+        this.parametros.tipoImpresora   = tipoImpresora;
+        this.parametros.tipoDatafono    = tipoDatafono;
+        this.parametros.ultimoTicket    = ultimoTicket;
     }
     setupToc(info): void //COMPROBADA
     {
@@ -127,7 +126,7 @@ class TocGame {
     }
     descargarDatos(): void 
     {
-        socket.emit('cargar-todo', { licencia: this.licencia, database: this.database });
+        socket.emit('cargar-todo', { licencia: this.parametros.licencia, database: this.parametros.database });
     }
     hayFichados()
     {
@@ -155,7 +154,7 @@ class TocGame {
 
         electron.ipcRenderer.send('desfichar-trabajador', trabajador._id);
     }
-    abrirCaja(data: any)
+    abrirCaja(data: Caja)
     {
         this.setCaja(data);
         electron.ipcRenderer.send('actualizar-info-caja', data);
@@ -165,7 +164,14 @@ class TocGame {
     }
     setArrayFichados(arrayFichados: any): void //COMPROBADA
     {
-        this.arrayFichados = arrayFichados;
+        if(arrayFichados.length > 0)
+        {
+            this.arrayFichados = arrayFichados;
+        }
+        else
+        {
+            this.arrayFichados = [];
+        }
     }
     getArrayFichados() //COMPROBADA
     {
@@ -230,9 +236,40 @@ class TocGame {
         }
         this.setCesta(nuevaCesta);
     }
+    recalcularIvas(cesta: Cesta)
+    {
+        cesta.tiposIva = {
+            base1: 0,
+            base2: 0,
+            base3: 0,
+            valorIva1: 0,
+            valorIva2: 0,
+            valorIva3: 0,
+            importe1: 0,
+            importe2: 0,
+            importe3: 0
+        }
+        for(let i = 0; i < cesta.lista.length; i++)
+        {
+            if(cesta.lista[i].promocion.esPromo === false)
+            {
+                let infoArticulo = this.getInfoArticulo(cesta.lista[i].idArticulo);
+                cesta.tiposIva = construirObjetoIvas(infoArticulo, cesta.lista[i].unidades, cesta.tiposIva);
+            }
+            else
+            {
+                if(cesta.lista[i].promocion.esPromo === true)
+                {
+                    //Con esto corregir bases de IVA de las promociones, con su %dto, etc.
+                }
+            }
+        }
+        return cesta;
+    }
     borrarItemCesta(index: number)
     {
         this.cesta.lista.splice(index, 1);
+        this.cesta = this.recalcularIvas(this.cesta);
         if(this.cesta.lista.length > 0)
         {
             this.setCesta(this.cesta);
@@ -491,31 +528,50 @@ class TocGame {
         vueCobrar.abreModal();
     }
 
-    pagarEnEfectivo()
+    getUltimoTicket(): number
     {
-        this.crearTicket(true);
-    }
-    pagarConTarjeta()
-    {
-        this.crearTicket(false);
+        return this.parametros.ultimoTicket;
     }
     crearTicket(efectivo: boolean)
     {
         let total = 0;
-        let cesta = this.getCesta();
-        for(let i = 0; i < cesta.lista.length; i++)
+        for(let i = 0; i < this.cesta.lista.length; i++)
         {
-            total += cesta.lista[i].subtotal;
+            total += this.cesta.lista[i].subtotal;
         }
-        if(efectivo)
-        {
-
+        
+        const objTicket: Ticket = {
+            _id: this.getUltimoTicket()+1,
+            timestamp: new Date(),
+            total: total,
+            lista: this.cesta.lista,
+            tarjeta: !efectivo,
+            idTrabajador: this.getCurrentTrabajador()._id,
+            tiposIva: this.cesta.tiposIva
         }
-        else
-        {
-
-        }
-        //hacer envío asíncrono
+        electron.ipcRenderer.send('set-ticket', objTicket);
+        this.parametros.ultimoTicket++;
+        electron.ipcRenderer.send('setParametros', this.parametros)
+        vueCobrar.cerrarModal();
+    }
+    prepararNuevoTicket()
+    {
+        this.parametros.ultimoTicket++;
+        this.borrarCesta();
+    }
+    abreModalSalidaDinero()
+    {
+        $('#vueModalSalidaDinero').modal();
+    }
+    abrirModalCaja()
+    {
+        const arrayTickets = electron.ipcRenderer.sendSync('get-tickets');
+        vueCaja.cargarListaTickets(arrayTickets);
+        vueCaja.abreModal();
+    }
+    cerrarCaja()
+    {
+        
     }
     iniciar(): void //COMPROBADA
     {

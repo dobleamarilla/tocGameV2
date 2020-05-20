@@ -4,14 +4,14 @@ var schemaCajas = new conexion.mongoose.Schema({
     _id: String,
     inicioTime: Date,
     totalApertura: Number,
-    detalleApertura: {
+    detalleApertura: [{
         valor: {
             type: Number
         },
         unidades: {
             type: Number
         }
-    }
+    }]
 });
 var Cajas = conexion.mongoose.model('cajas', schemaCajas);
 
