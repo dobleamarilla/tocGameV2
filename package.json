@@ -5,13 +5,13 @@
     "author": {
         "name": "Ezequiel"
     },
-    "main": "build/main.js",
+    "main": "main.js",
     "scripts": {
-        "compile": "tsc && copyfiles -e \"web/js/*.ts\" -a web/** build",
-        "start": "npm run compile && electron build/main.js",
+        "compile": "tsc",
+        "start": "npm run compile && electron main.js",
         "reparar": "npx electron-rebuild -f -p",
         "build:windows": "electron-packager . tocGame --overwrite --out=windowsBuild",
-        "build:linux": "electron-packager build tocGame --overwrite --asar=true --platform=linux --arch=x64 --prune=true --out=linuxBuild"
+        "build:linux": "electron-packager . tocGame --overwrite --asar=true --platform=linux --arch=x64 --prune=true --out=linuxBuild"
     },
     "dependencies": {
         "escpos": "^3.0.0-alpha.3",
