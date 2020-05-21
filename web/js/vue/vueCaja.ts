@@ -254,7 +254,7 @@ var vueCaja = new Vue({
         {
             confirm("Se cerrará a caja... ¿CAMBIO CORRECTO?")
             {
-                toc.cerrarCaja();
+                toc.cerrarCaja(this.getTotal, this.getDetalle);
             }
         }
     },

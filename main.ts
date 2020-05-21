@@ -70,7 +70,6 @@ app.on('ready', () => {
     //GET PARAMETROS
     ipcMain.on('getParametros', (ev, args) => {
         params.getParams().then(res=>{
-            console.log("LOS PARAMETROS SON: ", res);
             ev.returnValue = res;
         }).catch(err=>{
             console.log(err);
@@ -87,6 +86,16 @@ app.on('ready', () => {
         });
     });
     //FINAL INFO CAJA
+
+    //GET TICKETS INTERVALO
+    ipcMain.on('getTicketsIntervalo', (ev, args) => {
+        tick.getTicketsIntervalo(args).then(res => {
+            ev.returnValue = res;
+        }).catch(err => {
+            console.log(err);
+        });
+    });
+    //FINAL TICKETS INTERVALO
 
     //ACTUALIZAR INFO CAJA
     ipcMain.on('actualizar-info-caja', (ev, data) => {
@@ -129,6 +138,12 @@ app.on('ready', () => {
         });
     });
     //FINAL MENUS
+
+    //GUARDAR CAJA SINCRO
+    ipcMain.on('guardarCaja', (ev, data) => {
+        sincro.nuevoItemSincroCajas(data);
+    });
+    //FINAL GUARDAR CAJA SINCRO
 
     //BUSCAR TRABAJADOR
     ipcMain.on('buscar-trabajador', (ev, data) => {

@@ -100,6 +100,10 @@ var vuePanelVentas = new Vue({
         cargarMenus(data)
         {
             this.listaMenus = data;
+            if(this.listaMenus.length > 0)
+            {
+                this.clickMenu(0);
+            }
         },
         clickTecla(objListadoTeclas, esAPeso: boolean = false, peso: number = 0, subtotal: number = 0) //CUANDO SEA A PESO PASAR CON clickTecla(objListadoTeclas, true)
         {

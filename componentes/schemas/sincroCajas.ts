@@ -1,7 +1,7 @@
 var conexion = require('../conexion');
 
 var schemaSincro = new conexion.mongoose.Schema({
-    _id: String,
+    _id: Number,
     inicioTime: Date,
     finalTime: Date,
     idDependienta: Number,
@@ -31,6 +31,7 @@ var Sincro = conexion.mongoose.model('sincro', schemaSincro);
 
 function nuevoItemSincroCajas(data): void
 {
+    data._id = Date.now();
     var aux = new Sincro(data);
     aux.save();
 }

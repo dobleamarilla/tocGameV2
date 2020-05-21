@@ -552,13 +552,11 @@ class TocGame
         electron.ipcRenderer.send('set-ticket', objTicket);
         this.parametros.ultimoTicket++;
         electron.ipcRenderer.send('setParametros', this.parametros)
-        vueCobrar.cerrarModal();
-    }
-    prepararNuevoTicket()
-    {
-        this.parametros.ultimoTicket++;
         this.borrarCesta();
+        vueCobrar.cerrarModal();
+        vueToast.abrir('success', 'Ticket creado');
     }
+
     abreModalSalidaDinero()
     {
         $('#vueModalSalidaDinero').modal();
@@ -569,9 +567,73 @@ class TocGame
         vueCaja.cargarListaTickets(arrayTickets);
         vueCaja.abreModal();
     }
-    cerrarCaja()
+    cerrarCaja(total: number, detalleCierre)
     {
+        this.caja.totalCierre   = total;
+        this.caja.detalleCierre = detalleCierre;
+        this.caja.finalTime     = new Date();
+        this.caja.idDependienta = this.getCurrentTrabajador()._id;
         
+        this.caja = this.calcularDatosCaja(this.caja);
+        electron.ipcRenderer.send('guardarCaja', this.caja);
+        this.caja.inicioTime = null;
+        vueCaja.cerrarModal();
+        this.iniciar();
+    }
+    calcularDatosCaja(unaCaja: Caja)
+    {
+        var arrayTicketsCaja: Ticket[] = electron.ipcRenderer.sendSync('getTicketsIntervalo', unaCaja);
+        var calaixFet = 0;
+        var nombreTrabajador = this.getCurrentTrabajador().nombre;
+        var descuadre = 0;
+        var nClientes = 0;
+        
+        var arrayMovimientos = [];
+        var nombreTienda = this.parametros.nombreTienda;
+        var fechaInicio = this.caja.inicioTime;
+        var totalTarjeta = 0;
+        var cambioInicial = this.caja.totalApertura;
+        var cambioFinal = this.caja.totalCierre;
+        var totalSalidas = 0;
+        var totalEntradas = 0;
+        var recaudado = this.caja.totalCierre-this.caja.totalApertura +totalSalidas - totalEntradas;
+        for(let i = 0; i < arrayTicketsCaja.length; i++)
+        {
+            nClientes++;
+            calaixFet += arrayTicketsCaja[i].total;
+            if(arrayTicketsCaja[i].tarjeta)
+            {
+                recaudado += arrayTicketsCaja[i].total;
+                totalTarjeta += arrayTicketsCaja[i].total;
+            }
+        }
+        descuadre = cambioFinal-cambioInicial+totalSalidas-totalEntradas+totalTarjeta - (cambioFinal+totalTarjeta);
+        const objImpresion = {
+            calaixFet: calaixFet,
+            nombreTrabajador: nombreTrabajador,
+            descuadre: descuadre,
+            nClientes: nClientes,
+            recaudado: recaudado,
+            arrayMovimientos: arrayMovimientos,
+            nombreTienda: nombreTienda,
+            fechaInicio: fechaInicio,
+            fechaFinal: this.caja.finalTime,
+            totalSalidas: totalSalidas,
+            totalEntradas: totalEntradas,
+            cInicioCaja: cambioInicial,
+            cFinalCaja: cambioFinal
+        };
+
+        this.imprimirCierreCaja(objImpresion);
+        unaCaja.descuadre = descuadre;
+        unaCaja.nClientes = nClientes;
+        unaCaja.recaudado = recaudado;
+
+        return unaCaja;
+    }
+    imprimirCierreCaja(info)
+    {
+        electron.ipcRenderer.send('imprimirCierreCaja', info);
     }
     iniciar(): void //COMPROBADA
     {
