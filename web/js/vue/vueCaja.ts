@@ -24,7 +24,7 @@ var vueCaja = new Vue({
 										</tr>
 									</thead>
 									<tbody>
-										<tr v-for="item of listaTickets">
+										<tr v-for="(item, index) of listaTickets" @click="setItemCajaActivo(index)">
 											<td>{{item._id}}</td>
 											<td>{{item.timestamp}}</td>
 											<td v-if="item.tarjeta === true">Tarjeta</td>
@@ -226,11 +226,11 @@ var vueCaja = new Vue({
         },
         imprimirTicket()
         {
-
+            toc.imprimirTicket(this.listaTickets[this.ticketActivo]._id);
         },
         cargarListaTickets(arrayTickets)
         {
-            this.listaTickets = arrayTickets;
+            this.listaTickets = arrayTickets.reverse();
         },
         confirmarSalida()
         {
@@ -256,6 +256,10 @@ var vueCaja = new Vue({
             {
                 toc.cerrarCaja(this.getTotal, this.getDetalle);
             }
+        },
+        setItemCajaActivo(x)
+        {
+            this.ticketActivo = x;
         }
     },
     computed: {

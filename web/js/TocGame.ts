@@ -631,6 +631,24 @@ class TocGame
 
         return unaCaja;
     }
+    imprimirTicket(idTicket: number)
+    {
+        const paramsTicket = electron.ipcRenderer.sendSync('get-params-ticket');
+        const infoTrabajador: Trabajador = electron.ipcRenderer.sendSync('buscar-trabajador-sincrono');
+        const infoTicket: Ticket = electron.ipcRenderer.sendSync('get-info-un-ticket', idTicket);
+
+        const sendObject = {
+            numFactura: infoTicket._id,
+            arrayCompra: infoTicket.lista,
+            total: infoTicket.total,
+            visa: infoTicket.tarjeta,
+            tiposIva: infoTicket.tiposIva,
+            cabecera: paramsTicket[0].valorDato,
+            pie: paramsTicket[1].valorDato,
+            nombreTrabajador: infoTrabajador.nombre
+        };
+        electron.ipcRenderer.send('imprimir', sendObject);
+    }
     imprimirCierreCaja(info)
     {
         electron.ipcRenderer.send('imprimirCierreCaja', info);

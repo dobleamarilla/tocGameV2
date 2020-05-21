@@ -152,6 +152,29 @@ app.on('ready', () => {
         });
     });
     //FINAL BUSCAR TRABAJADOR
+    //BUSCAR TRABAJADOR
+    ipcMain.on('buscar-trabajador-sincrono', (ev, data) => {
+        trabaj.buscarTrabajador(data).then(respuesta => {
+            ev.returnValue = respuesta;
+        });
+    });
+    //FINAL BUSCAR TRABAJADOR
+
+    //GET INFO UN TICKET
+    ipcMain.on('get-info-un-ticket', (ev, data)=>{
+        tick.getInfoTicket(data).then(res=>{
+            ev.returnValue = res;
+        });
+    });
+    //FINAL GET INFO UN TICKET
+
+    //GET INFO PARAMS TICKET
+    ipcMain.on('get-params-ticket', (ev, data)=>{
+        paramtick.getParamsTicket().then(res=>{
+            ev.returnValue = res;
+        });
+    });
+    //FINAL GET INFO PARAMS TICKET
 
     //GET CESTA
     ipcMain.on('get-cesta', (ev, data) => {

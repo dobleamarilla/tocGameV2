@@ -23,14 +23,14 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, visa,
         var pagoTarjeta = '';
         for (let i = 0; i < arrayCompra.length; i++) 
         {
-            if (arrayCompra[i].articuloNombre.length < 20) 
+            if (arrayCompra[i].nombre.length < 20) 
             {
-                while (arrayCompra[i].articuloNombre.length < 20) 
+                while (arrayCompra[i].nombre.length < 20) 
                 {
-                    arrayCompra[i].articuloNombre += ' ';
+                    arrayCompra[i].nombre += ' ';
                 }
             }
-            detalles += `${arrayCompra[i].cantidad}     ${arrayCompra[i].articuloNombre.slice(0, 20)}       ${arrayCompra[i].importe}\n`;
+            detalles += `${arrayCompra[i].unidades}     ${arrayCompra[i].nombre.slice(0, 20)}       ${arrayCompra[i].subtotal}\n`;
         }
         var fecha = new Date();
         if (visa) 

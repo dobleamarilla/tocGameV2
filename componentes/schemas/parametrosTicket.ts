@@ -15,6 +15,15 @@ function insertarParametrosTicket(data)
     });
     return devolver;
 }
-
+function getParamsTicket()
+{
+    return ParametrosTicket.find({}, ((err, resultado)=>{
+        if(err)
+        {
+            console.log(err);
+        }
+    })).lean();
+}
 exports.parametrosTicket            = ParametrosTicket;
 exports.insertarParametrosTicket    = insertarParametrosTicket;
+exports.getParamsTicket             = getParamsTicket;
