@@ -9,7 +9,9 @@
     "scripts": {
         "compile": "tsc && copyfiles -e \"web/js/*.ts\" -a web/** build",
         "start": "npm run compile && electron build/main.js",
-        "reparar": "npx electron-rebuild -f -p"
+        "reparar": "npx electron-rebuild -f -p",
+        "build:windows": "electron-packager . tocGame --overwrite --out=windowsBuild",
+        "build:linux": "electron-packager build tocGame --overwrite --asar=true --platform=linux --arch=x64 --prune=true --out=linuxBuild"
     },
     "dependencies": {
         "escpos": "^3.0.0-alpha.3",
@@ -17,6 +19,7 @@
         "escpos-usb": "^3.0.0-alpha.2",
         "jquery": "^3.5.1",
         "mongoose": "^5.9.13",
+        "source-map-support": "^0.5.19",
         "socket.io-client": "^2.3.0"
     },
     "devDependencies": {
@@ -24,7 +27,6 @@
         "electron": "6.0.0",
         "electron-packager": "^14.2.1",
         "electron-rebuild": "^1.10.1",
-        "source-map-support": "^0.5.19",
         "typescript": "3.5.3"
     }
 }
