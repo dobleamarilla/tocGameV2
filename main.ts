@@ -57,7 +57,7 @@ app.on('ready', () => {
 
         client.on('data', function (data: any) {
             console.log('Recibido: ' + data);
-            event.sender.send('ventaDatafono', data);
+            event.sender.send('resVentaDatafono', data);
             client.write('\x02ACK\x03');
             client.destroy();
         });

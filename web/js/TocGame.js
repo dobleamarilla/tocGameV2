@@ -8,6 +8,7 @@ class TocGame {
     constructor() {
         const info = electron.ipcRenderer.sendSync('getParametros');
         const infoCaja = electron.ipcRenderer.sendSync('getInfoCaja');
+        this.ticketColaDatafono = null;
         if (info !== null) {
             this.parametros = info;
         }
@@ -422,21 +423,56 @@ class TocGame {
         for (let i = 0; i < this.cesta.lista.length; i++) {
             total += this.cesta.lista[i].subtotal;
         }
-        const objTicket = {
-            _id: this.getUltimoTicket() + 1,
-            timestamp: new Date(),
-            total: total,
-            lista: this.cesta.lista,
-            tarjeta: !efectivo,
-            idTrabajador: this.getCurrentTrabajador()._id,
-            tiposIva: this.cesta.tiposIva
-        };
-        electron.ipcRenderer.send('set-ticket', objTicket);
-        this.parametros.ultimoTicket++;
-        electron.ipcRenderer.send('setParametros', this.parametros);
-        this.borrarCesta();
-        vueCobrar.cerrarModal();
-        vueToast.abrir('success', 'Ticket creado');
+        const infoTrabajador = this.getCurrentTrabajador();
+        const nuevoIdTicket = this.getUltimoTicket() + 1;
+        if (efectivo) {
+            const objTicket = {
+                _id: nuevoIdTicket,
+                timestamp: new Date(),
+                total: total,
+                lista: this.cesta.lista,
+                tarjeta: !efectivo,
+                idTrabajador: infoTrabajador._id,
+                tiposIva: this.cesta.tiposIva
+            };
+            electron.ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
+            this.parametros.ultimoTicket++;
+            electron.ipcRenderer.send('setParametros', this.parametros);
+            this.borrarCesta();
+            vueCobrar.cerrarModal();
+            vueToast.abrir('success', 'Ticket creado');
+        }
+        else {
+            const objTicket = {
+                _id: nuevoIdTicket,
+                timestamp: new Date(),
+                total: total,
+                lista: this.cesta.lista,
+                tarjeta: !efectivo,
+                idTrabajador: infoTrabajador._id,
+                tiposIva: this.cesta.tiposIva
+            };
+            this.ticketColaDatafono = objTicket;
+            electron.ipcRenderer.send('ventaDatafono', { nombreDependienta: infoTrabajador.nombre, idTicket: nuevoIdTicket, total: total });
+        }
+    }
+    controlRespuestaDatafono(respuesta) {
+        //CERRAR ANIMACIÓN PARA DATÁFONO PENDIENTE
+        if (respuesta[1] === 48) //Primero STX, segundo estado transacción: correcta = 48, incorrecta != 48
+         {
+            console.log("Operación APROBADA");
+            electron.ipcRenderer.send('set-ticket', this.ticketColaDatafono);
+            this.parametros.ultimoTicket++;
+            electron.ipcRenderer.send('setParametros', this.parametros);
+            this.borrarCesta();
+            vueCobrar.cerrarModal();
+            vueToast.abrir('success', 'Ticket creado');
+        }
+        else {
+            console.log("Opración DENEGADA");
+            vueToast.abrir('error', 'Operación DENEGADA');
+            vueCobrar.cerrarModal();
+        }
     }
     abreModalSalidaDinero() {
         $('#vueModalSalidaDinero').modal();

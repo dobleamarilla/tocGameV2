@@ -47,6 +47,9 @@ electron.ipcRenderer.on('res-get-menus', (ev, data) => {
 electron.ipcRenderer.on('res-get-cesta', (ev, data) => {
     toc.setCesta(data);
 });
+electron.ipcRenderer.on('resVentaDatafono', (ev, data) => {
+    toc.controlRespuestaDatafono(data);
+});
 socket.on('install-licencia', (data) => {
     if (!data.error) {
         console.log(data);
