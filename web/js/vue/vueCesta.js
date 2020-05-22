@@ -33,13 +33,16 @@ var vueCesta = new Vue({
 			</div>
 		</div>
 		<div class="row pt-1">
-			<div class="col-md-4 paraNumerico" id="botonClientes">
+			<div class="col-md-3 paraNumerico" id="botonClientes">
 				<button class="btn btn-primary btn-block sizeMenus"><i class="fas fa-keyboard"></i></button>
 			</div>
-			<div class="col-md-4 paraRowMenus" id="botonMenus">
+			<div class="col-md-3 paraRowMenus" id="botonMenus">
 				<button @click="abrirModalCaja()" class="btn btn-primary btn-block sizeMenus"><i class="fas fa-bars"></i></button>
 			</div>
-			<div class="col-md-4 paraRowClientes" id="botonBorrar">
+			<div class="col-md-3 paraFichajes" id="botonFichajes">
+				<button @click="abrirFichajes()" class="btn btn-primary btn-block sizeMenus"><i class="far fa-clock"></i></button>
+			</div>
+			<div class="col-md-3 paraRowClientes" id="botonBorrar">
 				<button class="btn btn-primary btn-block sizeMenus"><i class="fas fa-users"></i></button>
 			</div>
 		</div>
@@ -97,6 +100,9 @@ var vueCesta = new Vue({
         },
         abrirModalCaja() {
             toc.abrirModalCaja();
+        },
+        abrirFichajes() {
+            vueFichajes.abrirModalNoRestrictivo();
         }
     }
 });

@@ -575,7 +575,7 @@ class TocGame
                 tiposIva: this.cesta.tiposIva
             }
             this.ticketColaDatafono = objTicket;
-            electron.ipcRenderer.send('ventaDatafono', {nombreDependienta: infoTrabajador.nombre, idTicket: nuevoIdTicket, total: total});
+            electron.ipcRenderer.send('ventaDatafono', {nombreDependienta: infoTrabajador.nombre, idTicket: nuevoIdTicket, total: Number((total * 100).toFixed(2)).toString()});
         }
     }
     controlRespuestaDatafono(respuesta)

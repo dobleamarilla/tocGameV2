@@ -5,6 +5,10 @@
   padding-right: 3px;
   padding-top: 2px;
 }
+.paraFichajes {
+  padding-right: 4px;
+  padding-left: 1px;
+}
 .paraRowBorrar {
   padding: 2px;
 }
@@ -165,37 +169,72 @@
   }
   #botonBorrar .btn-primary {
     color: #fff;
-    background-color: #FFA712;
+    background-color: rgb(255, 167, 18);
     border-color: #FFA712;
   }
   
   #botonBorrar .btn-primary:hover {
     color: #fff;
-    background-color: #0069d9;
-    border-color: #0062cc;
+    background-color: #FFA712;
+    border-color: #FFA712;
   }
   
   #botonBorrar .btn-primary:focus, .btn-primary.focus {
     color: #fff;
-    background-color: #0069d9;
-    border-color: #0062cc;
-    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+    background-color: #FFA712;
+    border-color: #FFA712;
   }
   
   #botonBorrar .btn-primary.disabled, .btn-primary:disabled {
     color: #fff;
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: #FFA712;
+    border-color: #FFA712;
   }
   
   #botonBorrar .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active,
   .show > .btn-primary.dropdown-toggle {
     color: #fff;
-    background-color: #0062cc;
-    border-color: #005cbf;
+    background-color: #FFA712;
+    border-color: #FFA712;
   }
   
   #botonBorrar .btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus,
   .show > .btn-primary.dropdown-toggle:focus {
-    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+    box-shadow: 0 0 0 0.2rem rgb(255, 167, 18);
+  }
+
+  #botonFichajes .btn-primary {
+    color: #fff;
+    background-color: rgb(191, 130, 219);
+    border-color: rgb(191, 130, 219);
+  }
+  
+  #botonFichajes .btn-primary:hover {
+    color: #fff;
+    background-color: rgb(191, 130, 219);
+    border-color: rgb(191, 130, 219);
+  }
+  
+  #botonFichajes .btn-primary:focus, .btn-primary.focus {
+    color: #fff;
+    background-color: rgb(191, 130, 219);
+    border-color: rgb(191, 130, 219);
+  }
+  
+  #botonFichajes .btn-primary.disabled, .btn-primary:disabled {
+    color: #fff;
+    background-color: rgb(191, 130, 219);
+    border-color: rgb(191, 130, 219);
+  }
+  
+  #botonFichajes .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active,
+  .show > .btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: rgb(191, 130, 219);
+    border-color: rgb(191, 130, 219);
+  }
+  
+  #botonFichajes .btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus,
+  .show > .btn-primary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgb(191, 130, 219);
   }

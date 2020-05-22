@@ -55,6 +55,9 @@ var vueFichajes = new Vue({
         abrirModal() {
             $('#modalFichajes').modal({ backdrop: 'static', keyboard: false });
         },
+        abrirModalNoRestrictivo() {
+            $('#modalFichajes').modal();
+        },
         cerrarModal() {
             $('#modalFichajes').modal('hide');
         },
