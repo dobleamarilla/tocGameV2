@@ -10,7 +10,8 @@ var vueCaja = new Vue({
 					<h5 class="modal-title">Listado de tickets</h5>
 				</div>
 				<div class="modal-body">
-					<div class="row" v-bind:style="caja">
+					<div class="row">
+                        <div class="col-md-10">
 							<div class="table-responsive" style="height: 400px;">
 								<table class="table table-striped">
 									<thead>
@@ -32,24 +33,18 @@ var vueCaja = new Vue({
 									</tbody>
 								</table>
                             </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-primary btn-block ml-0" @click="volverACaja()"><i class="fas fa-lock fa-2x"></i></button>
+                            <button type="button" class="btn btn-secondary btn-block ml-0" @click="volverACaja()"><i class="fas fa-lock-open fa-2x"></i></button>
+                            <button type="button" class="btn btn-success btn-block ml-0" @click="volverACaja()"><i class="fas fa-sign-in-alt fa-2x"></i></button>
+                            <button type="button" class="btn btn-danger btn-block ml-0" @click="volverACaja()"><i class="fas fa-sign-out-alt fa-2x"></i></button>
+                            <button type="button" class="btn btn-warning btn-block ml-0" @click="volverACaja()"><i class="fas fa-search-plus fa-2x"></i></button>
+                            <button type="button" class="btn btn-info btn-block ml-0" @click="volverACaja()"><i class="fas fa-print fa-2x"></i></button>
+                            <button type="button" class="btn btn-dark btn-block ml-0" @click="volverACaja()"><i class="fas fa-undo fa-2x"></i></button>                     
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    
-                    <!-- <i class="fas fa-lock-open fa-4x mr-2"></i>
-                    <i class="fas fa-sign-in-alt fa-4x mr-2"></i>
-                    <i class="fas fa-print fa-4x mr-2"></i>
-                    <i class="fas fa-search-plus fa-4x mr-2"></i>
-                    <i class="fas fa-sign-out-alt fa-4x mr-2"></i>
-                    <i class="fas fa-lock fa-4x mr-2"></i> -->
-				    <button type="button" class="btn btn-primary btn-lg" @click="volverACaja()"><i class="fas fa-undo mr-2"></i>VOLVER</button>
-				    <button type="button" class="btn btn-primary btn-lg" @click="vistaSalidas()">SALIDA</button>
-				    <button type="button" class="btn btn-primary btn-lg" @click="vistaSalidas()">ENTRADA</button>
-				    <button type="button" class="btn btn-primary btn-lg" @click="vistaCierre()">CERRAR CAJA</button>
-				    <button type="button" class="btn btn-primary btn-lg">ABRIR CAJA</button>
-				    <button type="button" class="btn btn-primary btn-lg" @click="imprimirTicket()">IMPRIMIR</button>
-				    <button type="button" class="btn btn-primary btn-lg">DETALLE</button>
-		    	</div>
+                </div>                
 			</div>
 		</div>
 	</div>

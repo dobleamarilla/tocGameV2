@@ -3,9 +3,9 @@ var vuePanelVentas = new Vue({
     template: 
     /*html*/ `
     <div>
-        <div class="row p-2">
+        <div class="row p-2" id="menusColores">
             <div v-for="(item, index) of listaMenus" :key="item.nomMenu" class="col colJuntitasMenus menus" style="padding-left: 4px;">
-                <button class="btn btn-secondary w-100 menus" v-bind:class="[{'activo' : esActivo(index)}, 'colorMenus']" @click="clickMenu(index)">{{item.nomMenu}}</button>
+                <button class="btn btn-secondary w-100 menus menusColorIvan" v-bind:class="[{'activo' : esActivo(index)}, 'colorMenus']" @click="clickMenu(index)">{{item.nomMenu}}</button>
             </div>
         </div>
         <div>
