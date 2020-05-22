@@ -73,4 +73,33 @@ function construirObjetoIvas(infoArticulo, unidades, tipoIvaAnterior) {
     console.log("sumo esto: ", aux);
     return aux;
 }
+function dateToString(fecha) {
+    var fechaFinal = null;
+    ;
+    if (typeof fecha === 'string') {
+        fechaFinal = new Date(fecha);
+    }
+    let finalYear = `${fechaFinal.getFullYear()}`;
+    let finalMonth = `${fechaFinal.getMonth() + 1}`;
+    let finalDay = `${fechaFinal.getDate()}`;
+    let finalHours = `${fechaFinal.getHours()}`;
+    let finalMinutes = `${fechaFinal.getMinutes()}`;
+    let finalSeconds = `${fechaFinal.getSeconds()}`;
+    if (finalMonth.length === 1) {
+        finalMonth = '0' + finalMonth;
+    }
+    if (finalDay.length === 1) {
+        finalDay = '0' + finalDay;
+    }
+    if (finalHours.length === 1) {
+        finalHours = '0' + finalHours;
+    }
+    if (finalMinutes.length === 1) {
+        finalMinutes = '0' + finalMinutes;
+    }
+    if (finalSeconds.length === 1) {
+        finalSeconds = '0' + finalSeconds;
+    }
+    return `${finalYear}-${finalMonth}-${finalDay} ${finalHours}:${finalMinutes}:${finalSeconds}`;
+}
 //# sourceMappingURL=funciones.js.map

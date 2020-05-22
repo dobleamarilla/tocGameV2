@@ -8,3 +8,6 @@ body {
 .fuenteIvan{
     font-family: 'Poppins', sans-serif;
 }
+.estiloActivoTicketCaja {
+    background-color: #ffb5bc85 !important;
+}
