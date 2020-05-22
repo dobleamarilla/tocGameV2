@@ -294,7 +294,12 @@ class TocGame {
                 unaCesta.lista[posicionSecundario].subtotal = sobraCantidadSecundario * datosArticulo.precioConIva;
             }
             else {
-                unaCesta.lista.splice(posicionSecundario, 1);
+                if (posicionSecundario > posicionPrincipal) {
+                    unaCesta.lista.splice(posicionSecundario - 1, 1);
+                }
+                else {
+                    unaCesta.lista.splice(posicionSecundario, 1);
+                }
             }
         }
         return unaCesta;
@@ -335,7 +340,7 @@ class TocGame {
         return cesta;
     }
     buscarOfertas(unaCesta) {
-        unaCesta = this.deshacerOfertas(unaCesta);
+        unaCesta = this.deshacerOfertas(unaCesta); //ahora no hace nada
         for (let i = 0; i < this.promociones.length; i++) {
             for (let j = 0; j < this.promociones[i].principal.length; j++) {
                 let preguntaPrincipal = this.existeArticuloParaOfertaEnCesta(unaCesta, this.promociones[i].principal[j]._id, this.promociones[i].cantidadPrincipal);

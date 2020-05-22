@@ -315,7 +315,7 @@ class TocGame
                 return i;
             }
         }
-        return -1;
+        return -1; //IMPORTANTE QUE SEA ESTE VALOR SINO HAY SECUNDARIO
     }
     insertarLineaPromoCesta(cesta: Cesta, tipoPromo: number, unidades: number, total: number, idPromo: string): Cesta
     {
@@ -376,7 +376,14 @@ class TocGame
             }
             else
             {
-                unaCesta.lista.splice(posicionSecundario, 1);
+                if(posicionSecundario > posicionPrincipal)
+                {
+                    unaCesta.lista.splice(posicionSecundario-1, 1);
+                }
+                else
+                {
+                    unaCesta.lista.splice(posicionSecundario, 1);
+                }
             }
         }
         return unaCesta;
@@ -428,7 +435,7 @@ class TocGame
     }
     buscarOfertas(unaCesta: Cesta)
     {
-        unaCesta = this.deshacerOfertas(unaCesta);
+        unaCesta = this.deshacerOfertas(unaCesta); //ahora no hace nada
         for(let i = 0; i < this.promociones.length; i++)
         {
             for(let j = 0; j < this.promociones[i].principal.length; j++)
