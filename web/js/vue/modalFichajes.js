@@ -62,7 +62,7 @@ var vueFichajes = new Vue({
             $('#modalFichajes').modal('hide');
         },
         buscarTrabajador() {
-            electron.ipcRenderer.send('buscar-trabajador', this.busqueda);
+            ipcRenderer.send('buscar-trabajador', this.busqueda);
         },
         fichar(trabajador) {
             toc.addFichado(trabajador);

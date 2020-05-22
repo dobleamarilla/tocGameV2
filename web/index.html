@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="assets/css/tecladoTeclas.css">
     <link rel="stylesheet" href="assets/css/totalMenus.css">
     <link rel="stylesheet" href="assets/css/bootstrap-vue.css">
+    <link rel="stylesheet" href="assets/css/jqbtk.min.css">
     <title>TOC V2</title>
 </head>
 <body>
@@ -26,14 +27,20 @@
         <div id="vueApertura"></div>
         <div id="vueCobrar"></div>
         <div id="vueCaja"></div>
+        <div id="vueSalidaDinero"></div>
     </div>
 
-    <script>var electron = require('electron');</script>
+    <script>
+        // var electron = require('electron');
+        const {remote, ipcRenderer} = require('electron')
+        const dialog   = remote.dialog;
+    </script>
     <script>window.$ = window.jQuery = require('jquery');</script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/socket.io.js"></script>
     <script>const socket = io('http://52.213.244.62:8080');</script>
     <script src="assets/js/vue.js"></script>
+    <script src="assets/js/jqbtk.min.js"></script>
     <script src="js/render.js"></script>
     <script src="assets/js/all.min.js"></script>
     <script src="js/funciones.js"></script>
@@ -45,6 +52,7 @@
     <script src="js/vue/modalApertura.js"></script>
     <script src="js/vue/vuePanelVentas.js"></script>
     <script src="js/vue/vueCesta.js"></script>
+    <script src="js/vue/vueSalidaDinero.js"></script>
     <script src="js/TocGame.js"></script>
     <script src="js/eventos.js"></script>
     <script src="js/index.js"></script>

@@ -6,8 +6,8 @@ const TIPO_CLEARONE = 'CLEARONE';
 const TIPO_3G = '3G';
 class TocGame {
     constructor() {
-        const info = electron.ipcRenderer.sendSync('getParametros');
-        const infoCaja = electron.ipcRenderer.sendSync('getInfoCaja');
+        const info = ipcRenderer.sendSync('getParametros');
+        const infoCaja = ipcRenderer.sendSync('getInfoCaja');
         this.ticketColaDatafono = null;
         if (info !== null) {
             this.parametros = info;
@@ -89,7 +89,7 @@ class TocGame {
     }
     setupToc(info) {
         if (info.licencia > 0 && info.codigoTienda > 0 && info.database.length > 0 && info.nombreEmpresa.length > 0 && info.nombreTienda.length > 0 && info.tipoImpresora.length > 0 && info.tipoDatafono.length > 0 && info.ultimoTicket > -1) {
-            electron.ipcRenderer.send('setParametros', info);
+            ipcRenderer.send('setParametros', info);
             this.setParametros(info.licencia, info.codigoTienda, info.database, info.nombreEmpresa, info.nombreTienda, info.tipoImpresora, info.tipoDatafono, info.ultimoTicket);
             this.descargarDatos();
         }
@@ -108,17 +108,17 @@ class TocGame {
     addFichado(trabajador) {
         this.setCurrentTrabajador(trabajador._id);
         this.arrayFichados.push(trabajador);
-        electron.ipcRenderer.send('fichar-trabajador', trabajador._id);
+        ipcRenderer.send('fichar-trabajador', trabajador._id);
     }
     delFichado(trabajador) {
         this.arrayFichados = this.arrayFichados.filter(item => {
             return item._id != trabajador._id;
         });
-        electron.ipcRenderer.send('desfichar-trabajador', trabajador._id);
+        ipcRenderer.send('desfichar-trabajador', trabajador._id);
     }
     abrirCaja(data) {
         this.setCaja(data);
-        electron.ipcRenderer.send('actualizar-info-caja', data);
+        ipcRenderer.send('actualizar-info-caja', data);
         vueApertura.cerrarModal();
         vueToast.abrir('success', 'CAJA ABIERTA');
         this.iniciar();
@@ -161,10 +161,10 @@ class TocGame {
         }
     }
     clickMenu(nombreMenu) {
-        electron.ipcRenderer.send('get-teclas', nombreMenu);
+        ipcRenderer.send('get-teclas', nombreMenu);
     }
     borrarCesta() {
-        electron.ipcRenderer.send('borrar-cesta', this.cesta._id);
+        ipcRenderer.send('borrar-cesta', this.cesta._id);
         const nuevaCesta = {
             _id: Date.now(),
             tiposIva: {
@@ -224,12 +224,12 @@ class TocGame {
         for (let i = 0; i < data.lista.length; i++) {
             data.lista[i].subtotal = Number(data.lista[i].subtotal.toFixed(2));
         }
-        electron.ipcRenderer.send('set-cesta', data);
+        ipcRenderer.send('set-cesta', data);
         this.cesta = data;
         this.enviarCesta();
     }
     cargarCesta() {
-        electron.ipcRenderer.send('get-cesta');
+        ipcRenderer.send('get-cesta');
     }
     enviarCesta() {
         vueCesta.recibirCesta(this.cesta);
@@ -243,7 +243,7 @@ class TocGame {
                 return i;
             }
         }
-        return -1;
+        return -1; //IMPORTANTE QUE SEA ESTE VALOR SINO HAY SECUNDARIO
     }
     insertarLineaPromoCesta(cesta, tipoPromo, unidades, total, idPromo) {
         if (tipoPromo === 1) //COMBO
@@ -383,7 +383,7 @@ class TocGame {
         this.buscarOfertas(miCesta);
     }
     getInfoArticulo(idArticulo) {
-        return electron.ipcRenderer.sendSync('get-info-articulo', idArticulo);
+        return ipcRenderer.sendSync('get-info-articulo', idArticulo);
     }
     addItem(idArticulo, idBoton, aPeso, peso, subtotal, unidades = 1) {
         try {
@@ -440,9 +440,9 @@ class TocGame {
                 idTrabajador: infoTrabajador._id,
                 tiposIva: this.cesta.tiposIva
             };
-            electron.ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
+            ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
             this.parametros.ultimoTicket++;
-            electron.ipcRenderer.send('setParametros', this.parametros);
+            ipcRenderer.send('setParametros', this.parametros);
             this.borrarCesta();
             vueCobrar.cerrarModal();
             vueToast.abrir('success', 'Ticket creado');
@@ -458,7 +458,7 @@ class TocGame {
                 tiposIva: this.cesta.tiposIva
             };
             this.ticketColaDatafono = objTicket;
-            electron.ipcRenderer.send('ventaDatafono', { nombreDependienta: infoTrabajador.nombre, idTicket: nuevoIdTicket, total: Number((total * 100).toFixed(2)).toString() });
+            ipcRenderer.send('ventaDatafono', { nombreDependienta: infoTrabajador.nombre, idTicket: nuevoIdTicket, total: Number((total * 100).toFixed(2)).toString() });
         }
     }
     controlRespuestaDatafono(respuesta) {
@@ -466,9 +466,9 @@ class TocGame {
         if (respuesta[1] === 48) //Primero STX, segundo estado transacción: correcta = 48, incorrecta != 48
          {
             console.log("Operación APROBADA");
-            electron.ipcRenderer.send('set-ticket', this.ticketColaDatafono);
+            ipcRenderer.send('set-ticket', this.ticketColaDatafono);
             this.parametros.ultimoTicket++;
-            electron.ipcRenderer.send('setParametros', this.parametros);
+            ipcRenderer.send('setParametros', this.parametros);
             this.borrarCesta();
             vueCobrar.cerrarModal();
             vueToast.abrir('success', 'Ticket creado');
@@ -483,7 +483,7 @@ class TocGame {
         $('#vueModalSalidaDinero').modal();
     }
     abrirModalCaja() {
-        const arrayTickets = electron.ipcRenderer.sendSync('get-tickets');
+        const arrayTickets = ipcRenderer.sendSync('get-tickets');
         vueCaja.cargarListaTickets(arrayTickets);
         vueCaja.abreModal();
     }
@@ -493,13 +493,13 @@ class TocGame {
         this.caja.finalTime = new Date();
         this.caja.idDependienta = this.getCurrentTrabajador()._id;
         this.caja = this.calcularDatosCaja(this.caja);
-        electron.ipcRenderer.send('guardarCaja', this.caja);
+        ipcRenderer.send('guardarCaja', this.caja);
         this.caja.inicioTime = null;
         vueCaja.cerrarModal();
         this.iniciar();
     }
     calcularDatosCaja(unaCaja) {
-        var arrayTicketsCaja = electron.ipcRenderer.sendSync('getTicketsIntervalo', unaCaja);
+        var arrayTicketsCaja = ipcRenderer.sendSync('getTicketsIntervalo', unaCaja);
         var calaixFet = 0;
         var nombreTrabajador = this.getCurrentTrabajador().nombre;
         var descuadre = 0;
@@ -544,9 +544,9 @@ class TocGame {
         return unaCaja;
     }
     imprimirTicket(idTicket) {
-        const paramsTicket = electron.ipcRenderer.sendSync('get-params-ticket');
-        const infoTrabajador = electron.ipcRenderer.sendSync('buscar-trabajador-sincrono');
-        const infoTicket = electron.ipcRenderer.sendSync('get-info-un-ticket', idTicket);
+        const paramsTicket = ipcRenderer.sendSync('get-params-ticket');
+        const infoTrabajador = ipcRenderer.sendSync('buscar-trabajador-sincrono');
+        const infoTicket = ipcRenderer.sendSync('get-info-un-ticket', idTicket);
         const sendObject = {
             numFactura: infoTicket._id,
             arrayCompra: infoTicket.lista,
@@ -557,19 +557,19 @@ class TocGame {
             pie: paramsTicket[1].valorDato,
             nombreTrabajador: infoTrabajador.nombre
         };
-        electron.ipcRenderer.send('imprimir', sendObject);
+        ipcRenderer.send('imprimir', sendObject);
     }
     imprimirCierreCaja(info) {
-        electron.ipcRenderer.send('imprimirCierreCaja', info);
+        ipcRenderer.send('imprimirCierreCaja', info);
     }
     iniciar() {
-        electron.ipcRenderer.send('buscar-fichados');
-        const infoPromociones = electron.ipcRenderer.sendSync('get-promociones');
+        ipcRenderer.send('buscar-fichados');
+        const infoPromociones = ipcRenderer.sendSync('get-promociones');
         if (infoPromociones.length > 0) {
             this.promociones = infoPromociones;
         }
-        electron.ipcRenderer.send('get-menus');
-        electron.ipcRenderer.send('get-cesta');
+        ipcRenderer.send('get-menus');
+        ipcRenderer.send('get-cesta');
     }
 }
 //# sourceMappingURL=TocGame.js.map

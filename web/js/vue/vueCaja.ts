@@ -3,16 +3,14 @@ var vueCaja = new Vue({
     template: 
     /*html*/`
 <div>
-	<div class="modal fade" id="vueModalCaja" tabindex="-1" role="dialog">
+	<div class="modal" id="vueModalCaja" tabindex="-1" role="dialog">
 		<div class="modal-dialog" style="max-width: 80%" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Listado de tickets</h5>
-					</button>
 				</div>
 				<div class="modal-body">
 					<div class="row" v-bind:style="caja">
-						<div class="col-md-12">
 							<div class="table-responsive" style="height: 400px;">
 								<table class="table table-striped">
 									<thead>
@@ -33,133 +31,25 @@ var vueCaja = new Vue({
 										</tr>
 									</tbody>
 								</table>
-							</div>
-							<button type="button" class="btn btn-primary" @click="vistaSalidas()">SALIDA DINERO</button>
-							<button type="button" class="btn btn-danger"  @click="vistaCierre()">CERRAR CAJA</button>
-							<button type="button" class="btn btn-primary" @click="imprimirTicket()">IMPRIMIR TICKET</button>
-						</div>
-					</div>
-					<div class="row" v-bind:style="salida">
-						<div class="col-md-12">
-							<div class="btn-group-vertical ml-12 mt-12" role="group" aria-label="Basic example">
-								<div class="btn-group">
-									&nbsp;&nbsp;&nbsp;<input class="text-center form-control-lg mb-2" id="code">
-								</div>
-								<div class="btn-group">
-									<a class="boton" onclick="document.getElementById('code').value=document.getElementById('code').value + '1';">1</a>
-									<a class="boton" onclick="document.getElementById('code').value=document.getElementById('code').value + '2';">2</a>
-									<a class="boton" onclick="document.getElementById('code').value=document.getElementById('code').value + '3';">3</a>
-								</div>
-								<div class="btn-group">
-									<a class="boton" onclick="document.getElementById('code').value=document.getElementById('code').value + '4';">4</a>
-									<a class="boton" onclick="document.getElementById('code').value=document.getElementById('code').value + '5';">5</a>
-									<a class="boton" onclick="document.getElementById('code').value=document.getElementById('code').value + '6';">6</a>
-								</div>
-								<div class="btn-group">
-									<a class="boton" onclick="document.getElementById('code').value=document.getElementById('code').value + '7';">7</a>
-									<a class="boton" onclick="document.getElementById('code').value=document.getElementById('code').value + '8';">8</a>
-									<a class="boton" onclick="document.getElementById('code').value=document.getElementById('code').value + '9';">9</a>
-								</div>
-								<div class="btn-group">
-									<a class="boton" onclick="document.getElementById('code').value=document.getElementById('code').value.slice(0, -1);">&lt;</a>
-									<a class="boton" onclick="document.getElementById('code').value=document.getElementById('code').value + '0';">0</a>
-									<a class="boton" onclick="document.getElementById('code').value=document.getElementById('code').value + ',';">,</a>
-								</div>
-								<div class="btn-group">
-									<button type="button" class="btn btn-primary" @click="vistaCaja()">CANCELAR</button>
-									<button type="button" class="btn btn-danger"  @click="confirmarSalida()">CREAR SALIDA</button>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row" v-bind:style="cierre">
-                        <form class="form-row">
-                            <div class="col form-group" @click="setActivo(0)">
-                                <img src="assets/imagenes/1cts.png" width="84px" height="84px" alt="1 CTS.">
-                                <label :style="infoDinero[0].style">{{infoDinero[0].valor}} uds.</label>
                             </div>
-                            <div class="col form-group" @click="setActivo(1)">
-                                <img src="assets/imagenes/2cts.png" width="84px" height="84px" alt="1 CTS.">
-                                <label :style="infoDinero[1].style">{{infoDinero[1].valor}} uds.</label>
-                            </div>
-                            <div class="col form-group" @click="setActivo(2)">
-                                <img src="assets/imagenes/5cts.png" width="84px" height="84px" alt="1 CTS.">
-                                <label :style="infoDinero[2].style">{{infoDinero[2].valor}} uds.</label>
-                            </div>
-                            <div class="col form-group" @click="setActivo(3)">
-                                <img src="assets/imagenes/10cts.png" width="84px" height="84px" alt="1 CTS.">
-                                <label :style="infoDinero[3].style">{{infoDinero[3].valor}} uds.</label>
-                            </div>
-                            <div class="col form-group" @click="setActivo(4)">
-                                <img src="assets/imagenes/20cts.png" width="84px" height="84px" alt="1 CTS.">
-                                <label :style="infoDinero[4].style"> {{infoDinero[4].valor}} uds.</label>
-                            </div>
-                            <div class="col form-group" @click="setActivo(5)">
-                                <img src="assets/imagenes/50cts.png" width="84px" height="84px" alt="1 CTS.">
-                                <label :style="infoDinero[5].style">{{infoDinero[5].valor}} uds.</label>
-                            </div>
-                            <div class="col form-group" @click="setActivo(6)">
-                                <img src="assets/imagenes/uneuro.png" width="84px" height="84px" alt="1 CTS.">
-                                <label :style="infoDinero[6].style">{{infoDinero[6].valor}} uds.</label>
-                            </div>
-                            <div class="col form-group" @click="setActivo(7)">
-                                <img src="assets/imagenes/doseuros.png" width="84px" height="84px" alt="1 CTS.">
-                                <label :style="infoDinero[7].style">{{infoDinero[7].valor}} uds.</label>
-                            </div>                            
-                        </form>
-					</div>
-					<div class="row mx-auto" v-bind:style="cierre">
-                        <form class="form-row">
-                            <div class="col form-group" style="text-align: center;" @click="setActivo(8)">
-                                <img src="assets/imagenes/5euros.png" width="135px" height="68px">
-                                <label :style="infoDinero[8].style">{{infoDinero[8].valor}} uds.</label>
-                            </div>
-                            <div class="col form-group" style="text-align: center;" @click="setActivo(9)">
-                                <img src="assets/imagenes/10euros.png" width="135px" height="68px">
-                                <label :style="infoDinero[9].style">{{infoDinero[9].valor}} uds.</label>
-                            </div>
-                            <div class="col form-group" style="text-align: center;" @click="setActivo(10)">
-                                <img src="assets/imagenes/20euros.png" width="135px" height="68px">
-                                <label :style="infoDinero[10].style">{{infoDinero[10].valor}} uds.</label>
-                            </div>
-                            <div class="col form-group" style="text-align: center;" @click="setActivo(11)">
-                                <img src="assets/imagenes/50euros.png" width="135px" height="68px">
-                                <label :style="infoDinero[11].style">{{infoDinero[11].valor}} uds.</label>
-                            </div>
-                            <div class="col form-group" style="text-align: center;" @click="setActivo(12)">
-                                <img src="assets/imagenes/100euros.png" width="135px" height="68px">
-                                <label :style="infoDinero[12].style">{{infoDinero[12].valor}} uds.</label>
-                            </div>
-                            <div class="col form-group" style="text-align: center;" @click="setActivo(13)">
-                                <img src="assets/imagenes/200euros.png" width="135px" height="68px">
-                                <label :style="infoDinero[13].style">{{infoDinero[13].valor}} uds.</label>
-                            </div>
-                            <div class="col form-group" style="text-align: center;" @click="setActivo(14)">
-                                <img src="assets/imagenes/500euros.png" width="135px" height="68px">
-                                <label :style="infoDinero[14].style">{{infoDinero[14].valor}} uds.</label>
-                            </div>
-                        </form>
-					</div>
-					<div class="row" v-bind:style="cierre">
-						<div class="mx-auto">
-							<a class="boton" @click="addNumero(0)">0</a>
-							<a class="boton" @click="addNumero(1)">1</a>
-							<a class="boton" @click="addNumero(2)">2</a>
-							<a class="boton" @click="addNumero(3)">3</a>
-							<a class="boton" @click="addNumero(4)">4</a>
-							<a class="boton" @click="addNumero(5)">5</a>
-							<a class="boton" @click="addNumero(6)">6</a>
-							<a class="boton" @click="addNumero(7)">7</a>
-							<a class="boton" @click="addNumero(8)">8</a>
-							<a class="boton" @click="addNumero(9)">9</a>
-							<a class="boton" @click="borrarNumero()">&lt;</a>
-                        </div>
-                        <div class="text-center">
-                            <button type="button" class="btn btn-lg btn-primary" @click="vistaCaja()">CANCELAR</button>
-                            <button type="button" class="btn btn-lg btn-danger"  @click="confirmarCierre()">CERRAR CAJA {{getTotal}} €</button>
-                        </div>
-					</div>
-				</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    
+                    <!-- <i class="fas fa-lock-open fa-4x mr-2"></i>
+                    <i class="fas fa-sign-in-alt fa-4x mr-2"></i>
+                    <i class="fas fa-print fa-4x mr-2"></i>
+                    <i class="fas fa-search-plus fa-4x mr-2"></i>
+                    <i class="fas fa-sign-out-alt fa-4x mr-2"></i>
+                    <i class="fas fa-lock fa-4x mr-2"></i> -->
+				    <button type="button" class="btn btn-primary btn-lg" @click="volverACaja()"><i class="fas fa-undo mr-2"></i>VOLVER</button>
+				    <button type="button" class="btn btn-primary btn-lg" @click="vistaSalidas()">SALIDA</button>
+				    <button type="button" class="btn btn-primary btn-lg" @click="vistaSalidas()">ENTRADA</button>
+				    <button type="button" class="btn btn-primary btn-lg" @click="vistaCierre()">CERRAR CAJA</button>
+				    <button type="button" class="btn btn-primary btn-lg">ABRIR CAJA</button>
+				    <button type="button" class="btn btn-primary btn-lg" @click="imprimirTicket()">IMPRIMIR</button>
+				    <button type="button" class="btn btn-primary btn-lg">DETALLE</button>
+		    	</div>
 			</div>
 		</div>
 	</div>
@@ -260,6 +150,11 @@ var vueCaja = new Vue({
         setItemCajaActivo(x)
         {
             this.ticketActivo = x;
+        },
+        borrarFuncion()
+        {
+            this.cerrarModal();
+            vueSalidaDinero.abreModal();
         }
     },
     computed: {

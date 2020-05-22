@@ -1,8 +1,9 @@
-declare var electron: any;
-
+declare var ipcRenderer: any;
+declare var dialog: any;
+declare var remote: any;
 function test()
 {
-    electron.ipcRenderer.send('test', prueba=>{
+    ipcRenderer.send('test', prueba=>{
         
     });
 }

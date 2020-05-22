@@ -68,7 +68,7 @@ var vueFichajes = new Vue({
         },
         buscarTrabajador() //COMPROBADA
         {
-            electron.ipcRenderer.send('buscar-trabajador', this.busqueda);
+            ipcRenderer.send('buscar-trabajador', this.busqueda);
         },
         fichar(trabajador) // COMPROBADA
         {
