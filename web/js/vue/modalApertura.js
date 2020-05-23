@@ -183,11 +183,6 @@ var vueApertura = new Vue({
                     };
                     toc.abrirCaja(data);
                 }
-                else {
-                    if (res === 1) {
-                        console.log("CANCELADA");
-                    }
-                }
             });
         }
     },

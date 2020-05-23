@@ -155,7 +155,7 @@ class TocGame
 
         ipcRenderer.send('desfichar-trabajador', trabajador._id);
     }
-    abrirCaja(data: Caja)
+    abrirCaja(data: Caja) //Guarda los datos de la caja nueva en memoria y en la bbdd. Cierra el modal de apertura e inicia otra vez el programa.
     {
         this.setCaja(data);
         ipcRenderer.send('actualizar-info-caja', data);
@@ -673,7 +673,16 @@ class TocGame
             cFinalCaja: cambioFinal
         };
 
-        this.imprimirCierreCaja(objImpresion);
+        try
+        {
+            this.imprimirCierreCaja(objImpresion);
+        }
+        catch(err)
+        {
+            vueToast.abrir('error', 'Impresora no detectada');
+            console.log(err);
+        }
+        
         unaCaja.descuadre = descuadre;
         unaCaja.nClientes = nClientes;
         unaCaja.recaudado = recaudado;

@@ -1,12 +1,9 @@
 ipcRenderer.on('res-buscar-fichados', (ev, data) => {
     toc.setArrayFichados(data);
-    if (toc.todoInstalado()) {
-        if (toc.hayFichados()) {
-            if (!toc.cajaAbierta()) {
-                vueApertura.abreModal();
-            }
-        }
-        else {
+    if (toc.todoInstalado()) //parametros licencia
+     {
+        if (!toc.hayFichados()) //trabajadores fichados
+         {
             toc.setArrayFichados([]);
             abrirModalFichajes();
         }

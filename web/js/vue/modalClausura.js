@@ -166,27 +166,7 @@ var vueClausura = new Vue({
             };
             dialog.showMessageBox(remote.getCurrentWindow(), options, (res) => {
                 if (res === 0) {
-                    const data = {
-                        _id: 'CAJA',
-                        inicioTime: new Date(),
-                        finalTime: null,
-                        idDependienta: null,
-                        totalApertura: Number(this.getTotal.toFixed(2)),
-                        totalCierre: null,
-                        descuadre: null,
-                        recaudado: null,
-                        nClientes: null,
-                        detalleApertura: this.getDetalle,
-                        detalleCierre: [],
-                        enviado: false,
-                        enTransito: false
-                    };
-                    toc.abrirCaja(data);
-                }
-                else {
-                    if (res === 1) {
-                        console.log("CANCELADA");
-                    }
+                    toc.cerrarCaja(this.getTotal, this.getDetalle);
                 }
             });
         }

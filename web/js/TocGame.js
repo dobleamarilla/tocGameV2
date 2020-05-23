@@ -537,7 +537,13 @@ class TocGame {
             cInicioCaja: cambioInicial,
             cFinalCaja: cambioFinal
         };
-        this.imprimirCierreCaja(objImpresion);
+        try {
+            this.imprimirCierreCaja(objImpresion);
+        }
+        catch (err) {
+            vueToast.abrir('error', 'Impresora no detectada');
+            console.log(err);
+        }
         unaCaja.descuadre = descuadre;
         unaCaja.nClientes = nClientes;
         unaCaja.recaudado = recaudado;

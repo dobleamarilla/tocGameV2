@@ -37,7 +37,7 @@ var vueCaja = new Vue({
                         <div class="col-md-2">
                             <button type="button" class="btn btn-primary btn-block ml-0" @click="abrirModalCerrarCaja()"><i class="fas fa-lock fa-2x"></i></button>
                             <button type="button" class="btn btn-secondary btn-block ml-0" @click="abrirModalAbrirCaja()"><i class="fas fa-lock-open fa-2x"></i></button>
-                            <button type="button" class="btn btn-success btn-block ml-0" @click="volverACaja()"><i class="fas fa-sign-in-alt fa-2x"></i></button>
+                            <button type="button" class="btn btn-success btn-block ml-0" @click="abrirModalEntradaDinero()"><i class="fas fa-sign-in-alt fa-2x"></i></button>
                             <button type="button" class="btn btn-danger btn-block ml-0" @click="abrirModalSalidaDinero()"><i class="fas fa-sign-out-alt fa-2x"></i></button>
                             <button type="button" class="btn btn-warning btn-block ml-0" @click="volverACaja()"><i class="fas fa-search-plus fa-2x"></i></button>
                             <button type="button" class="btn btn-info btn-block ml-0" @click="imprimirTicket()"><i class="fas fa-print fa-2x"></i></button>
@@ -84,17 +84,32 @@ var vueCaja = new Vue({
         },
         abrirModalEntradaDinero()
         {
-
+            this.cerrarModal();
+            vueEntradaDinero.abreModal();
         },
         abrirModalCerrarCaja()
         {
-            this.cerrarModal();
-            vueClausura.abreModal();
+            if(toc.cajaAbierta())
+            {
+                this.cerrarModal();
+                vueClausura.abreModal();
+            }
+            else
+            {
+                vueToast.abrir('danger', 'No hay ninguna caja abierta');
+            }            
         },
         abrirModalAbrirCaja()
         {
-            this.cerrarModal();
-            vueApertura.abreModal();
+            if(!toc.cajaAbierta())
+            {
+                this.cerrarModal();
+                vueApertura.abreModal();
+            }
+            else
+            {
+                vueToast.abrir('danger', 'Ya existe una caja abierta');
+            }
         },
         convertirFecha(fecha)
         {
