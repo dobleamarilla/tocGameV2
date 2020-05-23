@@ -58,7 +58,10 @@ function getTicketsIntervalo(unaCaja) {
             { 'timestamp.startDate': { $lt: unaCaja.inicioTime } },
             { 'timestamp.endDate': { $gt: unaCaja.finalTime } }
         ]
-    }, (err, photographers) => { }).lean();
+    }, (err, respuesta) => {
+        console.log(err);
+        console.log("Lo que me ha encontrado del invervalo es: ", respuesta);
+    }).lean();
 }
 exports.tickets = Tickets;
 exports.insertarTicket = insertarTicket;

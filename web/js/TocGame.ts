@@ -573,19 +573,18 @@ class TocGame
         }
         const infoTrabajador: Trabajador = this.getCurrentTrabajador();
         const nuevoIdTicket = this.getUltimoTicket()+1;
+        const objTicket: Ticket = {
+            _id: nuevoIdTicket,
+            timestamp: new Date(),
+            total: total,
+            lista: this.cesta.lista,
+            tarjeta: !efectivo,
+            idTrabajador: infoTrabajador._id,
+            tiposIva: this.cesta.tiposIva
+        }
 
         if(efectivo)
         {
-            const objTicket: Ticket = {
-                _id: nuevoIdTicket,
-                timestamp: new Date(),
-                total: total,
-                lista: this.cesta.lista,
-                tarjeta: !efectivo,
-                idTrabajador: infoTrabajador._id,
-                tiposIva: this.cesta.tiposIva
-            }
-            console.log(objTicket);
             ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
             this.parametros.ultimoTicket++;
             ipcRenderer.send('setParametros', this.parametros)
@@ -595,22 +594,29 @@ class TocGame
         }
         else
         {
-            const objTicket: Ticket = {
-                _id: nuevoIdTicket,
-                timestamp: new Date(),
-                total: total,
-                lista: this.cesta.lista,
-                tarjeta: !efectivo,
-                idTrabajador: infoTrabajador._id,
-                tiposIva: this.cesta.tiposIva
+            if(this.parametros.tipoDatafono === TIPO_CLEARONE)
+            {
+                this.ticketColaDatafono = objTicket;
+                ipcRenderer.send('ventaDatafono', {nombreDependienta: infoTrabajador.nombre, idTicket: nuevoIdTicket, total: Number((total * 100).toFixed(2)).toString()});
             }
-            this.ticketColaDatafono = objTicket;
-            ipcRenderer.send('ventaDatafono', {nombreDependienta: infoTrabajador.nombre, idTicket: nuevoIdTicket, total: Number((total * 100).toFixed(2)).toString()});
+            else
+            {
+                if(this.parametros.tipoDatafono === TIPO_3G)
+                {
+                    vueCobrar.activoEsperaDatafono();
+                    ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
+                    this.parametros.ultimoTicket++;
+                    ipcRenderer.send('setParametros', this.parametros)
+                    this.borrarCesta();
+                    vueCobrar.cerrarModal();
+                    vueToast.abrir('success', 'Ticket creado');
+                }
+            }
         }
     }
     controlRespuestaDatafono(respuesta)
     {
-        //CERRAR ANIMACIÓN PARA DATÁFONO PENDIENTE
+        vueCobrar.desactivoEsperaDatafono();
         if(respuesta[1] === 48) //Primero STX, segundo estado transacción: correcta = 48, incorrecta != 48
         {
             console.log("Operación APROBADA");

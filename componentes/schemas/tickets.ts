@@ -66,8 +66,14 @@ function getTicketsIntervalo(unaCaja: Caja)
             {'timestamp.startDate': {$lt: unaCaja.inicioTime}},
             {'timestamp.endDate': {$gt: unaCaja.finalTime}}
         ]
-    }, (err, photographers) => {}).lean();
+    }, (err, respuesta) => {
+        console.log(err);
+        console.log("Lo que me ha encontrado del invervalo es: ", respuesta);
+    }).lean();
 }
+//{$and: [{precioConIva: {$lte: 1.5}}, {precioConIva: {$gte: 1.1}}]}   FUNCIONA COMPROBADO
+//{precioConIva: {$lte: 1.5, $gte: 1.4}} TAMBIÉN FUNCIONA, MEJORADA (AND IMPLICITO)
+
 exports.tickets               = Tickets;
 exports.insertarTicket        = insertarTicket;
 exports.getInfoTicket         = getInfoTicket;

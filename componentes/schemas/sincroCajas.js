@@ -9,14 +9,14 @@ var schemaSincro = new conexion.mongoose.Schema({
     descuadre: Number,
     recaudado: Number,
     nClientes: Number,
-    detalleApertura: {
-        valor: Number,
-        unidades: Number
-    },
-    detalleCierre: {
-        valor: Number,
-        unidades: Number
-    },
+    detalleApertura: [{
+            valor: Number,
+            unidades: Number
+        }],
+    detalleCierre: [{
+            valor: Number,
+            unidades: Number
+        }],
     enviado: {
         type: Boolean,
         default: false
@@ -26,7 +26,7 @@ var schemaSincro = new conexion.mongoose.Schema({
         default: false
     }
 });
-var Sincro = conexion.mongoose.model('sincro', schemaSincro);
+var Sincro = conexion.mongoose.model('sincro-cajas', schemaSincro);
 function nuevoItemSincroCajas(data) {
     data._id = Date.now();
     var aux = new Sincro(data);

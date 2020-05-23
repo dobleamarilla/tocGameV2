@@ -19,10 +19,14 @@ var vueCobrar = new Vue({
                         <span class="verTotal">{{total}} €</span>
                     </div>
                 </div>
+                <div class="row" v-bind:style="esperandoDatafono">
+                    <div class="col-md-12 text-center">
+                        <img src="assets/imagenes/loading.gif" alt="Esperando respuesta del datáfono">
+                    </div>
+                </div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" @click="confirmar()">Confirmar</button>
-				<button type="button" class="btn btn-danger" @click="reset()">Reset</button>
+				<button type="button" class="btn btn-primary btn-lg" @click="cerrarModal()">Cancelar</button>
 			</div>
 		</div>
     </div>
@@ -32,7 +36,8 @@ var vueCobrar = new Vue({
     {
       return {
           total: 0,
-          arrayFichados: []
+          arrayFichados: [],
+          esperandoDatafono: {display: 'none'}
       }
     },
     methods: 
@@ -53,6 +58,14 @@ var vueCobrar = new Vue({
         cobrar(efectivo: boolean)
         {
             toc.crearTicket(efectivo);
+        },
+        activoEsperaDatafono()
+        {
+            this.esperandoDatafono.display = 'unset';
+        },
+        desactivoEsperaDatafono()
+        {
+            this.esperandoDatafono.display = 'none';
         }
     }
   });
