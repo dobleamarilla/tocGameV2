@@ -132,7 +132,7 @@ app.on('ready', () => {
     });
     //FINAL MENUS
     //GUARDAR CAJA SINCRO
-    ipcMain.on('guardarCaja', (ev, data) => {
+    ipcMain.on('guardarCajaSincro', (ev, data) => {
         sincro.nuevoItemSincroCajas(data);
     });
     //FINAL GUARDAR CAJA SINCRO

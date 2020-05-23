@@ -47,11 +47,23 @@ class TocGame {
         }
     }
     cajaAbierta() {
-        if (this.caja.inicioTime === null) {
-            return false;
+        if (this.caja.inicioTime === null || this.caja.inicioTime === undefined) {
+            if (this.caja.finalTime === null || this.caja.finalTime === undefined) {
+                return false;
+            }
+            else {
+                throw 'Error de comportamiento de cajas 1';
+                return false;
+            }
         }
         else {
-            return true;
+            if (this.caja.finalTime === null || this.caja.finalTime === undefined) {
+                return true;
+            }
+            else {
+                throw 'Error de comportamiento de cajas 2';
+                return true;
+            }
         }
     }
     setCaja(data) {
@@ -487,14 +499,32 @@ class TocGame {
         vueCaja.cargarListaTickets(arrayTickets);
         vueCaja.abreModal();
     }
+    borrarCaja() {
+        this.caja = {
+            _id: "CAJA",
+            inicioTime: null,
+            finalTime: null,
+            idDependienta: null,
+            totalApertura: null,
+            totalCierre: null,
+            descuadre: null,
+            recaudado: null,
+            nClientes: null,
+            detalleApertura: [],
+            detalleCierre: [],
+            enviado: false,
+            enTransito: false
+        };
+        ipcRenderer.send('actualizar-info-caja', this.caja);
+    }
     cerrarCaja(total, detalleCierre) {
         this.caja.totalCierre = total;
         this.caja.detalleCierre = detalleCierre;
         this.caja.finalTime = new Date();
         this.caja.idDependienta = this.getCurrentTrabajador()._id;
         this.caja = this.calcularDatosCaja(this.caja);
-        ipcRenderer.send('guardarCaja', this.caja);
-        this.caja.inicioTime = null;
+        ipcRenderer.send('guardarCajaSincro', this.caja);
+        this.borrarCaja();
         vueCaja.cerrarModal();
         this.iniciar();
     }
@@ -547,6 +577,7 @@ class TocGame {
         unaCaja.descuadre = descuadre;
         unaCaja.nClientes = nClientes;
         unaCaja.recaudado = recaudado;
+        console.log("AQUI IMPRIMO UNA CAJA MAGICA: ", unaCaja);
         return unaCaja;
     }
     imprimirTicket(idTicket) {
@@ -569,6 +600,7 @@ class TocGame {
         ipcRenderer.send('imprimirCierreCaja', info);
     }
     iniciar() {
+        $('.modal').modal('hide');
         ipcRenderer.send('buscar-fichados');
         const infoPromociones = ipcRenderer.sendSync('get-promociones');
         if (infoPromociones.length > 0) {
