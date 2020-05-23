@@ -398,29 +398,34 @@ class TocGame {
         return ipcRenderer.sendSync('get-info-articulo', idArticulo);
     }
     addItem(idArticulo, idBoton, aPeso, peso, subtotal, unidades = 1) {
-        try {
-            $('#' + idBoton).attr('disabled', true);
-            if (!aPeso) //TIPO NORMAL
-             {
-                let infoArticulo = this.getInfoArticulo(idArticulo);
-                if (infoArticulo) //AQUI PENSAR ALGUNA COMPROBACIÓN CUANDO NO EXISTA O FALLE ESTE GET
+        if (this.cajaAbierta()) {
+            try {
+                $('#' + idBoton).attr('disabled', true);
+                if (!aPeso) //TIPO NORMAL
                  {
-                    this.insertarArticuloCesta(infoArticulo, unidades);
+                    let infoArticulo = this.getInfoArticulo(idArticulo);
+                    if (infoArticulo) //AQUI PENSAR ALGUNA COMPROBACIÓN CUANDO NO EXISTA O FALLE ESTE GET
+                     {
+                        this.insertarArticuloCesta(infoArticulo, unidades);
+                    }
+                    else {
+                        vueToast.abrir('error', 'Este artículo tiene errores');
+                    }
                 }
-                else {
-                    vueToast.abrir('error', 'Este artículo tiene errores');
+                else //TIPO PESO
+                 {
+                    //caso a peso
                 }
+                $('#' + idBoton).attr('disabled', false);
             }
-            else //TIPO PESO
-             {
-                //caso a peso
+            catch (err) {
+                console.log(err);
+                vueToast.abrir('error', 'Error al añadir el articulo');
+                $('#' + idBoton).attr('disabled', false);
             }
-            $('#' + idBoton).attr('disabled', false);
         }
-        catch (err) {
-            console.log(err);
-            vueToast.abrir('error', 'Error al añadir el articulo');
-            $('#' + idBoton).attr('disabled', false);
+        else {
+            vueToast.abrir('danger', 'Se requiere una caja abierta para cobrar');
         }
     }
     abrirModalPago() {
@@ -452,6 +457,7 @@ class TocGame {
                 idTrabajador: infoTrabajador._id,
                 tiposIva: this.cesta.tiposIva
             };
+            console.log(objTicket);
             ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
             this.parametros.ultimoTicket++;
             ipcRenderer.send('setParametros', this.parametros);

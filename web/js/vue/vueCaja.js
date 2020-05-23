@@ -73,12 +73,22 @@ var vueCaja = new Vue({
             this.ticketActivo = x;
         },
         abrirModalSalidaDinero() {
-            this.cerrarModal();
-            vueSalidaDinero.abreModal();
+            if (toc.cajaAbierta()) {
+                this.cerrarModal();
+                vueSalidaDinero.abreModal();
+            }
+            else {
+                vueToast.abrir('danger', 'No hay ninguna caja abierta');
+            }
         },
         abrirModalEntradaDinero() {
-            this.cerrarModal();
-            vueEntradaDinero.abreModal();
+            if (toc.cajaAbierta()) {
+                this.cerrarModal();
+                vueEntradaDinero.abreModal();
+            }
+            else {
+                vueToast.abrir('danger', 'No hay ninguna caja abierta');
+            }
         },
         abrirModalCerrarCaja() {
             if (toc.cajaAbierta()) {
