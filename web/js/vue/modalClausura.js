@@ -1,12 +1,12 @@
-var vueApertura = new Vue({
-    el: '#vueApertura',
+var vueClausura = new Vue({
+    el: '#vueClausura',
     template: 
-    /*html*/`
-<div class="modal" id="vueModalApertura" tabindex="-1" role="dialog">
+    /*html*/ `
+<div class="modal" id="vueModalClausura" tabindex="-1" role="dialog">
 	<div class="modal-dialog" style="max-width:80%" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">ABRIR CAJA</h5>
+				<h5 class="modal-title">CERRAR CAJA</h5>
 				</button>
 			</div>
 			<div class="modal-body">
@@ -93,61 +93,53 @@ var vueApertura = new Vue({
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-danger btn-lg" @click="resetTodo()">RESET  LIMPIAR TODO</button>
-				<button type="button" class="btn btn-primary btn-lg" @click="abrirCaja()">ABRIR CON {{getTotal.toFixed(2)}} €</button>
+				<button type="button" class="btn btn-primary btn-lg" @click="cerrarCaja()">CERRAR CON {{getTotal.toFixed(2)}} €</button>
 			</div>
 		</div>
     </div>
 </div>
     `,
-    data () 
-    {
-      return {
-        infoDinero: [
-            { valor: 0, style: '' },
-            { valor: 0, style: '' },
-            { valor: 0, style: '' },
-            { valor: 0, style: '' },
-            { valor: 0, style: '' },
-            { valor: 0, style: '' },
-            { valor: 0, style: '' },
-            { valor: 0, style: '' },
-            { valor: 0, style: '' },
-            { valor: 0, style: '' },
-            { valor: 0, style: '' },
-            { valor: 0, style: '' },
-            { valor: 0, style: '' },
-            { valor: 0, style: '' },
-            { valor: 0, style: '' },
-        ],
-        activo: 0
-      }
+    data() {
+        return {
+            infoDinero: [
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+            ],
+            activo: 0
+        };
     },
-    methods: 
-    {
-        abreModal()
-        {
-            $('#vueModalApertura').modal();
+    methods: {
+        abreModal() {
+            $('#vueModalClausura').modal();
         },
-        cerrarModal()
-        {
-            $('#vueModalApertura').modal('hide');
+        cerrarModal() {
+            $('#vueModalClausura').modal('hide');
         },
-        setActivo(x) 
-        {
+        setActivo(x) {
             this.infoDinero[this.activo].style = '';
             this.activo = x;
             this.infoDinero[this.activo].style = 'color: red;font-weight: bold;';
         },
-        addNumero(x) 
-        {
+        addNumero(x) {
             this.infoDinero[this.activo].valor = Number(this.infoDinero[this.activo].valor.toString() + x);
         },
-        borrarNumero() 
-        {
+        borrarNumero() {
             this.infoDinero[this.activo].valor = Number(this.infoDinero[this.activo].valor.toString().slice(0, -1));
         },
-        resetTodo()
-        {
+        resetTodo() {
             this.infoDinero = [
                 { valor: 0, style: '' },
                 { valor: 0, style: '' },
@@ -164,44 +156,39 @@ var vueApertura = new Vue({
                 { valor: 0, style: '' },
                 { valor: 0, style: '' },
                 { valor: 0, style: '' },
-            ]
+            ];
         },
-        abrirCaja()
-        {
+        cerrarCaja() {
             const cantidadLimpia = this.getTotal;
             let options = {
-                buttons: ["&SÍ","&NO"],
-                message: "Se abrirá la caja con "+ cantidadLimpia +" €. ¿CAMBIO CORRECTO?"
-            }
-            
+                buttons: ["&SÍ", "&NO"],
+                message: "Se cerrará la caja con " + cantidadLimpia + " €. ¿CAMBIO CORRECTO?"
+            };
             dialog.showMessageBox(remote.getCurrentWindow(), options, (res) => {
-             if (res === 0)
-             {
-                const data: Caja = {
-                    _id: 'CAJA',
-                    inicioTime: new Date(),
-                    finalTime: null,
-                    idDependienta: null,
-                    totalApertura: Number(this.getTotal.toFixed(2)),
-                    totalCierre: null,
-                    descuadre: null,
-                    recaudado: null,
-                    nClientes: null,
-                    detalleApertura: this.getDetalle,
-                    detalleCierre: [],
-                    enviado: false,
-                    enTransito: false
+                if (res === 0) {
+                    const data = {
+                        _id: 'CAJA',
+                        inicioTime: new Date(),
+                        finalTime: null,
+                        idDependienta: null,
+                        totalApertura: Number(this.getTotal.toFixed(2)),
+                        totalCierre: null,
+                        descuadre: null,
+                        recaudado: null,
+                        nClientes: null,
+                        detalleApertura: this.getDetalle,
+                        detalleCierre: [],
+                        enviado: false,
+                        enTransito: false
+                    };
+                    toc.abrirCaja(data);
                 }
-                toc.abrirCaja(data);
-             }
-             else
-             {
-                 if(res === 1)
-                 {
-                    console.log("CANCELADA");
-                 }
-             }
-            })
+                else {
+                    if (res === 1) {
+                        console.log("CANCELADA");
+                    }
+                }
+            });
         }
     },
     computed: {
@@ -222,28 +209,28 @@ var vueApertura = new Vue({
             total += this.infoDinero[12].valor * 100;
             total += this.infoDinero[13].valor * 200;
             total += this.infoDinero[14].valor * 500;
-
             return total;
         },
-        getDetalle(){
+        getDetalle() {
             var info = [
-                {valor: this.infoDinero[0].valor * 0.01, unidades: this.infoDinero[0].valor},
-                {valor: this.infoDinero[1].valor * 0.02, unidades: this.infoDinero[1].valor},
-                {valor: this.infoDinero[2].valor * 0.05, unidades: this.infoDinero[2].valor},
-                {valor: this.infoDinero[3].valor * 0.10, unidades: this.infoDinero[3].valor},
-                {valor: this.infoDinero[4].valor * 0.20, unidades: this.infoDinero[4].valor},
-                {valor: this.infoDinero[5].valor * 0.50, unidades: this.infoDinero[5].valor},
-                {valor: this.infoDinero[6].valor * 1, unidades: this.infoDinero[6].valor},
-                {valor: this.infoDinero[7].valor * 2, unidades: this.infoDinero[7].valor},
-                {valor: this.infoDinero[8].valor * 5, unidades: this.infoDinero[8].valor},
-                {valor: this.infoDinero[9].valor * 10, unidades: this.infoDinero[9].valor},
-                {valor: this.infoDinero[10].valor * 20, unidades: this.infoDinero[10].valor},
-                {valor: this.infoDinero[11].valor * 50, unidades: this.infoDinero[11].valor},
-                {valor: this.infoDinero[12].valor * 100, unidades: this.infoDinero[12].valor},
-                {valor: this.infoDinero[13].valor * 200, unidades: this.infoDinero[13].valor},
-                {valor: this.infoDinero[14].valor * 500, unidades: this.infoDinero[14].valor},
+                { valor: this.infoDinero[0].valor * 0.01, unidades: this.infoDinero[0].valor },
+                { valor: this.infoDinero[1].valor * 0.02, unidades: this.infoDinero[1].valor },
+                { valor: this.infoDinero[2].valor * 0.05, unidades: this.infoDinero[2].valor },
+                { valor: this.infoDinero[3].valor * 0.10, unidades: this.infoDinero[3].valor },
+                { valor: this.infoDinero[4].valor * 0.20, unidades: this.infoDinero[4].valor },
+                { valor: this.infoDinero[5].valor * 0.50, unidades: this.infoDinero[5].valor },
+                { valor: this.infoDinero[6].valor * 1, unidades: this.infoDinero[6].valor },
+                { valor: this.infoDinero[7].valor * 2, unidades: this.infoDinero[7].valor },
+                { valor: this.infoDinero[8].valor * 5, unidades: this.infoDinero[8].valor },
+                { valor: this.infoDinero[9].valor * 10, unidades: this.infoDinero[9].valor },
+                { valor: this.infoDinero[10].valor * 20, unidades: this.infoDinero[10].valor },
+                { valor: this.infoDinero[11].valor * 50, unidades: this.infoDinero[11].valor },
+                { valor: this.infoDinero[12].valor * 100, unidades: this.infoDinero[12].valor },
+                { valor: this.infoDinero[13].valor * 200, unidades: this.infoDinero[13].valor },
+                { valor: this.infoDinero[14].valor * 500, unidades: this.infoDinero[14].valor },
             ];
             return info;
         }
     }
-  });
+});
+//# sourceMappingURL=modalClausura.js.map

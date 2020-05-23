@@ -2,7 +2,7 @@ var vueApertura = new Vue({
     el: '#vueApertura',
     template: 
     /*html*/ `
-<div class="modal" id="vueApertura" tabindex="-1" role="dialog">
+<div class="modal" id="vueModalApertura" tabindex="-1" role="dialog">
 	<div class="modal-dialog" style="max-width:80%" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -10,68 +10,68 @@ var vueApertura = new Vue({
 				</button>
 			</div>
 			<div class="modal-body">
-				<div class="row" style="text-align: center">
+				<div class="row p-2" style="text-align: center">
 					<div class="col" @click="setActivo(0)">
                         <img src="assets/imagenes/1cts.png" width="84px" height="84px" alt="1 CTS.">
-                        <label :style="infoDinero[0].style">{{infoDinero[0].valor}} uds.</label>
+                        <label :style="infoDinero[0].style">{{infoDinero[0].valor}} unidades</label>
 					</div>
 					<div class="col" @click="setActivo(1)">
                         <img src="assets/imagenes/2cts.png" width="84px" height="84px" alt="1 CTS.">
-                        <label :style="infoDinero[1].style">{{infoDinero[1].valor}} uds.</label>
+                        <label :style="infoDinero[1].style">{{infoDinero[1].valor}} unidades</label>
 					</div>
 					<div class="col" @click="setActivo(2)">
                         <img src="assets/imagenes/5cts.png" width="84px" height="84px" alt="1 CTS.">
-                        <label :style="infoDinero[2].style">{{infoDinero[2].valor}} uds.</label>
+                        <label :style="infoDinero[2].style">{{infoDinero[2].valor}} unidades</label>
 					</div>
 					<div class="col" @click="setActivo(3)">
                         <img src="assets/imagenes/10cts.png" width="84px" height="84px" alt="1 CTS.">
-                        <label :style="infoDinero[3].style">{{infoDinero[3].valor}} uds.</label>
+                        <label :style="infoDinero[3].style">{{infoDinero[3].valor}} unidades</label>
 					</div>
 					<div class="col" @click="setActivo(4)">
                         <img src="assets/imagenes/20cts.png" width="84px" height="84px" alt="1 CTS.">
-                        <label :style="infoDinero[4].style"> {{infoDinero[4].valor}} uds.</label>
+                        <label :style="infoDinero[4].style"> {{infoDinero[4].valor}} unidades</label>
 					</div>
 					<div class="col" @click="setActivo(5)">
                         <img src="assets/imagenes/50cts.png" width="84px" height="84px" alt="1 CTS.">
-                        <label :style="infoDinero[5].style">{{infoDinero[5].valor}} uds.</label>
+                        <label :style="infoDinero[5].style">{{infoDinero[5].valor}} unidades</label>
 					</div>
 					<div class="col" @click="setActivo(6)">
                         <img src="assets/imagenes/uneuro.png" width="84px" height="84px" alt="1 CTS.">
-                        <label :style="infoDinero[6].style">{{infoDinero[6].valor}} uds.</label>
+                        <label :style="infoDinero[6].style">{{infoDinero[6].valor}} unidades</label>
 					</div>
 					<div class="col" @click="setActivo(7)">
                         <img src="assets/imagenes/doseuros.png" width="84px" height="84px" alt="1 CTS.">
-                        <label :style="infoDinero[7].style">{{infoDinero[7].valor}} uds.</label>
+                        <label :style="infoDinero[7].style">{{infoDinero[7].valor}} unidades</label>
 					</div>
 				</div>
-				<div class="row mx-auto">
+				<div class="row mx-auto p-2">
 					<div class="col" style="text-align: center;" @click="setActivo(8)">
                         <img src="assets/imagenes/5euros.png" width="135px" height="68px">
-                        <label :style="infoDinero[8].style">{{infoDinero[8].valor}} uds.</label>
+                        <label :style="infoDinero[8].style">{{infoDinero[8].valor}} unidades</label>
 					</div>
 					<div class="col" style="text-align: center;" @click="setActivo(9)">
                         <img src="assets/imagenes/10euros.png" width="135px" height="68px">
-                        <label :style="infoDinero[9].style">{{infoDinero[9].valor}} uds.</label>
+                        <label :style="infoDinero[9].style">{{infoDinero[9].valor}} unidades</label>
 					</div>
 					<div class="col" style="text-align: center;" @click="setActivo(10)">
                         <img src="assets/imagenes/20euros.png" width="135px" height="68px">
-                        <label :style="infoDinero[10].style">{{infoDinero[10].valor}} uds.</label>
+                        <label :style="infoDinero[10].style">{{infoDinero[10].valor}} unidades</label>
 					</div>
 					<div class="col" style="text-align: center;" @click="setActivo(11)">
                         <img src="assets/imagenes/50euros.png" width="135px" height="68px">
-                        <label :style="infoDinero[11].style">{{infoDinero[11].valor}} uds.</label>
+                        <label :style="infoDinero[11].style">{{infoDinero[11].valor}} unidades</label>
 					</div>
 					<div class="col" style="text-align: center;" @click="setActivo(12)">
                         <img src="assets/imagenes/100euros.png" width="135px" height="68px">
-                        <label :style="infoDinero[12].style">{{infoDinero[12].valor}} uds.</label>
+                        <label :style="infoDinero[12].style">{{infoDinero[12].valor}} unidades</label>
 					</div>
 					<div class="col" style="text-align: center;" @click="setActivo(13)">
                         <img src="assets/imagenes/200euros.png" width="135px" height="68px">
-                        <label :style="infoDinero[13].style">{{infoDinero[13].valor}} uds.</label>
+                        <label :style="infoDinero[13].style">{{infoDinero[13].valor}} unidades</label>
 					</div>
 					<div class="col" style="text-align: center;" @click="setActivo(14)">
                         <img src="assets/imagenes/500euros.png" width="135px" height="68px">
-                        <label :style="infoDinero[14].style">{{infoDinero[14].valor}} uds.</label>
+                        <label :style="infoDinero[14].style">{{infoDinero[14].valor}} unidades</label>
 					</div>
 				</div>
 				<div class="row">
@@ -92,8 +92,8 @@ var vueApertura = new Vue({
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" @click="abrirCaja()">ABRIR CON: {{getTotal.toFixed(2)}}€</button>
-				<button type="button" class="btn btn-danger">Reset</button>
+				<button type="button" class="btn btn-danger btn-lg" @click="resetTodo()">RESET  LIMPIAR TODO</button>
+				<button type="button" class="btn btn-primary btn-lg" @click="abrirCaja()">ABRIR CON {{getTotal.toFixed(2)}} €</button>
 			</div>
 		</div>
     </div>
@@ -123,10 +123,10 @@ var vueApertura = new Vue({
     },
     methods: {
         abreModal() {
-            $('#vueApertura').modal({ backdrop: 'static', keyboard: false });
+            $('#vueModalApertura').modal();
         },
         cerrarModal() {
-            $('#vueApertura').modal('hide');
+            $('#vueModalApertura').modal('hide');
         },
         setActivo(x) {
             this.infoDinero[this.activo].style = '';
@@ -139,26 +139,56 @@ var vueApertura = new Vue({
         borrarNumero() {
             this.infoDinero[this.activo].valor = Number(this.infoDinero[this.activo].valor.toString().slice(0, -1));
         },
+        resetTodo() {
+            this.infoDinero = [
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+                { valor: 0, style: '' },
+            ];
+        },
         abrirCaja() {
-            confirm("Se abrirá una caja nueva... ¿CAMBIO CORRECTO?");
-            {
-                const data = {
-                    _id: 'CAJA',
-                    inicioTime: new Date(),
-                    finalTime: null,
-                    idDependienta: null,
-                    totalApertura: Number(this.getTotal.toFixed(2)),
-                    totalCierre: null,
-                    descuadre: null,
-                    recaudado: null,
-                    nClientes: null,
-                    detalleApertura: this.getDetalle,
-                    detalleCierre: [],
-                    enviado: false,
-                    enTransito: false
-                };
-                toc.abrirCaja(data);
-            }
+            const cantidadLimpia = this.getTotal;
+            let options = {
+                buttons: ["&SÍ", "&NO"],
+                message: "Se abrirá la caja con " + cantidadLimpia + " €. ¿CAMBIO CORRECTO?"
+            };
+            dialog.showMessageBox(remote.getCurrentWindow(), options, (res) => {
+                if (res === 0) {
+                    const data = {
+                        _id: 'CAJA',
+                        inicioTime: new Date(),
+                        finalTime: null,
+                        idDependienta: null,
+                        totalApertura: Number(this.getTotal.toFixed(2)),
+                        totalCierre: null,
+                        descuadre: null,
+                        recaudado: null,
+                        nClientes: null,
+                        detalleApertura: this.getDetalle,
+                        detalleCierre: [],
+                        enviado: false,
+                        enTransito: false
+                    };
+                    toc.abrirCaja(data);
+                }
+                else {
+                    if (res === 1) {
+                        console.log("CANCELADA");
+                    }
+                }
+            });
         }
     },
     computed: {

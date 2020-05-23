@@ -1,12 +1,12 @@
-var vueApertura = new Vue({
-    el: '#vueApertura',
+var vueClausura = new Vue({
+    el: '#vueClausura',
     template: 
     /*html*/`
-<div class="modal" id="vueModalApertura" tabindex="-1" role="dialog">
+<div class="modal" id="vueModalClausura" tabindex="-1" role="dialog">
 	<div class="modal-dialog" style="max-width:80%" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">ABRIR CAJA</h5>
+				<h5 class="modal-title">CERRAR CAJA</h5>
 				</button>
 			</div>
 			<div class="modal-body">
@@ -93,7 +93,7 @@ var vueApertura = new Vue({
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-danger btn-lg" @click="resetTodo()">RESET  LIMPIAR TODO</button>
-				<button type="button" class="btn btn-primary btn-lg" @click="abrirCaja()">ABRIR CON {{getTotal.toFixed(2)}} €</button>
+				<button type="button" class="btn btn-primary btn-lg" @click="cerrarCaja()">CERRAR CON {{getTotal.toFixed(2)}} €</button>
 			</div>
 		</div>
     </div>
@@ -126,11 +126,11 @@ var vueApertura = new Vue({
     {
         abreModal()
         {
-            $('#vueModalApertura').modal();
+            $('#vueModalClausura').modal();
         },
         cerrarModal()
         {
-            $('#vueModalApertura').modal('hide');
+            $('#vueModalClausura').modal('hide');
         },
         setActivo(x) 
         {
@@ -166,12 +166,12 @@ var vueApertura = new Vue({
                 { valor: 0, style: '' },
             ]
         },
-        abrirCaja()
+        cerrarCaja()
         {
             const cantidadLimpia = this.getTotal;
             let options = {
                 buttons: ["&SÍ","&NO"],
-                message: "Se abrirá la caja con "+ cantidadLimpia +" €. ¿CAMBIO CORRECTO?"
+                message: "Se cerrará la caja con "+ cantidadLimpia +" €. ¿CAMBIO CORRECTO?"
             }
             
             dialog.showMessageBox(remote.getCurrentWindow(), options, (res) => {
