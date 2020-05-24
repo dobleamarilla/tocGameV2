@@ -156,6 +156,31 @@ class TocGame
             return false;
         }
     }
+    nuevaSalidaDinero(cantidad: number, concepto: string)
+    {
+        let objSalida = {
+            cantidad: cantidad,
+            concepto: concepto,
+            tipo: 'SALIDA'
+        }
+        ipcRenderer.sendSync('', objSalida);
+    }
+    nuevaEntradaDinero(cantidad: number, concepto: string)
+    {
+        let objEntrada = {
+            cantidad: cantidad,
+            concepto: concepto,
+            tipo: 'ENTRADA'
+        }
+        ipcRenderer.sendSync('', objEntrada);
+        // imprimirSalidaDinero({
+        //     cantidad: cantidad,
+        //     fecha: fecha,
+        //     nombreTrabajador: nombreTrabajador,
+        //     nombreTienda: nombreTienda,
+        //     concepto: concepto
+        // });
+    }
     addFichado(trabajador: any): void //COMPROBADA
     {
         this.setCurrentTrabajador(trabajador._id);

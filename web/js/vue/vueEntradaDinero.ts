@@ -56,7 +56,9 @@ var vueEntradaDinero = new Vue({
             dialog.showMessageBox(remote.getCurrentWindow(), options, (res) => {
              if (res === 0)
              {
-                console.log("Confirmada");
+                toc.nuevaEntradaDinero(this.cantidad, this.concepto);
+                this.cerrarModal();
+                vueToast.abrir('success', 'Entrada de dinero OK');
              }
              else
              {
