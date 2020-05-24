@@ -449,7 +449,7 @@ class TocGame {
         const nuevoIdTicket = this.getUltimoTicket() + 1;
         const objTicket = {
             _id: nuevoIdTicket,
-            timestamp: new Date(),
+            timestamp: Date.now(),
             total: total,
             lista: this.cesta.lista,
             tarjeta: !efectivo,
@@ -529,7 +529,7 @@ class TocGame {
     cerrarCaja(total, detalleCierre) {
         this.caja.totalCierre = total;
         this.caja.detalleCierre = detalleCierre;
-        this.caja.finalTime = new Date();
+        this.caja.finalTime = Date.now();
         this.caja.idDependienta = this.getCurrentTrabajador()._id;
         this.caja = this.calcularDatosCaja(this.caja);
         ipcRenderer.send('guardarCajaSincro', this.caja);

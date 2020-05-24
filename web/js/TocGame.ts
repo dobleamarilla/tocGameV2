@@ -575,7 +575,7 @@ class TocGame
         const nuevoIdTicket = this.getUltimoTicket()+1;
         const objTicket: Ticket = {
             _id: nuevoIdTicket,
-            timestamp: new Date(),
+            timestamp: Date.now(),
             total: total,
             lista: this.cesta.lista,
             tarjeta: !efectivo,
@@ -668,7 +668,7 @@ class TocGame
     {
         this.caja.totalCierre   = total;
         this.caja.detalleCierre = detalleCierre;
-        this.caja.finalTime     = new Date();
+        this.caja.finalTime     = Date.now();
         this.caja.idDependienta = this.getCurrentTrabajador()._id;
         
         this.caja = this.calcularDatosCaja(this.caja);

@@ -56,8 +56,8 @@ interface TiposIva
 interface Caja 
 {
     _id: string, //siempre es 'CAJA'
-    inicioTime: Date,
-    finalTime: Date,
+    inicioTime: number,
+    finalTime: number,
     idDependienta: number,
     totalApertura: number,
     totalCierre: number,
@@ -101,7 +101,7 @@ interface Trabajador
 interface Ticket
 {
     _id: number,
-    timestamp: Date,
+    timestamp: number,
     total: number,
     lista: {
         idArticulo: number,

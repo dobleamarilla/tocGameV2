@@ -1,8 +1,8 @@
 var conexion = require('../conexion');
 var schemaSincro = new conexion.mongoose.Schema({
     _id: Number,
-    inicioTime: Date,
-    finalTime: Date,
+    inicioTime: Number,
+    finalTime: Number,
     idDependienta: Number,
     totalApertura: Number,
     totalCierre: Number,

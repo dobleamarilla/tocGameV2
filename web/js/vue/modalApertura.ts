@@ -179,7 +179,7 @@ var vueApertura = new Vue({
                 {
                     const data: Caja = {
                         _id: 'CAJA',
-                        inicioTime: new Date(),
+                        inicioTime: Date.now(),
                         finalTime: null,
                         idDependienta: null,
                         totalApertura: Number(this.getTotal.toFixed(2)),

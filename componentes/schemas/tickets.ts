@@ -2,7 +2,7 @@ var conexion = require('../conexion');
 
 var schemaTickets = new conexion.mongoose.Schema({
     _id: Number,
-    timestamp: Date,
+    timestamp: Number,
     total: Number,
     lista: [{
         idArticulo: Number,
@@ -61,13 +61,13 @@ function getTickets()
 
 function getTicketsIntervalo(unaCaja: Caja)
 {
-    return Tickets.find({precioConIva: {$lte: unaCaja.finalTime, $gte: unaCaja.inicioTime}}, (err, respuesta) => {
+    return Tickets.find({timestamp: {$lte: unaCaja.finalTime, $gte: unaCaja.inicioTime}}, (err, respuesta) => {
         console.log(err);
         console.log("Lo que me ha encontrado del invervalo es: ", respuesta);
     }).lean();
 }
 //{$and: [{precioConIva: {$lte: 1.5}}, {precioConIva: {$gte: 1.1}}]}   FUNCIONA COMPROBADO
-//{precioConIva: {$lte: 1.5, $gte: 1.4}} TAMBIÉN FUNCIONA, MEJORADA (AND IMPLICITO)
+//{precioConIva: {$lte: unaCaja.finalTime, $gte: unaCaja.inicioTime}} TAMBIÉN FUNCIONA, MEJORADA (AND IMPLICITO)
 
 exports.tickets               = Tickets;
 exports.insertarTicket        = insertarTicket;

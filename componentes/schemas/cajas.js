@@ -1,7 +1,7 @@
 var conexion = require('../conexion');
 var schemaCajas = new conexion.mongoose.Schema({
     _id: String,
-    inicioTime: Date,
+    inicioTime: Number,
     totalApertura: Number,
     detalleApertura: [{
             valor: {

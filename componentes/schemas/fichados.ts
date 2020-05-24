@@ -3,8 +3,8 @@ var conexion = require('../conexion');
 var schemaFichados = new conexion.mongoose.Schema({
     idTrabajador: Number,
     nombre: String,
-    inicio: Date,
-    final: Date,
+    inicio: Number,
+    final: Number,
     activo: Boolean,
     fichado: Boolean
 });

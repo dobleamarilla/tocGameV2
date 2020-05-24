@@ -76,7 +76,7 @@ function construirObjetoIvas(infoArticulo, unidades, tipoIvaAnterior) {
 function dateToString(fecha) {
     var fechaFinal = null;
     ;
-    if (typeof fecha === 'string') {
+    if (typeof fecha === 'string' || typeof fecha === 'number') {
         fechaFinal = new Date(fecha);
     }
     let finalYear = `${fechaFinal.getFullYear()}`;
