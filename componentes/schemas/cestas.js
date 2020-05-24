@@ -37,7 +37,7 @@ function setCesta(cesta) {
     }
 }
 function getUnaCesta() {
-    return Cestas.findOne().lean();
+    return Cestas.findOne({}, null, { lean: true });
 }
 function getCestaConcreta(idCesta) {
     return Cestas.findById(idCesta, (err, lal) => {

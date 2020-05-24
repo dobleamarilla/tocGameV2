@@ -10,10 +10,12 @@ var schemaSincro = new conexion.mongoose.Schema({
     recaudado: Number,
     nClientes: Number,
     detalleApertura: [{
+            _id: String,
             valor: Number,
             unidades: Number
         }],
     detalleCierre: [{
+            _id: String,
             valor: Number,
             unidades: Number
         }],

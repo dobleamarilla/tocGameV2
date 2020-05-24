@@ -65,10 +65,12 @@ interface Caja
     recaudado: number,
     nClientes: number,
     detalleApertura: {
+        _id: string,
         valor: number,
         unidades: number
     }[],
     detalleCierre: {
+        _id: string,
         valor: number,
         unidades: number
     }[],

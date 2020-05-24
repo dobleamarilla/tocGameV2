@@ -547,6 +547,7 @@ class TocGame {
         var nombreTienda = this.parametros.nombreTienda;
         var fechaInicio = this.caja.inicioTime;
         var totalTarjeta = 0;
+        var totalEnEfectivo = 0;
         var cambioInicial = this.caja.totalApertura;
         var cambioFinal = this.caja.totalCierre;
         var totalSalidas = 0;
@@ -559,8 +560,11 @@ class TocGame {
                 recaudado += arrayTicketsCaja[i].total;
                 totalTarjeta += arrayTicketsCaja[i].total;
             }
+            else {
+                totalEnEfectivo += arrayTicketsCaja[i].total;
+            }
         }
-        descuadre = cambioFinal - cambioInicial + totalSalidas - totalEntradas + totalTarjeta - (cambioFinal + totalTarjeta);
+        descuadre = cambioFinal - cambioInicial + totalSalidas - totalEntradas - totalEnEfectivo;
         const objImpresion = {
             calaixFet: calaixFet,
             nombreTrabajador: nombreTrabajador,

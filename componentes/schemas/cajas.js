@@ -4,12 +4,9 @@ var schemaCajas = new conexion.mongoose.Schema({
     inicioTime: Number,
     totalApertura: Number,
     detalleApertura: [{
-            valor: {
-                type: Number
-            },
-            unidades: {
-                type: Number
-            }
+            _id: String,
+            valor: Number,
+            unidades: Number
         }]
 });
 var Cajas = conexion.mongoose.model('cajas', schemaCajas);
