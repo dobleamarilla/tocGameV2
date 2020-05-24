@@ -53,16 +53,13 @@ function getTickets() {
     return Tickets.find({}).lean();
 }
 function getTicketsIntervalo(unaCaja) {
-    return Tickets.find({
-        $and: [
-            { 'timestamp.startDate': { $lt: unaCaja.inicioTime } },
-            { 'timestamp.endDate': { $gt: unaCaja.finalTime } }
-        ]
-    }, (err, respuesta) => {
+    return Tickets.find({ precioConIva: { $lte: unaCaja.finalTime, $gte: unaCaja.inicioTime } }, (err, respuesta) => {
         console.log(err);
         console.log("Lo que me ha encontrado del invervalo es: ", respuesta);
     }).lean();
 }
+//{$and: [{precioConIva: {$lte: 1.5}}, {precioConIva: {$gte: 1.1}}]}   FUNCIONA COMPROBADO
+//{precioConIva: {$lte: 1.5, $gte: 1.4}} TAMBIÉN FUNCIONA, MEJORADA (AND IMPLICITO)
 exports.tickets = Tickets;
 exports.insertarTicket = insertarTicket;
 exports.getInfoTicket = getInfoTicket;

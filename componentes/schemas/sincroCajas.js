@@ -29,6 +29,7 @@ var schemaSincro = new conexion.mongoose.Schema({
 var Sincro = conexion.mongoose.model('sincro-cajas', schemaSincro);
 function nuevoItemSincroCajas(data) {
     data._id = Date.now();
+    console.log("pero q mierda es bson: ", data);
     var aux = new Sincro(data);
     aux.save();
 }
