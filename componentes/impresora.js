@@ -3,8 +3,8 @@ var exec = require('child_process').exec;
 var os = require('os');
 escpos.USB = require('escpos-usb');
 escpos.Serial = require('escpos-serialport');
-const TIPO_SALIDA_DINERO = 1;
-const TIPO_ENTRADA_DINERO = 2;
+const TIPO_ENTRADA_DINERO = 'ENTRADA';
+const TIPO_SALIDA_DINERO = 'SALIDA';
 function dateToString2(fecha) {
     var fechaFinal = null;
     ;
@@ -207,7 +207,7 @@ var cierreCaja = function (event, calaixFet, nombreTrabajador, descuadre, nClien
         var fechaFinal = new Date(fF);
         var textoMovimientos = '';
         for (let i = 0; i < arrayMovimientos.length; i++) {
-            var auxFecha = new Date(arrayMovimientos[i].timestamp);
+            var auxFecha = new Date(arrayMovimientos[i]._id);
             if (arrayMovimientos[i].tipo === TIPO_SALIDA_DINERO) {
                 textoMovimientos += `${i + 1}: Salida:\n           Cantidad: -${arrayMovimientos[i].valor}\n           Fecha: ${auxFecha.getDate()}/${auxFecha.getMonth()}/${auxFecha.getFullYear()}  ${auxFecha.getHours()}:${auxFecha.getMinutes()}\n           Concepto: ${arrayMovimientos[i].concepto}\n`;
             }

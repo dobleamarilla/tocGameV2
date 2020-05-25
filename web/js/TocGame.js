@@ -4,6 +4,8 @@ const TIPO_USB = 'USB';
 const TIPO_SERIE = 'SERIE';
 const TIPO_CLEARONE = 'CLEARONE';
 const TIPO_3G = '3G';
+const TIPO_ENTRADA = 'ENTRADA';
+const TIPO_SALIDA = 'SALIDA';
 class TocGame {
     constructor() {
         const info = ipcRenderer.sendSync('getParametros');
@@ -120,7 +122,7 @@ class TocGame {
     nuevaSalidaDinero(cantidad, concepto) {
         let objSalida = {
             _id: Date.now(),
-            tipo: 'SALIDA',
+            tipo: TIPO_SALIDA,
             valor: cantidad,
             concepto: concepto,
             idTrabajador: this.getCurrentTrabajador()._id
@@ -137,7 +139,7 @@ class TocGame {
     nuevaEntradaDinero(cantidad, concepto) {
         let objEntrada = {
             _id: Date.now(),
-            tipo: 'ENTRADA',
+            tipo: TIPO_ENTRADA,
             valor: cantidad,
             concepto: concepto,
             idTrabajador: this.getCurrentTrabajador()._id
@@ -574,11 +576,11 @@ class TocGame {
     }
     calcularDatosCaja(unaCaja) {
         var arrayTicketsCaja = ipcRenderer.sendSync('getTicketsIntervalo', unaCaja);
+        var arrayMovimientos = ipcRenderer.sendSync('get-rango-movimientos', { fechaInicio: unaCaja.inicioTime, fechaFinal: unaCaja.finalTime });
         var calaixFet = 0;
         var nombreTrabajador = this.getCurrentTrabajador().nombre;
         var descuadre = 0;
         var nClientes = 0;
-        var arrayMovimientos = [];
         var nombreTienda = this.parametros.nombreTienda;
         var fechaInicio = this.caja.inicioTime;
         var totalTarjeta = 0;
@@ -588,6 +590,16 @@ class TocGame {
         var totalSalidas = 0;
         var totalEntradas = 0;
         var recaudado = this.caja.totalCierre - this.caja.totalApertura + totalSalidas - totalEntradas;
+        for (let i = 0; i < arrayMovimientos.length; i++) {
+            if (arrayMovimientos[i].tipo === TIPO_SALIDA) {
+                totalSalidas += arrayMovimientos[i].valor;
+            }
+            else {
+                if (arrayMovimientos[i].tipo === TIPO_ENTRADA) {
+                    totalEntradas += arrayMovimientos[i].valor;
+                }
+            }
+        }
         for (let i = 0; i < arrayTicketsCaja.length; i++) {
             nClientes++;
             calaixFet += arrayTicketsCaja[i].total;
