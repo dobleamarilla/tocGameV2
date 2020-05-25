@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/testeze', { useNewUrlParser: true, useUnifiedTopology: true }).catch(err => {
+mongoose.connect('mongodb://localhost/tocgame', { useNewUrlParser: true, useUnifiedTopology: true }).catch(err => {
     console.log(err);
 });
 mongoose.set('useFindAndModify', false);
