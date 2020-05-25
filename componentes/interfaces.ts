@@ -131,3 +131,14 @@ interface Ticket
     enviado?: boolean,
     enTransito?: boolean
 }
+
+interface Movimientos
+{
+    _id: number,
+    tipo: string,
+    valor: number,
+    concepto: string,
+    idTrabajador: number,
+    enviado: boolean,
+    enTransito: boolean
+};
