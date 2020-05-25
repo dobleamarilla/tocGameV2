@@ -10,7 +10,7 @@ class TocGame
 {
     private arrayFichados: Trabajador[];
     private caja: Caja;
-    private cesta: Cesta
+    private cesta: Cesta;
     private promociones: Promociones[];
     private parametros: Parametros;
     private ticketColaDatafono;
@@ -159,20 +159,32 @@ class TocGame
     nuevaSalidaDinero(cantidad: number, concepto: string)
     {
         let objSalida = {
-            cantidad: cantidad,
+            _id: Date.now(),
+            tipo: 'SALIDA',
+            valor: cantidad,
             concepto: concepto,
-            tipo: 'SALIDA'
+            idTrabajador: this.getCurrentTrabajador()._id
         }
-        ipcRenderer.sendSync('', objSalida);
+        ipcRenderer.sendSync('nuevo-movimiento', objSalida);
+        ipcRenderer.send('imprimirSalidaDinero', {
+            cantidad: objSalida.valor,
+            fecha: objSalida._id,
+            nombreTrabajador: this.getCurrentTrabajador().nombre,
+            nombreTienda: this.parametros.nombreTienda,
+            concepto: objSalida.concepto
+        });
     }
     nuevaEntradaDinero(cantidad: number, concepto: string)
     {
         let objEntrada = {
-            cantidad: cantidad,
+            _id: Date.now(),
+            tipo: 'ENTRADA',
+            valor: cantidad,
             concepto: concepto,
-            tipo: 'ENTRADA'
+            idTrabajador: this.getCurrentTrabajador()._id
         }
-        ipcRenderer.sendSync('', objEntrada);
+        ipcRenderer.sendSync('nuevo-movimiento', objEntrada);
+
         // imprimirSalidaDinero({
         //     cantidad: cantidad,
         //     fecha: fecha,
@@ -180,6 +192,7 @@ class TocGame
         //     nombreTienda: nombreTienda,
         //     concepto: concepto
         // });
+        ipcRenderer.send('imprimirEntradaDinero', {});
     }
     addFichado(trabajador: any): void //COMPROBADA
     {

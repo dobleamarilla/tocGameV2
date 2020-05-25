@@ -18,6 +18,7 @@ var men         = require('./componentes/schemas/menus');
 var cest        = require('./componentes/schemas/cestas');
 var tick        = require('./componentes/schemas/tickets');
 var sincro      = require('./componentes/schemas/sincroCajas');
+var movi        = require('./componentes/schemas/movimientos');
 var eventos     = require('events');
 
 require('source-map-support').install();
@@ -86,6 +87,22 @@ app.on('ready', () => {
         });
     });
     //FINAL INFO CAJA
+
+    //INSERTAR MOVIMIENTO
+    ipcMain.on('nuevo-movimiento', (ev, args) => {
+        movi.insertarMovimiento(args);
+    });
+    //FINAL INSERTAR MOVIMIENTO
+
+    //GET RANGO MOVIMIENTOS
+    ipcMain.on('get-rango-movimientos', (ev, args) => {
+        movi.getMovimientosRango(args.fechaInicio, args.fechaFinal).then(res=>{
+            ev.returnValue = res;
+        }).catch(err=>{
+            console.log(err);
+        });
+    });
+    //FINAL GET RANGO MOVIMIENTOS
 
     //GET TICKETS INTERVALO
     ipcMain.on('getTicketsIntervalo', (ev, args) => {
