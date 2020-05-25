@@ -109,8 +109,7 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, visa,
 };
 var salidaDinero = function (event, totalRetirado, cajaActual, fecha, nombreDependienta, nombreTienda, concepto) {
     try {
-        let fecha2 = new Date(fecha);
-        fecha = dateToString2(fecha2);
+        fecha = dateToString2(fecha);
         exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
         var device = new escpos.USB('0x4B8', '0x202'); //USB
         //  var device = new escpos.Serial('/dev/ttyS0', {

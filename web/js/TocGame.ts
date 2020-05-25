@@ -165,7 +165,7 @@ class TocGame
             concepto: concepto,
             idTrabajador: this.getCurrentTrabajador()._id
         }
-        ipcRenderer.sendSync('nuevo-movimiento', objSalida);
+        ipcRenderer.send('nuevo-movimiento', objSalida);
         ipcRenderer.send('imprimirSalidaDinero', {
             cantidad: objSalida.valor,
             fecha: objSalida._id,
