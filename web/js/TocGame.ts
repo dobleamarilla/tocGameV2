@@ -755,11 +755,11 @@ class TocGame
             calaixFet += arrayTicketsCaja[i].total;
             if(arrayTicketsCaja[i].tarjeta)
             {
-                recaudado += arrayTicketsCaja[i].total;
                 totalTarjeta += arrayTicketsCaja[i].total;
             }
             else
             {
+                recaudado += arrayTicketsCaja[i].total;
                 totalEnEfectivo += arrayTicketsCaja[i].total;
             }
         }
