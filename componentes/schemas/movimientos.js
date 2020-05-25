@@ -1,5 +1,4 @@
 var conexion = require('../conexion');
-
 var schemaMovimientos = new conexion.mongoose.Schema({
     _id: Number,
     tipo: String,
@@ -16,16 +15,14 @@ var schemaMovimientos = new conexion.mongoose.Schema({
     }
 });
 var Movimientos = conexion.mongoose.model('movimientos', schemaMovimientos);
-
-function insertarMovimiento(data)
-{
+function insertarMovimiento(data) {
     console.log(data);
     var nuevo = new Movimientos(data);
     nuevo.save();
 }
-function getMovimientosRango(fechaInicio: number, fechaFinal: number)
-{
-    return Movimientos.find({_id: {$lte: fechaFinal, $gte: fechaInicio}}).lean();
+function getMovimientosRango(fechaInicio, fechaFinal) {
+    return Movimientos.find({ _id: { $lte: fechaFinal, $gte: fechaInicio } }).lean();
 }
-exports.insertarMovimiento          = insertarMovimiento;
-exports.getMovimientosRango         = getMovimientosRango;
+exports.insertarMovimiento = insertarMovimiento;
+exports.getMovimientosRango = getMovimientosRango;
+//# sourceMappingURL=movimientos.js.map

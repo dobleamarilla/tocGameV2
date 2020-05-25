@@ -117,6 +117,41 @@ class TocGame {
             return false;
         }
     }
+    nuevaSalidaDinero(cantidad, concepto) {
+        let objSalida = {
+            _id: Date.now(),
+            tipo: 'SALIDA',
+            valor: cantidad,
+            concepto: concepto,
+            idTrabajador: this.getCurrentTrabajador()._id
+        };
+        ipcRenderer.sendSync('nuevo-movimiento', objSalida);
+        ipcRenderer.send('imprimirSalidaDinero', {
+            cantidad: objSalida.valor,
+            fecha: objSalida._id,
+            nombreTrabajador: this.getCurrentTrabajador().nombre,
+            nombreTienda: this.parametros.nombreTienda,
+            concepto: objSalida.concepto
+        });
+    }
+    nuevaEntradaDinero(cantidad, concepto) {
+        let objEntrada = {
+            _id: Date.now(),
+            tipo: 'ENTRADA',
+            valor: cantidad,
+            concepto: concepto,
+            idTrabajador: this.getCurrentTrabajador()._id
+        };
+        ipcRenderer.sendSync('nuevo-movimiento', objEntrada);
+        // imprimirSalidaDinero({
+        //     cantidad: cantidad,
+        //     fecha: fecha,
+        //     nombreTrabajador: nombreTrabajador,
+        //     nombreTienda: nombreTienda,
+        //     concepto: concepto
+        // });
+        ipcRenderer.send('imprimirEntradaDinero', {});
+    }
     addFichado(trabajador) {
         this.setCurrentTrabajador(trabajador._id);
         this.arrayFichados.push(trabajador);
