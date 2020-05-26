@@ -48,6 +48,7 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, visa,
         if(tipoImpresora === 'USB')
         {
             var device = new escpos.USB('0x4B8', '0x202'); //USB
+            console.log('VA POR USB');
         }
         else
         {
@@ -56,7 +57,8 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, visa,
                 var device = new escpos.Serial('/dev/ttyS0', {
                     baudRate: 115000,
                     stopBit: 2
-                  })
+                  });
+                console.log('VA POR SERIE');
             }
         }
 
