@@ -172,7 +172,8 @@ class TocGame
             fecha: objSalida._id,
             nombreTrabajador: this.getCurrentTrabajador().nombre,
             nombreTienda: this.parametros.nombreTienda,
-            concepto: objSalida.concepto
+            concepto: objSalida.concepto,
+            impresora: this.parametros.tipoImpresora
         });
     }
     nuevaEntradaDinero(cantidad: number, concepto: string)
@@ -777,7 +778,8 @@ class TocGame
             totalSalidas: totalSalidas,
             totalEntradas: totalEntradas,
             cInicioCaja: cambioInicial,
-            cFinalCaja: cambioFinal
+            cFinalCaja: cambioFinal,
+            impresora: this.parametros.tipoImpresora
         };
 
         try
@@ -810,7 +812,8 @@ class TocGame
             tiposIva: infoTicket.tiposIva,
             cabecera: paramsTicket[0].valorDato,
             pie: paramsTicket[1].valorDato,
-            nombreTrabajador: infoTrabajador.nombre
+            nombreTrabajador: infoTrabajador.nombre,
+            impresora: this.parametros.tipoImpresora
         };
         ipcRenderer.send('imprimir', sendObject);
     }
