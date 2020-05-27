@@ -430,7 +430,7 @@ exports.abrirCajon = function (event)
     abrirCajon(event);
 }
 
-exports.testEze = function (event, texto)
+exports.testEze = function (texto, event)
 {
     testEze(event, texto);
 }
