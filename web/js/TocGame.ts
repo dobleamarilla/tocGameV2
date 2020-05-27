@@ -121,7 +121,7 @@ class TocGame
     {
         this.parametros.tipoDatafono = data;
     }
-    setParametros(licencia: number, codigoTienda: number, database: string, nombreEmpresa: string, nombreTienda: string, tipoImpresora: string, tipoDatafono: string, ultimoTicket: number): void //COMPROBADA
+    setParametros(licencia: number, codigoTienda: number, database: string, nombreEmpresa: string, nombreTienda: string, tipoImpresora: string, tipoDatafono: string): void //COMPROBADA
     {
         this.parametros.licencia        = licencia;
         this.parametros.codigoTienda    = codigoTienda;
@@ -133,10 +133,10 @@ class TocGame
     }
     setupToc(info): void //COMPROBADA
     {
-        if (info.licencia > 0 && info.codigoTienda > 0 && info.database.length > 0 && info.nombreEmpresa.length > 0 && info.nombreTienda.length > 0 && info.tipoImpresora.length > 0 && info.tipoDatafono.length > 0 && info.ultimoTicket > -1) 
+        if (info.licencia > 0 && info.codigoTienda > 0 && info.database.length > 0 && info.nombreEmpresa.length > 0 && info.nombreTienda.length > 0 && info.tipoImpresora.length > 0 && info.tipoDatafono.length > 0) 
         {
             ipcRenderer.send('setParametros', info);
-            this.setParametros(info.licencia, info.codigoTienda, info.database, info.nombreEmpresa, info.nombreTienda, info.tipoImpresora, info.tipoDatafono, info.ultimoTicket);
+            this.setParametros(info.licencia, info.codigoTienda, info.database, info.nombreEmpresa, info.nombreTienda, info.tipoImpresora, info.tipoDatafono);
             this.descargarDatos();
         }
     }
@@ -610,7 +610,16 @@ class TocGame
         }
         else
         {
-            return 0;
+            const info = ipcRenderer.sendSync('getParametros');
+            if(info !== null || info !== undefined)
+            {
+                return info.ultimoTicket;
+            }
+            else
+            {
+                vueToast('error', 'Error. Contactar con un técnico');
+                return 0;
+            }
         }
     }
 
@@ -636,8 +645,7 @@ class TocGame
         if(efectivo)
         {
             ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
-            // this.parametros.ultimoTicket++;
-            // ipcRenderer.send('setParametros', this.parametros) ESTA LINEA ACTUALIZA EL ULTIMO EN PARAMETROS, PERO YA NO SE UTILIZA
+            ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
             this.borrarCesta();
             vueCobrar.cerrarModal();
             vueToast.abrir('success', 'Ticket creado');
@@ -655,7 +663,7 @@ class TocGame
                 {
                     vueCobrar.activoEsperaDatafono();
                     ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
-                    // ipcRenderer.send('setParametros', this.parametros)
+                    ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
                     this.borrarCesta();
                     vueCobrar.cerrarModal();
                     vueToast.abrir('success', 'Ticket creado');
@@ -670,8 +678,8 @@ class TocGame
         {
             console.log("Operación APROBADA");
             ipcRenderer.send('set-ticket', this.ticketColaDatafono);
-            // this.parametros.ultimoTicket++;
-            // ipcRenderer.send('setParametros', this.parametros)
+            
+            ipcRenderer.send('set-ultimo-ticket-parametros', this.ticketColaDatafono._id);
             this.borrarCesta();
             vueCobrar.cerrarModal();
             vueToast.abrir('success', 'Ticket creado');

@@ -25,7 +25,7 @@ function insertParams(data)
 
 function setUltimoTicket(ultimoTicket)
 {
-    Parametros.update({}, {ultimoTicket: ultimoTicket});
+    Parametros.update({ _id: "PARAMETROS" }, {ultimoTicket: ultimoTicket});
 }
 
 function getParams()

@@ -78,6 +78,12 @@ app.on('ready', () => {
     });
     //FINAL GET PARAMETROS
 
+        //SET ULTIMO TICKET EN PARAMETROS
+        ipcMain.on('set-ultimo-ticket-parametros', (ev, args) => {
+            params.setUltimoTicket(args);
+        });
+        //FINAL SET ULTIMO TICKET EN PARAMETROS
+
     //GET INFO CAJA
     ipcMain.on('getInfoCaja', (ev, args) => {
         caj.getInfoCaja().then(res => {

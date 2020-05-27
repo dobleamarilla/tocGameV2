@@ -2,8 +2,6 @@ ipcRenderer.on('res-buscar-fichados', (ev, data)=>{
     toc.setArrayFichados(data);
     if(toc.todoInstalado()) //parametros licencia
     {
-        let ultimoTicket = ipcRenderer.sendSync('getUltimoTicket');
-        toc.setUltimoTicket(ultimoTicket);
         if(!toc.hayFichados()) //trabajadores fichados
         {
             toc.setArrayFichados([]);
@@ -18,7 +16,6 @@ ipcRenderer.on('res-buscar-fichados', (ev, data)=>{
 
 socket.on('cargar-todo', (data) => 
 {
-    console.log("mis promos: ", data.promociones);
     ipcRenderer.send('cargar-todo', data);
 });
 
@@ -64,7 +61,7 @@ socket.on('install-licencia', (data) => {
     if (!data.error) 
     {
         console.log(data);
-        const misParams: Parametros = {
+        const misParams = {
             _id: 'PARAMETROS',
             licencia: data.licencia,
             codigoTienda: data.codigoTienda,
@@ -72,9 +69,10 @@ socket.on('install-licencia', (data) => {
             nombreEmpresa: data.nombreEmpresa,
             nombreTienda: data.nombreTienda,
             tipoImpresora: toc.getTipoImpresora(),
-            tipoDatafono: toc.getTipoDatafono()
+            tipoDatafono: toc.getTipoDatafono(),
+            ultimoTicket: data.ultimoTicket
         };
-        console.log("OYE Q LOS PARAMS SON: ", misParams);
+    
         vueToast.abrir("success", "OK!");
         toc.setupToc(misParams);
     }

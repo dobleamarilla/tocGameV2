@@ -23,8 +23,7 @@ class TocGame {
                 nombreEmpresa: '',
                 nombreTienda: '',
                 tipoImpresora: TIPO_USB,
-                tipoDatafono: TIPO_CLEARONE,
-                ultimoTicket: -1
+                tipoDatafono: TIPO_CLEARONE
             };
         }
         if (infoCaja === null) {
@@ -72,7 +71,7 @@ class TocGame {
         this.caja = data;
     }
     todoInstalado() {
-        if (this.parametros.licencia !== 0 && this.parametros.codigoTienda !== 0 && this.parametros.database !== '' && this.parametros.nombreEmpresa !== '' && this.parametros.nombreTienda !== '' && this.parametros.ultimoTicket !== -1) {
+        if (this.parametros.licencia !== 0 && this.parametros.codigoTienda !== 0 && this.parametros.database !== '' && this.parametros.nombreEmpresa !== '' && this.parametros.nombreTienda !== '') {
             return true;
         }
         else {
@@ -91,7 +90,7 @@ class TocGame {
     setTipoDatafono(data) {
         this.parametros.tipoDatafono = data;
     }
-    setParametros(licencia, codigoTienda, database, nombreEmpresa, nombreTienda, tipoImpresora, tipoDatafono, ultimoTicket) {
+    setParametros(licencia, codigoTienda, database, nombreEmpresa, nombreTienda, tipoImpresora, tipoDatafono) {
         this.parametros.licencia = licencia;
         this.parametros.codigoTienda = codigoTienda;
         this.parametros.database = database;
@@ -99,12 +98,11 @@ class TocGame {
         this.parametros.nombreTienda = nombreTienda;
         this.parametros.tipoImpresora = tipoImpresora;
         this.parametros.tipoDatafono = tipoDatafono;
-        this.parametros.ultimoTicket = ultimoTicket;
     }
     setupToc(info) {
-        if (info.licencia > 0 && info.codigoTienda > 0 && info.database.length > 0 && info.nombreEmpresa.length > 0 && info.nombreTienda.length > 0 && info.tipoImpresora.length > 0 && info.tipoDatafono.length > 0 && info.ultimoTicket > -1) {
+        if (info.licencia > 0 && info.codigoTienda > 0 && info.database.length > 0 && info.nombreEmpresa.length > 0 && info.nombreTienda.length > 0 && info.tipoImpresora.length > 0 && info.tipoDatafono.length > 0) {
             ipcRenderer.send('setParametros', info);
-            this.setParametros(info.licencia, info.codigoTienda, info.database, info.nombreEmpresa, info.nombreTienda, info.tipoImpresora, info.tipoDatafono, info.ultimoTicket);
+            this.setParametros(info.licencia, info.codigoTienda, info.database, info.nombreEmpresa, info.nombreTienda, info.tipoImpresora, info.tipoDatafono);
             this.descargarDatos();
         }
     }
@@ -479,7 +477,20 @@ class TocGame {
         vueCobrar.abreModal();
     }
     getUltimoTicket() {
-        return this.parametros.ultimoTicket;
+        const ultimo = ipcRenderer.sendSync('getUltimoTicket');
+        if (ultimo.length > 0) {
+            return ultimo[0]._id;
+        }
+        else {
+            const info = ipcRenderer.sendSync('getParametros');
+            if (info !== null || info !== undefined) {
+                return info.ultimoTicket;
+            }
+            else {
+                vueToast('error', 'Error. Contactar con un técnico');
+                return 0;
+            }
+        }
     }
     crearTicket(efectivo) {
         let total = 0;
@@ -499,8 +510,7 @@ class TocGame {
         };
         if (efectivo) {
             ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
-            this.parametros.ultimoTicket++;
-            ipcRenderer.send('setParametros', this.parametros);
+            ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
             this.borrarCesta();
             vueCobrar.cerrarModal();
             vueToast.abrir('success', 'Ticket creado');
@@ -514,8 +524,7 @@ class TocGame {
                 if (this.parametros.tipoDatafono === TIPO_3G) {
                     vueCobrar.activoEsperaDatafono();
                     ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
-                    this.parametros.ultimoTicket++;
-                    ipcRenderer.send('setParametros', this.parametros);
+                    ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
                     this.borrarCesta();
                     vueCobrar.cerrarModal();
                     vueToast.abrir('success', 'Ticket creado');
@@ -529,8 +538,7 @@ class TocGame {
          {
             console.log("Operación APROBADA");
             ipcRenderer.send('set-ticket', this.ticketColaDatafono);
-            this.parametros.ultimoTicket++;
-            ipcRenderer.send('setParametros', this.parametros);
+            ipcRenderer.send('set-ultimo-ticket-parametros', this.ticketColaDatafono._id);
             this.borrarCesta();
             vueCobrar.cerrarModal();
             vueToast.abrir('success', 'Ticket creado');
@@ -644,14 +652,6 @@ class TocGame {
         unaCaja.recaudado = recaudado;
         console.log("AQUI IMPRIMO UNA CAJA MAGICA: ", unaCaja);
         return unaCaja;
-    }
-    setUltimoTicket(data) {
-        if (data.length > 0) {
-            this.parametros.ultimoTicket = data[0]._id;
-        }
-        else {
-            this.parametros.ultimoTicket = 0;
-        }
     }
     imprimirTicket(idTicket) {
         const paramsTicket = ipcRenderer.sendSync('get-params-ticket');

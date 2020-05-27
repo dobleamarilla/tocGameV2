@@ -2,8 +2,6 @@ ipcRenderer.on('res-buscar-fichados', (ev, data) => {
     toc.setArrayFichados(data);
     if (toc.todoInstalado()) //parametros licencia
      {
-        let ultimoTicket = ipcRenderer.sendSync('getUltimoTicket');
-        toc.setUltimoTicket(ultimoTicket);
         if (!toc.hayFichados()) //trabajadores fichados
          {
             toc.setArrayFichados([]);
@@ -15,7 +13,6 @@ ipcRenderer.on('res-buscar-fichados', (ev, data) => {
     }
 });
 socket.on('cargar-todo', (data) => {
-    console.log("mis promos: ", data.promociones);
     ipcRenderer.send('cargar-todo', data);
 });
 ipcRenderer.on('res-cargar-todo', (ev, data) => {
@@ -63,7 +60,6 @@ socket.on('install-licencia', (data) => {
             tipoDatafono: toc.getTipoDatafono(),
             ultimoTicket: data.ultimoTicket
         };
-        console.log("OYE Q LOS PARAMS SON: ", misParams);
         vueToast.abrir("success", "OK!");
         toc.setupToc(misParams);
     }
