@@ -282,6 +282,9 @@ app.on('ready', () => {
         console.log(event);
         impresora.imprimirTicket(args, event);
     });
+    ipcMain.on('imprimir-test', (event, args) => {
+        impresora.testEze(args, event);
+    });
     ipcMain.on('imprimirSalidaDinero', (event, args) => {
         impresora.imprimirTicketSalida(args, event);
     });

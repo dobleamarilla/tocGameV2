@@ -119,6 +119,9 @@ class TocGame {
             return false;
         }
     }
+    imprimirTest(texto) {
+        ipcRenderer.send('imprimir-test', texto);
+    }
     nuevaSalidaDinero(cantidad, concepto) {
         let objSalida = {
             _id: Date.now(),
