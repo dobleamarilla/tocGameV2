@@ -61,12 +61,22 @@ function getTicketsIntervalo(unaCaja) {
 function getUltimoTicket() {
     return Tickets.find({}, null, { lean: true }).sort({ _id: -1 }).limit(1);
 }
-//{$and: [{precioConIva: {$lte: 1.5}}, {precioConIva: {$gte: 1.1}}]}   FUNCIONA COMPROBADO
-//{precioConIva: {$lte: unaCaja.finalTime, $gte: unaCaja.inicioTime}} TAMBIÉN FUNCIONA, MEJORADA (AND IMPLICITO)
+function getParaSincronizar() {
+    let aux = Tickets.find({ enviado: false, enTransito: false }, null, { lean: true }).sort({ _id: 1 });
+    Tickets.update({ enviado: false, enTransito: false }, { enTransito: true });
+    return aux;
+}
+function confirmarEnvio(data) {
+    Tickets.update({ _id: data.idTicket }, { enTransito: false, enviado: true }, ((err, queHeHecho) => {
+        //console.log(err, queHeHecho)
+    }));
+}
 exports.tickets = Tickets;
 exports.insertarTicket = insertarTicket;
 exports.getInfoTicket = getInfoTicket;
 exports.getTickets = getTickets;
 exports.getTicketsIntervalo = getTicketsIntervalo;
 exports.getUltimoTicket = getUltimoTicket;
+exports.getParaSincronizar = getParaSincronizar;
+exports.confirmarEnvio = confirmarEnvio;
 //# sourceMappingURL=tickets.js.map

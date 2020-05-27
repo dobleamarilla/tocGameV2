@@ -284,6 +284,18 @@ app.on('ready', () => {
         });
     });
     //FINAL GET ULTIMO TICKET
+    //SINCRONIZAR CON SAN PEDRO
+    ipcMain.on('sincronizar-toc', (event, args) => {
+        tick.getParaSincronizar().then(res => {
+            event.sender.send('res-sincronizar-toc', res);
+        }).catch(err => {
+            console.log("Error en main, getParaSincronizar", err);
+        });
+    });
+    //FINAL SINCRONIZAR CON SAN PEDRO
+    ipcMain.on('confirmar-envio', (event, args) => {
+        tick.confirmarEnvio(args);
+    });
     ipcMain.on('devolucion', (event, args) => {
     });
     ipcMain.on('anulacion', (event, args) => {

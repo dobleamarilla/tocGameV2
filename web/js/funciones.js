@@ -102,4 +102,9 @@ function dateToString(fecha) {
     }
     return `${finalYear}-${finalMonth}-${finalDay} ${finalHours}:${finalMinutes}:${finalSeconds}`;
 }
+function sincronizarToc() {
+    if (toc.todoListo()) {
+        ipcRenderer.send('sincronizar-toc');
+    }
+}
 //# sourceMappingURL=funciones.js.map

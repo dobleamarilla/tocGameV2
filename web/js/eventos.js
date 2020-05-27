@@ -46,6 +46,19 @@ ipcRenderer.on('res-get-cesta', (ev, data) => {
 ipcRenderer.on('resVentaDatafono', (ev, data) => {
     toc.controlRespuestaDatafono(data);
 });
+ipcRenderer.on('res-sincronizar-toc', (ev, data) => {
+    const objEnviar = {
+        parametros: toc.getParametros(),
+        arrayTickets: data
+    };
+    console.log("Se envia a sanpedro", objEnviar);
+    if (objEnviar.arrayTickets.length > 0) {
+        socket.emit('sincronizar-tickets-tocgame', objEnviar);
+    }
+    else {
+        console.log("Nada para enviar");
+    }
+});
 socket.on('install-licencia', (data) => {
     if (!data.error) {
         console.log(data);
@@ -66,5 +79,8 @@ socket.on('install-licencia', (data) => {
     else {
         vueToast.abrir("error", "Datos incorrectos");
     }
+});
+socket.on('confirmarEnvioTicket', (data) => {
+    ipcRenderer.send('confirmar-envio', data);
 });
 //# sourceMappingURL=eventos.js.map

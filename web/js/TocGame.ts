@@ -90,6 +90,11 @@ class TocGame
         }
     }
 
+    getParametros()
+    {
+        return this.parametros;
+    }
+
     setCaja(data: Caja)
     {
         this.caja  = data;
@@ -838,6 +843,18 @@ class TocGame
     imprimirCierreCaja(info)
     {
         ipcRenderer.send('imprimirCierreCaja', info);
+    }
+    todoListo()
+    {
+        if(this.todoInstalado())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        //Tal vez falten comprobaciones extra
     }
     iniciar(): void //COMPROBADA
     {
