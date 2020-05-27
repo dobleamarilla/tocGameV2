@@ -193,6 +193,39 @@ var salidaDinero = function (event, totalRetirado, cajaActual, fecha, nombreDepe
     }
 }
 
+var testEze = function (event, texto) 
+{
+    try 
+    {
+        exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
+
+        var device = new escpos.Serial('/dev/ttyS0', {
+            baudRate: 115000,
+            stopBit: 2
+            })
+            
+
+
+        var options = { encoding: "GB18030" };
+        var printer = new escpos.Printer(device, options);
+        device.open(function () 
+        {
+            printer
+                .align('CT')
+                .size(3, 3)
+                .text(texto)
+                .text('')
+                .text('')
+                .cut()
+                .close()
+        });
+    }
+    catch (err) 
+    {
+        errorImpresora(err, event);
+    }
+}
+
 var entradaDinero = function (event, totalIngresado, cajaActual, fecha, nombreDependienta, nombreTienda) 
 {
     try 
@@ -395,4 +428,9 @@ exports.imprimirTicketCierreCaja = function (req, event)
 exports.abrirCajon = function (event) 
 {
     abrirCajon(event);
+}
+
+exports.testEze = function (event, texto)
+{
+    testEze(event, texto);
 }
