@@ -195,6 +195,7 @@ var salidaDinero = function (event, totalRetirado, cajaActual, fecha, nombreDepe
 
 var testEze = function (event, texto) 
 {
+    console.log(texto);
     try 
     {
         exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');

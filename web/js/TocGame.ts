@@ -157,6 +157,10 @@ class TocGame
             return false;
         }
     }
+    imprimitTest(texto)
+    {
+        ipcRenderer.send('imprimir-test', texto);
+    }
     nuevaSalidaDinero(cantidad: number, concepto: string)
     {
         let objSalida = {
