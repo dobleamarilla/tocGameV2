@@ -157,7 +157,7 @@ class TocGame
             return false;
         }
     }
-    imprimitTest(texto)
+    imprimirTest(texto)
     {
         ipcRenderer.send('imprimir-test', texto);
     }
