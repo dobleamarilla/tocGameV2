@@ -72,8 +72,9 @@ var vueInstallWizard = new Vue({
         },
         confirmar() {
             vueToast.abrir("normal", "Petición al servidor enviada");
-            toc.setTipoDatafono = this.tipoDatafono;
-            toc.setTipoImpresora = this.tipoImpresora;
+            toc.setTipoDatafono(this.tipoDatafono);
+            toc.setTipoImpresora(this.tipoImpresora);
+            console.log(this.tipoImpresora);
             socket.emit('install-licencia', { numLicencia: Number(this.licencia), password: this.password });
         }
     }

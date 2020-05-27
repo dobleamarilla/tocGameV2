@@ -61,6 +61,7 @@ socket.on('install-licencia', (data) => {
             tipoDatafono: toc.getTipoDatafono(),
             ultimoTicket: data.ultimoTicket
         };
+        console.log("OYE Q LOS PARAMS SON: ", misParams);
         vueToast.abrir("success", "OK!");
         toc.setupToc(misParams);
     }

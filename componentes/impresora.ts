@@ -42,23 +42,24 @@ function dateToString2(fecha)
 
 var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, visa, tiposIva, cabecera, pie, nombreDependienta, tipoImpresora) 
 {
+    console.log('TIPO IMPRESORA: ', tipoImpresora);
     try 
     {
         exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
         if(tipoImpresora === 'USB')
         {
-            var device = new escpos.USB('0x4B8', '0x202'); //USB
             console.log('VA POR USB');
+            var device = new escpos.USB('0x4B8', '0x202'); //USB
         }
         else
         {
             if(tipoImpresora === 'SERIE')
             {
+                console.log('VA POR SERIE');
                 var device = new escpos.Serial('/dev/ttyS0', {
                     baudRate: 115000,
                     stopBit: 2
                   });
-                console.log('VA POR SERIE');
             }
         }
 
