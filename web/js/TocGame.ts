@@ -35,8 +35,7 @@ class TocGame
                 nombreEmpresa: '',
                 nombreTienda: '',
                 tipoImpresora: TIPO_USB,
-                tipoDatafono: TIPO_CLEARONE,
-                ultimoTicket: -1
+                tipoDatafono: TIPO_CLEARONE
             }
         }
         
@@ -97,7 +96,7 @@ class TocGame
     }
     todoInstalado(): boolean //COMPROBADA
     {
-        if (this.parametros.licencia !== 0 && this.parametros.codigoTienda !== 0 && this.parametros.database !== '' && this.parametros.nombreEmpresa !== '' && this.parametros.nombreTienda !== '' && this.parametros.ultimoTicket !== -1) 
+        if (this.parametros.licencia !== 0 && this.parametros.codigoTienda !== 0 && this.parametros.database !== '' && this.parametros.nombreEmpresa !== '' && this.parametros.nombreTienda !== '') 
         {
             return true;
         }
@@ -131,7 +130,6 @@ class TocGame
         this.parametros.nombreTienda    = nombreTienda;
         this.parametros.tipoImpresora   = tipoImpresora;
         this.parametros.tipoDatafono    = tipoDatafono;
-        this.parametros.ultimoTicket    = ultimoTicket;
     }
     setupToc(info): void //COMPROBADA
     {
@@ -605,7 +603,15 @@ class TocGame
 
     getUltimoTicket(): number
     {
-        return this.parametros.ultimoTicket;
+        const ultimo = ipcRenderer.sendSync('getUltimoTicket');
+        if(ultimo.length > 0)
+        {
+            return ultimo[0]._id;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     crearTicket(efectivo: boolean)
@@ -630,8 +636,8 @@ class TocGame
         if(efectivo)
         {
             ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
-            this.parametros.ultimoTicket++;
-            ipcRenderer.send('setParametros', this.parametros)
+            // this.parametros.ultimoTicket++;
+            // ipcRenderer.send('setParametros', this.parametros) ESTA LINEA ACTUALIZA EL ULTIMO EN PARAMETROS, PERO YA NO SE UTILIZA
             this.borrarCesta();
             vueCobrar.cerrarModal();
             vueToast.abrir('success', 'Ticket creado');
@@ -649,8 +655,7 @@ class TocGame
                 {
                     vueCobrar.activoEsperaDatafono();
                     ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
-                    this.parametros.ultimoTicket++;
-                    ipcRenderer.send('setParametros', this.parametros)
+                    // ipcRenderer.send('setParametros', this.parametros)
                     this.borrarCesta();
                     vueCobrar.cerrarModal();
                     vueToast.abrir('success', 'Ticket creado');
@@ -665,8 +670,8 @@ class TocGame
         {
             console.log("Operación APROBADA");
             ipcRenderer.send('set-ticket', this.ticketColaDatafono);
-            this.parametros.ultimoTicket++;
-            ipcRenderer.send('setParametros', this.parametros)
+            // this.parametros.ultimoTicket++;
+            // ipcRenderer.send('setParametros', this.parametros)
             this.borrarCesta();
             vueCobrar.cerrarModal();
             vueToast.abrir('success', 'Ticket creado');
@@ -802,18 +807,7 @@ class TocGame
         console.log("AQUI IMPRIMO UNA CAJA MAGICA: ", unaCaja);
         return unaCaja;
     }
-    setUltimoTicket(data)
-    {
-        if(data.length > 0)
-        {
-            this.parametros.ultimoTicket = data[0]._id;
-        }
-        else
-        {
-            this.parametros.ultimoTicket = 0;
-        }
-        
-    }
+
     imprimirTicket(idTicket: number)
     {
         const paramsTicket = ipcRenderer.sendSync('get-params-ticket');

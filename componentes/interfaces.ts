@@ -87,8 +87,7 @@ interface Parametros
     nombreEmpresa: string,
     nombreTienda: string,
     tipoDatafono: string,
-    tipoImpresora: string,
-    ultimoTicket: number
+    tipoImpresora: string
 }
 
 interface Trabajador

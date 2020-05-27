@@ -72,8 +72,7 @@ socket.on('install-licencia', (data) => {
             nombreEmpresa: data.nombreEmpresa,
             nombreTienda: data.nombreTienda,
             tipoImpresora: toc.getTipoImpresora(),
-            tipoDatafono: toc.getTipoDatafono(),
-            ultimoTicket: data.ultimoTicket
+            tipoDatafono: toc.getTipoDatafono()
         };
         console.log("OYE Q LOS PARAMS SON: ", misParams);
         vueToast.abrir("success", "OK!");
