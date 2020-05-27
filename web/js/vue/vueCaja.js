@@ -67,7 +67,7 @@ var vueCaja = new Vue({
             toc.imprimirTicket(this.listaTickets[this.ticketActivo]._id);
         },
         cargarListaTickets(arrayTickets) {
-            this.listaTickets = arrayTickets.reverse();
+            this.listaTickets = arrayTickets;
         },
         setItemCajaActivo(x) {
             this.ticketActivo = x;

@@ -71,7 +71,7 @@ var vueCaja = new Vue({
         },
         cargarListaTickets(arrayTickets)
         {
-            this.listaTickets = arrayTickets.reverse();
+            this.listaTickets = arrayTickets;
         },
         setItemCajaActivo(x)
         {
