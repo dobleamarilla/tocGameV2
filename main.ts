@@ -304,6 +304,14 @@ app.on('ready', () => {
     });
     //FINAL NUEVO MOVIMIENTO A SINCRO
 
+    //GET ULTIMO TICKET
+    ipcMain.on('getUltimoTicket', (ev, data)=>{
+        tick.getUltimoTicket().then(res=>{
+            ev.returnValue = res;
+        });
+    });
+    //FINAL GET ULTIMO TICKET
+
 
 
 

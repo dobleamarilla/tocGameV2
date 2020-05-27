@@ -802,6 +802,18 @@ class TocGame
         console.log("AQUI IMPRIMO UNA CAJA MAGICA: ", unaCaja);
         return unaCaja;
     }
+    setUltimoTicket(data)
+    {
+        if(data.length > 0)
+        {
+            this.parametros.ultimoTicket = data[0]._id;
+        }
+        else
+        {
+            this.parametros.ultimoTicket = 0;
+        }
+        
+    }
     imprimirTicket(idTicket: number)
     {
         const paramsTicket = ipcRenderer.sendSync('get-params-ticket');

@@ -272,6 +272,13 @@ app.on('ready', () => {
     ipcMain.on('nuevo-sincro', (ev, data) => {
     });
     //FINAL NUEVO MOVIMIENTO A SINCRO
+    //GET ULTIMO TICKET
+    ipcMain.on('getUltimoTicket', (ev, data) => {
+        tick.getUltimoTicket().then(res => {
+            ev.returnValue = res;
+        });
+    });
+    //FINAL GET ULTIMO TICKET
     ipcMain.on('devolucion', (event, args) => {
     });
     ipcMain.on('anulacion', (event, args) => {

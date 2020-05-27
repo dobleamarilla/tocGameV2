@@ -2,6 +2,8 @@ ipcRenderer.on('res-buscar-fichados', (ev, data)=>{
     toc.setArrayFichados(data);
     if(toc.todoInstalado()) //parametros licencia
     {
+        let ultimoTicket = ipcRenderer.sendSync('getUltimoTicket');
+        toc.setUltimoTicket(ultimoTicket);
         if(!toc.hayFichados()) //trabajadores fichados
         {
             toc.setArrayFichados([]);

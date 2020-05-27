@@ -58,6 +58,9 @@ function getTicketsIntervalo(unaCaja) {
         console.log("Lo que me ha encontrado del invervalo es: ", respuesta);
     }).lean();
 }
+function getUltimoTicket() {
+    return Tickets.find({}, null, { lean: true }).sort({ _id: -1 }).limit(1);
+}
 //{$and: [{precioConIva: {$lte: 1.5}}, {precioConIva: {$gte: 1.1}}]}   FUNCIONA COMPROBADO
 //{precioConIva: {$lte: unaCaja.finalTime, $gte: unaCaja.inicioTime}} TAMBIÉN FUNCIONA, MEJORADA (AND IMPLICITO)
 exports.tickets = Tickets;
@@ -65,4 +68,5 @@ exports.insertarTicket = insertarTicket;
 exports.getInfoTicket = getInfoTicket;
 exports.getTickets = getTickets;
 exports.getTicketsIntervalo = getTicketsIntervalo;
+exports.getUltimoTicket = getUltimoTicket;
 //# sourceMappingURL=tickets.js.map
