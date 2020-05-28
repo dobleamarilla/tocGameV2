@@ -17,5 +17,11 @@ function insertarClientes(data)
     return devolver;
 }
 
+function buscarCliente(busqueda: string)
+{
+    return Clientes.find({"nombre": { '$regex': new RegExp(busqueda, 'i')}}, null, {lean: true, limit: 20});
+}
+
 exports.clientes             = Clientes;
 exports.insertarClientes     = insertarClientes;
+exports.buscarCliente        = buscarCliente;

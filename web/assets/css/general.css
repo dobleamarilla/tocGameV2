@@ -42,3 +42,9 @@ body {
   flex:none !important;
     }
   }
+  .clientesAnchoNombre {
+    width: 40%;
+  }
+  .clientesAnchoBotones {
+    width: 60%;
+  }

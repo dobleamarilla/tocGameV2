@@ -67,7 +67,7 @@ function getParaSincronizar() {
     return aux;
 }
 function confirmarEnvio(data) {
-    Tickets.update({ _id: data.idTicket }, { enTransito: false, enviado: true }, ((err, queHeHecho) => {
+    Tickets.updateOne({ _id: data.idTicket }, { enTransito: false, enviado: true }, ((err, queHeHecho) => {
         //console.log(err, queHeHecho)
     }));
 }

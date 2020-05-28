@@ -163,6 +163,13 @@ app.on('ready', () => {
         });
     });
     //FINAL BUSCAR TRABAJADOR
+    //BUSCAR CLIENTE
+    ipcMain.on('buscar-clientes', (ev, data) => {
+        cliente.buscarCliente(data).then(respuesta => {
+            ev.sender.send('res-buscar-cliente', respuesta);
+        });
+    });
+    //FINAL BUSCAR CLIENTE
     //BUSCAR TRABAJADOR
     ipcMain.on('buscar-trabajador-sincrono', (ev, data) => {
         trabaj.buscarTrabajador(data).then(respuesta => {

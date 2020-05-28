@@ -81,7 +81,6 @@ var vueCesta = new Vue({
             this.activo = index;
         },
         borrar() {
-            console.log("entro en borrar");
             if (this.activo === null) {
                 toc.borrarCesta();
             }

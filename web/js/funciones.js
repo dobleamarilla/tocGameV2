@@ -40,7 +40,6 @@ function construirObjetoIvas(infoArticulo, unidades, tipoIvaAnterior) {
     let base1 = 0, base2 = 0, base3 = 0;
     let valor1 = 0, valor2 = 0, valor3 = 0;
     let importe1 = 0, importe2 = 0, importe3 = 0;
-    console.log("y las unidades: ", unidades);
     switch (infoArticulo.tipoIva) {
         case 1:
             base1 = (infoArticulo.precioConIva / 1.04) * unidades;
@@ -70,7 +69,6 @@ function construirObjetoIvas(infoArticulo, unidades, tipoIvaAnterior) {
         importe2: redondearPrecio(importe2) + tipoIvaAnterior.importe2,
         importe3: redondearPrecio(importe3) + tipoIvaAnterior.importe3
     };
-    console.log("sumo esto: ", aux);
     return aux;
 }
 function dateToString(fecha) {

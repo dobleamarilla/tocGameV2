@@ -833,8 +833,8 @@ class TocGame
             total: infoTicket.total,
             visa: infoTicket.tarjeta,
             tiposIva: infoTicket.tiposIva,
-            cabecera: paramsTicket[0].valorDato,
-            pie: paramsTicket[1].valorDato,
+            cabecera: paramsTicket[0] !== undefined ? paramsTicket[0].valorDato: '',
+            pie: paramsTicket[1] !== undefined ? paramsTicket[1].valorDato: '',
             nombreTrabajador: infoTrabajador.nombre,
             impresora: this.parametros.tipoImpresora
         };
@@ -843,6 +843,10 @@ class TocGame
     imprimirCierreCaja(info)
     {
         ipcRenderer.send('imprimirCierreCaja', info);
+    }
+    seleccionarCliente(cliente)
+    {
+        console.log("selecciono cliente");
     }
     todoListo()
     {
@@ -864,6 +868,10 @@ class TocGame
         if(infoPromociones.length > 0)
         {
             this.promociones = infoPromociones;
+        }
+        else
+        {
+            this.promociones = [];
         }
 
         ipcRenderer.send('get-menus');

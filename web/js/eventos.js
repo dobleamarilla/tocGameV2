@@ -28,6 +28,9 @@ ipcRenderer.on('res-cargar-todo', (ev, data) => {
 ipcRenderer.on('res-buscar-trabajador', (ev, data) => {
     vueFichajes.setTrabajadores(data);
 });
+ipcRenderer.on('res-buscar-cliente', (ev, data) => {
+    vueClientes.setClientes(data);
+});
 ipcRenderer.on('res-fichar-trabajador', (ev, data) => {
     vueToast.abrir('success', 'FICHAJE OK');
 });
@@ -51,12 +54,9 @@ ipcRenderer.on('res-sincronizar-toc', (ev, data) => {
         parametros: toc.getParametros(),
         arrayTickets: data
     };
-    console.log("Se envia a sanpedro", objEnviar);
     if (objEnviar.arrayTickets.length > 0) {
+        console.log("Se envia a sanpedro", objEnviar);
         socket.emit('sincronizar-tickets-tocgame', objEnviar);
-    }
-    else {
-        console.log("Nada para enviar");
     }
 });
 socket.on('install-licencia', (data) => {
@@ -81,6 +81,7 @@ socket.on('install-licencia', (data) => {
     }
 });
 socket.on('confirmarEnvioTicket', (data) => {
+    console.log("Ticket confirmado: enviado = true");
     ipcRenderer.send('confirmar-envio', data);
 });
 //# sourceMappingURL=eventos.js.map

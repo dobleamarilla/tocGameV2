@@ -50,7 +50,6 @@ function construirObjetoIvas(infoArticulo, unidades, tipoIvaAnterior: TiposIva) 
     let valor1 = 0, valor2 = 0, valor3 = 0;
     let importe1 = 0, importe2 = 0, importe3 = 0;
 
-    console.log("y las unidades: ", unidades);
     switch (infoArticulo.tipoIva) 
     {
         case 1: base1 = (infoArticulo.precioConIva / 1.04) * unidades; valor1 = (infoArticulo.precioConIva / 1.04) * 0.04 * unidades; importe1 = infoArticulo.precioConIva * unidades; break;
@@ -70,7 +69,7 @@ function construirObjetoIvas(infoArticulo, unidades, tipoIvaAnterior: TiposIva) 
         importe2: redondearPrecio(importe2) + tipoIvaAnterior.importe2,
         importe3: redondearPrecio(importe3) + tipoIvaAnterior.importe3
     };
-    console.log("sumo esto: ", aux);
+
     return aux;
 
     
