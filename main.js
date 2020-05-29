@@ -58,8 +58,12 @@ app.on('ready', () => {
             client.write(venta_t);
         });
         client.on('data', function (data) {
+            var objEnviar = {
+                data: data,
+                objTicket: info.objTicket
+            };
             console.log('Recibido: ' + data);
-            event.sender.send('resVentaDatafono', data);
+            event.sender.send('resVentaDatafono', objEnviar);
             client.write('\x02ACK\x03');
             client.destroy();
         });

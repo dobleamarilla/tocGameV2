@@ -659,7 +659,7 @@ class TocGame
         {
             if(this.parametros.tipoDatafono === TIPO_CLEARONE)
             {
-                this.ticketColaDatafono = objTicket;
+                //this.ticketColaDatafono = objTicket;
                 ipcRenderer.send('ventaDatafono', {objTicket: objTicket, nombreDependienta: infoTrabajador.nombre, idTicket: nuevoIdTicket, total: Number((total * 100).toFixed(2)).toString()});
             }
             else
@@ -679,12 +679,12 @@ class TocGame
     controlRespuestaDatafono(respuesta)
     {
         vueCobrar.desactivoEsperaDatafono();
-        if(respuesta[1] === 48) //Primero STX, segundo estado transacción: correcta = 48, incorrecta != 48
+        if(respuesta.data[1] === 48) //Primero STX, segundo estado transacción: correcta = 48, incorrecta != 48
         {
             console.log("Operación APROBADA");
-            ipcRenderer.send('set-ticket', this.ticketColaDatafono);
+            ipcRenderer.send('set-ticket', respuesta.objTicket);
             
-            ipcRenderer.send('set-ultimo-ticket-parametros', this.ticketColaDatafono._id);
+            ipcRenderer.send('set-ultimo-ticket-parametros', respuesta.objTicket._id);
             this.borrarCesta();
             vueCobrar.cerrarModal();
             vueToast.abrir('success', 'Ticket creado');

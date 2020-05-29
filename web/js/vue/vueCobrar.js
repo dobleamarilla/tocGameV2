@@ -36,14 +36,17 @@ var vueCobrar = new Vue({
         return {
             total: 0,
             arrayFichados: [],
-            esperandoDatafono: { display: 'none' }
+            esperandoDatafono: { display: 'none' },
+            esperando: false
         };
     },
     methods: {
         abreModal() {
+            this.setEsperando(false);
             $('#modalVueCobrar').modal();
         },
         cerrarModal() {
+            this.setEsperando(false);
             $('#modalVueCobrar').modal('hide');
         },
         prepararModalVenta(total, arrayFichados) {
@@ -51,12 +54,22 @@ var vueCobrar = new Vue({
             this.arrayFichados = arrayFichados;
         },
         cobrar(efectivo) {
-            toc.crearTicket(efectivo);
+            if (!this.esperando) {
+                this.setEsperando(true);
+                toc.crearTicket(efectivo);
+            }
+            else {
+                vueToast.abrir('danger', 'Ya existe una operación en curso');
+            }
+        },
+        setEsperando(res) {
+            this.esperando = res;
         },
         activoEsperaDatafono() {
             this.esperandoDatafono.display = 'unset';
         },
         desactivoEsperaDatafono() {
+            this.setEsperando(false);
             this.esperandoDatafono.display = 'none';
         }
     }
