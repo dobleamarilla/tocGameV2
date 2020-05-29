@@ -14,13 +14,13 @@ class TocGame
     private cesta: Cesta;
     private promociones: Promociones[];
     private parametros: Parametros;
-    private ticketColaDatafono;
+    private clienteSeleccionado: Cliente;
 
     constructor() 
     {
         const info = ipcRenderer.sendSync('getParametros');
         const infoCaja = ipcRenderer.sendSync('getInfoCaja');
-        this.ticketColaDatafono = null;
+        this.clienteSeleccionado = null;
         if (info !== null) 
         {
             this.parametros = info;
@@ -855,7 +855,18 @@ class TocGame
     }
     seleccionarCliente(cliente)
     {
-        console.log("selecciono cliente");
+        this.clienteSeleccionado = cliente;
+    }
+    hayClienteSeleccionado()
+    {
+        if(this.clienteSeleccionado !== null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     todoListo()
     {

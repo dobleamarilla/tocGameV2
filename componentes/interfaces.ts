@@ -141,3 +141,10 @@ interface Movimientos
     enviado: boolean,
     enTransito: boolean
 };
+
+interface Cliente
+{
+    id: string,
+    nombre: string,
+    tarjetaCliente: string
+}

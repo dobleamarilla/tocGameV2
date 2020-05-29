@@ -43,7 +43,7 @@ var vueCesta = new Vue({
 				<button @click="abrirFichajes()" class="btn btn-primary btn-block sizeMenus"><i class="far fa-clock"></i></button>
 			</div>
 			<div class="col-md-3 paraRowClientes" id="botonBorrar">
-				<button class="btn btn-primary btn-block sizeMenus"><i class="fas fa-users"></i></button>
+				<button @click="abrirModalClientes()" class="btn btn-primary btn-block sizeMenus"><i class="fas fa-users"></i></button>
 			</div>
 		</div>
 	</div>
@@ -102,6 +102,9 @@ var vueCesta = new Vue({
         },
         abrirFichajes() {
             vueFichajes.abrirModalNoRestrictivo();
+        },
+        abrirModalClientes() {
+            vueClientes.abrirModal();
         }
     }
 });

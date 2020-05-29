@@ -19,7 +19,7 @@ function insertarClientes(data)
 
 function buscarCliente(busqueda: string)
 {
-    return Clientes.find({"nombre": { '$regex': new RegExp(busqueda, 'i')}}, null, {lean: true, limit: 20});
+    return Clientes.find({$or:[{"nombre": { '$regex': new RegExp(busqueda, 'i')}}, {"tarjetaCliente": busqueda}]}, null, {lean: true, limit: 20});
 }
 
 exports.clientes             = Clientes;

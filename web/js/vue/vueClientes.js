@@ -29,7 +29,7 @@ var vueClientes = new Vue({
                                         <td class="clientesAnchoNombre">{{cliente.nombre}}</td>
                                         <td class="clientesAnchoBotones">
                                             <a href="#" class="btn btn-primary" @click="seleccionar(cliente)">Seleccionar</a>
-                                            <a href="#" class="btn btn-info" @click="seleccionar(cliente)">Consultar puntos</a>
+                                            <a href="#" class="btn btn-info" @click="consultarPuntos(cliente)">Consultar puntos</a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -39,7 +39,8 @@ var vueClientes = new Vue({
                 </div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" @click="volver()">SALIR</button>
+				<button type="button" class="btn btn-danger btn-lg mr-0" @click="reset()">BORRAR</button>
+				<button type="button" class="btn btn-secondary btn-lg" @click="volver()">SALIR</button>
 			</div>
 		</div>
 	</div>
@@ -72,6 +73,12 @@ var vueClientes = new Vue({
         },
         setClientes(aux) {
             this.clientes = aux;
+        },
+        consultarPuntos(cliente) {
+            console.log("Entro en consultar puntos");
+        },
+        reset() {
+            this.busqueda = '';
         }
     },
     watch: {

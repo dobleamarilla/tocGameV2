@@ -10,7 +10,7 @@ class TocGame {
     constructor() {
         const info = ipcRenderer.sendSync('getParametros');
         const infoCaja = ipcRenderer.sendSync('getInfoCaja');
-        this.ticketColaDatafono = null;
+        this.clienteSeleccionado = null;
         if (info !== null) {
             this.parametros = info;
         }
@@ -684,7 +684,15 @@ class TocGame {
         ipcRenderer.send('imprimirCierreCaja', info);
     }
     seleccionarCliente(cliente) {
-        console.log("selecciono cliente");
+        this.clienteSeleccionado = cliente;
+    }
+    hayClienteSeleccionado() {
+        if (this.clienteSeleccionado !== null) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
     todoListo() {
         if (this.todoInstalado()) {
