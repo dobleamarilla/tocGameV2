@@ -676,6 +676,15 @@ class TocGame
             }
         }
     }
+    getUrlPedidos()
+    {
+        var url = '';
+        if(this.parametros.database === 'Fac_Tena')
+        {
+            url = `http://silema.hiterp.com/TpvWebReposicion.asp?modo=MENU&codiBotiga=${this.parametros.codigoTienda}`;
+        }
+        return url;
+    }
     controlRespuestaDatafono(respuesta)
     {
         vueCobrar.desactivoEsperaDatafono();

@@ -37,7 +37,7 @@ var vueCesta = new Vue({
 				<button class="btn btn-primary btn-block sizeMenus"><i class="fas fa-keyboard"></i></button>
 			</div>
 			<div class="col-md-3 paraRowMenus" id="botonMenus">
-				<button @click="abrirModalCaja()" class="btn btn-primary btn-block sizeMenus"><i class="fas fa-bars"></i></button>
+				<button @click="abrirMenuPrincipal()" class="btn btn-primary btn-block sizeMenus"><i class="fas fa-bars"></i></button>
 			</div>
 			<div class="col-md-3 paraFichajes" id="botonFichajes">
 				<button @click="abrirFichajes()" class="btn btn-primary btn-block sizeMenus"><i class="far fa-clock"></i></button>
@@ -97,8 +97,8 @@ var vueCesta = new Vue({
                 vueToast.abrir('danger', 'Cesta vacía');
             }
         },
-        abrirModalCaja() {
-            toc.abrirModalCaja();
+        abrirMenuPrincipal() {
+            vueMenuPrincipal.abrirModal();
         },
         abrirFichajes() {
             vueFichajes.abrirModalNoRestrictivo();
