@@ -660,7 +660,7 @@ class TocGame
             if(this.parametros.tipoDatafono === TIPO_CLEARONE)
             {
                 this.ticketColaDatafono = objTicket;
-                ipcRenderer.send('ventaDatafono', {nombreDependienta: infoTrabajador.nombre, idTicket: nuevoIdTicket, total: Number((total * 100).toFixed(2)).toString()});
+                ipcRenderer.send('ventaDatafono', {objTicket: objTicket, nombreDependienta: infoTrabajador.nombre, idTicket: nuevoIdTicket, total: Number((total * 100).toFixed(2)).toString()});
             }
             else
             {
