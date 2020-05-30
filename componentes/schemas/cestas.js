@@ -13,7 +13,7 @@ var schemaCestas = new conexion.mongoose.Schema({
         importe3: Number
     },
     lista: [{
-            idArticulo: Number,
+            _id: Number,
             nombre: String,
             promocion: {
                 _id: {

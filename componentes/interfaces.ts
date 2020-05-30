@@ -13,7 +13,7 @@ interface Cesta
         importe3: number
     },
     lista: {
-        idArticulo: number,
+        _id: number,
         nombre: string,
         unidades: number,
         subtotal: number,
@@ -105,7 +105,7 @@ interface Ticket
     timestamp: number,
     total: number,
     lista: {
-        idArticulo: number,
+        _id: number,
         nombre: string,
         promocion: {
             _id: string,
@@ -128,7 +128,8 @@ interface Ticket
         importe3: number
     },
     enviado?: boolean,
-    enTransito?: boolean
+    enTransito?: boolean,
+    cliente?: string
 }
 
 interface Movimientos

@@ -250,7 +250,7 @@ class TocGame {
         };
         for (let i = 0; i < cesta.lista.length; i++) {
             if (cesta.lista[i].promocion.esPromo === false) {
-                let infoArticulo = this.getInfoArticulo(cesta.lista[i].idArticulo);
+                let infoArticulo = this.getInfoArticulo(cesta.lista[i]._id);
                 cesta.tiposIva = construirObjetoIvas(infoArticulo, cesta.lista[i].unidades, cesta.tiposIva);
             }
             else {
@@ -293,7 +293,7 @@ class TocGame {
     }
     existeArticuloParaOfertaEnCesta(cesta, idArticulo, unidadesNecesarias) {
         for (let i = 0; i < cesta.lista.length; i++) {
-            if (cesta.lista[i].idArticulo === idArticulo && cesta.lista[i].unidades >= unidadesNecesarias) {
+            if (cesta.lista[i]._id === idArticulo && cesta.lista[i].unidades >= unidadesNecesarias) {
                 return i;
             }
         }
@@ -303,7 +303,7 @@ class TocGame {
         if (tipoPromo === 1) //COMBO
          {
             cesta.lista.push({
-                idArticulo: -2,
+                _id: -2,
                 nombre: 'Oferta combo',
                 unidades: unidades,
                 subtotal: total,
@@ -317,7 +317,7 @@ class TocGame {
             if (tipoPromo === 2) //INDIVIDUAL
              {
                 cesta.lista.push({
-                    idArticulo: -2,
+                    _id: -2,
                     nombre: 'Oferta individual',
                     unidades: unidades,
                     subtotal: total,
@@ -333,7 +333,7 @@ class TocGame {
     limpiarCesta(unaCesta, posicionPrincipal, posicionSecundario, sobraCantidadPrincipal, sobraCantidadSecundario, pideDelA, pideDelB) {
         if (pideDelA != -1) {
             if (sobraCantidadPrincipal > 0) {
-                const datosArticulo = this.getInfoArticulo(unaCesta.lista[posicionPrincipal].idArticulo);
+                const datosArticulo = this.getInfoArticulo(unaCesta.lista[posicionPrincipal]._id);
                 unaCesta.lista[posicionPrincipal].unidades = sobraCantidadPrincipal;
                 unaCesta.lista[posicionPrincipal].subtotal = sobraCantidadPrincipal * datosArticulo.precioConIva;
             }
@@ -343,7 +343,7 @@ class TocGame {
         }
         if (pideDelB != -1) {
             if (sobraCantidadSecundario > 0) {
-                const datosArticulo = this.getInfoArticulo(unaCesta.lista[posicionSecundario].idArticulo);
+                const datosArticulo = this.getInfoArticulo(unaCesta.lista[posicionSecundario]._id);
                 unaCesta.lista[posicionSecundario].unidades = sobraCantidadSecundario;
                 unaCesta.lista[posicionSecundario].subtotal = sobraCantidadSecundario * datosArticulo.precioConIva;
             }
@@ -416,7 +416,7 @@ class TocGame {
         if (miCesta.lista.length > 0) {
             let encontrado = false;
             for (let i = 0; i < miCesta.lista.length; i++) {
-                if (miCesta.lista[i].idArticulo === infoArticulo._id) {
+                if (miCesta.lista[i]._id === infoArticulo._id) {
                     let viejoIva = miCesta.tiposIva;
                     miCesta.lista[i].unidades += unidades;
                     miCesta.lista[i].subtotal += unidades * infoArticulo.precioConIva;
@@ -426,12 +426,12 @@ class TocGame {
                 }
             }
             if (!encontrado) {
-                miCesta.lista.push({ idArticulo: infoArticulo._id, nombre: infoArticulo.nombre, unidades: unidades, promocion: { esPromo: false, _id: null }, subtotal: unidades * infoArticulo.precioConIva });
+                miCesta.lista.push({ _id: infoArticulo._id, nombre: infoArticulo.nombre, unidades: unidades, promocion: { esPromo: false, _id: null }, subtotal: unidades * infoArticulo.precioConIva });
                 miCesta.tiposIva = construirObjetoIvas(infoArticulo, unidades, miCesta.tiposIva);
             }
         }
         else {
-            miCesta.lista.push({ idArticulo: infoArticulo._id, nombre: infoArticulo.nombre, unidades: unidades, promocion: { esPromo: false, _id: null }, subtotal: unidades * infoArticulo.precioConIva });
+            miCesta.lista.push({ _id: infoArticulo._id, nombre: infoArticulo.nombre, unidades: unidades, promocion: { esPromo: false, _id: null }, subtotal: unidades * infoArticulo.precioConIva });
             miCesta.tiposIva = construirObjetoIvas(infoArticulo, unidades, miCesta.tiposIva);
         }
         this.buscarOfertas(miCesta);
@@ -509,7 +509,8 @@ class TocGame {
             lista: this.cesta.lista,
             tarjeta: !efectivo,
             idTrabajador: infoTrabajador._id,
-            tiposIva: this.cesta.tiposIva
+            tiposIva: this.cesta.tiposIva,
+            cliente: this.hayClienteSeleccionado() ? this.clienteSeleccionado.id : null
         };
         if (efectivo) {
             ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
@@ -684,6 +685,7 @@ class TocGame {
         ipcRenderer.send('imprimirCierreCaja', info);
     }
     seleccionarCliente(cliente) {
+        vueCesta.activarEstiloClienteActivo();
         this.clienteSeleccionado = cliente;
     }
     hayClienteSeleccionado() {

@@ -13,7 +13,7 @@ var vueCesta = new Vue({
 						<th scope="col">Precio</th>
 					</tr>
 				</thead>
-				<tbody class="tableBody">
+				<tbody class="tableBody" :style="conCliente">
                     <tr v-for="(item, index) of listaAlReves" v-bind:class="{'estiloPromo': item.promocion.esPromo, 'seleccionado': activo === index}" @click="selectActivo(index)">
                         <td>{{item.nombre}}</td>
                         <td>{{item.unidades}}</td>
@@ -55,7 +55,8 @@ var vueCesta = new Vue({
             _id: -1,
             lista: []
         },
-        activo: null
+        activo: null,
+        conCliente: {}
       }
     },
     computed: 
@@ -122,6 +123,16 @@ var vueCesta = new Vue({
         abrirModalClientes()
         {
             vueClientes.abrirModal();
+        },
+        limpiarEstiloClienteActivo()
+        {
+            this.conCliente = {};
+        },
+        activarEstiloClienteActivo()
+        {
+            this.conCliente = {
+                "background-color": 'rgb(255, 167, 18)'
+            }
         }
     }
   });

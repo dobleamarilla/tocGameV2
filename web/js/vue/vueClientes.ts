@@ -62,7 +62,7 @@ var vueClientes = new Vue({
         },
         cerrarModal()
         {
-            $('#modalFichajes').modal('hide');
+            $('#modalClientes').modal('hide');
         },
         buscarCliente() //COMPROBADA
         {
@@ -70,6 +70,7 @@ var vueClientes = new Vue({
         },
         seleccionar(cliente) // COMPROBADA
         {
+            this.cerrarModal();
             toc.seleccionarCliente(cliente);
             this.buscarCliente();
         },

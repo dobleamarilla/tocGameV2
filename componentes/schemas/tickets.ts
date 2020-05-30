@@ -5,7 +5,7 @@ var schemaTickets = new conexion.mongoose.Schema({
     timestamp: Number,
     total: Number,
     lista: [{
-        idArticulo: Number,
+        _id: Number,
         nombre: String,
         promocion: {
             _id: {
@@ -29,6 +29,11 @@ var schemaTickets = new conexion.mongoose.Schema({
         importe1: Number,
         importe2: Number,
         importe3: Number
+    },
+    cliente: {
+        type: String,
+        default: null,
+        required: false
     },
     enviado: {
         type: Boolean,

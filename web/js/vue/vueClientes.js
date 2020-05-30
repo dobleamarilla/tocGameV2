@@ -58,12 +58,13 @@ var vueClientes = new Vue({
             $('#modalClientes').modal();
         },
         cerrarModal() {
-            $('#modalFichajes').modal('hide');
+            $('#modalClientes').modal('hide');
         },
         buscarCliente() {
             ipcRenderer.send('buscar-clientes', this.busqueda);
         },
         seleccionar(cliente) {
+            this.cerrarModal();
             toc.seleccionarCliente(cliente);
             this.buscarCliente();
         },
