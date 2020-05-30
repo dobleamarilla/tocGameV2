@@ -17,7 +17,7 @@ var vueCesta = new Vue({
                     <tr v-for="(item, index) of listaAlReves" v-bind:class="{'estiloPromo': item.promocion.esPromo, 'seleccionado': activo === index}" @click="selectActivo(index)">
                         <td>{{item.nombre}}</td>
                         <td>{{item.unidades}}</td>
-                        <td>{{item.subtotal}}</td>
+                        <td>{{item.subtotal.toFixed(2)}}</td>
 					</tr>
 				</tbody>
 			</table>
