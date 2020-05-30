@@ -411,6 +411,10 @@ class TocGame {
         }
         this.setCesta(unaCesta);
     }
+    quitarClienteSeleccionado() {
+        vueCesta.limpiarEstiloClienteActivo();
+        this.clienteSeleccionado = null;
+    }
     insertarArticuloCesta(infoArticulo, unidades) {
         var miCesta = this.getCesta();
         if (miCesta.lista.length > 0) {
@@ -518,6 +522,7 @@ class TocGame {
             this.borrarCesta();
             vueCobrar.cerrarModal();
             vueToast.abrir('success', 'Ticket creado');
+            this.quitarClienteSeleccionado();
         }
         else {
             if (this.parametros.tipoDatafono === TIPO_CLEARONE) {
@@ -532,6 +537,7 @@ class TocGame {
                     this.borrarCesta();
                     vueCobrar.cerrarModal();
                     vueToast.abrir('success', 'Ticket creado');
+                    this.quitarClienteSeleccionado();
                 }
             }
         }
@@ -559,6 +565,7 @@ class TocGame {
             vueToast.abrir('error', 'Operación DENEGADA');
             vueCobrar.cerrarModal();
         }
+        this.quitarClienteSeleccionado();
     }
     abreModalSalidaDinero() {
         $('#vueModalSalidaDinero').modal();

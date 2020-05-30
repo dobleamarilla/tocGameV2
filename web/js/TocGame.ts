@@ -521,6 +521,12 @@ class TocGame
         }
         this.setCesta(unaCesta);
     }
+    quitarClienteSeleccionado()
+    {
+        vueCesta.limpiarEstiloClienteActivo();
+        this.clienteSeleccionado = null;
+
+    }
     insertarArticuloCesta(infoArticulo, unidades: number)
     {
         var miCesta = this.getCesta();
@@ -655,6 +661,7 @@ class TocGame
             this.borrarCesta();
             vueCobrar.cerrarModal();
             vueToast.abrir('success', 'Ticket creado');
+            this.quitarClienteSeleccionado();
         }
         else
         {
@@ -673,6 +680,7 @@ class TocGame
                     this.borrarCesta();
                     vueCobrar.cerrarModal();
                     vueToast.abrir('success', 'Ticket creado');
+                    this.quitarClienteSeleccionado();
                 }
             }
         }
@@ -705,6 +713,7 @@ class TocGame
             vueToast.abrir('error', 'Operación DENEGADA');
             vueCobrar.cerrarModal();
         }
+        this.quitarClienteSeleccionado();
     }
 
     abreModalSalidaDinero()
