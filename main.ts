@@ -357,8 +357,6 @@ app.on('ready', () => {
 
     });
     ipcMain.on('imprimir', (event: any, args: any) => {
-
-        console.log(event);
         impresora.imprimirTicket(args, event);
     });
     ipcMain.on('imprimir-test', (event: any, args: any) => {
@@ -377,8 +375,6 @@ app.on('ready', () => {
         impresora.imprimirTicketEntrada(args, event);
     });
     ipcMain.on('imprimirCierreCaja', (event: any, args: any) => {
-
-        //console.log(args);
         impresora.imprimirTicketCierreCaja(args, event);
     });
 

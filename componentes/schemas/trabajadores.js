@@ -18,7 +18,7 @@ function insertarTrabajadores(data) {
     });
 }
 function buscarTrabajador(busqueda) {
-    return Trabajadores.find({ $or: [{ "nombre": { '$regex': new RegExp(busqueda, "i") } }, { "nombreCorto": { '$regex': new RegExp(busqueda, "i") } }] }).lean();
+    return Trabajadores.find({ $or: [{ "nombre": { '$regex': new RegExp(busqueda, "i") } }, { "nombreCorto": { '$regex': new RegExp(busqueda, "i") } }] }, null, { lean: true, limit: 20 });
 }
 function ficharTrabajador(idTrabajador) {
     return Trabajadores.findByIdAndUpdate(idTrabajador, { fichado: true }, (err, result) => {

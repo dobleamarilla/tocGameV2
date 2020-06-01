@@ -11,6 +11,7 @@ class TocGame {
         const info = ipcRenderer.sendSync('getParametros');
         const infoCaja = ipcRenderer.sendSync('getInfoCaja');
         this.clienteSeleccionado = null;
+        this.udsAplicar = 1;
         if (info !== null) {
             this.parametros = info;
         }
@@ -66,6 +67,9 @@ class TocGame {
                 return true;
             }
         }
+    }
+    setUnidades(x) {
+        this.udsAplicar = x;
     }
     getParametros() {
         return this.parametros;
@@ -443,7 +447,8 @@ class TocGame {
     getInfoArticulo(idArticulo) {
         return ipcRenderer.sendSync('get-info-articulo', idArticulo);
     }
-    addItem(idArticulo, idBoton, aPeso, peso, subtotal, unidades = 1) {
+    addItem(idArticulo, idBoton, aPeso, peso, subtotal) {
+        var unidades = this.udsAplicar;
         if (this.cajaAbierta()) {
             try {
                 $('#' + idBoton).attr('disabled', true);
@@ -468,11 +473,13 @@ class TocGame {
                 console.log(err);
                 vueToast.abrir('error', 'Error al añadir el articulo');
                 $('#' + idBoton).attr('disabled', false);
+                this.udsAplicar = 1;
             }
         }
         else {
             vueToast.abrir('danger', 'Se requiere una caja abierta para cobrar');
         }
+        this.udsAplicar = 1;
     }
     abrirModalPago() {
         let total = 0;

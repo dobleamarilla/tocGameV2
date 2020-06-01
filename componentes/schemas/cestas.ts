@@ -57,7 +57,10 @@ function getCestaConcreta(idCesta: number)
 function borrarCesta(id: number)
 {
     Cestas.deleteMany({_id: id}, (err)=>{
-        console.log(err);
+        if(err)
+        {
+            console.log(err);
+        }
     });
 }
 

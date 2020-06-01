@@ -34,7 +34,7 @@ var vueCesta = new Vue({
 		</div>
 		<div class="row pt-1">
 			<div class="col-md-3 paraNumerico" id="botonClientes">
-				<button class="btn btn-primary btn-block sizeMenus"><i class="fas fa-keyboard"></i></button>
+				<button class="btn btn-primary btn-block sizeMenus" @click="abrirModalNumerico()"><i class="fas fa-keyboard"></i></button>
 			</div>
 			<div class="col-md-3 paraRowMenus" id="botonMenus">
 				<button @click="abrirMenuPrincipal()" class="btn btn-primary btn-block sizeMenus"><i class="fas fa-bars"></i></button>
@@ -133,6 +133,10 @@ var vueCesta = new Vue({
             this.conCliente = {
                 "background-color": 'rgb(255, 167, 18)'
             }
+        },
+        abrirModalNumerico()
+        {
+            vueTecladoUnidades.abrirModal();
         }
     }
   });
