@@ -71,13 +71,13 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, visa,
         var detalleIva21 = '';
         var detalleIva = '';
         if (tiposIva.importe1 > 0) {
-            detalleIva4 = `${tiposIva.base1}        4%: ${tiposIva.valor1}      ${tiposIva.importe1}\n`;
+            detalleIva4 = `${tiposIva.base1.toFixed(2)}        4%: ${tiposIva.valor1.toFixed(2)}      ${tiposIva.importe1.toFixed(2)}\n`;
         }
         if (tiposIva.importe2 > 0) {
-            detalleIva10 = `${tiposIva.base2}        10%: ${tiposIva.valor2}      ${tiposIva.importe2}\n`;
+            detalleIva10 = `${tiposIva.base2.toFixed(2)}        10%: ${tiposIva.valor2.toFixed(2)}      ${tiposIva.importe2.toFixed(2)}\n`;
         }
         if (tiposIva.importe3 > 0) {
-            detalleIva21 = `${tiposIva.base3}       21%: ${tiposIva.valor3}      ${tiposIva.importe3}\n`;
+            detalleIva21 = `${tiposIva.base3.toFixed(2)}       21%: ${tiposIva.valor3.toFixed(2)}      ${tiposIva.importe3.toFixed(2)}\n`;
         }
         detalleIva = detalleIva4 + detalleIva10 + detalleIva21;
         device.open(function () {
@@ -98,7 +98,7 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, visa,
                 .text(detalles)
                 .text(pagoTarjeta)
                 .size(2, 2)
-                .text('TOTAL: ' + total + ' EUR \n')
+                .text('TOTAL: ' + total.toFixed(2) + ' EUR \n')
                 .size(1, 1)
                 .align('CT')
                 .text('Base IVA         IVA         IMPORT')
@@ -249,10 +249,10 @@ var cierreCaja = function (event, calaixFet, nombreTrabajador, descuadre, nClien
         for (let i = 0; i < arrayMovimientos.length; i++) {
             var auxFecha = new Date(arrayMovimientos[i]._id);
             if (arrayMovimientos[i].tipo === TIPO_SALIDA_DINERO) {
-                textoMovimientos += `${i + 1}: Salida:\n           Cantidad: -${arrayMovimientos[i].valor}\n           Fecha: ${auxFecha.getDate()}/${auxFecha.getMonth()}/${auxFecha.getFullYear()}  ${auxFecha.getHours()}:${auxFecha.getMinutes()}\n           Concepto: ${arrayMovimientos[i].concepto}\n`;
+                textoMovimientos += `${i + 1}: Salida:\n           Cantidad: -${arrayMovimientos[i].valor.toFixed(2)}\n           Fecha: ${auxFecha.getDate()}/${auxFecha.getMonth()}/${auxFecha.getFullYear()}  ${auxFecha.getHours()}:${auxFecha.getMinutes()}\n           Concepto: ${arrayMovimientos[i].concepto}\n`;
             }
             if (arrayMovimientos[i].tipo === TIPO_ENTRADA_DINERO) {
-                textoMovimientos += `${i + 1}: Entrada:\n            Cantidad: +${arrayMovimientos[i].valor}\n            Fecha: ${auxFecha.getDate()}/${auxFecha.getMonth()}/${auxFecha.getFullYear()}  ${auxFecha.getHours()}:${auxFecha.getMinutes()}\n            Concepto: ${arrayMovimientos[i].concepto}\n`;
+                textoMovimientos += `${i + 1}: Entrada:\n            Cantidad: +${arrayMovimientos[i].valor.toFixed(2)}\n            Fecha: ${auxFecha.getDate()}/${auxFecha.getMonth()}/${auxFecha.getFullYear()}  ${auxFecha.getHours()}:${auxFecha.getMinutes()}\n            Concepto: ${arrayMovimientos[i].concepto}\n`;
             }
         }
         exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
