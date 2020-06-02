@@ -71,13 +71,13 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, visa,
         var detalleIva21 = '';
         var detalleIva = '';
         if (tiposIva.importe1 > 0) {
-            detalleIva4 = `${tiposIva.base1.toFixed(2)}        4%: ${tiposIva.valor1.toFixed(2)}      ${tiposIva.importe1.toFixed(2)}\n`;
+            detalleIva4 = `${tiposIva.base1}        4%: ${tiposIva.valor1}      ${tiposIva.importe1}\n`;
         }
         if (tiposIva.importe2 > 0) {
-            detalleIva10 = `${tiposIva.base2.toFixed(2)}        10%: ${tiposIva.valor2.toFixed(2)}      ${tiposIva.importe2.toFixed(2)}\n`;
+            detalleIva10 = `${tiposIva.base2}        10%: ${tiposIva.valor2}      ${tiposIva.importe2}\n`;
         }
         if (tiposIva.importe3 > 0) {
-            detalleIva21 = `${tiposIva.base3.toFixed(2)}       21%: ${tiposIva.valor3.toFixed(2)}      ${tiposIva.importe3.toFixed(2)}\n`;
+            detalleIva21 = `${tiposIva.base3}       21%: ${tiposIva.valor3}      ${tiposIva.importe3}\n`;
         }
         detalleIva = detalleIva4 + detalleIva10 + detalleIva21;
         device.open(function () {
