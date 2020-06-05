@@ -19,6 +19,7 @@ var cest        = require('./componentes/schemas/cestas');
 var tick        = require('./componentes/schemas/tickets');
 var sincro      = require('./componentes/schemas/sincroCajas');
 var movi        = require('./componentes/schemas/movimientos');
+var ficha       = require('./componentes/schemas/sincroFichajes ');
 var eventos     = require('events');
 
 require('source-map-support').install();
