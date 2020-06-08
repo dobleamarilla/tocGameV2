@@ -67,12 +67,17 @@ function getUltimoTicket() {
     return Tickets.find({}, null, { lean: true }).sort({ _id: -1 }).limit(1);
 }
 function getParaSincronizar() {
-    let aux = Tickets.find({ enviado: false, enTransito: false }, null, { lean: true }).sort({ _id: 1 });
-    Tickets.update({ enviado: false, enTransito: false }, { enTransito: true });
-    return aux;
+    var devolver = new Promise((dev, rej) => {
+        Tickets.find({ enviado: false, enTransito: false }, null, { lean: true, sort: { _id: 1 } }).then(resultado => {
+            Tickets.updateMany({ enviado: false, enTransito: false }, { enTransito: true }).then(() => {
+                dev(resultado);
+            });
+        });
+    });
+    return devolver;
 }
 function confirmarEnvio(data) {
-    Tickets.updateOne({ _id: data.idTicket }, { enTransito: false, enviado: true }, ((err, queHeHecho) => {
+    Tickets.updateOne({ _id: data.idTicket }, { enviado: true, enTransito: false }, ((err, queHeHecho) => {
         //console.log(err, queHeHecho)
     }));
 }

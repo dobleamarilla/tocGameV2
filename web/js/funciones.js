@@ -101,7 +101,8 @@ function dateToString(fecha) {
     return `${finalYear}-${finalMonth}-${finalDay} ${finalHours}:${finalMinutes}:${finalSeconds}`;
 }
 function sincronizarToc() {
-    if (toc.todoListo()) {
+    if (toc.todoListo()) //Licencia, etc.
+     {
         ipcRenderer.send('sincronizar-toc');
     }
 }

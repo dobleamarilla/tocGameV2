@@ -67,7 +67,6 @@ ipcRenderer.on('res-sincronizar-toc', (ev, data) => {
     
     if(objEnviar.arrayTickets.length > 0)
     {
-        console.log("Se envia a sanpedro", objEnviar);
         socket.emit('sincronizar-tickets-tocgame', objEnviar);
     }    
 });
@@ -96,7 +95,8 @@ socket.on('install-licencia', (data) => {
         vueToast.abrir("error", "Datos incorrectos");
     }
 });
+
 socket.on('confirmarEnvioTicket', (data) => {
-    console.log("Ticket confirmado: enviado = true");
+    console.log("Ticket confirmado: enviado = true, enTransito = false");
     ipcRenderer.send('confirmar-envio', data);
 });

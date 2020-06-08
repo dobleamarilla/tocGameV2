@@ -19,8 +19,10 @@ var cest        = require('./componentes/schemas/cestas');
 var tick        = require('./componentes/schemas/tickets');
 var sincro      = require('./componentes/schemas/sincroCajas');
 var movi        = require('./componentes/schemas/movimientos');
-var ficha       = require('./componentes/schemas/sincroFichajes ');
+var ficha       = require('./componentes/schemas/sincroFichajes');
 var eventos     = require('events');
+
+var sincroEnCurso = false;
 
 require('source-map-support').install();
 const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
@@ -334,11 +336,16 @@ app.on('ready', () => {
 
     //SINCRONIZAR CON SAN PEDRO
     ipcMain.on('sincronizar-toc', (event: any, args: any) => {
-        tick.getParaSincronizar().then(res=>{
-            event.sender.send('res-sincronizar-toc', res);
-        }).catch(err=>{
-            console.log("Error en main, getParaSincronizar", err);
-        });
+        if(!sincroEnCurso)
+        {
+            sincroEnCurso = true;
+            tick.getParaSincronizar().then(res=>{
+                sincroEnCurso = false;
+                event.sender.send('res-sincronizar-toc', res);
+            }).catch(err=>{
+                console.log("Error en main, getParaSincronizar", err);
+            });
+        }
     });
     //FINAL SINCRONIZAR CON SAN PEDRO
 

@@ -110,7 +110,7 @@ function dateToString(fecha)
 
 function sincronizarToc()
 {
-    if(toc.todoListo())
+    if(toc.todoListo()) //Licencia, etc.
     {
         ipcRenderer.send('sincronizar-toc');
     }    
