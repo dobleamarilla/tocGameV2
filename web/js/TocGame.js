@@ -8,6 +8,7 @@ const TIPO_ENTRADA = 'ENTRADA';
 const TIPO_SALIDA = 'SALIDA';
 class TocGame {
     constructor() {
+        this.version = '2.3.4';
         const info = ipcRenderer.sendSync('getParametros');
         const infoCaja = ipcRenderer.sendSync('getInfoCaja');
         this.clienteSeleccionado = null;

@@ -97,6 +97,6 @@ socket.on('install-licencia', (data) => {
 });
 
 socket.on('confirmarEnvioTicket', (data) => {
-    console.log("Ticket confirmado: enviado = true, enTransito = false");
+    // console.log("Ticket confirmado: enviado = true, enTransito = false");
     ipcRenderer.send('confirmar-envio', data);
 });

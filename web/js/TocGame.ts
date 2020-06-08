@@ -16,6 +16,7 @@ class TocGame
     private parametros: Parametros;
     private clienteSeleccionado: Cliente;
     private udsAplicar: number;
+    private version: string = '2.3.4';
     constructor() 
     {
         const info = ipcRenderer.sendSync('getParametros');
