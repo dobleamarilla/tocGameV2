@@ -16,7 +16,7 @@ class TocGame
     private parametros: Parametros;
     private clienteSeleccionado: Cliente;
     private udsAplicar: number;
-    private version: string = '2.3.4';
+
     constructor() 
     {
         const info = ipcRenderer.sendSync('getParametros');
@@ -215,6 +215,23 @@ class TocGame
     {
         this.setCurrentTrabajador(trabajador._id);
         this.arrayFichados.push(trabajador);
+        var auxTime = new Date();
+        let objGuardar = {
+            _id: Date.now(),
+            infoFichaje: {
+                idTrabajador: trabajador._id,
+                fecha: {
+                    year: auxTime.getFullYear(),
+                    month: auxTime.getMonth(),
+                    day: auxTime.getDate(),
+                    hours: auxTime.getHours(),
+                    minutes: auxTime.getMinutes(),
+                    seconds: auxTime.getSeconds()
+                }
+            },
+            tipo: "ENTRADA"
+        };
+        ipcRenderer.send('guardar-sincro-fichaje', objGuardar);
         ipcRenderer.send('fichar-trabajador', trabajador._id);
 
     }
@@ -225,6 +242,23 @@ class TocGame
         });
 
         ipcRenderer.send('desfichar-trabajador', trabajador._id);
+        var auxTime = new Date();
+        let objGuardar = {
+            _id: Date.now(),
+            infoFichaje: {
+                idTrabajador: trabajador._id,
+                fecha: {
+                    year: auxTime.getFullYear(),
+                    month: auxTime.getMonth(),
+                    day: auxTime.getDate(),
+                    hours: auxTime.getHours(),
+                    minutes: auxTime.getMinutes(),
+                    seconds: auxTime.getSeconds()
+                }
+            },
+            tipo: "SALIDA"
+        };
+        ipcRenderer.send('guardar-sincro-fichaje', objGuardar);
     }
     abrirCaja(data: Caja) //Guarda los datos de la caja nueva en memoria y en la bbdd. Cierra el modal de apertura e inicia otra vez el programa. Solo se llama desde el modal.
     {

@@ -8,7 +8,6 @@ const TIPO_ENTRADA = 'ENTRADA';
 const TIPO_SALIDA = 'SALIDA';
 class TocGame {
     constructor() {
-        this.version = '2.3.4';
         const info = ipcRenderer.sendSync('getParametros');
         const infoCaja = ipcRenderer.sendSync('getInfoCaja');
         this.clienteSeleccionado = null;
@@ -167,6 +166,23 @@ class TocGame {
     addFichado(trabajador) {
         this.setCurrentTrabajador(trabajador._id);
         this.arrayFichados.push(trabajador);
+        var auxTime = new Date();
+        let objGuardar = {
+            _id: Date.now(),
+            infoFichaje: {
+                idTrabajador: trabajador._id,
+                fecha: {
+                    year: auxTime.getFullYear(),
+                    month: auxTime.getMonth(),
+                    day: auxTime.getDate(),
+                    hours: auxTime.getHours(),
+                    minutes: auxTime.getMinutes(),
+                    seconds: auxTime.getSeconds()
+                }
+            },
+            tipo: "ENTRADA"
+        };
+        ipcRenderer.send('guardar-sincro-fichaje', objGuardar);
         ipcRenderer.send('fichar-trabajador', trabajador._id);
     }
     delFichado(trabajador) {
@@ -174,6 +190,23 @@ class TocGame {
             return item._id != trabajador._id;
         });
         ipcRenderer.send('desfichar-trabajador', trabajador._id);
+        var auxTime = new Date();
+        let objGuardar = {
+            _id: Date.now(),
+            infoFichaje: {
+                idTrabajador: trabajador._id,
+                fecha: {
+                    year: auxTime.getFullYear(),
+                    month: auxTime.getMonth(),
+                    day: auxTime.getDate(),
+                    hours: auxTime.getHours(),
+                    minutes: auxTime.getMinutes(),
+                    seconds: auxTime.getSeconds()
+                }
+            },
+            tipo: "SALIDA"
+        };
+        ipcRenderer.send('guardar-sincro-fichaje', objGuardar);
     }
     abrirCaja(data) {
         this.setCaja(data);

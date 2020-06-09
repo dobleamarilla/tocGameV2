@@ -70,6 +70,17 @@ ipcRenderer.on('res-sincronizar-toc', (ev, data) => {
         socket.emit('sincronizar-tickets-tocgame', objEnviar);
     }    
 });
+ipcRenderer.on('res-sincronizar-fichajes', (ev, data) => {
+    const objEnviar = {
+        parametros: toc.getParametros(),
+        arrayFichajes: data
+    }
+    
+    if(objEnviar.arrayFichajes.length > 0)
+    {
+        socket.emit('guardarFichajes-tocGame', objEnviar);
+    }    
+});
 
 socket.on('install-licencia', (data) => {
     if (!data.error) 
@@ -99,4 +110,8 @@ socket.on('install-licencia', (data) => {
 socket.on('confirmarEnvioTicket', (data) => {
     // console.log("Ticket confirmado: enviado = true, enTransito = false");
     ipcRenderer.send('confirmar-envio', data);
+});
+socket.on('confirmarEnvioFichaje', (data) => {
+    // console.log("Ticket confirmado: enviado = true, enTransito = false");
+    ipcRenderer.send('confirmar-envio-fichaje', data);
 });
