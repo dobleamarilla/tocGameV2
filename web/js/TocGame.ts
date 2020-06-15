@@ -807,7 +807,7 @@ class TocGame
     {
         var arrayTicketsCaja: Ticket[] = ipcRenderer.sendSync('getTicketsIntervalo', unaCaja);
         var arrayMovimientos: Movimientos[] = ipcRenderer.sendSync('get-rango-movimientos', {fechaInicio: unaCaja.inicioTime, fechaFinal: unaCaja.finalTime});
-        var calaixFet = 0;
+        var calaixFetZ = 0;
         var nombreTrabajador = this.getCurrentTrabajador().nombre;
         var descuadre = 0;
         var nClientes = 0;
@@ -821,7 +821,7 @@ class TocGame
         var cambioFinal = this.caja.totalCierre;
         var totalSalidas = 0;
         var totalEntradas = 0;
-        var recaudado = this.caja.totalCierre-this.caja.totalApertura +totalSalidas - totalEntradas;
+        var recaudado = 0; //this.caja.totalCierre-this.caja.totalApertura + totalSalidas - totalEntradas;
         for(let i = 0; i < arrayMovimientos.length; i++)
         {
             if(arrayMovimientos[i].tipo === TIPO_SALIDA)
@@ -839,7 +839,7 @@ class TocGame
         for(let i = 0; i < arrayTicketsCaja.length; i++)
         {
             nClientes++;
-            calaixFet += arrayTicketsCaja[i].total;
+            calaixFetZ += arrayTicketsCaja[i].total;
             if(arrayTicketsCaja[i].tarjeta)
             {
                 totalTarjeta += arrayTicketsCaja[i].total;
@@ -850,9 +850,12 @@ class TocGame
                 totalEnEfectivo += arrayTicketsCaja[i].total;
             }
         }
+        
         descuadre = cambioFinal-cambioInicial+totalSalidas-totalEntradas-totalEnEfectivo;
+        recaudado = calaixFetZ + descuadre - totalTarjeta;
+        
         const objImpresion = {
-            calaixFet: calaixFet,
+            calaixFet: calaixFetZ,
             nombreTrabajador: nombreTrabajador,
             descuadre: descuadre,
             nClientes: nClientes,
