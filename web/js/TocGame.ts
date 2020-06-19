@@ -915,6 +915,12 @@ class TocGame
     {
         vueCesta.activarEstiloClienteActivo();
         this.clienteSeleccionado = cliente;
+        var objEnviar = {
+            parametros: this.getParametros(),
+            idCliente: cliente.id
+        };
+
+        socket.emit('comprobarClienteVIP', objEnviar);
     }
     hayClienteSeleccionado()
     {
@@ -926,6 +932,10 @@ class TocGame
         {
             return false;
         }
+    }
+    vipConfirmado()
+    {
+        vueMenuVip.abreModal();
     }
     todoListo()
     {

@@ -115,3 +115,14 @@ socket.on('confirmarEnvioFichaje', (data) => {
     // console.log("Ticket confirmado: enviado = true, enTransito = false");
     ipcRenderer.send('confirmar-envio-fichaje', data);
 });
+socket.on('respuestaClienteEsVIP', (data) => {
+    if(data)
+    {
+        //ES VIP
+        toc.vipConfirmado();
+    }
+    else
+    {
+        //ES NORMAL
+    }
+});
