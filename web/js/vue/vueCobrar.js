@@ -14,6 +14,9 @@ var vueCobrar = new Vue({
                         <img @click="cobrar(false)" src="assets/imagenes/img-tarjetas.png" alt="Cobrar con tarjeta" width="250px">
                     </div>
                 </div>
+                <div v-if="esVIP === true" class="row p-1">
+                    <button @click="cobrar(true, true)" class="btn btn-danger">CREAR ALBARÁN</button>
+                </div>
                 <div class="row p-1">
                     <div class="col-md-12 text-center">
                         <span class="verTotal">{{total}} €</span>
@@ -37,11 +40,13 @@ var vueCobrar = new Vue({
             total: 0,
             arrayFichados: [],
             esperandoDatafono: { display: 'none' },
-            esperando: false
+            esperando: false,
+            esVIP: false
         };
     },
     methods: {
         abreModal() {
+            this.esVIP = toc.esClienteVip();
             this.setEsperando(false);
             $('#modalVueCobrar').modal();
         },
@@ -53,10 +58,15 @@ var vueCobrar = new Vue({
             this.total = total;
             this.arrayFichados = arrayFichados;
         },
-        cobrar(efectivo) {
+        cobrar(efectivo, deuda = false) {
             if (!this.esperando) {
                 this.setEsperando(true);
-                toc.crearTicket(efectivo);
+                if (deuda) {
+                    toc.crearTicket(efectivo, true);
+                }
+                else {
+                    toc.crearTicket(efectivo);
+                }
             }
             else {
                 vueToast.abrir('danger', 'Ya existe una operación en curso');

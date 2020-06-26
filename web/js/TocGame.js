@@ -12,6 +12,7 @@ class TocGame {
         const infoCaja = ipcRenderer.sendSync('getInfoCaja');
         this.clienteSeleccionado = null;
         this.udsAplicar = 1;
+        this.esVIP = false;
         if (info !== null) {
             this.parametros = info;
         }
@@ -540,7 +541,9 @@ class TocGame {
             }
         }
     }
-    crearTicket(efectivo) {
+    crearTicketConDeuda() {
+    }
+    crearTicket(efectivo, deuda = false) {
         let total = 0;
         for (let i = 0; i < this.cesta.lista.length; i++) {
             total += this.cesta.lista[i].subtotal;
@@ -558,12 +561,22 @@ class TocGame {
             cliente: this.hayClienteSeleccionado() ? this.clienteSeleccionado.id : null
         };
         if (efectivo) {
-            ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
-            ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
-            this.borrarCesta();
-            vueCobrar.cerrarModal();
-            vueToast.abrir('success', 'Ticket creado');
-            this.quitarClienteSeleccionado();
+            if (deuda) {
+                ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
+                ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
+                this.borrarCesta();
+                vueCobrar.cerrarModal();
+                vueToast.abrir('success', 'Ticket creado');
+                this.quitarClienteSeleccionado();
+            }
+            else {
+                ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
+                ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
+                this.borrarCesta();
+                vueCobrar.cerrarModal();
+                vueToast.abrir('success', 'Ticket creado');
+                this.quitarClienteSeleccionado();
+            }
         }
         else {
             if (this.parametros.tipoDatafono === TIPO_CLEARONE) {
@@ -582,6 +595,7 @@ class TocGame {
                 }
             }
         }
+        this.limpiarClienteVIP();
     }
     getUrlPedidos() {
         var url = '';
@@ -751,7 +765,19 @@ class TocGame {
         }
     }
     vipConfirmado() {
+        this.esVIP = true;
         vueMenuVip.abreModal();
+    }
+    limpiarClienteVIP() {
+        this.esVIP = false;
+    }
+    esClienteVip() {
+        if (this.esVIP) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
     todoListo() {
         if (this.todoInstalado()) {

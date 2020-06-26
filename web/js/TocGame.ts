@@ -16,13 +16,14 @@ class TocGame
     private parametros: Parametros;
     private clienteSeleccionado: Cliente;
     private udsAplicar: number;
-
+    private esVIP: boolean;
     constructor() 
     {
         const info = ipcRenderer.sendSync('getParametros');
         const infoCaja = ipcRenderer.sendSync('getInfoCaja');
         this.clienteSeleccionado = null;
         this.udsAplicar = 1;
+        this.esVIP = false;
 
         if (info !== null) 
         {
@@ -678,8 +679,11 @@ class TocGame
             }
         }
     }
+    crearTicketConDeuda()
+    {
 
-    crearTicket(efectivo: boolean)
+    }
+    crearTicket(efectivo: boolean, deuda: boolean = false)
     {
         let total = 0;
         for(let i = 0; i < this.cesta.lista.length; i++)
@@ -701,12 +705,24 @@ class TocGame
 
         if(efectivo)
         {
-            ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
-            ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
-            this.borrarCesta();
-            vueCobrar.cerrarModal();
-            vueToast.abrir('success', 'Ticket creado');
-            this.quitarClienteSeleccionado();
+            if(deuda)
+            {
+                ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
+                ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
+                this.borrarCesta();
+                vueCobrar.cerrarModal();
+                vueToast.abrir('success', 'Ticket creado');
+                this.quitarClienteSeleccionado();
+            }
+            else
+            {
+                ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
+                ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
+                this.borrarCesta();
+                vueCobrar.cerrarModal();
+                vueToast.abrir('success', 'Ticket creado');
+                this.quitarClienteSeleccionado();
+            }
         }
         else
         {
@@ -728,7 +744,9 @@ class TocGame
                     this.quitarClienteSeleccionado();
                 }
             }
+                     
         }
+        this.limpiarClienteVIP();
     }
     getUrlPedidos()
     {
@@ -935,7 +953,23 @@ class TocGame
     }
     vipConfirmado()
     {
+        this.esVIP = true;
         vueMenuVip.abreModal();
+    }
+    limpiarClienteVIP()
+    {
+        this.esVIP = false;
+    }
+    esClienteVip()
+    {
+        if(this.esVIP)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     todoListo()
     {
