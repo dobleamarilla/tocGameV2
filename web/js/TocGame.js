@@ -550,33 +550,34 @@ class TocGame {
         }
         const infoTrabajador = this.getCurrentTrabajador();
         const nuevoIdTicket = this.getUltimoTicket() + 1;
-        const objTicket = {
+        var objTicket = {
             _id: nuevoIdTicket,
             timestamp: Date.now(),
             total: total,
             lista: this.cesta.lista,
-            tarjeta: !efectivo,
+            tipoPago: "DEUDA",
             idTrabajador: infoTrabajador._id,
             tiposIva: this.cesta.tiposIva,
             cliente: this.hayClienteSeleccionado() ? this.clienteSeleccionado.id : null
         };
-        if (efectivo) {
-            if (deuda) {
-                ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
-                ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
-                this.borrarCesta();
-                vueCobrar.cerrarModal();
-                vueToast.abrir('success', 'Ticket creado');
-                this.quitarClienteSeleccionado();
+        if (deuda) {
+            objTicket.tipoPago = "DEUDA";
+        }
+        else {
+            if (efectivo) {
+                objTicket.tipoPago = "EFECTIVO";
             }
             else {
-                ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
-                ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
-                this.borrarCesta();
-                vueCobrar.cerrarModal();
-                vueToast.abrir('success', 'Ticket creado');
-                this.quitarClienteSeleccionado();
+                objTicket.tipoPago = "TARJETA";
             }
+        }
+        if (efectivo) {
+            ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
+            ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
+            this.borrarCesta();
+            vueCobrar.cerrarModal();
+            vueToast.abrir('success', 'Ticket creado');
+            this.quitarClienteSeleccionado();
         }
         else {
             if (this.parametros.tipoDatafono === TIPO_CLEARONE) {
@@ -688,7 +689,7 @@ class TocGame {
         for (let i = 0; i < arrayTicketsCaja.length; i++) {
             nClientes++;
             calaixFetZ += arrayTicketsCaja[i].total;
-            if (arrayTicketsCaja[i].tarjeta) {
+            if (arrayTicketsCaja[i].tipoPago == "TARJETA") {
                 totalTarjeta += arrayTicketsCaja[i].total;
             }
             else {
@@ -735,7 +736,7 @@ class TocGame {
             numFactura: infoTicket._id,
             arrayCompra: infoTicket.lista,
             total: infoTicket.total,
-            visa: infoTicket.tarjeta,
+            visa: infoTicket.tipoPago,
             tiposIva: infoTicket.tiposIva,
             cabecera: paramsTicket[0] !== undefined ? paramsTicket[0].valorDato : '',
             pie: paramsTicket[1] !== undefined ? paramsTicket[1].valorDato : '',

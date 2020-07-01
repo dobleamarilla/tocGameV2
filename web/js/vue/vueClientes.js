@@ -80,6 +80,8 @@ var vueClientes = new Vue({
             console.log("Entro en consultar puntos");
         },
         reset() {
+            toc.quitarClienteSeleccionado();
+            toc.limpiarClienteVIP();
             this.busqueda = '';
         }
     },

@@ -26,8 +26,7 @@ var vueCaja = new Vue({
 										<tr v-for="(item, index) of listaTickets" v-bind:class="{estiloActivoTicketCaja: index === ticketActivo}" @click="setItemCajaActivo(index)">
 											<td>{{item._id}}</td>
 											<td>{{convertirFecha(item.timestamp)}}</td>
-											<td v-if="item.tarjeta === true">Tarjeta</td>
-											<td v-else>Efectivo</td>
+                                            <td>{{item.tipoPago}}</td>
 											<td>{{item.total.toFixed(2)}} €</td>
 										</tr>
 									</tbody>

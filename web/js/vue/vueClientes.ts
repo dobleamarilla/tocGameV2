@@ -90,6 +90,8 @@ var vueClientes = new Vue({
         },
         reset()
         {
+            toc.quitarClienteSeleccionado();
+            toc.limpiarClienteVIP();
             this.busqueda = '';
         }
     },

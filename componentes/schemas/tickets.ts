@@ -17,7 +17,7 @@ var schemaTickets = new conexion.mongoose.Schema({
         subtotal: Number,
         unidades: Number
     }],
-    tarjeta: Boolean,
+    tipoPago: String,
     idTrabajador: Number,
     tiposIva: {
         base1: Number,

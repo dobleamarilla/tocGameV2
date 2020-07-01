@@ -40,7 +40,7 @@ function dateToString2(fecha)
     return `${finalYear}-${finalMonth}-${finalDay} ${finalHours}:${finalMinutes}:${finalSeconds}`;
 }
 
-var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, visa, tiposIva, cabecera, pie, nombreDependienta, tipoImpresora) 
+var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoPago, tiposIva, cabecera, pie, nombreDependienta, tipoImpresora) 
 {
     console.log('TIPO IMPRESORA: ', tipoImpresora);
     try 
@@ -79,7 +79,7 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, visa,
             detalles += `${arrayCompra[i].unidades}     ${arrayCompra[i].nombre.slice(0, 20)}       ${arrayCompra[i].subtotal}\n`;
         }
         var fecha = new Date();
-        if (visa) 
+        if (tipoPago == "TARJETA") 
         {
             pagoTarjeta = '----------- PAGADO CON TARJETA ---------\n';
         }
