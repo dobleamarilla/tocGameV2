@@ -114,7 +114,7 @@ interface Ticket
         subtotal: number,
         unidades: number
     }[],
-    tarjeta: boolean,
+    tipoPago: string,
     idTrabajador: number,
     tiposIva: {
         base1: number,

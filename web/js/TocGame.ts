@@ -692,15 +692,43 @@ class TocGame
         }
         const infoTrabajador: Trabajador = this.getCurrentTrabajador();
         const nuevoIdTicket = this.getUltimoTicket()+1;
-        const objTicket: Ticket = {
+
+        var objTicket: Ticket = {
             _id: nuevoIdTicket,
             timestamp: Date.now(),
             total: total,
             lista: this.cesta.lista,
-            tarjeta: !efectivo,
+            tipoPago: "DEUDA",
             idTrabajador: infoTrabajador._id,
             tiposIva: this.cesta.tiposIva,
             cliente: this.hayClienteSeleccionado() ? this.clienteSeleccionado.id: null
+        }   
+
+        if(deuda)
+        {
+            const objTicket: Ticket = {
+                _id: nuevoIdTicket,
+                timestamp: Date.now(),
+                total: total,
+                lista: this.cesta.lista,
+                tipoPago: "DEUDA",
+                idTrabajador: infoTrabajador._id,
+                tiposIva: this.cesta.tiposIva,
+                cliente: this.hayClienteSeleccionado() ? this.clienteSeleccionado.id: null
+            }           
+        }
+        else
+        {
+            const objTicket: Ticket = {
+                _id: nuevoIdTicket,
+                timestamp: Date.now(),
+                total: total,
+                lista: this.cesta.lista,
+                tipoPago: (efectivo) ? "EFECTIVO" : "TARJETA",
+                idTrabajador: infoTrabajador._id,
+                tiposIva: this.cesta.tiposIva,
+                cliente: this.hayClienteSeleccionado() ? this.clienteSeleccionado.id: null
+            }
         }
 
         if(efectivo)

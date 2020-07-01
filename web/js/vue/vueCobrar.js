@@ -6,7 +6,7 @@ var vueCobrar = new Vue({
 	<div class="modal-dialog" role="document" style="max-width: 600px">
 		<div class="modal-content">
 			<div class="modal-body">
-                <div class="row">
+                <div v-if="esVIP === false" class="row">
                     <div class="col-md-6 text-center">
                         <img @click="cobrar(true)" src="assets/imagenes/img-efectivo.png" alt="Cobrar con efectivo" width="250px">
                     </div>
@@ -14,15 +14,17 @@ var vueCobrar = new Vue({
                         <img @click="cobrar(false)" src="assets/imagenes/img-tarjetas.png" alt="Cobrar con tarjeta" width="250px">
                     </div>
                 </div>
-                <div v-if="esVIP === true" class="row p-1">
-                    <button @click="cobrar(true, true)" class="btn btn-danger">CREAR ALBARÁN</button>
+                <div v-if="esVIP === true" class="row">
+                    <div class="col text-center">
+                        <button @click="cobrar(true, true)" class="btn btn-danger" style="font-size: 40px">CREAR ALBARÁN</button>
+                    </div>
                 </div>
                 <div class="row p-1">
                     <div class="col-md-12 text-center">
-                        <span class="verTotal">{{total}} €</span>
+                        <span class="verTotal">{{total.toFixed(2)}} €</span>
                     </div>
                 </div>
-                <div class="row" v-bind:style="esperandoDatafono">
+                <div v-if="esVIP === false" class="row" v-bind:style="esperandoDatafono">
                     <div class="col-md-12 text-center">
                         <img src="assets/imagenes/loading.gif" alt="Esperando respuesta del datáfono">
                     </div>
