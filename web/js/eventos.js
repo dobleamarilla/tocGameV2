@@ -97,7 +97,8 @@ socket.on('confirmarEnvioFichaje', (data) => {
     ipcRenderer.send('confirmar-envio-fichaje', data);
 });
 socket.on('respuestaClienteEsVIP', (data) => {
-    if (data) {
+    console.log(data);
+    if (data.esVip) {
         //ES VIP
         toc.vipConfirmado();
     }
