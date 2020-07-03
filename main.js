@@ -30,7 +30,6 @@ var movi = require('./componentes/schemas/movimientos');
 var sincroFicha = require('./componentes/schemas/sincroFichajes');
 var eventos = require('events');
 var sincroEnCurso = false;
-var sincroEnCurso2 = false;
 require('source-map-support').install();
 const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
@@ -318,17 +317,19 @@ app.on('ready', () => {
     //FINAL SINCRONIZAR CON SAN PEDRO
     //SINCRONIZAR CON SAN PEDRO FICHAJES SOLO
     ipcMain.on('sincronizar-fichajes', (event, args) => {
-        if (!sincroEnCurso2) {
-            sincroEnCurso2 = true;
-            sincroFicha.getFichajes().then(res => {
-                sincroEnCurso2 = false;
-                event.sender.send('res-sincronizar-fichajes', res);
-            }).catch(err => {
-                console.log("Error en main, getFichajes", err);
-            });
-        }
+        sincroFicha.getFichajes().then(res => {
+            event.sender.send('res-sincronizar-fichajes', res);
+        }).catch(err => {
+            console.log("Error en main, getFichajes", err);
+        });
     });
     //FINAL SINCRONIZAR CON SAN PEDRO FICHAJES SOLO
+    ipcMain.on('testeoGuapo', (event, args) => {
+        sincroFicha.testeoGuapo().then(res => {
+            console.log(res);
+            event.returnValue = res;
+        });
+    });
     ipcMain.on('confirmar-envio', (event, args) => {
         tick.confirmarEnvio(args);
     });

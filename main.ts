@@ -23,7 +23,7 @@ var sincroFicha = require('./componentes/schemas/sincroFichajes');
 var eventos     = require('events');
 
 var sincroEnCurso   = false;
-var sincroEnCurso2  = false;
+
 require('source-map-support').install();
 const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
 
@@ -356,20 +356,20 @@ app.on('ready', () => {
     //FINAL SINCRONIZAR CON SAN PEDRO
     //SINCRONIZAR CON SAN PEDRO FICHAJES SOLO
     ipcMain.on('sincronizar-fichajes', (event: any, args: any) => {
-        if(!sincroEnCurso2)
-        {
-            sincroEnCurso2 = true;
             sincroFicha.getFichajes().then(res=>{
-                sincroEnCurso2 = false;
                 event.sender.send('res-sincronizar-fichajes', res);
             }).catch(err=>{
                 console.log("Error en main, getFichajes", err);
             });
-        }
     });
     //FINAL SINCRONIZAR CON SAN PEDRO FICHAJES SOLO
 
-
+    ipcMain.on('testeoGuapo', (event: any, args: any)=>{
+        sincroFicha.testeoGuapo().then(res=>{
+            console.log(res);
+            event.returnValue = res;
+        });
+    });
 
     
     ipcMain.on('confirmar-envio', (event: any, args: any) => {

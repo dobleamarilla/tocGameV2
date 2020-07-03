@@ -33,7 +33,8 @@ function nuevoItem(data): void
 
 function getFichajes()
 {
-    return SincroFichajes.find({enviado: false, enTransito: false}, null, {lean: true});
+    //return SincroFichajes.find({enviado: false, enTransito: false}, null, {lean: true});
+    return SincroFichajes.findOneAndUpdate({enviado: false, enTransito: false}, {enTransito: true}, {lean: true, sort: {_id: 1}});
 }
 function confirmarEnvioFichajes(data)
 {
@@ -41,8 +42,13 @@ function confirmarEnvioFichajes(data)
         //console.log(err, queHeHecho)
     }));
 }
+function testeoGuapo()
+{
+    return SincroFichajes.findOneAndUpdate({enviado: false, enTransito: false}, {enTransito: true}, {lean: true, sort: {_id: 1}});
+}
 
 exports.SincroFichajes          = SincroFichajes;
 exports.nuevoItem               = nuevoItem;
 exports.getFichajes             = getFichajes;
 exports.confirmarEnvioFichajes  = confirmarEnvioFichajes;
+exports.testeoGuapo             = testeoGuapo;

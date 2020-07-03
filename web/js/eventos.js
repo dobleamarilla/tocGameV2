@@ -61,10 +61,10 @@ ipcRenderer.on('res-sincronizar-toc', (ev, data) => {
 ipcRenderer.on('res-sincronizar-fichajes', (ev, data) => {
     const objEnviar = {
         parametros: toc.getParametros(),
-        arrayFichajes: data
+        info: data
     };
-    if (objEnviar.arrayFichajes.length > 0) {
-        socket.emit('guardarFichajes-tocGame', objEnviar);
+    if (objEnviar.info !== null) {
+        socket.emit('guardarFichajes-tocGame-nueva', objEnviar);
     }
 });
 socket.on('install-licencia', (data) => {
