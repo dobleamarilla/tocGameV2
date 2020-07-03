@@ -110,11 +110,11 @@ function dateToString(fecha)
 
 function sincronizarToc()
 {
-//     if(toc.todoListo()) //Licencia, etc.
-//     {
-//         ipcRenderer.send('sincronizar-toc');
-//         ipcRenderer.send('sincronizar-fichajes');
-//     }    
+    if(toc.todoListo()) //Licencia, etc.
+    {
+        ipcRenderer.send('sincronizar-toc');
+        ipcRenderer.send('sincronizar-fichajes');
+    }    
 }
 function elTesteo()
 {
