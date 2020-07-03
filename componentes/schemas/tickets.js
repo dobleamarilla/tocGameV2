@@ -55,7 +55,7 @@ function getInfoTicket(idTicket) {
     return Tickets.findById(idTicket).lean();
 }
 function getTickets() {
-    return Tickets.find({}).sort({ _id: -1 }).lean();
+    return Tickets.find({}).sort({ _id: -1 }).limit(100).lean();
 }
 function getTicketsIntervalo(unaCaja) {
     return Tickets.find({ timestamp: { $lte: unaCaja.finalTime, $gte: unaCaja.inicioTime } }, (err, respuesta) => {

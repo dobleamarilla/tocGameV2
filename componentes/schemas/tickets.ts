@@ -61,7 +61,7 @@ function getInfoTicket(idTicket: number)
 }
 function getTickets()
 {
-    return Tickets.find({}).sort({_id: -1}).lean();
+    return Tickets.find({}).sort({_id: -1}).limit(100).lean();
 }
 
 function getTicketsIntervalo(unaCaja: Caja)
