@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.3.93](https://github.com/dobleamarilla/tocGameV2/compare/v2.3.92...v2.3.93) (2020-07-03)
+
 ### [2.3.92](https://github.com/dobleamarilla/tocGameV2/compare/v2.3.91...v2.3.92) (2020-07-03)
 
 ### [2.3.91](https://github.com/dobleamarilla/tocGameV2/compare/v2.3.88...v2.3.91) (2020-07-03)

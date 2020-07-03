@@ -1,6 +1,6 @@
 {
     "name": "toc-game",
-    "version": "2.3.92",
+    "version": "2.3.93",
     "description": "Versión v2 del tocGame",
     "author": {
         "name": "Ezequiel"
@@ -12,7 +12,8 @@
         "reparar": "npx electron-rebuild -f -p",
         "build:windows": "electron-packager . tocGame --overwrite --out=windowsBuild",
         "build:linux": "electron-packager . tocGame --overwrite --asar=true --platform=linux --arch=x64 --prune=true --out=linuxBuild",
-        "version": "npm run compile && standard-version && git push origin master"
+        "version": "npm run compile && standard-version",
+        "versionandpush": "npm run compile && standard-version && git push origin master"
     },
     "dependencies": {
         "escpos": "^3.0.0-alpha.3",
