@@ -19,7 +19,15 @@ interface Cesta
         subtotal: number,
         promocion: {
             _id: string,
-            esPromo: boolean
+            esPromo: boolean,
+            infoPromo?: {
+                idPrincipal?: number,
+                cantidadPrincipal?: number,
+                idSecundario?: number,
+                cantidadSecundario?: number,
+                precioRealPrincipal?: number,
+                precioRealSecundario?: number
+            }
         }
     }[];
 }

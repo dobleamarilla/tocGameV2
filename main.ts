@@ -296,6 +296,14 @@ app.on('ready', () => {
     });
     //FINAL SET CESTA
 
+    //GET PRECIO ARTICULO
+    ipcMain.on('getPrecioArticulo', (ev, id) => {
+        arti.getPrecio(id).then(infoArticulo=>{
+            ev.returnValue = infoArticulo.precioConIva;
+        });
+    });
+    //FINAL GET PRECIO ARTICULO
+
     //BUSCAR FICHADOS
     ipcMain.on('buscar-fichados', (ev, data)=>{
         trabaj.buscarFichados().then(arrayFichados=>{

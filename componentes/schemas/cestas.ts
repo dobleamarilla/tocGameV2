@@ -21,7 +21,15 @@ var schemaCestas = new conexion.mongoose.Schema({
                 type: String,
                 default: ''
             },
-            esPromo: Boolean
+            esPromo: Boolean,
+            infoPromo: {
+                idPrincipal: Number,
+                cantidadPrincipal: Number,
+                idSecundario: Number,
+                cantidadSecundario: Number,
+                precioRealPrincipal: Number,
+                precioRealSecundario: Number
+            }
         },
         subtotal: Number,
         unidades: Number

@@ -3,7 +3,7 @@ var exec = require('child_process').exec;
 var os = require('os');
 escpos.USB = require('escpos-usb');
 escpos.Serial = require('escpos-serialport');
-
+var articulos = require('./schemas/articulos');
 const TIPO_ENTRADA_DINERO = 'ENTRADA';
 const TIPO_SALIDA_DINERO = 'SALIDA';
 function dateToString2(fecha)
@@ -40,7 +40,7 @@ function dateToString2(fecha)
     return `${finalYear}-${finalMonth}-${finalDay} ${finalHours}:${finalMinutes}:${finalSeconds}`;
 }
 
-var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoPago, tiposIva, cabecera, pie, nombreDependienta, tipoImpresora) 
+var imprimirTicketVenta = async function (event, numFactura, arrayCompra, total, tipoPago, tiposIva, cabecera, pie, nombreDependienta, tipoImpresora) 
 {
     console.log('TIPO IMPRESORA: ', tipoImpresora);
     try 
@@ -69,14 +69,26 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoP
         var pagoTarjeta = '';
         for (let i = 0; i < arrayCompra.length; i++) 
         {
-            if (arrayCompra[i].nombre.length < 20) 
+            if(arrayCompra[i].promocion.esPromo)
             {
-                while (arrayCompra[i].nombre.length < 20) 
+                detalles += `${arrayCompra[i].unidades*arrayCompra[i].promocion.infoPromo.cantidadPrincipal}     ${await articulos.getNombreArticulo(arrayCompra[i].promocion.infoPromo.idPrincipal)}       ${arrayCompra[i].promocion.infoPromo.precioRealPrincipal.toFixed(2)}\n`;
+                if(arrayCompra[i].promocion.infoPromo.cantidadSecundario > 0)
                 {
-                    arrayCompra[i].nombre += ' ';
+                    detalles += `${arrayCompra[i].unidades*arrayCompra[i].promocion.infoPromo.cantidadSecundario}     ${await articulos.getNombreArticulo(arrayCompra[i].promocion.infoPromo.idSecundario)}       ${arrayCompra[i].promocion.infoPromo.precioRealSecundario.toFixed(2)}\n`;
                 }
             }
-            detalles += `${arrayCompra[i].unidades}     ${arrayCompra[i].nombre.slice(0, 20)}       ${arrayCompra[i].subtotal}\n`;
+            else
+            {
+                if (arrayCompra[i].nombre.length < 20) 
+                {
+                    while (arrayCompra[i].nombre.length < 20) 
+                    {
+                        arrayCompra[i].nombre += ' ';
+                    }
+                }
+                detalles += `${arrayCompra[i].unidades}     ${arrayCompra[i].nombre.slice(0, 20)}       ${arrayCompra[i].subtotal}\n`;
+            }
+            
         }
         var fecha = new Date();
         if (tipoPago == "TARJETA") 

@@ -1,8 +1,17 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var escpos = require('escpos');
 var exec = require('child_process').exec;
 var os = require('os');
 escpos.USB = require('escpos-usb');
 escpos.Serial = require('escpos-serialport');
+var articulos = require('./schemas/articulos');
 const TIPO_ENTRADA_DINERO = 'ENTRADA';
 const TIPO_SALIDA_DINERO = 'SALIDA';
 function dateToString2(fecha) {
@@ -35,86 +44,96 @@ function dateToString2(fecha) {
     return `${finalYear}-${finalMonth}-${finalDay} ${finalHours}:${finalMinutes}:${finalSeconds}`;
 }
 var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoPago, tiposIva, cabecera, pie, nombreDependienta, tipoImpresora) {
-    console.log('TIPO IMPRESORA: ', tipoImpresora);
-    try {
-        exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
-        if (tipoImpresora === 'USB') {
-            console.log('VA POR USB');
-            var device = new escpos.USB('0x4B8', '0x202'); //USB
-        }
-        else {
-            if (tipoImpresora === 'SERIE') {
-                console.log('VA POR SERIE');
-                var device = new escpos.Serial('/dev/ttyS0', {
-                    baudRate: 115000,
-                    stopBit: 2
-                });
+    return __awaiter(this, void 0, void 0, function* () {
+        console.log('TIPO IMPRESORA: ', tipoImpresora);
+        try {
+            exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
+            if (tipoImpresora === 'USB') {
+                console.log('VA POR USB');
+                var device = new escpos.USB('0x4B8', '0x202'); //USB
             }
-        }
-        var printer = new escpos.Printer(device);
-        var detalles = '';
-        var pagoTarjeta = '';
-        for (let i = 0; i < arrayCompra.length; i++) {
-            if (arrayCompra[i].nombre.length < 20) {
-                while (arrayCompra[i].nombre.length < 20) {
-                    arrayCompra[i].nombre += ' ';
+            else {
+                if (tipoImpresora === 'SERIE') {
+                    console.log('VA POR SERIE');
+                    var device = new escpos.Serial('/dev/ttyS0', {
+                        baudRate: 115000,
+                        stopBit: 2
+                    });
                 }
             }
-            detalles += `${arrayCompra[i].unidades}     ${arrayCompra[i].nombre.slice(0, 20)}       ${arrayCompra[i].subtotal}\n`;
+            var printer = new escpos.Printer(device);
+            var detalles = '';
+            var pagoTarjeta = '';
+            for (let i = 0; i < arrayCompra.length; i++) {
+                if (arrayCompra[i].promocion.esPromo) {
+                    detalles += `${arrayCompra[i].unidades * arrayCompra[i].promocion.infoPromo.cantidadPrincipal}     ${yield articulos.getNombreArticulo(arrayCompra[i].promocion.infoPromo.idPrincipal)}       ${arrayCompra[i].promocion.infoPromo.precioRealPrincipal.toFixed(2)}\n`;
+                    if (arrayCompra[i].promocion.infoPromo.cantidadSecundario > 0) {
+                        detalles += `${arrayCompra[i].unidades * arrayCompra[i].promocion.infoPromo.cantidadSecundario}     ${yield articulos.getNombreArticulo(arrayCompra[i].promocion.infoPromo.idSecundario)}       ${arrayCompra[i].promocion.infoPromo.precioRealSecundario.toFixed(2)}\n`;
+                    }
+                }
+                else {
+                    if (arrayCompra[i].nombre.length < 20) {
+                        while (arrayCompra[i].nombre.length < 20) {
+                            arrayCompra[i].nombre += ' ';
+                        }
+                    }
+                    detalles += `${arrayCompra[i].unidades}     ${arrayCompra[i].nombre.slice(0, 20)}       ${arrayCompra[i].subtotal}\n`;
+                }
+            }
+            var fecha = new Date();
+            if (tipoPago == "TARJETA") {
+                pagoTarjeta = '----------- PAGADO CON TARJETA ---------\n';
+            }
+            var detalleIva4 = '';
+            var detalleIva10 = '';
+            var detalleIva21 = '';
+            var detalleIva = '';
+            if (tiposIva.importe1 > 0) {
+                detalleIva4 = `${tiposIva.base1}        4%: ${tiposIva.valor1}      ${tiposIva.importe1}\n`;
+            }
+            if (tiposIva.importe2 > 0) {
+                detalleIva10 = `${tiposIva.base2}        10%: ${tiposIva.valor2}      ${tiposIva.importe2}\n`;
+            }
+            if (tiposIva.importe3 > 0) {
+                detalleIva21 = `${tiposIva.base3}       21%: ${tiposIva.valor3}      ${tiposIva.importe3}\n`;
+            }
+            detalleIva = detalleIva4 + detalleIva10 + detalleIva21;
+            device.open(function () {
+                printer
+                    .encode('latin1')
+                    .size(1, 1)
+                    .text(cabecera)
+                    .text(`Data: ${fecha.getDate()}-${fecha.getMonth() + 1}-${fecha.getFullYear()}  ${fecha.getHours()}:${fecha.getMinutes()}`)
+                    .text('Factura simplificada N: ' + numFactura)
+                    .text('Ates per: ' + nombreDependienta)
+                    .control('LF')
+                    .control('LF')
+                    .control('LF')
+                    .control('LF')
+                    .text('Quantitat      Article        Import (EUR)')
+                    .text('-----------------------------------------')
+                    .align('LT')
+                    .text(detalles)
+                    .text(pagoTarjeta)
+                    .size(2, 2)
+                    .text('TOTAL: ' + total.toFixed(2) + ' EUR \n')
+                    .size(1, 1)
+                    .align('CT')
+                    .text('Base IVA         IVA         IMPORT')
+                    .text(detalleIva)
+                    .text('-- ES COPIA --')
+                    .text(pie)
+                    .control('LF')
+                    .control('LF')
+                    .control('LF')
+                    .cut('PAPER_FULL_CUT')
+                    .close();
+            });
         }
-        var fecha = new Date();
-        if (tipoPago == "TARJETA") {
-            pagoTarjeta = '----------- PAGADO CON TARJETA ---------\n';
+        catch (err) {
+            errorImpresora(err, event);
         }
-        var detalleIva4 = '';
-        var detalleIva10 = '';
-        var detalleIva21 = '';
-        var detalleIva = '';
-        if (tiposIva.importe1 > 0) {
-            detalleIva4 = `${tiposIva.base1}        4%: ${tiposIva.valor1}      ${tiposIva.importe1}\n`;
-        }
-        if (tiposIva.importe2 > 0) {
-            detalleIva10 = `${tiposIva.base2}        10%: ${tiposIva.valor2}      ${tiposIva.importe2}\n`;
-        }
-        if (tiposIva.importe3 > 0) {
-            detalleIva21 = `${tiposIva.base3}       21%: ${tiposIva.valor3}      ${tiposIva.importe3}\n`;
-        }
-        detalleIva = detalleIva4 + detalleIva10 + detalleIva21;
-        device.open(function () {
-            printer
-                .encode('latin1')
-                .size(1, 1)
-                .text(cabecera)
-                .text(`Data: ${fecha.getDate()}-${fecha.getMonth() + 1}-${fecha.getFullYear()}  ${fecha.getHours()}:${fecha.getMinutes()}`)
-                .text('Factura simplificada N: ' + numFactura)
-                .text('Ates per: ' + nombreDependienta)
-                .control('LF')
-                .control('LF')
-                .control('LF')
-                .control('LF')
-                .text('Quantitat      Article        Import (EUR)')
-                .text('-----------------------------------------')
-                .align('LT')
-                .text(detalles)
-                .text(pagoTarjeta)
-                .size(2, 2)
-                .text('TOTAL: ' + total.toFixed(2) + ' EUR \n')
-                .size(1, 1)
-                .align('CT')
-                .text('Base IVA         IVA         IMPORT')
-                .text(detalleIva)
-                .text('-- ES COPIA --')
-                .text(pie)
-                .control('LF')
-                .control('LF')
-                .control('LF')
-                .cut('PAPER_FULL_CUT')
-                .close();
-        });
-    }
-    catch (err) {
-        errorImpresora(err, event);
-    }
+    });
 };
 var salidaDinero = function (event, totalRetirado, cajaActual, fecha, nombreDependienta, nombreTienda, concepto, tipoImpresora) {
     try {

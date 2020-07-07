@@ -338,7 +338,45 @@ class TocGame {
         }
         return -1; //IMPORTANTE QUE SEA ESTE VALOR SINO HAY SECUNDARIO
     }
-    insertarLineaPromoCesta(cesta, tipoPromo, unidades, total, idPromo) {
+    calcularPrecioRealCombo(tipoPromo, idPrincipal, idSecundario, cantidadPrincipal, cantidadSecundario, unidadesOferta, precioTotalOferta) {
+        let precioSinOfertaPrincipal = 0;
+        let precioSinOfertaSecundario = 0;
+        let precioTotalSinOferta = 0;
+        if (idPrincipal != 0) {
+            precioSinOfertaPrincipal = ipcRenderer.sendSync('getPrecioArticulo', idPrincipal);
+        }
+        if (idSecundario != 0) {
+            precioSinOfertaSecundario = ipcRenderer.sendSync('getPrecioArticulo', idSecundario);
+        }
+        if (tipoPromo === 1) //COMBO
+         {
+            precioTotalSinOferta = (precioSinOfertaPrincipal * cantidadPrincipal + precioSinOfertaSecundario * cantidadSecundario) * unidadesOferta;
+        }
+        var dto = (precioTotalSinOferta - precioTotalOferta) / precioTotalSinOferta;
+        return {
+            precioRealPrincipal: precioSinOfertaPrincipal - (precioSinOfertaPrincipal * dto),
+            precioRealSecundario: precioSinOfertaSecundario - (precioSinOfertaSecundario * dto)
+        };
+    }
+    calcularPrecioRealIndividual(tipoPromo, idPrincipal, cantidadPrincipal, unidadesOferta, precioTotalOferta) {
+        let precioSinOfertaPrincipal = 0;
+        let precioTotalSinOferta = 0;
+        if (idPrincipal != 0) {
+            precioSinOfertaPrincipal = ipcRenderer.sendSync('getPrecioArticulo', idPrincipal);
+        }
+        if (tipoPromo === 2) //INDIVIDUAL
+         {
+            if (idPrincipal != 0) {
+                precioTotalSinOferta = precioSinOfertaPrincipal * cantidadPrincipal * unidadesOferta;
+            }
+        }
+        var dto = (precioTotalSinOferta - precioTotalOferta) / precioTotalSinOferta;
+        return {
+            precioRealPrincipal: precioSinOfertaPrincipal - (precioSinOfertaPrincipal * dto)
+        };
+    }
+    insertarLineaPromoCestaCombo(cesta, tipoPromo, unidades, total, idPromo, idPrincipal, idSecundario, cantidadPrincipal, cantidadSecundario) {
+        var dtoAplicado = this.calcularPrecioRealCombo(tipoPromo, idPrincipal, idSecundario, cantidadPrincipal, cantidadSecundario, unidades, total);
         if (tipoPromo === 1) //COMBO
          {
             cesta.lista.push({
@@ -348,24 +386,42 @@ class TocGame {
                 subtotal: total,
                 promocion: {
                     _id: idPromo,
-                    esPromo: true
+                    esPromo: true,
+                    infoPromo: {
+                        idPrincipal: idPrincipal,
+                        cantidadPrincipal: cantidadPrincipal,
+                        idSecundario: idSecundario,
+                        cantidadSecundario: cantidadSecundario,
+                        precioRealPrincipal: dtoAplicado.precioRealPrincipal,
+                        precioRealSecundario: dtoAplicado.precioRealSecundario
+                    }
                 }
             });
         }
-        else {
-            if (tipoPromo === 2) //INDIVIDUAL
-             {
-                cesta.lista.push({
-                    _id: -2,
-                    nombre: 'Oferta individual',
-                    unidades: unidades,
-                    subtotal: total,
-                    promocion: {
-                        _id: idPromo,
-                        esPromo: true
+        return cesta;
+    }
+    insertarLineaPromoCestaIndividual(cesta, tipoPromo, unidades, total, idPromo, idPrincipal, cantidadPrincipal) {
+        var dtoAplicado = this.calcularPrecioRealIndividual(tipoPromo, idPrincipal, cantidadPrincipal, unidades, total);
+        if (tipoPromo === 2) //INDIVIDUAL
+         {
+            cesta.lista.push({
+                _id: -2,
+                nombre: 'Oferta individual',
+                unidades: unidades,
+                subtotal: total,
+                promocion: {
+                    _id: idPromo,
+                    esPromo: true,
+                    infoPromo: {
+                        idPrincipal: idPrincipal,
+                        cantidadPrincipal: cantidadPrincipal,
+                        idSecundario: 0,
+                        cantidadSecundario: 0,
+                        precioRealPrincipal: dtoAplicado.precioRealPrincipal,
+                        precioRealSecundario: 0
                     }
-                });
-            }
+                }
+            });
         }
         return cesta;
     }
@@ -403,6 +459,8 @@ class TocGame {
         let sobranPrincipal = 0;
         let sobranSecundario = 0;
         let nVeces = 0;
+        var idPrincipal = (typeof cesta.lista[posicionPrincipal] !== "undefined") ? cesta.lista[posicionPrincipal]._id : 0;
+        var idSecundario = (typeof cesta.lista[posicionSecundario] !== "undefined") ? cesta.lista[posicionSecundario]._id : 0;
         if (pideDelA !== -1 && pideDelB !== -1) {
             numeroPrincipal = cesta.lista[posicionPrincipal].unidades / necesariasPrincipal;
             numeroSecundario = cesta.lista[posicionSecundario].unidades / necesariasSecundario;
@@ -410,7 +468,7 @@ class TocGame {
             sobranPrincipal = cesta.lista[posicionPrincipal].unidades - nVeces * necesariasPrincipal;
             sobranSecundario = cesta.lista[posicionSecundario].unidades - nVeces * necesariasSecundario;
             cesta = this.limpiarCesta(cesta, posicionPrincipal, posicionSecundario, sobranPrincipal, sobranSecundario, pideDelA, pideDelB);
-            cesta = this.insertarLineaPromoCesta(cesta, 1, nVeces, precioPromo * nVeces, idPromo);
+            cesta = this.insertarLineaPromoCestaCombo(cesta, 1, nVeces, precioPromo * nVeces, idPromo, idPrincipal, idSecundario, necesariasPrincipal, necesariasSecundario);
         }
         else {
             if (pideDelA !== -1 && pideDelB === -1) {
@@ -418,7 +476,7 @@ class TocGame {
                 nVeces = Math.trunc(numeroPrincipal);
                 sobranPrincipal = cesta.lista[posicionPrincipal].unidades - nVeces * necesariasPrincipal;
                 cesta = this.limpiarCesta(cesta, posicionPrincipal, posicionSecundario, sobranPrincipal, sobranSecundario, pideDelA, pideDelB);
-                cesta = this.insertarLineaPromoCesta(cesta, 2, nVeces, precioPromo * nVeces * necesariasPrincipal, idPromo);
+                cesta = this.insertarLineaPromoCestaIndividual(cesta, 2, nVeces, precioPromo * nVeces * necesariasPrincipal, idPromo, idPrincipal, necesariasPrincipal);
             }
             else {
                 if (pideDelA === -1 && pideDelB !== -1) {
@@ -426,7 +484,7 @@ class TocGame {
                     nVeces = Math.trunc(numeroSecundario);
                     sobranSecundario = cesta.lista[posicionSecundario].unidades - nVeces * necesariasSecundario;
                     cesta = this.limpiarCesta(cesta, posicionPrincipal, posicionSecundario, sobranPrincipal, sobranSecundario, pideDelA, pideDelB);
-                    cesta = this.insertarLineaPromoCesta(cesta, 2, nVeces, precioPromo * nVeces * necesariasSecundario, idPromo);
+                    cesta = this.insertarLineaPromoCestaIndividual(cesta, 2, nVeces, precioPromo * nVeces * necesariasSecundario, idPromo, idPrincipal, necesariasPrincipal); //se trata como si fueran principales
                 }
             }
         }

@@ -24,6 +24,23 @@ function getInfoArticulo(idArticulo: number)
 {
     return Articulos.findById(idArticulo).lean();
 }
+function getNombreArticulo(id)
+{
+    var devolver = new Promise((dev, rej)=>{
+        Articulos.findById(id).lean().then(info=>{
+            dev(info.nombre)
+        });
+    })
+    return devolver;
+}
+
+function getPrecio(id)
+{
+    return Articulos.findById(id).lean();
+}
+
 exports.articulos               = Articulos;
 exports.insertarArticulos       = insertarArticulos;
 exports.getInfoArticulo         = getInfoArticulo;
+exports.getNombreArticulo       = getNombreArticulo;
+exports.getPrecio               = getPrecio;
