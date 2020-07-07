@@ -26,7 +26,8 @@ interface Cesta
                 idSecundario?: number,
                 cantidadSecundario?: number,
                 precioRealPrincipal?: number,
-                precioRealSecundario?: number
+                precioRealSecundario?: number,
+                unidadesOferta?: number
             }
         }
     }[];

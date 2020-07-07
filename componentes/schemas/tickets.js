@@ -18,7 +18,8 @@ var schemaTickets = new conexion.mongoose.Schema({
                     idSecundario: Number,
                     cantidadSecundario: Number,
                     precioRealPrincipal: Number,
-                    precioRealSecundario: Number
+                    precioRealSecundario: Number,
+                    unidadesOferta: Number
                 }
             },
             subtotal: Number,

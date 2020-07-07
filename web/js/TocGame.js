@@ -354,8 +354,8 @@ class TocGame {
         }
         var dto = (precioTotalSinOferta - precioTotalOferta) / precioTotalSinOferta;
         return {
-            precioRealPrincipal: precioSinOfertaPrincipal - (precioSinOfertaPrincipal * dto),
-            precioRealSecundario: precioSinOfertaSecundario - (precioSinOfertaSecundario * dto)
+            precioRealPrincipal: (precioSinOfertaPrincipal - (precioSinOfertaPrincipal * dto)) * unidadesOferta,
+            precioRealSecundario: (precioSinOfertaSecundario - (precioSinOfertaSecundario * dto)) * unidadesOferta
         };
     }
     calcularPrecioRealIndividual(tipoPromo, idPrincipal, cantidadPrincipal, unidadesOferta, precioTotalOferta) {
@@ -372,7 +372,7 @@ class TocGame {
         }
         var dto = (precioTotalSinOferta - precioTotalOferta) / precioTotalSinOferta;
         return {
-            precioRealPrincipal: precioSinOfertaPrincipal - (precioSinOfertaPrincipal * dto)
+            precioRealPrincipal: (precioSinOfertaPrincipal - (precioSinOfertaPrincipal * dto)) * unidadesOferta * cantidadPrincipal
         };
     }
     insertarLineaPromoCestaCombo(cesta, tipoPromo, unidades, total, idPromo, idPrincipal, idSecundario, cantidadPrincipal, cantidadSecundario) {
@@ -393,7 +393,8 @@ class TocGame {
                         idSecundario: idSecundario,
                         cantidadSecundario: cantidadSecundario,
                         precioRealPrincipal: dtoAplicado.precioRealPrincipal,
-                        precioRealSecundario: dtoAplicado.precioRealSecundario
+                        precioRealSecundario: dtoAplicado.precioRealSecundario,
+                        unidadesOferta: unidades
                     }
                 }
             });
@@ -418,7 +419,8 @@ class TocGame {
                         idSecundario: 0,
                         cantidadSecundario: 0,
                         precioRealPrincipal: dtoAplicado.precioRealPrincipal,
-                        precioRealSecundario: 0
+                        precioRealSecundario: 0,
+                        unidadesOferta: unidades
                     }
                 }
             });

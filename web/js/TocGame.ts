@@ -446,8 +446,8 @@ class TocGame
         var dto = (precioTotalSinOferta-precioTotalOferta)/precioTotalSinOferta;
         
         return {
-            precioRealPrincipal: precioSinOfertaPrincipal - (precioSinOfertaPrincipal*dto),
-            precioRealSecundario: precioSinOfertaSecundario - (precioSinOfertaSecundario*dto)
+            precioRealPrincipal: (precioSinOfertaPrincipal - (precioSinOfertaPrincipal*dto))*unidadesOferta,
+            precioRealSecundario: (precioSinOfertaSecundario - (precioSinOfertaSecundario*dto))*unidadesOferta
         };
     }
     calcularPrecioRealIndividual(tipoPromo: number, idPrincipal: number, cantidadPrincipal: number, unidadesOferta: number, precioTotalOferta: number)
@@ -470,7 +470,7 @@ class TocGame
         var dto = (precioTotalSinOferta-precioTotalOferta)/precioTotalSinOferta;
         
         return {
-            precioRealPrincipal: precioSinOfertaPrincipal - (precioSinOfertaPrincipal*dto)
+            precioRealPrincipal: (precioSinOfertaPrincipal - (precioSinOfertaPrincipal*dto))*unidadesOferta*cantidadPrincipal
         };
     }
     insertarLineaPromoCestaCombo(cesta: Cesta, tipoPromo: number, unidades: number, total: number, idPromo: string, idPrincipal: number, idSecundario: number, cantidadPrincipal: number, cantidadSecundario: number): Cesta
@@ -493,7 +493,8 @@ class TocGame
                         idSecundario: idSecundario,
                         cantidadSecundario: cantidadSecundario,
                         precioRealPrincipal: dtoAplicado.precioRealPrincipal,
-                        precioRealSecundario: dtoAplicado.precioRealSecundario
+                        precioRealSecundario: dtoAplicado.precioRealSecundario,
+                        unidadesOferta: unidades
                     }
                 }
             });
@@ -520,7 +521,8 @@ class TocGame
                         idSecundario: 0,
                         cantidadSecundario: 0, //si es 0 no existe
                         precioRealPrincipal: dtoAplicado.precioRealPrincipal,
-                        precioRealSecundario: 0
+                        precioRealSecundario: 0,
+                        unidadesOferta: unidades
                     }
                 }
             });
