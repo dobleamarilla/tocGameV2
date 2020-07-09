@@ -71,10 +71,20 @@ var imprimirTicketVenta = async function (event, numFactura, arrayCompra, total,
         {
             if(arrayCompra[i].promocion.esPromo)
             {
-                detalles += `${arrayCompra[i].unidades*arrayCompra[i].promocion.infoPromo.cantidadPrincipal}     ${await articulos.getNombreArticulo(arrayCompra[i].promocion.infoPromo.idPrincipal)}       ${arrayCompra[i].promocion.infoPromo.precioRealPrincipal.toFixed(2)}\n`;
+                let nombrePrincipal = await articulos.getNombreArticulo(arrayCompra[i].promocion.infoPromo.idPrincipal);
+                while (nombrePrincipal.length < 20) 
+                {
+                    nombrePrincipal += ' ';
+                }
+                detalles += `${arrayCompra[i].unidades*arrayCompra[i].promocion.infoPromo.cantidadPrincipal}     ${nombrePrincipal.slice(0, 20)}       ${arrayCompra[i].promocion.infoPromo.precioRealPrincipal.toFixed(2)}\n`;
                 if(arrayCompra[i].promocion.infoPromo.cantidadSecundario > 0)
                 {
-                    detalles += `${arrayCompra[i].unidades*arrayCompra[i].promocion.infoPromo.cantidadSecundario}     ${await articulos.getNombreArticulo(arrayCompra[i].promocion.infoPromo.idSecundario)}       ${arrayCompra[i].promocion.infoPromo.precioRealSecundario.toFixed(2)}\n`;
+                    let nombreSecundario = await articulos.getNombreArticulo(arrayCompra[i].promocion.infoPromo.idSecundario);
+                    while (nombreSecundario.length < 20) 
+                    {
+                        nombreSecundario += ' ';
+                    }
+                    detalles += `${arrayCompra[i].unidades*arrayCompra[i].promocion.infoPromo.cantidadSecundario}     ${nombreSecundario.slice(0, 20)}       ${arrayCompra[i].promocion.infoPromo.precioRealSecundario.toFixed(2)}\n`;
                 }
             }
             else
@@ -102,15 +112,15 @@ var imprimirTicketVenta = async function (event, numFactura, arrayCompra, total,
         var detalleIva = '';
         if (tiposIva.importe1 > 0) 
         {
-            detalleIva4 = `${tiposIva.base1}        4%: ${tiposIva.valor1}      ${tiposIva.importe1}\n`;
+            detalleIva4 = `${tiposIva.base1.toFixed(2)}        4%: ${tiposIva.valorIva1}      ${tiposIva.importe1}\n`;
         }
         if (tiposIva.importe2 > 0) 
         {
-            detalleIva10 = `${tiposIva.base2}        10%: ${tiposIva.valor2}      ${tiposIva.importe2}\n`;
+            detalleIva10 = `${tiposIva.base2.toFixed(2)}        10%: ${tiposIva.valorIva2}      ${tiposIva.importe2}\n`;
         }
         if (tiposIva.importe3 > 0) 
         {
-            detalleIva21 = `${tiposIva.base3}       21%: ${tiposIva.valor3}      ${tiposIva.importe3}\n`;
+            detalleIva21 = `${tiposIva.base3.toFixed(2)}       21%: ${tiposIva.valorIva3}      ${tiposIva.importe3}\n`;
         }
         detalleIva = detalleIva4 + detalleIva10 + detalleIva21;
 
@@ -419,6 +429,7 @@ function errorCajon(err, event)
 
 exports.imprimirTicket = function (req, event) 
 {
+    console.log("LOLASO: ", req);
     imprimirTicketVenta(event, req.numFactura, req.arrayCompra, req.total, req.visa, req.tiposIva, req.cabecera, req.pie, req.nombreTrabajador, req.impresora);
 }
 

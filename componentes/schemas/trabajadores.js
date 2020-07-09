@@ -20,6 +20,9 @@ function insertarTrabajadores(data) {
 function buscarTrabajador(busqueda) {
     return Trabajadores.find({ $or: [{ "nombre": { '$regex': new RegExp(busqueda, "i") } }, { "nombreCorto": { '$regex': new RegExp(busqueda, "i") } }] }, null, { lean: true, limit: 20 });
 }
+function getTrabajadorPorId(id) {
+    return Trabajadores.findById(id).lean();
+}
 function ficharTrabajador(idTrabajador) {
     return Trabajadores.findByIdAndUpdate(idTrabajador, { fichado: true }, (err, result) => {
         if (err) {
@@ -43,4 +46,5 @@ exports.buscarTrabajador = buscarTrabajador;
 exports.ficharTrabajador = ficharTrabajador;
 exports.desficharTrabajador = desficharTrabajador;
 exports.buscarFichados = buscarFichados;
+exports.getTrabajadorPorId = getTrabajadorPorId;
 //# sourceMappingURL=trabajadores.js.map

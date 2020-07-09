@@ -221,6 +221,14 @@ app.on('ready', () => {
     });
     //FINAL GET INFO PARAMS TICKET
 
+    //GET INFO trabajador por ID
+    ipcMain.on('get-infotrabajador-id', (ev, data)=>{
+        trabaj.getTrabajadorPorId(data).then(res=>{
+            ev.returnValue = res;
+        });
+    });
+    //FINAL GET INFO trabajador por ID
+
     //GET CESTA
     ipcMain.on('get-cesta', (ev, data) => {
         cest.getUnaCesta(data).then(respuesta => 
@@ -396,6 +404,7 @@ app.on('ready', () => {
 
     });
     ipcMain.on('imprimir', (event: any, args: any) => {
+        console.log("OYE SIRVE ESTO: ", args);
         impresora.imprimirTicket(args, event);
     });
     ipcMain.on('imprimir-test', (event: any, args: any) => {

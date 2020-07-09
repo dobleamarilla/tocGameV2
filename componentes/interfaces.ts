@@ -138,7 +138,14 @@ interface Ticket
     },
     enviado?: boolean,
     enTransito?: boolean,
-    cliente?: string
+    cliente?: string,
+    infoClienteVip?: {
+        nif: string,
+        nombre: string,
+        cp: string,
+        direccion: string,
+        ciudad: string
+    }
 }
 
 interface Movimientos

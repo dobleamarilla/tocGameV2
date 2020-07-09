@@ -990,9 +990,9 @@ class TocGame
     imprimirTicket(idTicket: number)
     {
         const paramsTicket = ipcRenderer.sendSync('get-params-ticket');
-        const infoTrabajador: Trabajador = ipcRenderer.sendSync('buscar-trabajador-sincrono');
         const infoTicket: Ticket = ipcRenderer.sendSync('get-info-un-ticket', idTicket);
-
+        const infoTrabajador: Trabajador = ipcRenderer.sendSync('get-infotrabajador-id', infoTicket.idTrabajador);
+        console.log("infoTicket.tiposIva...: ", infoTicket.tiposIva);
         const sendObject = {
             numFactura: infoTicket._id,
             arrayCompra: infoTicket.lista,
