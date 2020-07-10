@@ -50,6 +50,13 @@ var schemaTickets = new conexion.mongoose.Schema({
     enTransito: {
         type: Boolean,
         default: false
+    },
+    infoClienteVip: {
+        nif: String,
+        nombre: String,
+        cp: String,
+        direccion: String,
+        ciudad: String
     }
 });
 var Tickets = conexion.mongoose.model('tickets', schemaTickets);

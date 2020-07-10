@@ -40,7 +40,7 @@ function dateToString2(fecha)
     return `${finalYear}-${finalMonth}-${finalDay} ${finalHours}:${finalMinutes}:${finalSeconds}`;
 }
 
-var imprimirTicketVenta = async function (event, numFactura, arrayCompra, total, tipoPago, tiposIva, cabecera, pie, nombreDependienta, tipoImpresora) 
+var imprimirTicketVenta = async function (event, numFactura, arrayCompra, total, tipoPago, tiposIva, cabecera, pie, nombreDependienta, tipoImpresora, infoClienteVip) 
 {
     console.log('TIPO IMPRESORA: ', tipoImpresora);
     try 
@@ -67,6 +67,11 @@ var imprimirTicketVenta = async function (event, numFactura, arrayCompra, total,
 
         var detalles = '';
         var pagoTarjeta = '';
+        var detalleClienteVip = '';
+        if(infoClienteVip.esVip)
+        {
+            detalleClienteVip = `Nom: ${infoClienteVip.nombre}\nNIF: ${infoClienteVip.nif}\nCP: ${infoClienteVip.cp}\nCiutat: ${infoClienteVip.ciudad}\nAdr: ${infoClienteVip.direccion}\n`;
+        }
         for (let i = 0; i < arrayCompra.length; i++) 
         {
             if(arrayCompra[i].promocion.esPromo)
@@ -133,6 +138,7 @@ var imprimirTicketVenta = async function (event, numFactura, arrayCompra, total,
                 .text(`Data: ${fecha.getDate()}-${fecha.getMonth() + 1}-${fecha.getFullYear()}  ${fecha.getHours()}:${fecha.getMinutes()}`)
                 .text('Factura simplificada N: ' + numFactura)
                 .text('Ates per: ' + nombreDependienta)
+                .text(detalleClienteVip)
                 .control('LF')
                 .control('LF')
                 .control('LF')
@@ -430,7 +436,7 @@ function errorCajon(err, event)
 exports.imprimirTicket = function (req, event) 
 {
     console.log("LOLASO: ", req);
-    imprimirTicketVenta(event, req.numFactura, req.arrayCompra, req.total, req.visa, req.tiposIva, req.cabecera, req.pie, req.nombreTrabajador, req.impresora);
+    imprimirTicketVenta(event, req.numFactura, req.arrayCompra, req.total, req.visa, req.tiposIva, req.cabecera, req.pie, req.nombreTrabajador, req.impresora, req.infoClienteVip);
 }
 
 exports.imprimirTicketSalida = function (req, event) 

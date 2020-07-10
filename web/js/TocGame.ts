@@ -17,6 +17,8 @@ class TocGame
     private clienteSeleccionado: Cliente;
     private udsAplicar: number;
     private esVIP: boolean;
+    private infoClienteVip: any;
+
     constructor() 
     {
         const info = ipcRenderer.sendSync('getParametros');
@@ -778,12 +780,25 @@ class TocGame
             tipoPago: "DEUDA",
             idTrabajador: infoTrabajador._id,
             tiposIva: this.cesta.tiposIva,
-            cliente: this.hayClienteSeleccionado() ? this.clienteSeleccionado.id: null
+            cliente: this.hayClienteSeleccionado() ? this.clienteSeleccionado.id: null,
+            infoClienteVip: {
+                esVip : false,
+                nif: '',
+                nombre: '',
+                cp: '',
+                direccion: '',
+                ciudad: ''
+            }
         }   
 
         if(deuda)
         {
-            objTicket.tipoPago = "DEUDA";      
+            objTicket.tipoPago                  = "DEUDA";
+            objTicket.infoClienteVip.nif        = this.infoClienteVip.nif;       
+            objTicket.infoClienteVip.nombre     = this.infoClienteVip.nombre;
+            objTicket.infoClienteVip.cp         = this.infoClienteVip.cp;
+            objTicket.infoClienteVip.direccion  = this.infoClienteVip.direccion;
+            objTicket.infoClienteVip.ciudad     = this.infoClienteVip.ciudad;
         }
         else
         {
@@ -1002,7 +1017,8 @@ class TocGame
             cabecera: paramsTicket[0] !== undefined ? paramsTicket[0].valorDato: '',
             pie: paramsTicket[1] !== undefined ? paramsTicket[1].valorDato: '',
             nombreTrabajador: infoTrabajador.nombre,
-            impresora: this.parametros.tipoImpresora
+            impresora: this.parametros.tipoImpresora,
+            infoClienteVip: infoTicket.infoClienteVip;
         };
         ipcRenderer.send('imprimir', sendObject);
     }
@@ -1032,13 +1048,15 @@ class TocGame
             return false;
         }
     }
-    vipConfirmado()
+    vipConfirmado(data)
     {
+        this.infoClienteVip = data;
         this.esVIP = true;
         vueMenuVip.abreModal();
     }
     limpiarClienteVIP()
     {
+        this.infoClienteVip = null;
         this.esVIP = false;
     }
     esClienteVip()

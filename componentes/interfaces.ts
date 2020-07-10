@@ -140,6 +140,7 @@ interface Ticket
     enTransito?: boolean,
     cliente?: string,
     infoClienteVip?: {
+        esVip: boolean,
         nif: string,
         nombre: string,
         cp: string,

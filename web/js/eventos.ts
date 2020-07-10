@@ -120,7 +120,7 @@ socket.on('respuestaClienteEsVIP', (data) => {
     if(data.esVip)
     {
         //ES VIP
-        toc.vipConfirmado();
+        toc.vipConfirmado(data);
     }
     else
     {

@@ -53,6 +53,7 @@ var schemaTickets = new conexion.mongoose.Schema({
         default: false
     },
     infoClienteVip: {
+        esVip: Boolean,
         nif: String,
         nombre: String,
         cp: String,
