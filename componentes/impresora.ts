@@ -42,7 +42,7 @@ function dateToString2(fecha)
 
 var imprimirTicketVenta = async function (event, numFactura, arrayCompra, total, tipoPago, tiposIva, cabecera, pie, nombreDependienta, tipoImpresora, infoClienteVip) 
 {
-    console.log('TIPO IMPRESORA: ', tipoImpresora);
+    console.log('infoClienteVip: ', infoClienteVip);
     try 
     {
         exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');

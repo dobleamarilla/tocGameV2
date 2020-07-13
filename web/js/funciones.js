@@ -105,6 +105,7 @@ function sincronizarToc() {
      {
         ipcRenderer.send('sincronizar-toc');
         ipcRenderer.send('sincronizar-fichajes');
+        ipcRenderer.send('sincronizar-devoluciones');
     }
 }
 function elTesteo() {

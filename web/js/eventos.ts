@@ -81,6 +81,17 @@ ipcRenderer.on('res-sincronizar-fichajes', (ev, data) => {
         socket.emit('guardarFichajes-tocGame-nueva', objEnviar);
     }    
 });
+ipcRenderer.on('res-sincronizar-devoluciones', (ev, data) => {
+    const objEnviar = {
+        parametros: toc.getParametros(),
+        info: data
+    }
+    
+    if(objEnviar.info !== null)
+    {
+        socket.emit('guardarDevoluciones', objEnviar);
+    }    
+});
 
 socket.on('install-licencia', (data) => {
     if (!data.error) 

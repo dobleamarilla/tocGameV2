@@ -67,6 +67,15 @@ ipcRenderer.on('res-sincronizar-fichajes', (ev, data) => {
         socket.emit('guardarFichajes-tocGame-nueva', objEnviar);
     }
 });
+ipcRenderer.on('res-sincronizar-devoluciones', (ev, data) => {
+    const objEnviar = {
+        parametros: toc.getParametros(),
+        info: data
+    };
+    if (objEnviar.info !== null) {
+        socket.emit('guardarDevoluciones', objEnviar);
+    }
+});
 socket.on('install-licencia', (data) => {
     if (!data.error) {
         console.log(data);
@@ -100,7 +109,7 @@ socket.on('respuestaClienteEsVIP', (data) => {
     console.log("restos: ", data);
     if (data.esVip) {
         //ES VIP
-        toc.vipConfirmado();
+        toc.vipConfirmado(data);
     }
     else {
         //ES NORMAL

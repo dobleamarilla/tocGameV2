@@ -18,7 +18,7 @@ class TocGame
     private udsAplicar: number;
     private esVIP: boolean;
     private infoClienteVip: any;
-
+    private esDevolucion: boolean;
     constructor() 
     {
         const info = ipcRenderer.sendSync('getParametros');
@@ -758,11 +758,8 @@ class TocGame
             }
         }
     }
-    crearTicketConDeuda()
-    {
-
-    }
-    crearTicket(efectivo: boolean, deuda: boolean = false)
+    
+    crearTicket(tipo: string)
     {
         let total = 0;
         for(let i = 0; i < this.cesta.lista.length; i++)
@@ -777,7 +774,7 @@ class TocGame
             timestamp: Date.now(),
             total: total,
             lista: this.cesta.lista,
-            tipoPago: "DEUDA",
+            tipoPago: tipo,
             idTrabajador: infoTrabajador._id,
             tiposIva: this.cesta.tiposIva,
             cliente: this.hayClienteSeleccionado() ? this.clienteSeleccionado.id: null,
@@ -791,31 +788,47 @@ class TocGame
             }
         }   
 
-        if(deuda)
+        if(tipo === "DEUDA")
         {
             objTicket.tipoPago                  = "DEUDA";
-            objTicket.infoClienteVip.nif        = this.infoClienteVip.nif;       
-            objTicket.infoClienteVip.nombre     = this.infoClienteVip.nombre;
-            objTicket.infoClienteVip.cp         = this.infoClienteVip.cp;
-            objTicket.infoClienteVip.direccion  = this.infoClienteVip.direccion;
-            objTicket.infoClienteVip.ciudad     = this.infoClienteVip.ciudad;
+            objTicket.infoClienteVip.nif        = this.infoClienteVip.datos.nif;       
+            objTicket.infoClienteVip.nombre     = this.infoClienteVip.datos.nombre;
+            objTicket.infoClienteVip.cp         = this.infoClienteVip.datos.cp;
+            objTicket.infoClienteVip.direccion  = this.infoClienteVip.datos.direccion;
+            objTicket.infoClienteVip.ciudad     = this.infoClienteVip.datos.Ciudad;
+            objTicket.infoClienteVip.esVip      = true;
         }
         else
         {
-            if(efectivo)
+            if(tipo === "EFECTIVO")
             {
                 objTicket.tipoPago = "EFECTIVO";
             }
             else
             {
-                objTicket.tipoPago = "TARJETA";
+                if(this.esDevolucion)
+                {
+                    objTicket.tipoPago = "DEVOLUCION";
+                }
+                else
+                {
+                    objTicket.tipoPago = "TARJETA";
+                }
             }
         }
 
-        if(efectivo)
+        if(tipo === "EFECTIVO" || tipo === "DEUDA" || tipo === "DEVOLUCION")
         {
-            ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
-            ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
+            if(tipo === "DEVOLUCION")
+            {
+                objTicket._id = Date.now();
+                ipcRenderer.send('guardarDevolucion', objTicket);
+            }
+            else
+            {
+                ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
+                ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
+            }
             this.borrarCesta();
             vueCobrar.cerrarModal();
             vueToast.abrir('success', 'Ticket creado');
@@ -823,26 +836,35 @@ class TocGame
         }
         else
         {
-            if(this.parametros.tipoDatafono === TIPO_CLEARONE)
+            if(tipo === "TARJETA")
             {
-                //this.ticketColaDatafono = objTicket;
-                ipcRenderer.send('ventaDatafono', {objTicket: objTicket, nombreDependienta: infoTrabajador.nombre, idTicket: nuevoIdTicket, total: Number((total * 100).toFixed(2)).toString()});
-            }
-            else
-            {
-                if(this.parametros.tipoDatafono === TIPO_3G)
+                if(this.parametros.tipoDatafono === TIPO_CLEARONE)
                 {
-                    vueCobrar.activoEsperaDatafono();
-                    ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
-                    ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
-                    this.borrarCesta();
-                    vueCobrar.cerrarModal();
-                    vueToast.abrir('success', 'Ticket creado');
-                    this.quitarClienteSeleccionado();
+                    //this.ticketColaDatafono = objTicket;
+                    ipcRenderer.send('ventaDatafono', {objTicket: objTicket, nombreDependienta: infoTrabajador.nombre, idTicket: nuevoIdTicket, total: Number((total * 100).toFixed(2)).toString()});
+                }
+                else
+                {
+                    if(this.parametros.tipoDatafono === TIPO_3G)
+                    {
+                        vueCobrar.activoEsperaDatafono();
+                        ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
+                        ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
+                        this.borrarCesta();
+                        vueCobrar.cerrarModal();
+                        vueToast.abrir('success', 'Ticket creado');
+                        this.quitarClienteSeleccionado();
+                    }
                 }
             }
         }
         this.limpiarClienteVIP();
+        this.limpiarDevolucion();
+    }
+    limpiarDevolucion()
+    {
+        this.esDevolucion = false;
+        vueCobrar.setEsDevolucion(false);
     }
     getUrlPedidos()
     {
@@ -852,6 +874,11 @@ class TocGame
             url = `http://silema.hiterp.com/TpvWebReposicion.asp?modo=MENU&codiBotiga=${this.parametros.codigoTienda}`;
         }
         return url;
+    }
+    devolucion()
+    {
+        this.esDevolucion = true;
+        vueCobrar.setEsDevolucion(true);
     }
     controlRespuestaDatafono(respuesta)
     {
@@ -1018,8 +1045,9 @@ class TocGame
             pie: paramsTicket[1] !== undefined ? paramsTicket[1].valorDato: '',
             nombreTrabajador: infoTrabajador.nombre,
             impresora: this.parametros.tipoImpresora,
-            infoClienteVip: infoTicket.infoClienteVip;
+            infoClienteVip: infoTicket.infoClienteVip
         };
+        console.log("LO PUTO SEND:", sendObject);
         ipcRenderer.send('imprimir', sendObject);
     }
     imprimirCierreCaja(info)

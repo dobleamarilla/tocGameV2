@@ -17,6 +17,7 @@ var vueMenuPrincipal = new Vue({
                         <button type="button" @click="menuPedidos()" class="btn btn-success btn-block w-100 ml-0" style="font-size: 35px;">2 - Pedidos</button>
                         <button type="button" class="btn btn-warning btn-block w-100 ml-0" style="font-size: 35px;">3 - Configuración</button>
                         <button type="button" class="btn btn-info btn-block w-100 ml-0" style="font-size: 35px;">4 - Datos</button>
+                        <button type="button" @click="activarDevolucion()" class="btn btn-danger btn-block w-100 ml-0" style="font-size: 35px;">5 - Devolución</button>
                     </div>
                 </div>
 			</div>
@@ -59,6 +60,11 @@ var vueMenuPrincipal = new Vue({
         {
             this.cerrarModal();
             toc.iniciar();
+        },
+        activarDevolucion()
+        {
+            this.cerrarModal();
+            toc.devolucion();
         }
     }
 });

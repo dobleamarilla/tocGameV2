@@ -43,9 +43,9 @@ function dateToString2(fecha) {
     }
     return `${finalYear}-${finalMonth}-${finalDay} ${finalHours}:${finalMinutes}:${finalSeconds}`;
 }
-var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoPago, tiposIva, cabecera, pie, nombreDependienta, tipoImpresora) {
+var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoPago, tiposIva, cabecera, pie, nombreDependienta, tipoImpresora, infoClienteVip) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log('TIPO IMPRESORA: ', tipoImpresora);
+        console.log('infoClienteVip: ', infoClienteVip);
         try {
             exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
             if (tipoImpresora === 'USB') {
@@ -64,6 +64,10 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoP
             var printer = new escpos.Printer(device);
             var detalles = '';
             var pagoTarjeta = '';
+            var detalleClienteVip = '';
+            if (infoClienteVip.esVip) {
+                detalleClienteVip = `Nom: ${infoClienteVip.nombre}\nNIF: ${infoClienteVip.nif}\nCP: ${infoClienteVip.cp}\nCiutat: ${infoClienteVip.ciudad}\nAdr: ${infoClienteVip.direccion}\n`;
+            }
             for (let i = 0; i < arrayCompra.length; i++) {
                 if (arrayCompra[i].promocion.esPromo) {
                     let nombrePrincipal = yield articulos.getNombreArticulo(arrayCompra[i].promocion.infoPromo.idPrincipal);
@@ -114,6 +118,7 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoP
                     .text(`Data: ${fecha.getDate()}-${fecha.getMonth() + 1}-${fecha.getFullYear()}  ${fecha.getHours()}:${fecha.getMinutes()}`)
                     .text('Factura simplificada N: ' + numFactura)
                     .text('Ates per: ' + nombreDependienta)
+                    .text(detalleClienteVip)
                     .control('LF')
                     .control('LF')
                     .control('LF')
@@ -357,7 +362,7 @@ function errorCajon(err, event) {
 }
 exports.imprimirTicket = function (req, event) {
     console.log("LOLASO: ", req);
-    imprimirTicketVenta(event, req.numFactura, req.arrayCompra, req.total, req.visa, req.tiposIva, req.cabecera, req.pie, req.nombreTrabajador, req.impresora);
+    imprimirTicketVenta(event, req.numFactura, req.arrayCompra, req.total, req.visa, req.tiposIva, req.cabecera, req.pie, req.nombreTrabajador, req.impresora, req.infoClienteVip);
 };
 exports.imprimirTicketSalida = function (req, event) {
     salidaDinero(event, req.cantidad, req.cajaActual, req.fecha, req.nombreTrabajador, req.nombreTienda, req.concepto, req.impresora);

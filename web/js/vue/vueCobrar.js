@@ -8,15 +8,20 @@ var vueCobrar = new Vue({
 			<div class="modal-body">
                 <div v-if="esVIP === false" class="row">
                     <div class="col-md-6 text-center">
-                        <img @click="cobrar(true)" src="assets/imagenes/img-efectivo.png" alt="Cobrar con efectivo" width="250px">
+                        <img @click="cobrar('EFECTIVO')" src="assets/imagenes/img-efectivo.png" alt="Cobrar con efectivo" width="250px">
                     </div>
                     <div class="col-md-6 text-center">
-                        <img @click="cobrar(false)" src="assets/imagenes/img-tarjetas.png" alt="Cobrar con tarjeta" width="250px">
+                        <img @click="cobrar('TARJETA')" src="assets/imagenes/img-tarjetas.png" alt="Cobrar con tarjeta" width="250px">
                     </div>
                 </div>
                 <div v-if="esVIP === true" class="row">
                     <div class="col text-center">
-                        <button @click="cobrar(true, true)" class="btn btn-danger" style="font-size: 40px">CREAR ALBARÁN</button>
+                        <button @click="cobrar('DEUDA')" class="btn btn-danger" style="font-size: 40px">CREAR ALBARÁN</button>
+                    </div>
+                </div>
+                <div v-if="esDevolucion === true" class="row">
+                    <div class="col text-center">
+                        <button @click="cobrar('DEVOLUCION')" class="btn btn-danger" style="font-size: 40px">CREAR DEVOLUCIÓN</button>
                     </div>
                 </div>
                 <div class="row p-1">
@@ -43,7 +48,8 @@ var vueCobrar = new Vue({
             arrayFichados: [],
             esperandoDatafono: { display: 'none' },
             esperando: false,
-            esVIP: false
+            esVIP: false,
+            esDevolucion: false
         };
     },
     methods: {
@@ -60,15 +66,25 @@ var vueCobrar = new Vue({
             this.total = total;
             this.arrayFichados = arrayFichados;
         },
-        cobrar(efectivo, deuda = false) {
+        cobrar(tipo) {
             if (!this.esperando) {
                 this.setEsperando(true);
-                if (deuda) {
-                    toc.crearTicket(efectivo, true);
-                }
-                else {
-                    toc.crearTicket(efectivo);
-                }
+                toc.crearTicket(tipo);
+                // if(deuda)
+                // {
+                //     toc.crearTicket(efectivo, true);
+                // }
+                // else
+                // {
+                //     if(devolucion)
+                //     {
+                //         toc.crearTicket
+                //     }
+                //     else
+                //     {
+                //         toc.crearTicket(efectivo);
+                //     }
+                // }                
             }
             else {
                 vueToast.abrir('danger', 'Ya existe una operación en curso');
@@ -76,6 +92,9 @@ var vueCobrar = new Vue({
         },
         setEsperando(res) {
             this.esperando = res;
+        },
+        setEsDevolucion(data) {
+            this.esDevolucion = data;
         },
         activoEsperaDatafono() {
             this.esperandoDatafono.display = 'unset';

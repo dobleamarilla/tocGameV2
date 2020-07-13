@@ -28,6 +28,7 @@ var tick = require('./componentes/schemas/tickets');
 var sincro = require('./componentes/schemas/sincroCajas');
 var movi = require('./componentes/schemas/movimientos');
 var sincroFicha = require('./componentes/schemas/sincroFichajes');
+var devolu = require('./componentes/schemas/devoluciones');
 var eventos = require('events');
 var sincroEnCurso = false;
 require('source-map-support').install();
@@ -338,6 +339,20 @@ app.on('ready', () => {
         });
     });
     //FINAL SINCRONIZAR CON SAN PEDRO FICHAJES SOLO
+    //SINCRONIZAR CON SAN PEDRO DEVOLUCIONES SOLO
+    ipcMain.on('sincronizar-devoluciones', (event, args) => {
+        devolu.getParaSincronizarDevo().then(res => {
+            event.sender.send('res-sincronizar-devoluciones', res);
+        }).catch(err => {
+            console.log("Error en main, getDevoluciones", err);
+        });
+    });
+    //FINAL SINCRONIZAR CON SAN PEDRO DEVOLUCIONES SOLO
+    //GUARDAR DEVOLUCION
+    ipcMain.on('guardarDevolucion', (event, data) => {
+        devolu.insertarDevolucion(data);
+    });
+    //FIN GUARDAR DEVOLUCION
     ipcMain.on('testeoGuapo', (event, args) => {
         sincroFicha.testeoGuapo().then(res => {
             console.log(res);
