@@ -353,6 +353,13 @@ app.on('ready', () => {
         devolu.insertarDevolucion(data);
     });
     //FIN GUARDAR DEVOLUCION
+    //GET ALL CESTAS
+    ipcMain.on('getAllCestas', (event, data) => {
+        cest.getAllCestas().then(res => {
+            event.returnValue = res;
+        });
+    });
+    //FIN GET ALL CESTAS
     ipcMain.on('testeoGuapo', (event, args) => {
         sincroFicha.testeoGuapo().then(res => {
             console.log(res);

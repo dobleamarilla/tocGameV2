@@ -72,8 +72,13 @@ function borrarCesta(id: number)
         }
     });
 }
+function getAllCestas()
+{
+    return Cestas.find({}, null, {lean: true});
+}
 
 exports.cestas                  = Cestas;
 exports.setCesta                = setCesta;
 exports.getUnaCesta             = getUnaCesta;
 exports.borrarCesta             = borrarCesta;
+exports.getAllCestas            = getAllCestas;

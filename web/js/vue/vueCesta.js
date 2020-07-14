@@ -25,10 +25,13 @@ var vueCesta = new Vue({
 	</div>
 	<div class="col-md-7">
 		<div class="row">
-			<div class="col-md-8 paraRowsTotal" id="botonTotal">
+			<div class="col-md-7 paraRowsTotal" id="botonTotal">
 				<button class="btn btn-primary btn-block sizeMenus" @click="cobrar()"><i class="fas fa-shopping-cart"></i> {{getTotal}} €</button>
+            </div>
+            <div class="col-md-2 paraRowsTickets" id="botonClientes">
+				<button @click="abrirModalTicketsAbiertos()" class="btn btn-primary btn-block sizeMenus"><i class="fas fa-ticket-alt"></i></button>
 			</div>
-			<div class="col-md-4 paraRowBorrar" id="botonPeso">
+			<div class="col-md-3 paraRowBorrar" id="botonPeso">
 				<button class="btn btn-primary btn-block sizeMenus" @click="borrar()"><i class="fas fa-eraser"></i></button>
 			</div>
 		</div>
@@ -117,6 +120,9 @@ var vueCesta = new Vue({
         },
         abrirModalNumerico() {
             vueTecladoUnidades.abrirModal();
+        },
+        abrirModalTicketsAbiertos() {
+            vueCestasAbiertas.abreModal();
         }
     }
 });

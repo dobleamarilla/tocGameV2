@@ -6,7 +6,7 @@ var vueCobrar = new Vue({
 	<div class="modal-dialog" role="document" style="max-width: 600px">
 		<div class="modal-content">
 			<div class="modal-body">
-                <div v-if="esVIP === false" class="row">
+                <div v-if="esVIP === false && esDevolucion === false" class="row">
                     <div class="col-md-6 text-center">
                         <img @click="cobrar('EFECTIVO')" src="assets/imagenes/img-efectivo.png" alt="Cobrar con efectivo" width="250px">
                     </div>
