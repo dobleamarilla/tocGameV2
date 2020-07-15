@@ -1,6 +1,6 @@
 {
     "name": "toc-game",
-    "version": "2.3.99",
+    "version": "2.3.100",
     "description": "Versión v2 del tocGame",
     "author": {
         "name": "Ezequiel"
@@ -19,10 +19,11 @@
         "escpos": "^3.0.0-alpha.3",
         "escpos-serialport": "^3.0.0-alpha.2",
         "escpos-usb": "^3.0.0-alpha.2",
+        "is-online": "^8.4.0",
         "jquery": "^3.5.1",
         "mongoose": "^5.9.13",
-        "source-map-support": "^0.5.19",
-        "socket.io-client": "^2.3.0"
+        "socket.io-client": "^2.3.0",
+        "source-map-support": "^0.5.19"
     },
     "devDependencies": {
         "copyfiles": "2.1.1",
