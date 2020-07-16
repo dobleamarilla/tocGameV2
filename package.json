@@ -13,7 +13,8 @@
         "build:windows": "electron-packager . tocGame --overwrite --out=windowsBuild",
         "build:linux": "electron-packager . tocGame --overwrite --asar=true --platform=linux --arch=x64 --prune=true --out=linuxBuild",
         "version": "npm run compile && standard-version",
-        "versionandpush": "npm run compile && standard-version && git push origin master"
+        "versionandpush": "npm run compile && standard-version && git push origin master",
+        "publicar": "git push --follow-tags origin master && npm publish"
     },
     "dependencies": {
         "escpos": "^3.0.0-alpha.3",

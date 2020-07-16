@@ -108,6 +108,10 @@ function sincronizarToc() {
         ipcRenderer.send('sincronizar-devoluciones');
     }
 }
+function sincronizarDatosRapidos() {
+    ipcRenderer.send('count-cesta');
+    ipcRenderer.send('check-internet');
+}
 function elTesteo() {
     console.log('El testeo guapo guapo es: ', ipcRenderer.sendSync('testeoGuapo'));
 }

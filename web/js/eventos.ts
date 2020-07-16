@@ -59,6 +59,12 @@ ipcRenderer.on('res-get-cesta', (ev, data) => {
 ipcRenderer.on('resVentaDatafono', (ev, data) => {
     toc.controlRespuestaDatafono(data);
 });
+ipcRenderer.on('res-contar-cestas', (ev, data) => {
+    vueInfoFooter.setNumeroCestas(data);
+});
+ipcRenderer.on('res-check-internet', (ev, data) => {
+    vueInfoFooter.hayInternet(data);
+});
 ipcRenderer.on('res-sincronizar-toc', (ev, data) => {
     const objEnviar = {
         parametros: toc.getParametros(),

@@ -48,3 +48,7 @@ body {
   .clientesAnchoBotones {
     width: 60%;
   }
+
+  .estiloTicketSeleccionado {
+    background-color: #f07070;
+  }

@@ -123,6 +123,7 @@ var vueApertura = new Vue({
     },
     methods: {
         abreModal() {
+            this.infoDinero = ipcRenderer.sendSync('get-monedas').infoDinero;
             $('#vueModalApertura').modal();
         },
         cerrarModal() {

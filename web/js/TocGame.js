@@ -652,6 +652,21 @@ class TocGame {
             if (tipo === "DEVOLUCION") {
                 objTicket._id = Date.now();
                 ipcRenderer.send('guardarDevolucion', objTicket);
+                const paramsTicket = ipcRenderer.sendSync('get-params-ticket');
+                const infoClienteVip = { esVip: false };
+                const paraImprimir = {
+                    numFactura: 0,
+                    arrayCompra: objTicket.lista,
+                    total: objTicket.total,
+                    visa: objTicket.tipoPago,
+                    tiposIva: objTicket.tiposIva,
+                    cabecera: paramsTicket[0] !== undefined ? paramsTicket[0].valorDato : '',
+                    pie: paramsTicket[1] !== undefined ? paramsTicket[1].valorDato : '',
+                    nombreTrabajador: this.getCurrentTrabajador().nombre,
+                    impresora: this.parametros.tipoImpresora,
+                    infoClienteVip: infoClienteVip
+                };
+                ipcRenderer.send('imprimir', paraImprimir);
             }
             else {
                 ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
@@ -743,13 +758,14 @@ class TocGame {
         };
         ipcRenderer.send('actualizar-info-caja', this.caja);
     }
-    cerrarCaja(total, detalleCierre) {
+    cerrarCaja(total, detalleCierre, guardarInfoMonedas) {
         this.caja.totalCierre = total;
         this.caja.detalleCierre = detalleCierre;
         this.caja.finalTime = Date.now();
         this.caja.idDependienta = this.getCurrentTrabajador()._id;
         this.caja = this.calcularDatosCaja(this.caja);
         ipcRenderer.send('guardarCajaSincro', this.caja);
+        ipcRenderer.send('set-monedas', guardarInfoMonedas);
         this.borrarCaja();
         vueCaja.cerrarModal();
         this.iniciar();
@@ -826,7 +842,6 @@ class TocGame {
         const paramsTicket = ipcRenderer.sendSync('get-params-ticket');
         const infoTicket = ipcRenderer.sendSync('get-info-un-ticket', idTicket);
         const infoTrabajador = ipcRenderer.sendSync('get-infotrabajador-id', infoTicket.idTrabajador);
-        console.log("infoTicket.tiposIva...: ", infoTicket.tiposIva);
         const sendObject = {
             numFactura: infoTicket._id,
             arrayCompra: infoTicket.lista,
@@ -839,7 +854,6 @@ class TocGame {
             impresora: this.parametros.tipoImpresora,
             infoClienteVip: infoTicket.infoClienteVip
         };
-        console.log("LO PUTO SEND:", sendObject);
         ipcRenderer.send('imprimir', sendObject);
     }
     imprimirCierreCaja(info) {
@@ -890,6 +904,7 @@ class TocGame {
     }
     iniciar() {
         $('.modal').modal('hide');
+        vueInfoFooter.getParametros();
         ipcRenderer.send('buscar-fichados');
         const infoPromociones = ipcRenderer.sendSync('get-promociones');
         if (infoPromociones.length > 0) {

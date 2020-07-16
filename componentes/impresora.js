@@ -45,7 +45,6 @@ function dateToString2(fecha) {
 }
 var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoPago, tiposIva, cabecera, pie, nombreDependienta, tipoImpresora, infoClienteVip) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log('infoClienteVip: ', infoClienteVip);
         try {
             exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
             if (tipoImpresora === 'USB') {
@@ -96,6 +95,9 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoP
             if (tipoPago == "TARJETA") {
                 pagoTarjeta = '----------- PAGADO CON TARJETA ---------\n';
             }
+            if (tipoPago == "DEVOLUCION") {
+                var pagoDevolucion = '-- ES DEVOLUCION --\n';
+            }
             var detalleIva4 = '';
             var detalleIva10 = '';
             var detalleIva21 = '';
@@ -129,6 +131,7 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoP
                     .text(detalles)
                     .text(pagoTarjeta)
                     .size(2, 2)
+                    .text(pagoDevolucion)
                     .text('TOTAL: ' + total.toFixed(2) + ' EUR \n')
                     .size(1, 1)
                     .align('CT')
@@ -361,7 +364,6 @@ function errorCajon(err, event) {
     }
 }
 exports.imprimirTicket = function (req, event) {
-    console.log("LOLASO: ", req);
     imprimirTicketVenta(event, req.numFactura, req.arrayCompra, req.total, req.visa, req.tiposIva, req.cabecera, req.pie, req.nombreTrabajador, req.impresora, req.infoClienteVip);
 };
 exports.imprimirTicketSalida = function (req, event) {

@@ -823,6 +823,21 @@ class TocGame
             {
                 objTicket._id = Date.now();
                 ipcRenderer.send('guardarDevolucion', objTicket);
+                const paramsTicket = ipcRenderer.sendSync('get-params-ticket');
+                const infoClienteVip = {esVip: false};
+                const paraImprimir = {
+                    numFactura: 0,
+                    arrayCompra: objTicket.lista,
+                    total: objTicket.total,
+                    visa: objTicket.tipoPago,
+                    tiposIva: objTicket.tiposIva,
+                    cabecera: paramsTicket[0] !== undefined ? paramsTicket[0].valorDato: '',
+                    pie: paramsTicket[1] !== undefined ? paramsTicket[1].valorDato: '',
+                    nombreTrabajador: this.getCurrentTrabajador().nombre,
+                    impresora: this.parametros.tipoImpresora,
+                    infoClienteVip: infoClienteVip
+                };
+                ipcRenderer.send('imprimir', paraImprimir);
             }
             else
             {
@@ -931,7 +946,7 @@ class TocGame
         };
         ipcRenderer.send('actualizar-info-caja', this.caja);
     }
-    cerrarCaja(total: number, detalleCierre)
+    cerrarCaja(total: number, detalleCierre, guardarInfoMonedas)
     {
         this.caja.totalCierre   = total;
         this.caja.detalleCierre = detalleCierre;
@@ -940,6 +955,7 @@ class TocGame
         
         this.caja = this.calcularDatosCaja(this.caja);
         ipcRenderer.send('guardarCajaSincro', this.caja);
+        ipcRenderer.send('set-monedas', guardarInfoMonedas);
         this.borrarCaja()
         vueCaja.cerrarModal();
         this.iniciar();
@@ -1034,7 +1050,7 @@ class TocGame
         const paramsTicket = ipcRenderer.sendSync('get-params-ticket');
         const infoTicket: Ticket = ipcRenderer.sendSync('get-info-un-ticket', idTicket);
         const infoTrabajador: Trabajador = ipcRenderer.sendSync('get-infotrabajador-id', infoTicket.idTrabajador);
-        console.log("infoTicket.tiposIva...: ", infoTicket.tiposIva);
+
         const sendObject = {
             numFactura: infoTicket._id,
             arrayCompra: infoTicket.lista,
@@ -1047,7 +1063,7 @@ class TocGame
             impresora: this.parametros.tipoImpresora,
             infoClienteVip: infoTicket.infoClienteVip
         };
-        console.log("LO PUTO SEND:", sendObject);
+        
         ipcRenderer.send('imprimir', sendObject);
     }
     imprimirCierreCaja(info)
@@ -1113,6 +1129,7 @@ class TocGame
     iniciar(): void //COMPROBADA
     {
         $('.modal').modal('hide');
+        vueInfoFooter.getParametros();
         ipcRenderer.send('buscar-fichados');
         const infoPromociones = ipcRenderer.sendSync('get-promociones');
         if(infoPromociones.length > 0)

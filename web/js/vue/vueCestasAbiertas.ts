@@ -9,17 +9,20 @@ var vueCestasAbiertas = new Vue({
                     <div class="modal-body">
                         <div class="row" style="padding-bottom: 10px;" v-for="(itemI, i) in nRows" :key="i">
                             <div class="col-md-2" v-for="(itemJ, j) in listaCestas.slice(i*6, (i+1 == nRows)?listaCestas.length: (i*6)+6)">
-                                <div class="card text-center">
+                                <div class="card text-center" @click="seleccionarActivo(i*6+j)" v-bind:class="{estiloTicketSeleccionado: listaCestas[i*6+j].activo}">
                                     <div class="card-body">
-                                        <h5 class="card-title">Ticket {{(i*6)+j}}</h5>                                    
-                                        <p class="card-text">5,42 €</p>
+                                        <h5 class="card-title">Ticket {{(i*6)+j+1}}</h5>                                    
+                                        <p class="card-text">{{listaCestas[i*6+j].total}} €</p>
                                     </div>
                                 </div>
                             </div>                        
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @click="cerrarModal()">SALIR</button>
+                        <button type="button" class="btn btn-primary" @click="seleccionarCesta()">Seleccionar</button>
+                        <button type="button" class="btn btn-dark" @click="nueva()">Nuevo</button>
+                        <button type="button" class="btn btn-danger" @click="borrar()">Borrar</button>
+                        <button type="button" class="btn btn-secondary" @click="cerrarModal()">Salir</button>
                     </div>
                 </div>
             </div>
@@ -29,7 +32,8 @@ var vueCestasAbiertas = new Vue({
     data () {
       return {
           nRows: 0,
-          listaCestas: null
+          listaCestas: [],
+          activo2: 0
       }
     },
     computed: 
@@ -49,8 +53,20 @@ var vueCestasAbiertas = new Vue({
         },
         getCestasAbiertas()
         {
-            this.listaCestas = ipcRenderer.sendSync('getAllCestas');
-            
+            this.activo2 = 0;
+            this.listaCestas = [];
+            var listaAux = ipcRenderer.sendSync('getAllCestas');
+            var total = 0;
+            for(let i = 0; i < listaAux.length; i++)
+            {
+                total = 0;
+                for(let j = 0; j < listaAux[i].lista.length; j++)
+                {
+                    total += listaAux[i].lista[j].subtotal;
+                }
+                this.listaCestas.push({_id: listaAux[i]._id, lista: listaAux[i].lista, activo: false, total: total});
+            }
+
             if(this.listaCestas.length > 0)
             {
                 var division: number = this.listaCestas.length/6;
@@ -63,6 +79,34 @@ var vueCestasAbiertas = new Vue({
                     this.nRows = Math.trunc(division)+1;
                 }
             }
+        },
+        seleccionarActivo(posicion: number)
+        {
+            this.listaCestas[this.activo2].activo    = false;
+            this.listaCestas[posicion].activo       = true;
+            this.activo2 = posicion;
+        },
+        seleccionarCesta()
+        {
+            ipcRenderer.send('get-cesta', this.listaCestas[this.activo2]._id);
+            this.cerrarModal();
+        },
+        borrar()
+        {
+            if(ipcRenderer.sendSync('del-cesta', this.listaCestas[this.activo2]._id))
+            {
+                this.activo2 = 0;
+                this.getCestasAbiertas();
+            }
+            else
+            {
+                vueToast.abrir('error', 'Error en borrarCesta vueCestasAbiertas');
+            }            
+        },
+        nueva()
+        {
+            ipcRenderer.send('new-cesta');
+            this.cerrarModal();
         }
     }
   });

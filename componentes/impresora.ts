@@ -42,7 +42,6 @@ function dateToString2(fecha)
 
 var imprimirTicketVenta = async function (event, numFactura, arrayCompra, total, tipoPago, tiposIva, cabecera, pie, nombreDependienta, tipoImpresora, infoClienteVip) 
 {
-    console.log('infoClienteVip: ', infoClienteVip);
     try 
     {
         exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
@@ -111,6 +110,11 @@ var imprimirTicketVenta = async function (event, numFactura, arrayCompra, total,
             pagoTarjeta = '----------- PAGADO CON TARJETA ---------\n';
         }
 
+        if(tipoPago == "DEVOLUCION")
+        {
+            var pagoDevolucion: string = '-- ES DEVOLUCION --\n';
+        }
+
         var detalleIva4 = '';
         var detalleIva10 = '';
         var detalleIva21 = '';
@@ -149,6 +153,7 @@ var imprimirTicketVenta = async function (event, numFactura, arrayCompra, total,
                 .text(detalles)
                 .text(pagoTarjeta)
                 .size(2, 2)
+                .text(pagoDevolucion)
                 .text('TOTAL: ' + total.toFixed(2) + ' EUR \n')
                 .size(1, 1)
                 .align('CT')
@@ -435,7 +440,6 @@ function errorCajon(err, event)
 
 exports.imprimirTicket = function (req, event) 
 {
-    console.log("LOLASO: ", req);
     imprimirTicketVenta(event, req.numFactura, req.arrayCompra, req.total, req.visa, req.tiposIva, req.cabecera, req.pie, req.nombreTrabajador, req.impresora, req.infoClienteVip);
 }
 

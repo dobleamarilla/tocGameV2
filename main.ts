@@ -21,15 +21,34 @@ var sincro      = require('./componentes/schemas/sincroCajas');
 var movi        = require('./componentes/schemas/movimientos');
 var sincroFicha = require('./componentes/schemas/sincroFichajes');
 var devolu      = require('./componentes/schemas/devoluciones');
+var moned       = require('./componentes/schemas/infoMonedas');
 var eventos     = require('events');
 
+const isOnline = require('is-online');
 var sincroEnCurso   = false;
-
 require('source-map-support').install();
 const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
-
+function crearCestaVacia()
+{
+    const cestaVacia = {
+        _id: Date.now(),
+        tiposIva: {
+            base1: 0,
+            base2: 0,
+            base3: 0,
+            valorIva1: 0,
+            valorIva2: 0,
+            valorIva3: 0,
+            importe1: 0,
+            importe2: 0,
+            importe3: 0
+        },
+        lista: []
+    }
+    return cestaVacia;
+}
 app.on('ready', () => {
     var ventanaPrincipal = new BrowserWindow(
         {
@@ -107,6 +126,18 @@ app.on('ready', () => {
         });
     });
     //FINAL INFO CAJA
+    //SET INFO MONEDAS
+    ipcMain.on('set-monedas', (ev, infoMonedas) => {
+        moned.setMonedas(infoMonedas);
+    });
+    //FINAL SET INFO MONEDAS
+    //GET INFO MONEDAS
+    ipcMain.on('get-monedas', (ev, infoMonedas) => {
+        moned.getMonedas().then(res=>{
+            ev.returnValue = res;
+        });
+    });
+    //FINAL GET INFO MONEDAS
 
     //INSERTAR MOVIMIENTO
     ipcMain.on('nuevo-movimiento', (ev, args) => {
@@ -231,7 +262,7 @@ app.on('ready', () => {
     //FINAL GET INFO trabajador por ID
 
     //GET CESTA
-    ipcMain.on('get-cesta', (ev, data) => {
+    ipcMain.on('get-cesta', (ev, data = -1) => {
         cest.getUnaCesta(data).then(respuesta => 
         {
             if(respuesta != undefined && respuesta != null && respuesta.lista.length != 0 && respuesta._id != null)
@@ -240,26 +271,19 @@ app.on('ready', () => {
             }
             else
             {
-                const cestaVacia = {
-                    _id: Date.now(),
-                    tiposIva: {
-                        base1: 0,
-                        base2: 0,
-                        base3: 0,
-                        valorIva1: 0,
-                        valorIva2: 0,
-                        valorIva3: 0,
-                        importe1: 0,
-                        importe2: 0,
-                        importe3: 0
-                    },
-                    lista: []
-                }
-                ev.sender.send('res-get-cesta', cestaVacia);
+                ev.sender.send('res-get-cesta', crearCestaVacia());
             }
         });
     });
     //FINAL GET CESTA
+
+    //NUEVA CESTA
+    ipcMain.on('new-cesta', (ev, data) => {
+        let aux = crearCestaVacia();
+        ev.sender.send('res-get-cesta', aux);
+        cest.nuevaCesta(aux);
+    });
+    //FINAL NUEVA CESTA
 
     //FICHAR TRABAJADOR
     ipcMain.on('fichar-trabajador', (ev, data) => {
@@ -268,6 +292,22 @@ app.on('ready', () => {
         });
     });
     //FINAL FICHAR TRABAJADOR
+
+    //BORRAR CESTA
+    ipcMain.on('del-cesta', (ev, id) => {
+        cest.borrarCesta(id).then(() => {
+            ev.returnValue = true;
+        });
+    });
+    //FINAL BORRAR CESTA
+
+    //CONTAR CESTAS
+    ipcMain.on('count-cesta', (ev, id) => {
+        cest.contarCestas().then((info) => {
+            ev.sender.send('res-contar-cestas', info);
+        });
+    });
+    //FINAL CONTAR CESTAS
 
     //BORRAR CESTA
     ipcMain.on('borrar-cesta', (ev, idCesta: number) => {
@@ -320,6 +360,11 @@ app.on('ready', () => {
         })
     });
     //FINAL BUSCAR FICHADOS
+    //CHECK INTERNET
+    ipcMain.on('check-internet', async (ev, data)=>{
+        ev.sender.send('res-check-internet', await isOnline());
+    });
+    //FINAL CHECK INTERNET
 
     //GET PROMOCIONES
     ipcMain.on('get-promociones', (ev, data)=>{
