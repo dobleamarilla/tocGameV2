@@ -13,6 +13,8 @@ class TocGame {
         this.clienteSeleccionado = null;
         this.udsAplicar = 1;
         this.esVIP = false;
+        this.esDevolucion = false;
+        this.esConsumoPersonal = false;
         if (info !== null) {
             this.parametros = info;
         }
@@ -124,6 +126,14 @@ class TocGame {
         else {
             return false;
         }
+    }
+    activarConsumoPersonal() {
+        this.esConsumoPersonal = true;
+        vueCobrar.activarConsumoPersonal();
+    }
+    desactivarConsumoPersonal() {
+        this.esConsumoPersonal = false;
+        vueCobrar.desactivarConsumoPersonal();
     }
     imprimirTest(texto) {
         ipcRenderer.send('imprimir-test', texto);
@@ -644,11 +654,16 @@ class TocGame {
                     objTicket.tipoPago = "DEVOLUCION";
                 }
                 else {
-                    objTicket.tipoPago = "TARJETA";
+                    if (tipo === "CONSUMO_PERSONAL") {
+                        objTicket.tipoPago = "CONSUMO_PERSONAL";
+                    }
+                    else {
+                        objTicket.tipoPago = "TARJETA";
+                    }
                 }
             }
         }
-        if (tipo === "EFECTIVO" || tipo === "DEUDA" || tipo === "DEVOLUCION") {
+        if (tipo === "EFECTIVO" || tipo === "DEUDA" || tipo === "DEVOLUCION" || tipo === "CONSUMO_PERSONAL") {
             if (tipo === "DEVOLUCION") {
                 objTicket._id = Date.now();
                 ipcRenderer.send('guardarDevolucion', objTicket);
@@ -698,6 +713,7 @@ class TocGame {
         }
         this.limpiarClienteVIP();
         this.limpiarDevolucion();
+        this.desactivarConsumoPersonal();
     }
     limpiarDevolucion() {
         this.esDevolucion = false;

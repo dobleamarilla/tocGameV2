@@ -6,7 +6,7 @@ var vueCobrar = new Vue({
 	<div class="modal-dialog" role="document" style="max-width: 600px">
 		<div class="modal-content">
 			<div class="modal-body">
-                <div v-if="esVIP === false && esDevolucion === false" class="row">
+                <div v-if="esVIP === false && esDevolucion === false && esConsumoPersonal === false" class="row">
                     <div class="col-md-6 text-center">
                         <img @click="cobrar('EFECTIVO')" src="assets/imagenes/img-efectivo.png" alt="Cobrar con efectivo" width="250px">
                     </div>
@@ -24,9 +24,22 @@ var vueCobrar = new Vue({
                         <button @click="cobrar('DEVOLUCION')" class="btn btn-danger" style="font-size: 40px">CREAR DEVOLUCIÓN</button>
                     </div>
                 </div>
+                <div v-if="esConsumoPersonal === true" class="row">
+                    <div class="col text-center">
+                        <button @click="cobrar('CONSUMO_PERSONAL')" class="btn btn-danger" style="font-size: 40px">CONSUMO PERSONAL</button>
+                    </div>
+                </div>
                 <div class="row p-1">
                     <div class="col-md-12 text-center">
                         <span class="verTotal">{{total.toFixed(2)}} €</span>
+                    </div>
+                </div>
+                <div class="row p-1">
+                    <div class="col-md-12 text-center">
+                        <select v-model="trabajadorActivo" class="custom-select">
+                            <option selected value="USB">Ezequiel</option>
+                            <option value="SERIE">Jordi</option>
+                        </select>
                     </div>
                 </div>
                 <div v-if="esVIP === false" class="row" v-bind:style="esperandoDatafono">
@@ -50,7 +63,9 @@ var vueCobrar = new Vue({
           esperandoDatafono: {display: 'none'},
           esperando: false,
           esVIP: false,
-          esDevolucion: false
+          esDevolucion: false,
+          esConsumoPersonal: false,
+          trabajadorActivo: null
       }
     },
     methods: 
@@ -76,22 +91,7 @@ var vueCobrar = new Vue({
             if(!this.esperando)
             {
                 this.setEsperando(true);
-                toc.crearTicket(tipo);
-                // if(deuda)
-                // {
-                //     toc.crearTicket(efectivo, true);
-                // }
-                // else
-                // {
-                //     if(devolucion)
-                //     {
-                //         toc.crearTicket
-                //     }
-                //     else
-                //     {
-                //         toc.crearTicket(efectivo);
-                //     }
-                // }                
+                toc.crearTicket(tipo);             
             }
             else
             {
@@ -114,6 +114,14 @@ var vueCobrar = new Vue({
         {
             this.setEsperando(false);
             this.esperandoDatafono.display = 'none';
+        },
+        activarConsumoPersonal()
+        {
+            this.esConsumoPersonal = true;
+        },
+        desactivarConsumoPersonal()
+        {
+            this.esConsumoPersonal = false;
         }
     }
   });

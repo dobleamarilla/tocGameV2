@@ -65,6 +65,7 @@ var vueMenuPrincipal = new Vue({
         activarConsumoPersonal()
         {
             this.cerrarModal();
+            toc.activarConsumoPersonal();
             vueToast.abrir('success', 'Consumo personal activado');
         }
     }
