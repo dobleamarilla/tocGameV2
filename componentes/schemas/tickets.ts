@@ -67,7 +67,10 @@ function insertarTicket(unTicket)
 {
     var aux = new Tickets(unTicket);
     aux.save((err)=>{
-        console.log(err);
+        if(err !== null)
+        {
+            console.log(err);
+        }
     });
 
 }
