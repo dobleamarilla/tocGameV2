@@ -36,9 +36,8 @@ var vueCobrar = new Vue({
                 </div>
                 <div class="row p-1">
                     <div class="col-md-12 text-center">
-                        <select v-model="trabajadorActivo" class="custom-select">
-                            <option selected value="USB">Ezequiel</option>
-                            <option value="SERIE">Jordi</option>
+                        <select v-model="trabajadorActivo" @change="onChange($event)" class="form-control form-control-lg">
+                            <option v-for="trabajador in arrayFichados" :value="trabajador.idTrabajador">{{trabajador.nombre}}</option>
                         </select>
                     </div>
                 </div>
@@ -72,6 +71,7 @@ var vueCobrar = new Vue({
     {
         abreModal()
         {
+            this.trabajadorActivo = toc.getCurrentTrabajador().idTrabajador;
             this.esVIP = toc.esClienteVip();
             this.setEsperando(false);
             $('#modalVueCobrar').modal();
@@ -80,6 +80,10 @@ var vueCobrar = new Vue({
         {
             this.setEsperando(false);
             $('#modalVueCobrar').modal('hide');
+        },
+        onChange(event)
+        {
+            toc.setCurrentTrabajador(parseInt(event.target.value));
         },
         prepararModalVenta(total: number, arrayFichados: any)
         {
@@ -122,6 +126,18 @@ var vueCobrar = new Vue({
         desactivarConsumoPersonal()
         {
             this.esConsumoPersonal = false;
+        },
+        resetEstados()
+        {
+            this.esVIP = false;
+            this.esDevolucion = false;
+            this.esConsumoPersonal = false;
+            this.trabajadorActivo = false;
+            this.esperando = false;
+        },
+        limpiarClienteVip()
+        {
+            this.esVIP = false;
         }
     }
   });

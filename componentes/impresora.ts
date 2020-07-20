@@ -100,7 +100,7 @@ var imprimirTicketVenta = async function (event, numFactura, arrayCompra, total,
                         arrayCompra[i].nombre += ' ';
                     }
                 }
-                detalles += `${arrayCompra[i].unidades}     ${arrayCompra[i].nombre.slice(0, 20)}       ${arrayCompra[i].subtotal}\n`;
+                detalles += `${arrayCompra[i].unidades}     ${arrayCompra[i].nombre.slice(0, 20)}       ${arrayCompra[i].subtotal.toFixed(2)}\n`;
             }
             
         }
@@ -109,10 +109,11 @@ var imprimirTicketVenta = async function (event, numFactura, arrayCompra, total,
         {
             pagoTarjeta = '----------- PAGADO CON TARJETA ---------\n';
         }
+        var pagoDevolucion: string = '';
 
         if(tipoPago == "DEVOLUCION")
         {
-            var pagoDevolucion: string = '-- ES DEVOLUCION --\n';
+            pagoDevolucion = '-- ES DEVOLUCION --\n';
         }
 
         var detalleIva4 = '';
@@ -121,15 +122,15 @@ var imprimirTicketVenta = async function (event, numFactura, arrayCompra, total,
         var detalleIva = '';
         if (tiposIva.importe1 > 0) 
         {
-            detalleIva4 = `${tiposIva.base1.toFixed(2)}        4%: ${tiposIva.valorIva1}      ${tiposIva.importe1}\n`;
+            detalleIva4 = `${tiposIva.base1.toFixed(2)}        4%: ${tiposIva.valorIva1.toFixed(2)}      ${tiposIva.importe1.toFixed(2)}\n`;
         }
         if (tiposIva.importe2 > 0) 
         {
-            detalleIva10 = `${tiposIva.base2.toFixed(2)}        10%: ${tiposIva.valorIva2}      ${tiposIva.importe2}\n`;
+            detalleIva10 = `${tiposIva.base2.toFixed(2)}        10%: ${tiposIva.valorIva2.toFixed(2)}      ${tiposIva.importe2.toFixed(2)}\n`;
         }
         if (tiposIva.importe3 > 0) 
         {
-            detalleIva21 = `${tiposIva.base3.toFixed(2)}       21%: ${tiposIva.valorIva3}      ${tiposIva.importe3}\n`;
+            detalleIva21 = `${tiposIva.base3.toFixed(2)}       21%: ${tiposIva.valorIva3.toFixed(2)}      ${tiposIva.importe3.toFixed(2)}\n`;
         }
         detalleIva = detalleIva4 + detalleIva10 + detalleIva21;
 

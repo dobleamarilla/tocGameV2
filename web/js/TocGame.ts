@@ -103,6 +103,13 @@ class TocGame
         this.udsAplicar = x;
     }
 
+    resetEstados()
+    {
+        this.esVIP = false;
+        this.esDevolucion = false;
+        this.esConsumoPersonal = false;
+    }
+
     getParametros()
     {
         return this.parametros;
@@ -175,6 +182,8 @@ class TocGame
     }
     activarConsumoPersonal()
     {
+        this.desactivarDevolucion();
+        this.limpiarClienteVIP();
         this.esConsumoPersonal = true;
         vueCobrar.activarConsumoPersonal();
     }
@@ -183,6 +192,12 @@ class TocGame
         this.esConsumoPersonal = false;
         vueCobrar.desactivarConsumoPersonal();
     }
+    desactivarDevolucion()
+    {
+        this.esDevolucion = false;
+        vueCobrar.setEsDevolucion(false);
+    }
+
     imprimirTest(texto)
     {
         ipcRenderer.send('imprimir-test', texto);
@@ -317,7 +332,7 @@ class TocGame
             var aux = this.getCurrentTrabajador();
             for(let i = 0; i < fichados.length; i++)
             {
-                if(fichados[i]._id === idTrabajador)
+                if(fichados[i].idTrabajador === idTrabajador)
                 {
                     fichados[fichados.length-1] = fichados[i];
                     fichados[i] = aux;
@@ -892,14 +907,14 @@ class TocGame
                 }
             }
         }
-        this.limpiarClienteVIP();
-        this.limpiarDevolucion();
-        this.desactivarConsumoPersonal();
+        this.resetEstados();
+        vueCobrar.resetEstados();
     }
     limpiarDevolucion()
     {
         this.esDevolucion = false;
-        vueCobrar.setEsDevolucion(false);
+        this.esConsumoPersonal = false;
+        vueCobrar.resetEstados();
     }
     getUrlPedidos()
     {
@@ -912,6 +927,8 @@ class TocGame
     }
     devolucion()
     {
+        this.desactivarConsumoPersonal();
+        this.limpiarClienteVIP();
         this.esDevolucion = true;
         vueCobrar.setEsDevolucion(true);
     }
@@ -1114,14 +1131,18 @@ class TocGame
     }
     vipConfirmado(data)
     {
+        this.desactivarDevolucion();
+        this.desactivarConsumoPersonal();
         this.infoClienteVip = data;
         this.esVIP = true;
         vueMenuVip.abreModal();
     }
     limpiarClienteVIP()
     {
+        vueCesta.limpiarEstiloClienteActivo();
         this.infoClienteVip = null;
         this.esVIP = false;
+        vueCobrar.limpiarClienteVip();
     }
     esClienteVip()
     {
