@@ -389,8 +389,10 @@ app.on('ready', () => {
     //FINAL GET TICKETS
 
     //NUEVO MOVIMIENTO A SINCRO
-    ipcMain.on('nuevo-sincro', (ev, data)=>{
-        
+    ipcMain.on('sincronizar-movimientos', (ev, data)=>{
+        movi.getParaSincronizarMovimientos().then(res=>{
+            ev.sender.send('res-sincronizar-movimientos', res);
+        });
     });
     //FINAL NUEVO MOVIMIENTO A SINCRO
 

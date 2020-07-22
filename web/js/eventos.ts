@@ -98,6 +98,17 @@ ipcRenderer.on('res-sincronizar-devoluciones', (ev, data) => {
         socket.emit('guardarDevoluciones', objEnviar);
     }    
 });
+ipcRenderer.on('res-sincronizar-movimientos', (ev, data) => {
+    const objEnviar = {
+        parametros: toc.getParametros(),
+        info: data
+    }
+    
+    if(objEnviar.info !== null)
+    {
+        socket.emit('guardarMovimiento', objEnviar);
+    }    
+});
 
 socket.on('install-licencia', (data) => {
     if (!data.error) 
