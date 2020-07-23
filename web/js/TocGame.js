@@ -175,7 +175,7 @@ class TocGame {
             concepto: concepto,
             idTrabajador: this.getCurrentTrabajador()._id
         };
-        ipcRenderer.sendSync('nuevo-movimiento', objEntrada);
+        ipcRenderer.send('nuevo-movimiento', objEntrada);
         // imprimirSalidaDinero({
         //     cantidad: cantidad,
         //     fecha: fecha,
@@ -183,7 +183,14 @@ class TocGame {
         //     nombreTienda: nombreTienda,
         //     concepto: concepto
         // });
-        ipcRenderer.send('imprimirEntradaDinero', {});
+        ipcRenderer.send('imprimirEntradaDinero', {
+            cantidad: objEntrada.valor,
+            fecha: objEntrada._id,
+            nombreTrabajador: this.getCurrentTrabajador().nombre,
+            nombreTienda: this.parametros.nombreTienda,
+            concepto: objEntrada.concepto,
+            impresora: this.parametros.tipoImpresora
+        });
     }
     addFichado(trabajador) {
         this.setCurrentTrabajador(trabajador._id);
@@ -695,6 +702,9 @@ class TocGame {
                 ipcRenderer.send('imprimir', paraImprimir);
             }
             else {
+                if (tipo === "CONSUMO_PERSONAL") {
+                    objTicket.total = 0;
+                }
                 ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
                 ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
             }
@@ -815,6 +825,7 @@ class TocGame {
         var totalSalidas = 0;
         var totalEntradas = 0;
         var recaudado = 0; //this.caja.totalCierre-this.caja.totalApertura + totalSalidas - totalEntradas;
+        var totalDeuda = 0;
         for (let i = 0; i < arrayMovimientos.length; i++) {
             if (arrayMovimientos[i].tipo === TIPO_SALIDA) {
                 totalSalidas += arrayMovimientos[i].valor;
@@ -832,12 +843,19 @@ class TocGame {
                 totalTarjeta += arrayTicketsCaja[i].total;
             }
             else {
-                recaudado += arrayTicketsCaja[i].total;
-                totalEnEfectivo += arrayTicketsCaja[i].total;
+                if (arrayTicketsCaja[i].tipoPago == "EFECTIVO") {
+                    recaudado += arrayTicketsCaja[i].total;
+                    totalEnEfectivo += arrayTicketsCaja[i].total;
+                }
+                else {
+                    if (arrayTicketsCaja[i].tipoPago == "DEUDA") {
+                        totalDeuda += arrayTicketsCaja[i].total;
+                    }
+                }
             }
         }
         descuadre = cambioFinal - cambioInicial + totalSalidas - totalEntradas - totalEnEfectivo;
-        recaudado = calaixFetZ + descuadre - totalTarjeta;
+        recaudado = calaixFetZ + descuadre - totalTarjeta - totalDeuda;
         const objImpresion = {
             calaixFet: calaixFetZ,
             nombreTrabajador: nombreTrabajador,

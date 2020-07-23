@@ -113,6 +113,11 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoP
                 detalleIva21 = `${tiposIva.base3.toFixed(2)}       21%: ${tiposIva.valorIva3.toFixed(2)}      ${tiposIva.importe3.toFixed(2)}\n`;
             }
             detalleIva = detalleIva4 + detalleIva10 + detalleIva21;
+            var infoConsumoPersonal = '';
+            if (tipoPago == "CONSUMO_PERSONAL") {
+                infoConsumoPersonal = '---------------- Dte. 100% --------------';
+                detalleIva = '';
+            }
             device.open(function () {
                 printer
                     .encode('latin1')
@@ -131,6 +136,7 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoP
                     .align('LT')
                     .text(detalles)
                     .text(pagoTarjeta)
+                    .text(infoConsumoPersonal)
                     .size(2, 2)
                     .text(pagoDevolucion)
                     .text('TOTAL: ' + total.toFixed(2) + ' EUR \n')
@@ -222,6 +228,7 @@ var testEze = function (event, texto) {
 };
 var entradaDinero = function (event, totalIngresado, cajaActual, fecha, nombreDependienta, nombreTienda) {
     try {
+        fecha = dateToString2(fecha);
         exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
         var device = new escpos.USB('0x4B8', '0x202'); //USB
         //  var device = new escpos.Serial('/dev/ttyS0', {
@@ -237,13 +244,10 @@ var entradaDinero = function (event, totalIngresado, cajaActual, fecha, nombreDe
                 .text(nombreTienda)
                 .text(fecha)
                 .text("Dependienta: " + nombreDependienta)
-                .text("Retirada efectivo: " + totalIngresado)
+                .text("Ingreso efectivo: " + totalIngresado)
                 .size(2, 2)
                 .text(totalIngresado)
                 .size(1, 1)
-                .text("Efectivo actual")
-                .size(2, 2)
-                .text(cajaActual)
                 .text('')
                 .barcode('9933500329672', "CODE39")
                 .text('')
@@ -319,12 +323,12 @@ var cierreCaja = function (event, calaixFet, nombreTrabajador, descuadre, nClien
                 .text('Final: ' + fechaFinal.getDate() + '-' + fechaFinal.getMonth() + '-' + fechaFinal.getFullYear() + ' ' + fechaFinal.getHours() + ':' + fechaFinal.getMinutes())
                 .text('')
                 .size(1, 2)
-                .text('Calaix fet      :      ' + calaixFet)
-                .text('Descuadre       :      ' + descuadre)
-                .text('Clients atesos  :      ' + nClientes)
-                .text('Recaudat        :      ' + recaudado)
-                .text('Canvi inicial        :      ' + cInicioCaja)
-                .text('Canvi final        :      ' + cFinalCaja)
+                .text('Calaix fet       :      ' + calaixFet.toFixed(2))
+                .text('Descuadre        :      ' + descuadre.toFixed(2))
+                .text('Clients atesos   :      ' + nClientes)
+                .text('Recaudat         :      ' + recaudado.toFixed(2))
+                .text('Canvi inicial    :      ' + cInicioCaja.toFixed(2))
+                .text('Canvi final      :      ' + cFinalCaja.toFixed(2))
                 .text('')
                 .size(1, 1)
                 .text('Moviments de caixa')
