@@ -181,6 +181,16 @@ app.on('ready', () => {
         ev.sender.send('res-cargar-todo', true);
     }));
     //FINAL CARGAR TODO
+    //ACTUALIZAR TECLADO
+    ipcMain.on('actualizar-teclado', (ev, data) => __awaiter(this, void 0, void 0, function* () {
+        yield arti.insertarArticulos(data.articulos);
+        yield fami.insertarFamilias(data.familias);
+        yield promo.insertarPromociones(data.promociones);
+        yield men.insertarMenus(data.menus);
+        yield tec.insertarTeclasMain(data.teclas);
+        ev.sender.send('res-cargar-todo', true);
+    }));
+    //FINAL ACTUALIZAR TECLADO
     //GET TECLAS
     ipcMain.on('get-teclas', (ev, data) => {
         tec.getTecladoMain(data).then(respuesta => {
