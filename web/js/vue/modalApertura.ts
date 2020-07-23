@@ -126,7 +126,8 @@ var vueApertura = new Vue({
     {
         abreModal()
         {
-            this.infoDinero = ipcRenderer.sendSync('get-monedas').infoDinero;
+            let lolAux = ipcRenderer.sendSync('get-monedas').infoDinero;
+            this.infoDinero = (lolAux != null) ? lolAux: this.infoDinero;
             $('#vueModalApertura').modal();
         },
         cerrarModal()
