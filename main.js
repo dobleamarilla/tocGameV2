@@ -356,6 +356,11 @@ app.on('ready', () => {
         });
     });
     //FINAL NUEVO MOVIMIENTO A SINCRO
+    //CONFIRMAR MOVIMIENTO
+    ipcMain.on('movimiento-confirmado', (ev, data) => {
+        movi.confirmarMovimiento(data.idMovimiento);
+    });
+    //FINAL CONFIRMAR MOVIMIENTO
     //GET ULTIMO TICKET
     ipcMain.on('getUltimoTicket', (ev, data) => {
         tick.getUltimoTicket().then(res => {

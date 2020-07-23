@@ -13,8 +13,14 @@ var Articulos = conexion.mongoose.model('articulos', schemaArticulos);
 
 function insertarArticulos(data)
 {
+    // var devolver = new Promise((dev, rej)=>{
+    //     Articulos.insertMany(data).then(()=>{
+    //         dev(true);
+    //     });
+    // });
+    // return devolver;
     var devolver = new Promise((dev, rej)=>{
-        Articulos.insertMany(data).then(()=>{
+        Articulos.updateMany({}, data, {upsert: true}).then(()=>{
             dev(true);
         });
     });

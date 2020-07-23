@@ -169,6 +169,10 @@ class TocGame
     {
         socket.emit('cargar-todo', { licencia: this.parametros.licencia, database: this.parametros.database });
     }
+    actualizarTeclado()
+    {
+        socket.emit('cargar-todo', { licencia: this.parametros.licencia, database: this.parametros.database, peticion: "TECLADO" });
+    }
     hayFichados()
     {
         if(this.getArrayFichados().length > 0)

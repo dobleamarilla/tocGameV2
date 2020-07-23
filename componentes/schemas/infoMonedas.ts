@@ -11,10 +11,14 @@ var Monedas = conexion.mongoose.model('monedas', schemaMonedas);
 
 function setMonedas(data)
 {
-    const auxInsert = {
-        _id: "INFO_MONEDAS",
-        infoDinero: data
-    };
+    if(data != null)
+    {
+        var auxInsert = {
+            _id: "INFO_MONEDAS",
+            infoDinero: data
+        };
+    }
+
     return Monedas.replaceOne({ _id: "INFO_MONEDAS" }, auxInsert, {upsert: true}, (err, result)=>{
         if(err) 
         {

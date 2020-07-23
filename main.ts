@@ -190,6 +190,16 @@ app.on('ready', () => {
         ev.sender.send('res-cargar-todo', true);
     });
     //FINAL CARGAR TODO
+    //ACTUALIZAR TECLADO
+    ipcMain.on('actualizar-teclado', async (ev, data) => {
+        await arti.insertarArticulos(data.articulos);
+        await fami.insertarFamilias(data.familias);
+        await promo.insertarPromociones(data.promociones);
+        await men.insertarMenus(data.menus);
+        await tec.insertarTeclasMain(data.teclas);
+        ev.sender.send('res-cargar-todo', true);
+    });
+    //FINAL ACTUALIZAR TECLADO
 
     //GET TECLAS
     ipcMain.on('get-teclas', (ev, data) => {
@@ -395,6 +405,11 @@ app.on('ready', () => {
         });
     });
     //FINAL NUEVO MOVIMIENTO A SINCRO
+    //CONFIRMAR MOVIMIENTO
+    ipcMain.on('movimiento-confirmado', (ev, data)=>{
+        movi.confirmarMovimiento(data.idMovimiento);
+    });
+    //FINAL CONFIRMAR MOVIMIENTO
 
     //GET ULTIMO TICKET
     ipcMain.on('getUltimoTicket', (ev, data)=>{

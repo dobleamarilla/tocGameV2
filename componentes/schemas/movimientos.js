@@ -26,7 +26,13 @@ function getMovimientosRango(fechaInicio, fechaFinal) {
 function getParaSincronizarMovimientos() {
     return Movimientos.findOneAndUpdate({ enviado: false, enTransito: false }, { enTransito: true }, { lean: true, sort: { _id: 1 } });
 }
+function confirmarMovimiento(id) {
+    Movimientos.updateOne({ _id: id }, { enviado: true, enTransito: false }, ((err, queHeHecho) => {
+        //console.log(err, queHeHecho)
+    }));
+}
 exports.insertarMovimiento = insertarMovimiento;
 exports.getMovimientosRango = getMovimientosRango;
 exports.getParaSincronizarMovimientos = getParaSincronizarMovimientos;
+exports.confirmarMovimiento = confirmarMovimiento;
 //# sourceMappingURL=movimientos.js.map

@@ -139,6 +139,10 @@ socket.on('confirmarEnvioTicket', (data) => {
     // console.log("Ticket confirmado: enviado = true, enTransito = false");
     ipcRenderer.send('confirmar-envio', data);
 });
+socket.on('confirmarEnvioMovimiento', (data) => {
+    console.log("LLEGA EL CONFIRMAR :", data);
+    ipcRenderer.send('movimiento-confirmado', data);
+});
 socket.on('confirmarEnvioFichaje', (data) => {
     // console.log("Ticket confirmado: enviado = true, enTransito = false");
     ipcRenderer.send('confirmar-envio-fichaje', data);
