@@ -13,18 +13,18 @@ var Articulos = conexion.mongoose.model('articulos', schemaArticulos);
 
 function insertarArticulos(data)
 {
-    // var devolver = new Promise((dev, rej)=>{
-    //     Articulos.insertMany(data).then(()=>{
-    //         dev(true);
-    //     });
-    // });
-    // return devolver;
     var devolver = new Promise((dev, rej)=>{
-        Articulos.updateMany({}, data, {upsert: true}).then(()=>{
+        Articulos.insertMany(data).then(()=>{
             dev(true);
         });
     });
     return devolver;
+    // var devolver = new Promise((dev, rej)=>{
+    //     Articulos.updateMany({}, data, {upsert: true}).then(()=>{
+    //         dev(true);
+    //     });
+    // });
+    // return devolver;
 }
 function getInfoArticulo(idArticulo: number)
 {
