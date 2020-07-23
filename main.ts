@@ -192,12 +192,22 @@ app.on('ready', () => {
     //FINAL CARGAR TODO
     //ACTUALIZAR TECLADO
     ipcMain.on('actualizar-teclado', async (ev, data) => {
+        await arti.borrarArticulos();
         await arti.insertarArticulos(data.articulos);
+
+        await fami.borrarFamilias();
         await fami.insertarFamilias(data.familias);
+
+        await promo.borrarPromociones();
         await promo.insertarPromociones(data.promociones);
+
+        await men.borrarMenus();
         await men.insertarMenus(data.menus);
+
+        await tec.borrarTeclas();
         await tec.insertarTeclasMain(data.teclas);
-        ev.sender.send('res-cargar-todo', true);
+
+        ev.sender.send('res-cargar-teclado', true);
     });
     //FINAL ACTUALIZAR TECLADO
 

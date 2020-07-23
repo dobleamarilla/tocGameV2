@@ -14,7 +14,15 @@ function insertarTeclasMain(data) {
 function getTecladoMain(nombreMenu) {
     return Teclas.find({ nomMenu: nombreMenu }).lean();
 }
+function borrarTeclas() {
+    return Teclas.deleteMany({}, (err) => {
+        if (err) {
+            console.log(err);
+        }
+    });
+}
 exports.teclas = Teclas;
 exports.insertarTeclasMain = insertarTeclasMain;
 exports.getTecladoMain = getTecladoMain;
+exports.borrarTeclas = borrarTeclas;
 //# sourceMappingURL=teclas.js.map

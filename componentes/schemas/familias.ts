@@ -14,13 +14,16 @@ function insertarFamilias(data)
         });
     });
     return devolver;
-    // var devolver = new Promise((dev, rej)=>{
-    //     Familias.updateMany({}, data, {upsert: true}).then(()=>{
-    //         dev(true);
-    //     });
-    // });
-    // return devolver;
 }
-
-exports.familias             = Familias;
-exports.insertarFamilias     = insertarFamilias;
+function borrarFamilias()
+{
+    return Familias.deleteMany({}, (err)=>{
+        if(err)
+        {
+            console.log(err);
+        }
+    });
+}
+exports.familias                = Familias;
+exports.insertarFamilias        = insertarFamilias;
+exports.borrarFamilias          = borrarFamilias;

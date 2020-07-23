@@ -24,12 +24,6 @@ function insertarPromociones(data)
         });
     });
     return devolver;
-    // var devolver = new Promise((dev, rej)=>{
-    //     Promociones.updateMany({}, data, {upsert: true}).then(()=>{
-    //         dev(true);
-    //     });
-    // });
-    // return devolver;
 }
 
 function getPromociones()
@@ -37,6 +31,17 @@ function getPromociones()
     return Promociones.find().lean();
 }
 
+function borrarPromociones()
+{
+    return Promociones.deleteMany({}, (err)=>{
+        if(err)
+        {
+            console.log(err);
+        }
+    });
+}
+
 exports.promociones             = Promociones;
 exports.insertarPromociones     = insertarPromociones;
 exports.getPromociones          = getPromociones;
+exports.borrarPromociones       = borrarPromociones;

@@ -183,12 +183,17 @@ app.on('ready', () => {
     //FINAL CARGAR TODO
     //ACTUALIZAR TECLADO
     ipcMain.on('actualizar-teclado', (ev, data) => __awaiter(this, void 0, void 0, function* () {
+        yield arti.borrarArticulos();
         yield arti.insertarArticulos(data.articulos);
+        yield fami.borrarFamilias();
         yield fami.insertarFamilias(data.familias);
+        yield promo.borrarPromociones();
         yield promo.insertarPromociones(data.promociones);
+        yield men.borrarMenus();
         yield men.insertarMenus(data.menus);
+        yield tec.borrarTeclas();
         yield tec.insertarTeclasMain(data.teclas);
-        ev.sender.send('res-cargar-todo', true);
+        ev.sender.send('res-cargar-teclado', true);
     }));
     //FINAL ACTUALIZAR TECLADO
     //GET TECLAS

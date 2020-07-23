@@ -32,6 +32,18 @@ ipcRenderer.on('res-cargar-todo', (ev, data) =>
         vueToast.abrir('error', 'Error en cargar-todo');
     }
 });
+ipcRenderer.on('res-cargar-teclado', (ev, data) => 
+{
+    if (data) 
+    {
+        vueToast.abrir('success', "TECLADO CARGADO");
+        toc.iniciar();
+    }
+    else 
+    {
+        vueToast.abrir('error', 'Error en cargar-TECLADO');
+    }
+});
 
 ipcRenderer.on('res-buscar-trabajador', (ev, data) => {
     vueFichajes.setTrabajadores(data);
@@ -157,5 +169,22 @@ socket.on('respuestaClienteEsVIP', (data) => {
     else
     {
         //ES NORMAL
+    }
+});
+socket.on('ordenSincronizarTeclado', (data) => {
+    if(toc.todoListo())
+    {
+        toc.actualizarTeclado();
+    }
+});
+socket.on('res-descargar-teclado', (data) => {
+    if(!data.error)
+    {
+        console.log(data);
+        ipcRenderer.send('actualizar-teclado', data);
+    }
+    else
+    {
+        console.log("Error en descargar-teclado-servidor");
     }
 });

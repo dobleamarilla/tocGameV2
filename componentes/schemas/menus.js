@@ -9,7 +9,15 @@ function insertarMenus(data) {
 function getMenus() {
     return Menus.find().lean();
 }
+function borrarMenus() {
+    return Menus.deleteMany({}, (err) => {
+        if (err) {
+            console.log(err);
+        }
+    });
+}
 exports.menus = Menus;
 exports.insertarMenus = insertarMenus;
 exports.getMenus = getMenus;
+exports.borrarMenus = borrarMenus;
 //# sourceMappingURL=menus.js.map

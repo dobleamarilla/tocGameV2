@@ -44,9 +44,18 @@ function getPrecio(id)
 {
     return Articulos.findById(id).lean();
 }
-
+function borrarArticulos()
+{
+    return Articulos.deleteMany({}, (err)=>{
+        if(err)
+        {
+            console.log(err);
+        }
+    });
+}
 exports.articulos               = Articulos;
 exports.insertarArticulos       = insertarArticulos;
 exports.getInfoArticulo         = getInfoArticulo;
 exports.getNombreArticulo       = getNombreArticulo;
 exports.getPrecio               = getPrecio;
+exports.borrarArticulos         = borrarArticulos;
