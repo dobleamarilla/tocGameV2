@@ -15,6 +15,7 @@ class TocGame {
         this.esVIP = false;
         this.esDevolucion = false;
         this.esConsumoPersonal = false;
+        this.stopNecesario = false;
         if (info !== null) {
             this.parametros = info;
         }
@@ -38,7 +39,10 @@ class TocGame {
                 idDependienta: null,
                 totalApertura: null,
                 totalCierre: null,
+                calaixFetZ: null,
                 descuadre: null,
+                primerTicket: null,
+                ultimoTicket: null,
                 recaudado: null,
                 nClientes: null,
                 detalleApertura: [],
@@ -70,6 +74,12 @@ class TocGame {
                 return true;
             }
         }
+    }
+    setStopNecesario(x) {
+        this.stopNecesario = x;
+    }
+    getStopNecesario() {
+        return this.stopNecesario;
     }
     setUnidades(x) {
         this.udsAplicar = x;
@@ -125,6 +135,7 @@ class TocGame {
         socket.emit('cargar-todo', { licencia: this.parametros.licencia, database: this.parametros.database });
     }
     actualizarTeclado() {
+        this.setStopNecesario(true);
         socket.emit('descargar-teclado', { licencia: this.parametros.licencia, database: this.parametros.database, codigoTienda: this.parametros.codigoTienda });
     }
     hayFichados() {
@@ -790,7 +801,10 @@ class TocGame {
             idDependienta: null,
             totalApertura: null,
             totalCierre: null,
+            calaixFetZ: null,
             descuadre: null,
+            primerTicket: null,
+            ultimoTicket: null,
             recaudado: null,
             nClientes: null,
             detalleApertura: [],
@@ -819,6 +833,10 @@ class TocGame {
         var nombreTrabajador = this.getCurrentTrabajador().nombre;
         var descuadre = 0;
         var nClientes = 0;
+        if (arrayTicketsCaja.length > 0) {
+            this.caja.primerTicket = arrayTicketsCaja[0]._id;
+            this.caja.ultimoTicket = arrayTicketsCaja[arrayTicketsCaja.length - 1]._id;
+        }
         var nombreTienda = this.parametros.nombreTienda;
         var fechaInicio = this.caja.inicioTime;
         var totalTarjeta = 0;
@@ -857,6 +875,7 @@ class TocGame {
                 }
             }
         }
+        this.caja.calaixFetZ = calaixFetZ;
         descuadre = cambioFinal - cambioInicial + totalSalidas - totalEntradas - totalEnEfectivo;
         recaudado = calaixFetZ + descuadre - totalTarjeta - totalDeuda;
         const objImpresion = {

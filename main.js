@@ -222,6 +222,13 @@ app.on('ready', () => {
         });
     });
     //FINAL BUSCAR TRABAJADOR
+    //SINCRO CAJAS
+    ipcMain.on('sincronizar-caja', (ev, data) => {
+        sincro.getCaja().then(respuesta => {
+            ev.sender.send('res-sincronizar-caja', respuesta);
+        });
+    });
+    //FINAL SINCRO CAJAS
     //BUSCAR CLIENTE
     ipcMain.on('buscar-clientes', (ev, data) => {
         cliente.buscarCliente(data).then(respuesta => {
@@ -257,6 +264,11 @@ app.on('ready', () => {
         });
     });
     //FINAL GET INFO trabajador por ID
+    //CONFIRMAR ENVIO CAJA
+    ipcMain.on('confirmar-envio-caja', (ev, data) => {
+        sincro.confirmarEnvioCaja(data.idCaja);
+    });
+    //FINAL CONFIRMAR ENVIO CAJA
     //GET CESTA
     ipcMain.on('get-cesta', (ev, data = -1) => {
         cest.getUnaCesta(data).then(respuesta => {

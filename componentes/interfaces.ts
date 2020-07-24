@@ -73,6 +73,9 @@ interface Caja
     descuadre: number,
     recaudado: number,
     nClientes: number,
+    ultimoTicket: number,
+    calaixFetZ: number,
+    primerTicket: number,
     detalleApertura: {
         _id: string,
         valor: number,

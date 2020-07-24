@@ -112,10 +112,11 @@ function sincronizarToc()
 {
     if(toc.todoListo()) //Licencia, etc.
     {
-        ipcRenderer.send('sincronizar-toc');
+        ipcRenderer.send('sincronizar-toc'); //solo tickets
         ipcRenderer.send('sincronizar-fichajes');
         ipcRenderer.send('sincronizar-devoluciones');
         ipcRenderer.send('sincronizar-movimientos');
+        ipcRenderer.send('sincronizar-caja');
     }    
 }
 function sincronizarDatosRapidos()
@@ -126,4 +127,8 @@ function sincronizarDatosRapidos()
 function elTesteo()
 {
     console.log('El testeo guapo guapo es: ', ipcRenderer.sendSync('testeoGuapo'))
+}
+function calcularUltimoYPrimerTicket()
+{
+    
 }

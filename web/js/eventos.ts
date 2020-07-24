@@ -121,6 +121,17 @@ ipcRenderer.on('res-sincronizar-movimientos', (ev, data) => {
         socket.emit('guardarMovimiento', objEnviar);
     }    
 });
+ipcRenderer.on('res-sincronizar-caja', (ev, data) => {
+    const objEnviar = {
+        parametros: toc.getParametros(),
+        info: data
+    }
+    
+    if(objEnviar.info !== null)
+    {
+        socket.emit('guardar-caja', objEnviar);
+    }    
+});
 
 socket.on('install-licencia', (data) => {
     if (!data.error) 
@@ -150,6 +161,10 @@ socket.on('install-licencia', (data) => {
 socket.on('confirmarEnvioTicket', (data) => {
     // console.log("Ticket confirmado: enviado = true, enTransito = false");
     ipcRenderer.send('confirmar-envio', data);
+});
+socket.on('confirmarEnvioCaja', (data) => {
+    // console.log("Ticket confirmado: enviado = true, enTransito = false");
+    ipcRenderer.send('confirmar-envio-caja', data);
 });
 socket.on('confirmarEnvioMovimiento', (data) => {
     console.log("LLEGA EL CONFIRMAR :", data);
@@ -187,4 +202,5 @@ socket.on('res-descargar-teclado', (data) => {
     {
         console.log("Error en descargar-teclado-servidor");
     }
+    toc.setStopNecesario(false);
 });

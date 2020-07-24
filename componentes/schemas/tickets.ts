@@ -85,7 +85,7 @@ function getTickets()
 
 function getTicketsIntervalo(unaCaja: Caja)
 {
-    return Tickets.find({timestamp: {$lte: unaCaja.finalTime, $gte: unaCaja.inicioTime}}, (err, respuesta) => {
+    return Tickets.find({timestamp: {$lte: unaCaja.finalTime, $gte: unaCaja.inicioTime}}, null, {sort: {_id: 1}}, (err, respuesta) => {
         console.log(err);
         console.log("Lo que me ha encontrado del invervalo es: ", respuesta);
     }).lean();

@@ -83,8 +83,15 @@ var vuePanelVentas = new Vue({
         },
         clickMenu(index)
         {
-            toc.clickMenu(this.listaMenus[index].nomMenu);
-            this.menuActivo = index;
+            if(!toc.getStopNecesario())
+            {
+                toc.clickMenu(this.listaMenus[index].nomMenu);
+                this.menuActivo = index;
+            }
+            else
+            {
+                vueToast.abrir('warning', 'Precios y teclado en proceso de actualización');
+            }            
         },
         cargarTeclado(data)
         {
@@ -107,7 +114,14 @@ var vuePanelVentas = new Vue({
         },
         clickTecla(objListadoTeclas, esAPeso: boolean = false, peso: number = 0, subtotal: number = 0) //CUANDO SEA A PESO PASAR CON clickTecla(objListadoTeclas, true)
         {
-            toc.addItem(objListadoTeclas.idArticle, objListadoTeclas.idBoton, esAPeso, peso, subtotal);
+            if(!toc.getStopNecesario())
+            {
+                toc.addItem(objListadoTeclas.idArticle, objListadoTeclas.idBoton, esAPeso, peso, subtotal);
+            }
+            else
+            {
+                vueToast.abrir('warning', 'Precios y teclado en proceso de actualización');
+            }                
         },
         resetTeclado()
         {

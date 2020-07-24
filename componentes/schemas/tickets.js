@@ -76,7 +76,7 @@ function getTickets() {
     return Tickets.find({}).sort({ _id: -1 }).limit(100).lean();
 }
 function getTicketsIntervalo(unaCaja) {
-    return Tickets.find({ timestamp: { $lte: unaCaja.finalTime, $gte: unaCaja.inicioTime } }, (err, respuesta) => {
+    return Tickets.find({ timestamp: { $lte: unaCaja.finalTime, $gte: unaCaja.inicioTime } }, null, { sort: { _id: 1 } }, (err, respuesta) => {
         console.log(err);
         console.log("Lo que me ha encontrado del invervalo es: ", respuesta);
     }).lean();

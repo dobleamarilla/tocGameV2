@@ -79,8 +79,13 @@ var vuePanelVentas = new Vue({
             }
         },
         clickMenu(index) {
-            toc.clickMenu(this.listaMenus[index].nomMenu);
-            this.menuActivo = index;
+            if (!toc.getStopNecesario()) {
+                toc.clickMenu(this.listaMenus[index].nomMenu);
+                this.menuActivo = index;
+            }
+            else {
+                vueToast.abrir('warning', 'Precios y teclado en proceso de actualización');
+            }
         },
         cargarTeclado(data) {
             this.resetTeclado();
@@ -98,7 +103,12 @@ var vuePanelVentas = new Vue({
             }
         },
         clickTecla(objListadoTeclas, esAPeso = false, peso = 0, subtotal = 0) {
-            toc.addItem(objListadoTeclas.idArticle, objListadoTeclas.idBoton, esAPeso, peso, subtotal);
+            if (!toc.getStopNecesario()) {
+                toc.addItem(objListadoTeclas.idArticle, objListadoTeclas.idBoton, esAPeso, peso, subtotal);
+            }
+            else {
+                vueToast.abrir('warning', 'Precios y teclado en proceso de actualización');
+            }
         },
         resetTeclado() {
             this.listadoTeclas = [

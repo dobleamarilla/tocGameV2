@@ -10,6 +10,9 @@ var schemaSincro = new conexion.mongoose.Schema({
     descuadre: Number,
     recaudado: Number,
     nClientes: Number,
+    primerTicket: Number,
+    ultimoTicket: Number,
+    calaixFetZ: Number,
     detalleApertura: [{
         _id: String,
         valor: Number,
@@ -29,21 +32,29 @@ var schemaSincro = new conexion.mongoose.Schema({
         default: false
     }
 });
-var Sincro = conexion.mongoose.model('sincro-cajas', schemaSincro);
+var SincroCajas = conexion.mongoose.model('sincro-cajas', schemaSincro);
 
 function nuevoItemSincroCajas(data): void
 {
     data._id = Date.now();
-    console.log("pero q mierda es bson: ", data);
-    var aux = new Sincro(data);
+    var aux = new SincroCajas(data);
     aux.save();
 }
 
-function getMovimientosCaja()
+function getCaja()
 {
-    return Sincro.find({enviado: false, enTransito: false}).lean();
+    return SincroCajas.findOneAndUpdate({enviado: false, enTransito: false}, {enTransito: true}, {lean: true, sort: {_id: 1}});
+}
+function confirmarEnvioCaja(data)
+{
+    SincroCajas.updateOne({_id: data}, {enviado: true, enTransito: false}, ((err, queHeHecho)=>{
+       if(err)
+       {
+            console.log(queHeHecho);
+       }
+    }));
 }
 
-exports.sincro                      = Sincro;
 exports.nuevoItemSincroCajas        = nuevoItemSincroCajas;
-exports.getMovimientosCaja          = getMovimientosCaja;
+exports.getCaja                     = getCaja;
+exports.confirmarEnvioCaja          = confirmarEnvioCaja;
