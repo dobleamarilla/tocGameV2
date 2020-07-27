@@ -75,6 +75,15 @@ interface Caja
     nClientes: number,
     ultimoTicket: number,
     calaixFetZ: number,
+    infoExtra: {
+        cambioInicial: number,
+        cambioFinal: number,
+        totalSalidas: number,
+        totalEntradas: number,
+        totalEnEfectivo: number,
+        totalTarjeta: number,
+        totalDeuda: number
+    },
     primerTicket: number,
     detalleApertura: {
         _id: string,

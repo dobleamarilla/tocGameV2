@@ -11,6 +11,15 @@ var schemaSincro = new conexion.mongoose.Schema({
     recaudado: Number,
     nClientes: Number,
     primerTicket: Number,
+    infoExtra: {
+        cambioInicial: Number,
+        cambioFinal: Number,
+        totalSalidas: Number,
+        totalEntradas: Number,
+        totalEnEfectivo: Number,
+        totalTarjeta: Number,
+        totalDeuda: Number
+    },
     ultimoTicket: Number,
     calaixFetZ: Number,
     detalleApertura: [{

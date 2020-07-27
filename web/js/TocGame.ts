@@ -60,6 +60,15 @@ class TocGame
                 totalCierre: null,
                 calaixFetZ: null,
                 descuadre: null,
+                infoExtra: {
+                    cambioInicial: null,
+                    cambioFinal: null,
+                    totalSalidas: null,
+                    totalEntradas: null,
+                    totalEnEfectivo: null,
+                    totalTarjeta: null,
+                    totalDeuda: null
+                },
                 primerTicket: null,
                 ultimoTicket: null,
                 recaudado: null,
@@ -1005,6 +1014,15 @@ class TocGame
             totalCierre: null,
             calaixFetZ: null,
             descuadre: null,
+            infoExtra: {
+                cambioInicial: null,
+                cambioFinal: null,
+                totalSalidas: null,
+                totalEntradas: null,
+                totalEnEfectivo: null,
+                totalTarjeta: null,
+                totalDeuda: null
+            },
             primerTicket: null,
             ultimoTicket: null,
             recaudado: null,
@@ -1095,6 +1113,14 @@ class TocGame
             }
         }
         this.caja.calaixFetZ = calaixFetZ;
+        this.caja.infoExtra.cambioFinal = cambioFinal;
+        this.caja.infoExtra.cambioInicial = cambioInicial;
+        this.caja.infoExtra.totalSalidas = totalSalidas;
+        this.caja.infoExtra.totalEntradas = totalEntradas;
+        this.caja.infoExtra.totalEnEfectivo = totalEnEfectivo;
+        this.caja.infoExtra.totalTarjeta = totalTarjeta;
+        this.caja.infoExtra.totalDeuda = totalDeuda;
+
         descuadre = cambioFinal-cambioInicial+totalSalidas-totalEntradas-totalEnEfectivo;
         recaudado = calaixFetZ + descuadre - totalTarjeta - totalDeuda;
         

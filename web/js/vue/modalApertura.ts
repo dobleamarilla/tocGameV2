@@ -188,6 +188,15 @@ var vueApertura = new Vue({
                         totalCierre: null,
                         descuadre: null,
                         calaixFetZ: null,
+                        infoExtra: {
+                            cambioInicial: null,
+                            cambioFinal: null,
+                            totalSalidas: null,
+                            totalEntradas: null,
+                            totalEnEfectivo: null,
+                            totalTarjeta: null,
+                            totalDeuda: null
+                        },
                         primerTicket: null,
                         ultimoTicket: null,
                         recaudado: null,
