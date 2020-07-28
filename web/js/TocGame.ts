@@ -82,6 +82,18 @@ class TocGame
         else
         {
             this.caja = infoCaja;
+            if(typeof this.caja.infoExtra == "undefined")
+            {
+                this.caja.infoExtra = {
+                    cambioInicial: null,
+                    cambioFinal: null,
+                    totalSalidas: null,
+                    totalEntradas: null,
+                    totalEnEfectivo: null,
+                    totalTarjeta: null,
+                    totalDeuda: null
+                };
+            }
         }
     }
     cajaAbierta()
