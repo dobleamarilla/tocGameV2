@@ -184,7 +184,7 @@ var imprimirTicketVenta = async function (event, numFactura, arrayCompra, total,
     }
 }
 
-var salidaDinero = function (event, totalRetirado, cajaActual, fecha, nombreDependienta, nombreTienda, concepto, tipoImpresora) 
+var salidaDinero = function (event, totalRetirado, cajaActual, fecha, nombreDependienta, nombreTienda, concepto, tipoImpresora, codigoBarras) 
 {
     try 
     {
@@ -204,7 +204,7 @@ var salidaDinero = function (event, totalRetirado, cajaActual, fecha, nombreDepe
                   })
             }
         }
-
+        
         var options = { encoding: "GB18030" };
         var printer = new escpos.Printer(device, options);
         device.open(function () 
@@ -223,6 +223,7 @@ var salidaDinero = function (event, totalRetirado, cajaActual, fecha, nombreDepe
                 .size(2, 2)
                 .text(concepto)
                 .text('')
+                .barcode(codigoBarras, "EAN13", 4)
                 .text('')
                 .text('')
                 .text('')
@@ -259,6 +260,7 @@ var testEze = function (event, texto)
                 .size(3, 3)
                 .text(texto)
                 .text('')
+                .barcode('993350032967', "EAN13", 4)
                 .text('')
                 .cut()
                 .close()
@@ -296,7 +298,8 @@ var entradaDinero = function (event, totalIngresado, cajaActual, fecha, nombreDe
                 .text(totalIngresado)
                 .size(1, 1)
                 .text('')
-                .barcode('9933500329672', "CODE39")
+                .size(2, 2)
+                .barcode('993350032967', "EAN13", 4)
                 .text('')
                 .text('')
                 .text('')
@@ -453,7 +456,7 @@ exports.imprimirTicket = function (req, event)
 
 exports.imprimirTicketSalida = function (req, event) 
 {
-    salidaDinero(event, req.cantidad, req.cajaActual, req.fecha, req.nombreTrabajador, req.nombreTienda, req.concepto, req.impresora);
+    salidaDinero(event, req.cantidad, req.cajaActual, req.fecha, req.nombreTrabajador, req.nombreTienda, req.concepto, req.impresora, req.codigoBarras);
 }
 
 exports.imprimirTicketEntrada = function (req, event) 

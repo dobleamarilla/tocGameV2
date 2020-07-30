@@ -5,6 +5,7 @@ var schemaMovimientos = new conexion.mongoose.Schema({
     valor: Number,
     concepto: String,
     idTrabajador: Number,
+    codigoBarras: String,
     enviado: {
         type: Boolean,
         default: false

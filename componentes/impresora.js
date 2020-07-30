@@ -158,7 +158,7 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoP
         }
     });
 };
-var salidaDinero = function (event, totalRetirado, cajaActual, fecha, nombreDependienta, nombreTienda, concepto, tipoImpresora) {
+var salidaDinero = function (event, totalRetirado, cajaActual, fecha, nombreDependienta, nombreTienda, concepto, tipoImpresora, codigoBarras) {
     try {
         fecha = dateToString2(fecha);
         exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
@@ -190,6 +190,7 @@ var salidaDinero = function (event, totalRetirado, cajaActual, fecha, nombreDepe
                 .size(2, 2)
                 .text(concepto)
                 .text('')
+                .barcode(codigoBarras, "EAN13", 4)
                 .text('')
                 .text('')
                 .text('')
@@ -217,6 +218,7 @@ var testEze = function (event, texto) {
                 .size(3, 3)
                 .text(texto)
                 .text('')
+                .barcode('993350032967', "EAN13", 4)
                 .text('')
                 .cut()
                 .close();
@@ -249,7 +251,8 @@ var entradaDinero = function (event, totalIngresado, cajaActual, fecha, nombreDe
                 .text(totalIngresado)
                 .size(1, 1)
                 .text('')
-                .barcode('9933500329672', "CODE39")
+                .size(2, 2)
+                .barcode('993350032967', "EAN13", 4)
                 .text('')
                 .text('')
                 .text('')
@@ -372,7 +375,7 @@ exports.imprimirTicket = function (req, event) {
     imprimirTicketVenta(event, req.numFactura, req.arrayCompra, req.total, req.visa, req.tiposIva, req.cabecera, req.pie, req.nombreTrabajador, req.impresora, req.infoClienteVip);
 };
 exports.imprimirTicketSalida = function (req, event) {
-    salidaDinero(event, req.cantidad, req.cajaActual, req.fecha, req.nombreTrabajador, req.nombreTienda, req.concepto, req.impresora);
+    salidaDinero(event, req.cantidad, req.cajaActual, req.fecha, req.nombreTrabajador, req.nombreTienda, req.concepto, req.impresora, req.codigoBarras);
 };
 exports.imprimirTicketEntrada = function (req, event) {
     entradaDinero(event, req.cantidad, req.cajaActual, req.fecha, req.nombreTrabajador, req.nombreTienda);

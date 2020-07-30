@@ -22,6 +22,7 @@ var movi        = require('./componentes/schemas/movimientos');
 var sincroFicha = require('./componentes/schemas/sincroFichajes');
 var devolu      = require('./componentes/schemas/devoluciones');
 var moned       = require('./componentes/schemas/infoMonedas');
+var codiBarra   = require('./componentes/schemas/codigoBarras');
 var eventos     = require('events');
 
 const isOnline = require('is-online');
@@ -489,6 +490,33 @@ app.on('ready', () => {
         });
     });
     //FIN GET ALL CESTAS
+
+    //ACTUALIZAR ULTIMO CODIGO DE BARRAS
+    ipcMain.on('actualizar-ultimo-codigo-barras', (event: any, data: any)=>{
+        codiBarra.actualizarUltimoCodigoBarras().then(res=>{
+            event.returnValue = true;
+        });
+    });
+    //FIN ACTUALIZAR ULTIMO CODIGO DE BARRAS
+    //GET ULTIMO CODIGO BARRAS
+    ipcMain.on('get-ultimo-codigo-barras', (event: any, data: any)=>{
+        codiBarra.getUltimoCodigoBarras().then(res=>{
+            if(res == null) 
+            {
+                event.returnValue = 0;
+            }
+            else
+            {
+                event.returnValue = res.ultimo;
+            }
+        });
+    });
+    //FIN GET ULTIMO CODIGO BARRAS
+    // //Guardar primer codigo barras
+    // ipcMain.on('guardar-primer-codigo-barras', (event: any, data: any)=>{
+    //     codiBarra.guardarPrimero();
+    // });
+    // //FIN guardar primer codigo barras
     ipcMain.on('testeoGuapo', (event: any, args: any)=>{
         sincroFicha.testeoGuapo().then(res=>{
             console.log(res);

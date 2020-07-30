@@ -10,7 +10,7 @@
         "compile": "tsc",
         "start": "npm run compile && electron main.js",
         "reparar": "npx electron-rebuild -f -p",
-        "build:windows": "electron-packager . tocGame --overwrite --out=windowsBuild",
+        "build:windows": "electron-packager . tocGame --overwrite --platform=win32 --out=windowsBuild",
         "build:linux": "electron-packager . tocGame --overwrite --asar=true --platform=linux --arch=x64 --prune=true --out=linuxBuild",
         "version": "npm run compile && standard-version"
     },
@@ -20,6 +20,7 @@
         "escpos-usb": "^3.0.0-alpha.2",
         "is-online": "^8.4.0",
         "jquery": "^3.5.1",
+        "moment": "^2.27.0",
         "mongoose": "^5.9.13",
         "socket.io-client": "^2.3.0",
         "source-map-support": "^0.5.19"

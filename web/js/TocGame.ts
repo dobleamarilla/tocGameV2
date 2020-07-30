@@ -25,6 +25,7 @@ class TocGame
     {
         const info = ipcRenderer.sendSync('getParametros');
         const infoCaja = ipcRenderer.sendSync('getInfoCaja');
+
         this.clienteSeleccionado = null;
         this.udsAplicar = 1;
         this.esVIP = false;
@@ -144,7 +145,7 @@ class TocGame
         this.esConsumoPersonal = false;
     }
 
-    getParametros()
+    getParametros(): Parametros
     {
         return this.parametros;
     }
@@ -241,25 +242,67 @@ class TocGame
     {
         ipcRenderer.send('imprimir-test', texto);
     }
-    nuevaSalidaDinero(cantidad: number, concepto: string)
+    nuevaSalidaDinero(cantidad: number, concepto: string, noImprimir: boolean = false)
     {
+        let codigoBarras = this.generarCodigoBarrasSalida();
         let objSalida = {
             _id: Date.now(),
             tipo: TIPO_SALIDA,
             valor: cantidad,
             concepto: concepto,
-            idTrabajador: this.getCurrentTrabajador()._id
+            idTrabajador: this.getCurrentTrabajador()._id,
+            codigoBarras: codigoBarras
         }
+
         ipcRenderer.send('nuevo-movimiento', objSalida);
-        ipcRenderer.send('imprimirSalidaDinero', {
-            cantidad: objSalida.valor,
-            fecha: objSalida._id,
-            nombreTrabajador: this.getCurrentTrabajador().nombre,
-            nombreTienda: this.parametros.nombreTienda,
-            concepto: objSalida.concepto,
-            impresora: this.parametros.tipoImpresora
-        });
+        if(!noImprimir)
+        {
+            ipcRenderer.sendSync('actualizar-ultimo-codigo-barras');
+            ipcRenderer.send('imprimirSalidaDinero', {
+                cantidad: objSalida.valor,
+                fecha: objSalida._id,
+                nombreTrabajador: this.getCurrentTrabajador().nombre,
+                nombreTienda: this.parametros.nombreTienda,
+                concepto: objSalida.concepto,
+                impresora: this.parametros.tipoImpresora,
+                codigoBarras: codigoBarras
+            });
+        }
+        
     }
+    getNumeroTresDigitos(x: number)
+    {
+        let devolver = '';
+        if(x< 100 && x >=10)
+        {
+            devolver = '0' + x;
+        }
+        else
+        {
+            if(x < 10 && x >= 0)
+            {
+                devolver = '00' + x;
+            }
+            else
+            {
+                devolver = x.toString();
+            }
+        }
+        return devolver;
+    }
+    generarCodigoBarrasSalida()
+    {
+        let objCodigoBarras = ipcRenderer.sendSync('get-ultimo-codigo-barras');
+        let codigoLicenciaStr: string = this.getNumeroTresDigitos(this.getParametros().licencia);
+        let strNumeroCodigosDeBarras: string = this.getNumeroTresDigitos(objCodigoBarras);
+        let codigoFinal: string =  '';
+        let digitYear = new Date().getFullYear().toString()[3];
+
+
+        codigoFinal = `98${codigoLicenciaStr}${digitYear}${moment().dayOfYear()}${strNumeroCodigosDeBarras}`;
+        return codigoFinal;
+    }
+
     nuevaEntradaDinero(cantidad: number, concepto: string)
     {
         let objEntrada = {
@@ -924,8 +967,15 @@ class TocGame
                 if(tipo === "CONSUMO_PERSONAL")
                 {
                     objTicket.total = 0;
+                    this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Consum personal', true);
                 }
-
+                else
+                {
+                    if(tipo === "DEUDA")
+                    {
+                        this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Deute', true);
+                    }
+                }
                 ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
                 ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
             }
@@ -942,6 +992,7 @@ class TocGame
                 {
                     //this.ticketColaDatafono = objTicket;
                     ipcRenderer.send('ventaDatafono', {objTicket: objTicket, nombreDependienta: infoTrabajador.nombre, idTicket: nuevoIdTicket, total: Number((total * 100).toFixed(2)).toString()});
+                    this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Targeta', true);
                 }
                 else
                 {
@@ -950,6 +1001,7 @@ class TocGame
                         vueCobrar.activoEsperaDatafono();
                         ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
                         ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
+                        this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Targeta 3G', true);
                         this.borrarCesta();
                         vueCobrar.cerrarModal();
                         vueToast.abrir('success', 'Ticket creado');
@@ -1064,7 +1116,7 @@ class TocGame
     {
         var arrayTicketsCaja: Ticket[] = ipcRenderer.sendSync('getTicketsIntervalo', unaCaja);
         var arrayMovimientos: Movimientos[] = ipcRenderer.sendSync('get-rango-movimientos', {fechaInicio: unaCaja.inicioTime, fechaFinal: unaCaja.finalTime});
-        var calaixFetZ = 0;
+        var totalTickets = 0;
         var nombreTrabajador = this.getCurrentTrabajador().nombre;
         var descuadre = 0;
         var nClientes = 0;
@@ -1102,7 +1154,7 @@ class TocGame
         for(let i = 0; i < arrayTicketsCaja.length; i++)
         {
             nClientes++;
-            calaixFetZ += arrayTicketsCaja[i].total;
+            totalTickets += arrayTicketsCaja[i].total;
             
             if(arrayTicketsCaja[i].tipoPago == "TARJETA")
             {
@@ -1124,7 +1176,7 @@ class TocGame
                 }                
             }
         }
-        this.caja.calaixFetZ = calaixFetZ;
+        this.caja.calaixFetZ = totalTickets;
         this.caja.infoExtra.cambioFinal = cambioFinal;
         this.caja.infoExtra.cambioInicial = cambioInicial;
         this.caja.infoExtra.totalSalidas = totalSalidas;
@@ -1133,11 +1185,11 @@ class TocGame
         this.caja.infoExtra.totalTarjeta = totalTarjeta;
         this.caja.infoExtra.totalDeuda = totalDeuda;
 
-        descuadre = cambioFinal-cambioInicial+totalSalidas-totalEntradas-totalEnEfectivo;
-        recaudado = calaixFetZ + descuadre - totalTarjeta - totalDeuda;
+        descuadre = cambioFinal-cambioInicial+totalSalidas-totalEntradas-totalTickets;
+        recaudado = totalTickets + descuadre - totalTarjeta - totalDeuda;
         
         const objImpresion = {
-            calaixFet: calaixFetZ,
+            calaixFet: totalTickets,
             nombreTrabajador: nombreTrabajador,
             descuadre: descuadre,
             nClientes: nClientes,
