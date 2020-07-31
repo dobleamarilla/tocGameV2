@@ -343,20 +343,28 @@ var cierreCaja = function (event, calaixFet, nombreTrabajador, descuadre, nClien
     {
         var fechaInicio = new Date(fI);
         var fechaFinal = new Date(fF);
-
+        var sumaTarjetas = 0;
         var textoMovimientos = '';
         for (let i = 0; i < arrayMovimientos.length; i++) 
         {
             var auxFecha = new Date(arrayMovimientos[i]._id);
             if (arrayMovimientos[i].tipo === TIPO_SALIDA_DINERO) 
             {
-                textoMovimientos += `${i + 1}: Salida:\n           Cantidad: -${arrayMovimientos[i].valor.toFixed(2)}\n           Fecha: ${auxFecha.getDate()}/${auxFecha.getMonth()}/${auxFecha.getFullYear()}  ${auxFecha.getHours()}:${auxFecha.getMinutes()}\n           Concepto: ${arrayMovimientos[i].concepto}\n`;
+                if(arrayMovimientos[i].concepto == 'Targeta' || arrayMovimientos[i].concepto == 'Targeta 3G')
+                {
+                    sumaTarjetas += arrayMovimientos[i].valor;
+                }
+                else
+                {
+                    textoMovimientos += `${i + 1}: Salida:\n           Cantidad: -${arrayMovimientos[i].valor.toFixed(2)}\n           Fecha: ${auxFecha.getDate()}/${auxFecha.getMonth()}/${auxFecha.getFullYear()}  ${auxFecha.getHours()}:${auxFecha.getMinutes()}\n           Concepto: ${arrayMovimientos[i].concepto}\n`;
+                }
             }
             if (arrayMovimientos[i].tipo === TIPO_ENTRADA_DINERO) 
             {
                 textoMovimientos += `${i + 1}: Entrada:\n            Cantidad: +${arrayMovimientos[i].valor.toFixed(2)}\n            Fecha: ${auxFecha.getDate()}/${auxFecha.getMonth()}/${auxFecha.getFullYear()}  ${auxFecha.getHours()}:${auxFecha.getMinutes()}\n            Concepto: ${arrayMovimientos[i].concepto}\n`;
             }
         }
+        textoMovimientos = `\nTotal targeta:      ${sumaTarjetas.toFixed(2)}\n` + textoMovimientos;
 
         exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
         if(tipoImpresora === 'USB')
