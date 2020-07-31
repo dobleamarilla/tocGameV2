@@ -24,7 +24,7 @@ var devolu      = require('./componentes/schemas/devoluciones');
 var moned       = require('./componentes/schemas/infoMonedas');
 var codiBarra   = require('./componentes/schemas/codigoBarras');
 var eventos     = require('events');
-
+const iconPath  = path.join(__dirname, "web", "assets", "imagenes", "favicon.png");
 const isOnline = require('is-online');
 var sincroEnCurso   = false;
 require('source-map-support').install();
@@ -57,7 +57,8 @@ app.on('ready', () => {
             frame: false, //cambiar a false
             webPreferences: {
                 nodeIntegration: true
-            }
+            },
+            icon: iconPath
         });
     ventanaPrincipal.loadFile('./web/index.html');
 
