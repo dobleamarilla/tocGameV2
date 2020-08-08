@@ -7,7 +7,7 @@ var vuePedidos = new Vue({
 	<div class="modal-dialog" role="document" style="max-width: 900px">
 		<div class="modal-content">		
 			<div class="modal-body">
-                <iframe :src="url" frameborder="0" height="650px" width="100%"></iframe>
+                <iframe id="framePedidos" src="url" frameborder="0" height="650px" width="100%"></iframe>
 			</div>
 		</div>
 	</div>
@@ -21,6 +21,7 @@ var vuePedidos = new Vue({
     },
     methods: {
         abrirModal() {
+            this.recargar();
             $('#modalPedidos').modal();
         },
         cerrarModal() {
@@ -28,6 +29,9 @@ var vuePedidos = new Vue({
         },
         getUrl() {
             this.url = toc.getUrlPedidos();
+        },
+        recargar() {
+            $("#framePedidos").attr("src", toc.getUrlPedidos());
         }
     }
 });
