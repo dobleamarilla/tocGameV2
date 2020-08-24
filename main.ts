@@ -56,7 +56,8 @@ app.on('ready', () => {
             kiosk: true, //cambiar a true
             frame: false, //cambiar a false
             webPreferences: {
-                nodeIntegration: true
+                nodeIntegration: true,
+                webSecurity: false
             },
             icon: iconPath
         });
@@ -398,7 +399,15 @@ app.on('ready', () => {
     //FINAL BUSCAR FICHADOS
     //CHECK INTERNET
     ipcMain.on('check-internet', async (ev, data)=>{
-        ev.sender.send('res-check-internet', await isOnline());
+        try 
+        {
+            ev.sender.send('res-check-internet', await isOnline());
+        }
+        catch(error)
+        {
+            console.log("Error en check-internet");
+        }
+        
     });
     //FINAL CHECK INTERNET
 
