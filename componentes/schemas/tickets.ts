@@ -114,6 +114,12 @@ function confirmarEnvio(data)
         //console.log(err, queHeHecho)
     }));
 }
+function cleanTransit()
+{
+    Tickets.updateMany({enviado: false, enTransito: true}, {enTransito: false}).then(info=>{
+        
+    });
+}
 
 exports.tickets               = Tickets;
 exports.insertarTicket        = insertarTicket;
@@ -123,3 +129,4 @@ exports.getTicketsIntervalo   = getTicketsIntervalo;
 exports.getUltimoTicket       = getUltimoTicket;
 exports.getParaSincronizar    = getParaSincronizar;
 exports.confirmarEnvio        = confirmarEnvio;
+exports.cleanTransit          = cleanTransit;

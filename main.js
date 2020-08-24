@@ -441,6 +441,15 @@ app.on('ready', () => {
         });
     });
     //FIN GET ALL CESTAS
+    //LIMPIAR ESTADO EN TRANSITO
+    ipcMain.on('limpiar-enTransito', (event, data) => {
+        tick.cleanTransit();
+        sincroFicha.cleanFichajes();
+        devolu.cleanDevoluciones();
+        movi.cleanMovimientos();
+        sincro.cleanCajas();
+    });
+    //FIN LIMPIAR ESTADO EN TRANSITO
     //ACTUALIZAR ULTIMO CODIGO DE BARRAS
     ipcMain.on('actualizar-ultimo-codigo-barras', (event, data) => {
         codiBarra.actualizarUltimoCodigoBarras().then(res => {
@@ -466,10 +475,6 @@ app.on('ready', () => {
     // });
     // //FIN guardar primer codigo barras
     ipcMain.on('testeoGuapo', (event, args) => {
-        sincroFicha.testeoGuapo().then(res => {
-            console.log(res);
-            event.returnValue = res;
-        });
     });
     ipcMain.on('confirmar-envio', (event, args) => {
         tick.confirmarEnvio(args);

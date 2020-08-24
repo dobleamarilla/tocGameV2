@@ -38,7 +38,14 @@ function confirmarMovimiento(id)
         //console.log(err, queHeHecho)
     }));
 }
+
+function cleanMovimientos()
+{
+    Movimientos.updateMany({enviado: false, enTransito: true}, {enTransito: false});
+}
+
 exports.insertarMovimiento              = insertarMovimiento;
 exports.getMovimientosRango             = getMovimientosRango;
 exports.getParaSincronizarMovimientos   = getParaSincronizarMovimientos;
 exports.confirmarMovimiento             = confirmarMovimiento;
+exports.cleanMovimientos                = cleanMovimientos;

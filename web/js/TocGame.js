@@ -10,6 +10,7 @@ class TocGame {
     constructor() {
         const info = ipcRenderer.sendSync('getParametros');
         const infoCaja = ipcRenderer.sendSync('getInfoCaja');
+        ipcRenderer.send('limpiar-enTransito');
         this.clienteSeleccionado = null;
         this.udsAplicar = 1;
         this.esVIP = false;

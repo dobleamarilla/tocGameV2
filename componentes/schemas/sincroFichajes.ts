@@ -47,8 +47,13 @@ function testeoGuapo()
     return SincroFichajes.findOneAndUpdate({enviado: false, enTransito: false}, {enTransito: true}, {lean: true, sort: {_id: 1}});
 }
 
+function cleanFichajes()
+{
+    SincroFichajes.updateMany({enviado: false, enTransito: true}, {enTransito: false});
+}
+
 exports.SincroFichajes          = SincroFichajes;
 exports.nuevoItem               = nuevoItem;
 exports.getFichajes             = getFichajes;
 exports.confirmarEnvioFichajes  = confirmarEnvioFichajes;
-exports.testeoGuapo             = testeoGuapo;
+exports.cleanFichajes           = cleanFichajes;

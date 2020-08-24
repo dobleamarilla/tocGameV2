@@ -63,7 +63,12 @@ function confirmarEnvioCaja(data)
        }
     }));
 }
+function cleanCajas()
+{
+    SincroCajas.updateMany({enviado: false, enTransito: true}, {enTransito: false});
+}
 
 exports.nuevoItemSincroCajas        = nuevoItemSincroCajas;
 exports.getCaja                     = getCaja;
 exports.confirmarEnvioCaja          = confirmarEnvioCaja;
+exports.cleanCajas                  = cleanCajas;

@@ -90,7 +90,13 @@ function confirmarEnvioDevo(data)
     }));
 }
 
+function cleanDevoluciones()
+{
+    Devoluciones.updateMany({enviado: false, enTransito: true}, {enTransito: false});
+}
+
 exports.insertarDevolucion        = insertarDevolucion;
 exports.getDevoluciones           = getDevoluciones;
 exports.getParaSincronizarDevo    = getParaSincronizarDevo;
 exports.confirmarEnvioDevo        = confirmarEnvioDevo;
+exports.cleanDevoluciones         = cleanDevoluciones;
