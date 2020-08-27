@@ -4,9 +4,18 @@ var vuePanelVentas = new Vue({
     /*html*/`
     <div>
         <div class="row p-2" id="menusColores">
-            <div v-for="(item, index) of listaMenus" :key="item.nomMenu" class="col colJuntitasMenus menus" style="padding-left: 4px;">
-                <button class="btn btn-secondary w-100 menus menusColorIvan" v-bind:class="[{'activo' : esActivo(index)}, 'colorMenus']" @click="clickMenu(index)">{{item.nomMenu}}</button>
-            </div>
+            <template v-if="listaMenus.length <= 11">
+                <div v-for="(item, index) of listaMenus" :key="item.nomMenu" class="col colJuntitasMenus menus" style="padding-left: 4px;">
+                    <button class="btn btn-secondary w-100 menus menusColorIvan" v-bind:class="[{'activo' : esActivo(index)}, 'colorMenus']" @click="clickMenu(index)">{{item.nomMenu}}</button>
+                </div>
+            </template>
+            <template v-else class="scrollmenu">
+                <div class="scrollmenu">
+                    <template v-for="(item, index) of listaMenus" class="col colJuntitasMenus menus">
+                        <button style="width: 200px" class="btn btn-secondary menus menusColorIvan ml-2" v-bind:class="[{'activo' : esActivo(index)}, 'colorMenus']" @click="clickMenu(index)">{{item.nomMenu}}</button>
+                    </template>
+                </div>
+            </template>
         </div>
         <div>
         <div class="row" v-for="index in 6" :key="index">
