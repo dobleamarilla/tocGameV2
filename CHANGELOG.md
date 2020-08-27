@@ -2,18 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [2.3.108](https://github.com/dobleamarilla/tocGameV2/compare/v2.3.107...v2.3.108) (2020-08-24)
+### [2.3.109](https://github.com/dobleamarilla/tocGameV2/compare/v2.3.108...v2.3.109) (2020-08-27)
 
-### [2.3.107](https://github.com/dobleamarilla/tocGameV2/compare/v2.3.106...v2.3.107) (2020-07-31)
-
-### [2.3.106](https://github.com/dobleamarilla/tocGameV2/compare/v2.3.105...v2.3.106) (2020-07-30)
-
-### [2.3.105](https://github.com/dobleamarilla/tocGameV2/compare/v2.3.104...v2.3.105) (2020-07-24)
-
-### [2.3.104](https://github.com/dobleamarilla/tocGameV2/compare/v2.3.103...v2.3.104) (2020-07-23)
-
-### [2.3.103](https://github.com/dobleamarilla/tocGameV2/compare/v2.3.102...v2.3.103) (2020-07-20)
-
-### [2.3.102](https://github.com/dobleamarilla/tocGameV2/compare/v2.3.101...v2.3.102) (2020-07-17)
-
-Consumo personal activado y funcionando. Corregidos algunos fallos del ticket y se agrega la opciíon de cambiar el activo.
+Se añaden las opciones para el resto de empresas que utilizan el TOC GAME V2:
+- Cobrar artículos que van a peso
+- Menús a doble nivel: Aparece como menú deslizante en horizontal para las tiendas con más de 11 menús en el teclado.
