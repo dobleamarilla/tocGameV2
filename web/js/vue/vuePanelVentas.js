@@ -16,7 +16,7 @@ var vuePanelVentas = new Vue({
                         <button v-bind:id="listadoTeclas[(index-1)*6+(index2-1)].idBoton" v-bind:class="['btn', 'btn-primary', 'rounded-0', 'w-100', 'teclas', 'colorIvan'+index]" @click="clickTecla(listadoTeclas[(index-1)*6+(index2-1)])" style="background-color: #dee3e9;">{{listadoTeclas[(index-1)*6+(index2-1)].nombreArticulo}}</button>
                     </template>
                     <template v-else>
-                        <button v-bind:id="listadoTeclas[(index-1)*6+(index2-1)].idBoton" v-bind:class="['btn', 'btn-primary', 'rounded-0', 'w-100', 'teclas', 'colorIvan'+index]" @click="modalesSumable(listadoTeclas[(index-1)*6+(index2-1)])" style="background-color: #dee3e9;">{{listadoTeclas[(index-1)*6+(index2-1)].nombreArticulo}}</button>
+                        <button v-bind:id="listadoTeclas[(index-1)*6+(index2-1)].idBoton" v-bind:class="['btn', 'btn-primary', 'rounded-0', 'w-100', 'teclas', 'colorIvan'+index]" @click="modalesSumable(listadoTeclas[(index-1)*6+(index2-1)], listadoTeclas[(index-1)*6+(index2-1)].idBoton)" style="background-color: #dee3e9;">{{listadoTeclas[(index-1)*6+(index2-1)].nombreArticulo}}</button>
                     </template>
                 </div>
                 <div class="col colJuntitas" v-else></div>
@@ -102,9 +102,9 @@ var vuePanelVentas = new Vue({
                 this.clickMenu(0);
             }
         },
-        clickTecla(objListadoTeclas, esAPeso = false, peso = 0, subtotal = 0) {
+        clickTecla(objListadoTeclas, esAPeso = false) {
             if (!toc.getStopNecesario()) {
-                toc.addItem(objListadoTeclas.idArticle, objListadoTeclas.idBoton, esAPeso, peso, subtotal);
+                toc.addItem(objListadoTeclas.idArticle, objListadoTeclas.idBoton, esAPeso);
             }
             else {
                 vueToast.abrir('warning', 'Precios y teclado en proceso de actualización');
@@ -150,8 +150,8 @@ var vuePanelVentas = new Vue({
                 { idBoton: 'tecla35', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true }
             ];
         },
-        modalesSumable(ejemplo) {
-            console.log("Es a peso:", ejemplo);
+        modalesSumable(articuloAPeso, idBoton) {
+            vueTecladoPeso.abrirModal(articuloAPeso.idArticle, idBoton);
         }
     }
 });

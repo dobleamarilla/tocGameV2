@@ -765,10 +765,10 @@ class TocGame
         this.clienteSeleccionado = null;
 
     }
-    insertarArticuloCesta(infoArticulo, unidades: number)
+    insertarArticuloCesta(infoArticulo, unidades: number, infoAPeso = null)
     {
         var miCesta = this.getCesta();
-
+        
         if(miCesta.lista.length > 0)
         {
             let encontrado = false;
@@ -777,23 +777,49 @@ class TocGame
                 if(miCesta.lista[i]._id === infoArticulo._id)
                 {
                     let viejoIva = miCesta.tiposIva;
-                    miCesta.lista[i].unidades += unidades;
-                    miCesta.lista[i].subtotal += unidades*infoArticulo.precioConIva;
-                    miCesta.tiposIva = construirObjetoIvas(infoArticulo, unidades, viejoIva);
+                    
+                    if(infoAPeso == null)
+                    {
+                        miCesta.lista[i].unidades += unidades;
+                        miCesta.lista[i].subtotal += unidades*infoArticulo.precioConIva;
+                        miCesta.tiposIva = construirObjetoIvas(infoArticulo, unidades, viejoIva);
+                    }
+                    else
+                    {
+                        miCesta.lista[i].subtotal += infoAPeso.precioAplicado;
+                        miCesta.tiposIva = construirObjetoIvas(infoArticulo, unidades, viejoIva, infoAPeso);
+                    }  
+                   
                     encontrado = true;
                     break;
                 }
             }
             if(!encontrado)
             {
-                miCesta.lista.push({_id:infoArticulo._id, nombre: infoArticulo.nombre, unidades: unidades, promocion: {esPromo: false, _id: null}, subtotal: unidades*infoArticulo.precioConIva});
-                miCesta.tiposIva = construirObjetoIvas(infoArticulo, unidades, miCesta.tiposIva);
+                if(infoAPeso == null)
+                {
+                    miCesta.lista.push({_id:infoArticulo._id, nombre: infoArticulo.nombre, unidades: unidades, promocion: {esPromo: false, _id: null}, subtotal: unidades*infoArticulo.precioConIva});
+                    miCesta.tiposIva = construirObjetoIvas(infoArticulo, unidades, miCesta.tiposIva);
+                }
+                else
+                {
+                    miCesta.lista.push({_id:infoArticulo._id, nombre: infoArticulo.nombre, unidades: unidades, promocion: {esPromo: false, _id: null}, subtotal: infoAPeso.precioAplicado});
+                    miCesta.tiposIva = construirObjetoIvas(infoArticulo, unidades, miCesta.tiposIva, infoAPeso);
+                }                
             }
         }
         else
         {
-            miCesta.lista.push({_id:infoArticulo._id, nombre: infoArticulo.nombre, unidades: unidades, promocion: {esPromo: false, _id: null}, subtotal: unidades*infoArticulo.precioConIva});
-            miCesta.tiposIva = construirObjetoIvas(infoArticulo, unidades, miCesta.tiposIva);
+            if(infoAPeso == null)
+            {
+                miCesta.lista.push({_id:infoArticulo._id, nombre: infoArticulo.nombre, unidades: unidades, promocion: {esPromo: false, _id: null}, subtotal: unidades*infoArticulo.precioConIva});
+                miCesta.tiposIva = construirObjetoIvas(infoArticulo, unidades, miCesta.tiposIva);
+            }
+            else
+            {
+                miCesta.lista.push({_id:infoArticulo._id, nombre: infoArticulo.nombre, unidades: unidades, promocion: {esPromo: false, _id: null}, subtotal: infoAPeso.precioAplicado});
+                miCesta.tiposIva = construirObjetoIvas(infoArticulo, unidades, miCesta.tiposIva, infoAPeso);
+            }            
         }
         this.buscarOfertas(miCesta);
     }
@@ -801,7 +827,7 @@ class TocGame
     {
         return ipcRenderer.sendSync('get-info-articulo', idArticulo);
     }
-    addItem(idArticulo: number, idBoton: String, aPeso: Boolean, peso: number, subtotal: number)
+    addItem(idArticulo: number, idBoton: String, aPeso: Boolean, infoAPeso = null)
     {
         var unidades = this.udsAplicar;
         if(this.cajaAbierta())
@@ -823,7 +849,7 @@ class TocGame
                 }
                 else //TIPO PESO
                 {
-                    //caso a peso
+                    this.insertarArticuloCesta(infoAPeso.infoArticulo, 1, infoAPeso);
                 }
                 $('#'+idBoton).attr('disabled', false);
             }

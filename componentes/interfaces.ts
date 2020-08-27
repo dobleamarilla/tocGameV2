@@ -33,6 +33,17 @@ interface Cesta
     }[];
 }
 
+interface Articulo 
+{
+    _id: number,
+    tipoIva: number,
+    precioConIva: number,
+    precioBase: number,
+    nombre: string,
+    familia: string,
+    esSumable: boolean
+}
+
 interface Promociones 
 {
     _id: string,
