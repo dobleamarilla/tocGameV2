@@ -188,6 +188,14 @@ socket.on('confirmarEnvioTicket', (data) => {
     // console.log("Ticket confirmado: enviado = true, enTransito = false");
     ipcRenderer.send('confirmar-envio', data);
 });
+socket.on('res-descargar-clientes-finales', (data) => {
+    vueToast.abrir('warning', 'Insertando clientes nuevos');
+    ipcRenderer.send('insertar-nuevos-clientes', data);
+
+});
+socket.on('orden-descargar-clientes-finales', (data) => {
+    socket.emit('descargar-clientes-finales', toc.getParametros());
+});
 socket.on('confirmarEnvioCaja', (data) => {
     // console.log("Ticket confirmado: enviado = true, enTransito = false");
     ipcRenderer.send('confirmar-envio-caja', data);

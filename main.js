@@ -497,6 +497,11 @@ app.on('ready', () => {
     //     codiBarra.guardarPrimero();
     // });
     // //FIN guardar primer codigo barras
+    ipcMain.on('insertar-nuevos-clientes', (event, data) => {
+        cliente.insertarClientes(data).then(info => {
+            event.sender.send('nuevo-toast', { tipo: 'success', mensaje: 'Clientes cargados correctamente' });
+        });
+    });
     ipcMain.on('testeoGuapo', (event, args) => {
     });
     ipcMain.on('confirmar-envio', (event, args) => {
