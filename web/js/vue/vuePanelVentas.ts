@@ -22,7 +22,7 @@ var vuePanelVentas = new Vue({
             <template v-for="index2 in 6">
                 <div class="col colJuntitas"  v-if="listadoTeclas[(index-1)*6+(index2-1)].idArticle >= 0">
                     <template v-if="listadoTeclas[(index-1)*6+(index2-1)].esSumable === true">
-                        <button v-bind:id="listadoTeclas[(index-1)*6+(index2-1)].idBoton" v-bind:class="['btn', 'btn-primary', 'rounded-0', 'w-100', 'teclas', 'colorIvan'+index]" @click="clickTecla(listadoTeclas[(index-1)*6+(index2-1)])" style="background-color: #dee3e9;">{{listadoTeclas[(index-1)*6+(index2-1)].nombreArticulo}}</button>
+                        <button v-bind:id="listadoTeclas[(index-1)*6+(index2-1)].idBoton" v-bind:class="['btn', 'btn-primary', 'rounded-0', 'w-100', 'teclas', 'colorIvan'+index]" @click="clickTecla(listadoTeclas[(index-1)*6+(index2-1)])" v-on:contextmenu="abrirFicha(listadoTeclas[(index-1)*6+(index2-1)])" style="background-color: #dee3e9;">{{listadoTeclas[(index-1)*6+(index2-1)].nombreArticulo}}</button>
                     </template>
                     <template v-else>
                         <button v-bind:id="listadoTeclas[(index-1)*6+(index2-1)].idBoton" v-bind:class="['btn', 'btn-primary', 'rounded-0', 'w-100', 'teclas', 'colorIvan'+index]" @click="modalesSumable(listadoTeclas[(index-1)*6+(index2-1)], listadoTeclas[(index-1)*6+(index2-1)].idBoton)" style="background-color: #dee3e9;">{{listadoTeclas[(index-1)*6+(index2-1)].nombreArticulo}}</button>
@@ -79,6 +79,11 @@ var vuePanelVentas = new Vue({
       }
     },
     methods: {
+        abrirFicha(infoArt)
+        {
+            vueFichaProducto.setId(infoArt.idArticle);
+            vueFichaProducto.abreModal();
+        },
         esActivo(x: string)
         {
             if(x === this.menuActivo)

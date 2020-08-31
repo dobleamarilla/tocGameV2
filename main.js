@@ -84,6 +84,10 @@ app.on('ready', () => {
             console.log('cliente: ', ventaCliente, ' tienda: ', tienda, ' tpv: ', tpv, ' tipoOperacion: ', tipoOperacion, ' numeroTicket: ', numeroTicket, ' nombreDependienta: ', nombreDependienta, ' importe: ', importe);
             client.write(venta_t);
         });
+        client.on('error', function (err) {
+            console.log(err);
+            event.sender.send('nuevo-toast', { tipo: 'error', mensaje: 'Datáfono no configurado' });
+        });
         client.on('data', function (data) {
             var objEnviar = {
                 data: data,
@@ -326,6 +330,7 @@ app.on('ready', () => {
             }
             else {
                 console.log("Algo pasa con infoArticulo: ", infoArticulo);
+                ev.returnValue = false;
             }
         });
     });
@@ -463,6 +468,17 @@ app.on('ready', () => {
         });
     });
     //FIN ACTUALIZAR ULTIMO CODIGO DE BARRAS
+    //SET CONFIGURACION NUEVA PARAMETROS
+    ipcMain.on('nueva-configuracion', (event, data) => {
+        params.setParams(data).then(function () {
+            event.sender.send('res-configuracion-nueva', true);
+            acciones.refresh(ventanaPrincipal);
+        }).catch(err => {
+            event.sender.send('res-configuracion-nueva', false);
+            console.log(err);
+        });
+    });
+    //FIN SET CONFIGURACION NUEVA PARAMETROS
     //GET ULTIMO CODIGO BARRAS
     ipcMain.on('get-ultimo-codigo-barras', (event, data) => {
         codiBarra.getUltimoCodigoBarras().then(res => {

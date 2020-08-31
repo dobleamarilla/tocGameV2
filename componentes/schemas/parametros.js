@@ -28,8 +28,12 @@ function getParams() {
         }
     }).lean();
 }
+function setParams(info) {
+    return Parametros.update({ _id: "PARAMETROS" }, { tipoImpresora: info.impresora, tipoDatafono: info.datafono });
+}
 exports.parametros = Parametros;
 exports.insertarParametros = insertParams;
 exports.setUltimoTicket = setUltimoTicket;
 exports.getParams = getParams;
+exports.setParams = setParams;
 //# sourceMappingURL=parametros.js.map

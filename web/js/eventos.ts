@@ -110,6 +110,19 @@ ipcRenderer.on('res-sincronizar-devoluciones', (ev, data) => {
         socket.emit('guardarDevoluciones', objEnviar);
     }    
 });
+ipcRenderer.on('res-configuracion-nueva', (ev, data) => {
+    if(data)
+    {
+        vueToast.abrir("success", "Configuración guardada");
+    }
+    else
+    {
+        vueToast.abrir("error", "Error al guardar la configuración");
+    }
+});
+ipcRenderer.on('nuevo-toast', (ev, data) => {
+    vueToast.abrir(data.tipo, data.mensaje);
+});
 ipcRenderer.on('res-sincronizar-movimientos', (ev, data) => {
     const objEnviar = {
         parametros: toc.getParametros(),

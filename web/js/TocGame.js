@@ -806,7 +806,12 @@ class TocGame {
             if (tipo === "TARJETA") {
                 if (this.parametros.tipoDatafono === TIPO_CLEARONE) {
                     //this.ticketColaDatafono = objTicket;
-                    ipcRenderer.send('ventaDatafono', { objTicket: objTicket, nombreDependienta: infoTrabajador.nombre, idTicket: nuevoIdTicket, total: Number((total * 100).toFixed(2)).toString() });
+                    try {
+                        ipcRenderer.send('ventaDatafono', { objTicket: objTicket, nombreDependienta: infoTrabajador.nombre, idTicket: nuevoIdTicket, total: Number((total * 100).toFixed(2)).toString() });
+                    }
+                    catch (err) {
+                        console.log('YOU ARE HOMO');
+                    }
                     this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Targeta', true);
                 }
                 else {

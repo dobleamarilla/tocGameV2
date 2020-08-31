@@ -50,6 +50,7 @@ function crearCestaVacia()
     }
     return cestaVacia;
 }
+
 app.on('ready', () => {
     var ventanaPrincipal = new BrowserWindow(
         {
@@ -67,35 +68,39 @@ app.on('ready', () => {
 
     /* ACCIONES IPC-MAIN */
     ipcMain.on('ventaDatafono', (event: any, info: any) => {
-        var client = new net.Socket();
-        client.connect(8890, '127.0.0.1', function () {
-            console.log('Conectado al CoLinux | Venta');
-            var ventaCliente = 489;
-            var nombreDependienta = info.nombreDependienta;
-            var numeroTicket = info.idTicket;
-            var tienda = 1;
-            var tpv = 1;
-            var tipoOperacion = 1; //1=> VENTA
-            var importe = info.total; //EN CENTIMOS DE EURO
-            var venta_t = `\x02${ventaCliente};${tienda};${tpv};ezequiel;${numeroTicket};${tipoOperacion};${importe};;;;;;;\x03`;
-            console.log('cliente: ', ventaCliente, ' tienda: ', tienda, ' tpv: ', tpv, ' tipoOperacion: ', tipoOperacion, ' numeroTicket: ', numeroTicket, ' nombreDependienta: ', nombreDependienta, ' importe: ', importe);
-            client.write(venta_t);
-        });
-
-        client.on('data', function (data: any) {
-            var objEnviar = {
-                data: data,
-                objTicket: info.objTicket
-            };
-            console.log('Recibido: ' + data);
-            event.sender.send('resVentaDatafono', objEnviar);
-            client.write('\x02ACK\x03');
-            client.destroy();
-        });
-        client.on('close', function () {
-            console.log('Conexión cerrada');
-        });
-        //event.sender.send('canal1', 'EJEMPLO DE EVENT SENDER SEND');
+            var client = new net.Socket();
+            client.connect(8890, '127.0.0.1', function () {
+                console.log('Conectado al CoLinux | Venta');
+                var ventaCliente = 489;
+                var nombreDependienta = info.nombreDependienta;
+                var numeroTicket = info.idTicket;
+                var tienda = 1;
+                var tpv = 1;
+                var tipoOperacion = 1; //1=> VENTA
+                var importe = info.total; //EN CENTIMOS DE EURO
+                var venta_t = `\x02${ventaCliente};${tienda};${tpv};ezequiel;${numeroTicket};${tipoOperacion};${importe};;;;;;;\x03`;
+                console.log('cliente: ', ventaCliente, ' tienda: ', tienda, ' tpv: ', tpv, ' tipoOperacion: ', tipoOperacion, ' numeroTicket: ', numeroTicket, ' nombreDependienta: ', nombreDependienta, ' importe: ', importe);
+                client.write(venta_t);
+            });
+    
+            client.on('error', function(err){
+                console.log(err);
+                event.sender.send('nuevo-toast', {tipo: 'error', mensaje: 'Datáfono no configurado'});
+            })
+            client.on('data', function (data: any) {
+                var objEnviar = {
+                    data: data,
+                    objTicket: info.objTicket
+                };
+                console.log('Recibido: ' + data);
+                event.sender.send('resVentaDatafono', objEnviar);
+                client.write('\x02ACK\x03');
+                client.destroy();
+            });
+            client.on('close', function () {
+                console.log('Conexión cerrada');
+            });
+            //event.sender.send('canal1', 'EJEMPLO DE EVENT SENDER SEND');
     });
 
     //GET PARAMETROS
@@ -362,6 +367,7 @@ app.on('ready', () => {
             else
             {
                 console.log("Algo pasa con infoArticulo: ", infoArticulo);
+                ev.returnValue = false;
             }
         });
 
@@ -518,6 +524,17 @@ app.on('ready', () => {
         });
     });
     //FIN ACTUALIZAR ULTIMO CODIGO DE BARRAS
+    //SET CONFIGURACION NUEVA PARAMETROS
+    ipcMain.on('nueva-configuracion', (event: any, data: any)=>{
+        params.setParams(data).then(function(){
+            event.sender.send('res-configuracion-nueva', true);
+            acciones.refresh(ventanaPrincipal);
+        }).catch(err=>{
+            event.sender.send('res-configuracion-nueva', false);
+            console.log(err);
+        });
+    });
+    //FIN SET CONFIGURACION NUEVA PARAMETROS
     //GET ULTIMO CODIGO BARRAS
     ipcMain.on('get-ultimo-codigo-barras', (event: any, data: any)=>{
         codiBarra.getUltimoCodigoBarras().then(res=>{
