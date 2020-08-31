@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.3.110](https://github.com/dobleamarilla/tocGameV2/compare/v2.3.109...v2.3.110) (2020-08-31)
+
 ### [2.3.109](https://github.com/dobleamarilla/tocGameV2/compare/v2.3.108...v2.3.109) (2020-08-27)
 
 Se añaden las opciones para el resto de empresas que utilizan el TOC GAME V2:
