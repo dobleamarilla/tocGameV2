@@ -21,6 +21,8 @@ class TocGame
     private esDevolucion: boolean;
     private esConsumoPersonal: boolean;
     private stopNecesario: boolean;
+    private auxTotalDatafono: number;
+    public datafonoForzado3G: boolean;
     constructor() 
     {
         const info = ipcRenderer.sendSync('getParametros');
@@ -1014,25 +1016,19 @@ class TocGame
         {
             if(tipo === "TARJETA")
             {
-                if(this.parametros.tipoDatafono === TIPO_CLEARONE)
+                if(this.parametros.tipoDatafono === TIPO_CLEARONE && !this.datafonoForzado3G)
                 {
+                    vueCobrar.activoEsperaDatafono();
                     //this.ticketColaDatafono = objTicket;
-                    try
-                    {
-                        ipcRenderer.send('ventaDatafono', {objTicket: objTicket, nombreDependienta: infoTrabajador.nombre, idTicket: nuevoIdTicket, total: Number((total * 100).toFixed(2)).toString()});
-                    }
-                    catch(err)
-                    {
-                        console.log('YOU ARE HOMO')
-                    }
-                    
-                    this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Targeta', true);
+
+                    ipcRenderer.send('ventaDatafono', {objTicket: objTicket, nombreDependienta: infoTrabajador.nombre, idTicket: nuevoIdTicket, total: Number((total * 100).toFixed(2)).toString()});
+                    this.auxTotalDatafono = Number((total).toFixed(2));
+                    // this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Targeta', true);
                 }
                 else
                 {
-                    if(this.parametros.tipoDatafono === TIPO_3G)
+                    if(this.parametros.tipoDatafono === TIPO_3G || this.datafonoForzado3G)
                     {
-                        vueCobrar.activoEsperaDatafono();
                         ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
                         ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
                         this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Targeta 3G', true);
@@ -1044,6 +1040,7 @@ class TocGame
                 }
             }
         }
+        this.datafonoForzado3G = false;
         this.resetEstados();
         vueCobrar.resetEstados();
     }
@@ -1075,6 +1072,7 @@ class TocGame
         if(respuesta.data[1] === 48) //Primero STX, segundo estado transacción: correcta = 48, incorrecta != 48
         {
             console.log("Operación APROBADA");
+            this.nuevaSalidaDinero(this.auxTotalDatafono, 'Targeta', true);
             ipcRenderer.send('set-ticket', respuesta.objTicket);
             
             ipcRenderer.send('set-ultimo-ticket-parametros', respuesta.objTicket._id);
@@ -1084,7 +1082,7 @@ class TocGame
         }
         else
         {
-            console.log("Opración DENEGADA");
+            console.log("Operación DENEGADA");
             vueToast.abrir('error', 'Operación DENEGADA');
             vueCobrar.cerrarModal();
         }

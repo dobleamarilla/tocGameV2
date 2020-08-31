@@ -86,6 +86,7 @@ app.on('ready', () => {
         });
         client.on('error', function (err) {
             console.log(err);
+            event.sender.send('pregunta-cambio-datafono');
             event.sender.send('nuevo-toast', { tipo: 'error', mensaje: 'Datáfono no configurado' });
         });
         client.on('data', function (data) {
