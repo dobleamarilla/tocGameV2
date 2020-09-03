@@ -46,31 +46,31 @@ var vueApertura = new Vue({
 				</div>
 				<div class="row mx-auto p-2">
 					<div class="col" style="text-align: center;" @click="setActivo(8)">
-                        <img src="assets/imagenes/5euros.png" width="135px" height="68px">
+                        <img src="assets/imagenes/5euros.png" :width="sizeBilletes">
                         <label :style="infoDinero[8].style">{{infoDinero[8].valor}} unidades</label>
 					</div>
 					<div class="col" style="text-align: center;" @click="setActivo(9)">
-                        <img src="assets/imagenes/10euros.png" width="135px" height="68px">
+                        <img src="assets/imagenes/10euros.png" :width="sizeBilletes">
                         <label :style="infoDinero[9].style">{{infoDinero[9].valor}} unidades</label>
 					</div>
 					<div class="col" style="text-align: center;" @click="setActivo(10)">
-                        <img src="assets/imagenes/20euros.png" width="135px" height="68px">
+                        <img src="assets/imagenes/20euros.png" :width="sizeBilletes">
                         <label :style="infoDinero[10].style">{{infoDinero[10].valor}} unidades</label>
 					</div>
 					<div class="col" style="text-align: center;" @click="setActivo(11)">
-                        <img src="assets/imagenes/50euros.png" width="135px" height="68px">
+                        <img src="assets/imagenes/50euros.png" :width="sizeBilletes">
                         <label :style="infoDinero[11].style">{{infoDinero[11].valor}} unidades</label>
 					</div>
 					<div class="col" style="text-align: center;" @click="setActivo(12)">
-                        <img src="assets/imagenes/100euros.png" width="135px" height="68px">
+                        <img src="assets/imagenes/100euros.png" :width="sizeBilletes">
                         <label :style="infoDinero[12].style">{{infoDinero[12].valor}} unidades</label>
 					</div>
 					<div class="col" style="text-align: center;" @click="setActivo(13)">
-                        <img src="assets/imagenes/200euros.png" width="135px" height="68px">
+                        <img src="assets/imagenes/200euros.png" :width="sizeBilletes">
                         <label :style="infoDinero[13].style">{{infoDinero[13].valor}} unidades</label>
 					</div>
 					<div class="col" style="text-align: center;" @click="setActivo(14)">
-                        <img src="assets/imagenes/500euros.png" width="135px" height="68px">
+                        <img src="assets/imagenes/500euros.png" :width="sizeBilletes">
                         <label :style="infoDinero[14].style">{{infoDinero[14].valor}} unidades</label>
 					</div>
 				</div>
@@ -92,8 +92,8 @@ var vueApertura = new Vue({
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-danger btn-lg" @click="resetTodo()">RESET  LIMPIAR TODO</button>
-				<button type="button" class="btn btn-primary btn-lg" @click="abrirCaja()">ABRIR CON {{getTotal.toFixed(2)}} €</button>
+				<button type="button" class="btn btn-danger" style="font-size: 27px;" @click="resetTodo()">RESET  LIMPIAR TODO</button>
+				<button type="button" class="btn btn-primary" style="font-size: 27px;" @click="abrirCaja()">ABRIR CON {{getTotal.toFixed(2)}} €</button>
 			</div>
 		</div>
     </div>
@@ -118,7 +118,8 @@ var vueApertura = new Vue({
                 { valor: 0, style: '' },
                 { valor: 0, style: '' },
             ],
-            activo: 0
+            activo: 0,
+            sizeBilletes: '100%'
         };
     },
     methods: {
