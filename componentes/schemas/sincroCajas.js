@@ -38,7 +38,8 @@ var schemaSincro = new conexion.mongoose.Schema({
     enTransito: {
         type: Boolean,
         default: false
-    }
+    },
+    totalDatafono3G: Number
 });
 var SincroCajas = conexion.mongoose.model('sincro-cajas', schemaSincro);
 function nuevoItemSincroCajas(data) {

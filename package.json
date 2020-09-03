@@ -16,6 +16,7 @@
     },
     "dependencies": {
         "escpos": "^3.0.0-alpha.3",
+        "escpos-network": "^3.0.0-alpha.5",
         "escpos-serialport": "^3.0.0-alpha.2",
         "escpos-usb": "^3.0.0-alpha.2",
         "is-online": "^8.4.0",

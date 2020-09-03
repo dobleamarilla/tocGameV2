@@ -93,7 +93,7 @@ var vueClausura = new Vue({
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-danger btn-lg" @click="resetTodo()">RESET  LIMPIAR TODO</button>
-				<button type="button" class="btn btn-primary btn-lg" @click="cerrarCaja()">CERRAR CON {{getTotal.toFixed(2)}} €</button>
+				<button type="button" class="btn btn-primary btn-lg" @click="abrirDatos3G()">CERRAR CON {{getTotal.toFixed(2)}} €</button>
 			</div>
 		</div>
     </div>
@@ -119,7 +119,8 @@ var vueClausura = new Vue({
             { valor: 0, style: '' },
             { valor: 0, style: '' },
         ],
-        activo: 0
+        activo: 0,
+        totalCon3G : 0
       }
     },
     methods: 
@@ -164,7 +165,8 @@ var vueClausura = new Vue({
                 { valor: 0, style: '' },
                 { valor: 0, style: '' },
                 { valor: 0, style: '' },
-            ]
+            ],
+            this.totalCon3G = 0;
         },
         cerrarCaja()
         {
@@ -177,9 +179,18 @@ var vueClausura = new Vue({
             dialog.showMessageBox(remote.getCurrentWindow(), options, (res) => {
                 if (res === 0)
                 {
-                    toc.cerrarCaja(this.getTotal, this.getDetalle, this.infoDinero);
+                    toc.cerrarCaja(this.getTotal, this.getDetalle, this.infoDinero, this.totalCon3G);
                 }             
             })
+        },
+        setTotalCon3G(x: number)
+        {
+            this.totalCon3G = x;
+        },
+        abrirDatos3G()
+        {
+            this.cerrarModal();
+            vueCantidad3G.abreModal();
         }
     },
     computed: {

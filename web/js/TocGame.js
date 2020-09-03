@@ -58,7 +58,8 @@ class TocGame {
                 detalleApertura: [],
                 detalleCierre: [],
                 enviado: false,
-                enTransito: false
+                enTransito: false,
+                totalDatafono3G: null
             };
         }
         else {
@@ -899,15 +900,17 @@ class TocGame {
             detalleApertura: [],
             detalleCierre: [],
             enviado: false,
-            enTransito: false
+            enTransito: false,
+            totalDatafono3G: null
         };
         ipcRenderer.send('actualizar-info-caja', this.caja);
     }
-    cerrarCaja(total, detalleCierre, guardarInfoMonedas) {
+    cerrarCaja(total, detalleCierre, guardarInfoMonedas, totalDatafono3G) {
         this.caja.totalCierre = total;
         this.caja.detalleCierre = detalleCierre;
         this.caja.finalTime = Date.now();
         this.caja.idDependienta = this.getCurrentTrabajador()._id;
+        this.caja.totalDatafono3G = totalDatafono3G;
         this.caja = this.calcularDatosCaja(this.caja);
         ipcRenderer.send('guardarCajaSincro', this.caja);
         ipcRenderer.send('set-monedas', guardarInfoMonedas);
@@ -1000,7 +1003,6 @@ class TocGame {
         unaCaja.descuadre = descuadre;
         unaCaja.nClientes = nClientes;
         unaCaja.recaudado = recaudado;
-        console.log("AQUI IMPRIMO UNA CAJA MAGICA: ", unaCaja);
         return unaCaja;
     }
     imprimirTicket(idTicket) {

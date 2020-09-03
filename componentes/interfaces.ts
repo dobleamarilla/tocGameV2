@@ -107,7 +107,8 @@ interface Caja
         unidades: number
     }[],
     enviado: boolean,
-    enTransito: boolean
+    enTransito: boolean,
+    totalDatafono3G: number
 }
 
 interface Parametros

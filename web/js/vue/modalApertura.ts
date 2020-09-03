@@ -204,7 +204,8 @@ var vueApertura = new Vue({
                         detalleApertura: this.getDetalle,
                         detalleCierre: [],
                         enviado: false,
-                        enTransito: false
+                        enTransito: false,
+                        totalDatafono3G: null
                     }
                     toc.abrirCaja(data);
                 }            
