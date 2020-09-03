@@ -1085,8 +1085,7 @@ class TocGame
         {
             console.log("Operación DENEGADA");
             vueToast.abrir('error', 'Operación DENEGADA');
-            ipcRenderer.send('pregunta-cambio-datafono');
-            ipcRenderer.send('nuevo-toast', {tipo: 'error', mensaje: 'Datáfono no configurado'});
+            ipcRenderer.send('change-pinpad');
         }
         this.quitarClienteSeleccionado();
     }
