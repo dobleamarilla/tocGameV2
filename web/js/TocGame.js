@@ -185,7 +185,7 @@ class TocGame {
     imprimirTest(texto) {
         ipcRenderer.send('imprimir-test', texto);
     }
-    nuevaSalidaDinero(cantidad, concepto, noImprimir = false) {
+    nuevaSalidaDinero(cantidad, concepto, tipoExtra, noImprimir = false) {
         let codigoBarras = this.generarCodigoBarrasSalida();
         let objSalida = {
             _id: Date.now(),
@@ -193,7 +193,8 @@ class TocGame {
             valor: cantidad,
             concepto: concepto,
             idTrabajador: this.getCurrentTrabajador()._id,
-            codigoBarras: codigoBarras
+            codigoBarras: codigoBarras,
+            tipoExtra: tipoExtra
         };
         ipcRenderer.send('nuevo-movimiento', objSalida);
         if (!noImprimir) {
@@ -788,11 +789,11 @@ class TocGame {
             else {
                 if (tipo === "CONSUMO_PERSONAL") {
                     objTicket.total = 0;
-                    this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Consum personal', true);
+                    this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Consum personal', 'CONSUMO_PERSONAL', true);
                 }
                 else {
                     if (tipo === "DEUDA") {
-                        this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Deute', true);
+                        this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Deute', 'DEUDA', true);
                     }
                 }
                 ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
@@ -816,7 +817,7 @@ class TocGame {
                     if (this.parametros.tipoDatafono === TIPO_3G || this.datafonoForzado3G) {
                         ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
                         ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
-                        this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Targeta 3G', true);
+                        this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Targeta 3G', 'TARJETA', true);
                         this.borrarCesta();
                         vueCobrar.cerrarModal();
                         vueToast.abrir('success', 'Ticket creado');
@@ -852,7 +853,7 @@ class TocGame {
         if (respuesta.data[1] === 48) //Primero STX, segundo estado transacción: correcta = 48, incorrecta != 48
          {
             console.log("Operación APROBADA");
-            this.nuevaSalidaDinero(this.auxTotalDatafono, 'Targeta', true);
+            this.nuevaSalidaDinero(this.auxTotalDatafono, 'Targeta', 'TARJETA', true);
             ipcRenderer.send('set-ticket', respuesta.objTicket);
             ipcRenderer.send('set-ultimo-ticket-parametros', respuesta.objTicket._id);
             this.borrarCesta();
@@ -912,7 +913,14 @@ class TocGame {
         this.caja.idDependienta = this.getCurrentTrabajador()._id;
         this.caja.totalDatafono3G = totalDatafono3G;
         this.caja = this.calcularDatosCaja(this.caja);
+        let objEmail = {
+            caja: this.caja,
+            nombreTienda: this.getParametros().nombreTienda,
+            nombreDependienta: this.getCurrentTrabajador().nombre,
+            arrayMovimientos: ipcRenderer.sendSync('get-rango-movimientos', { fechaInicio: this.caja.inicioTime, fechaFinal: this.caja.finalTime })
+        };
         ipcRenderer.send('guardarCajaSincro', this.caja);
+        ipcRenderer.send('enviar-email', objEmail);
         ipcRenderer.send('set-monedas', guardarInfoMonedas);
         this.borrarCaja();
         vueCaja.cerrarModal();
@@ -941,7 +949,9 @@ class TocGame {
         var totalDeuda = 0;
         for (let i = 0; i < arrayMovimientos.length; i++) {
             if (arrayMovimientos[i].tipo === TIPO_SALIDA) {
-                totalSalidas += arrayMovimientos[i].valor;
+                if (arrayMovimientos[i].tipoExtra != 'CONSUMO_PERSONAL') {
+                    totalSalidas += arrayMovimientos[i].valor;
+                }
             }
             else {
                 if (arrayMovimientos[i].tipo === TIPO_ENTRADA) {

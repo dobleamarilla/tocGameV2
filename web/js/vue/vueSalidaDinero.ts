@@ -56,7 +56,7 @@ var vueSalidaDinero = new Vue({
             dialog.showMessageBox(remote.getCurrentWindow(), options, (res) => {
              if (res === 0)
              {
-                toc.nuevaSalidaDinero(this.cantidad, this.concepto);
+                toc.nuevaSalidaDinero(this.cantidad, this.concepto, 'SALIDA');
                 this.cerrarModal();
                 vueToast.abrir('success', 'Salida de dinero OK');
              }

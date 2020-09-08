@@ -31,6 +31,7 @@ var sincroFicha = require('./componentes/schemas/sincroFichajes');
 var devolu = require('./componentes/schemas/devoluciones');
 var moned = require('./componentes/schemas/infoMonedas');
 var codiBarra = require('./componentes/schemas/codigoBarras');
+var email = require('./componentes/email');
 var eventos = require('events');
 const iconPath = path.join(__dirname, "web", "assets", "imagenes", "favicon.png");
 const isOnline = require('is-online');
@@ -173,6 +174,11 @@ app.on('ready', () => {
         });
     });
     //FINAL TICKETS INTERVALO
+    //ENVIAR EMAIL
+    ipcMain.on('enviar-email', (ev, data) => {
+        email.enviarEmail(data);
+    });
+    //FINAL ENVIAR EMAIL
     //ACTUALIZAR INFO CAJA
     ipcMain.on('actualizar-info-caja', (ev, data) => {
         caj.setInfoCaja(data);

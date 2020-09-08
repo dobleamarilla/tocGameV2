@@ -180,8 +180,8 @@ interface Movimientos
     valor: number,
     concepto: string,
     idTrabajador: number,
-    enviado: boolean,
-    enTransito: boolean
+    tipoExtra: string,
+    codigoBarras: string
 };
 
 interface Cliente

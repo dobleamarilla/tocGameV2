@@ -16,7 +16,6 @@ const TIPO_ENTRADA_DINERO = 'ENTRADA';
 const TIPO_SALIDA_DINERO = 'SALIDA';
 function dateToString2(fecha) {
     var fechaFinal = null;
-    ;
     if (typeof fecha === 'string' || typeof fecha === 'number') {
         fechaFinal = new Date(fecha);
     }
