@@ -94,7 +94,7 @@ function enviarEmail(info)
           <td>${fechaParaMovimientos(info.arrayMovimientos[i]._id)}</td>														
           <td>${info.arrayMovimientos[i].concepto}</td>														
           <td>${info.arrayMovimientos[i].tipoExtra}</td>														
-          <td class="align-right">${info.arrayMovimientos[i].valor} €</td>
+          <td class="align-right">${info.arrayMovimientos[i].valor.toFixed(2)} €</td>
       </tr>
       `;
     }
@@ -479,7 +479,7 @@ function enviarEmail(info)
       <![endif]-->
     </head>
     <body>
-      <span class="preheader">This is an invoice for your purchase on {{ purchase_date }}. Please submit payment by {{ due_date }}</span>
+      <span class="preheader">Resumen del cierre de caja</span>
       <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
         <tr>
           <td align="center">
@@ -522,14 +522,14 @@ function enviarEmail(info)
                                   <tr>
                                     <td class="attributes_item">
                                       <span class="f-fallback">
-                                      <strong>Calaix fet:</strong> ${info.caja.calaixFetZ} €
+                                      <strong>Calaix fet:</strong> ${info.caja.calaixFetZ.toFixed(2)} €
                                       </span>
                                     </td>
                                   </tr>
                                   <tr>
                                     <td class="attributes_item">
                                       <span class="f-fallback">
-                                      <strong>Descuadre:</strong> ${info.caja.descuadre} €
+                                      <strong>Descuadre:</strong> ${info.caja.descuadre.toFixed(2)} €
                                       </span>
                                     </td>
                                   </tr>																
@@ -543,21 +543,21 @@ function enviarEmail(info)
                                   <tr>
                                     <td class="attributes_item">
                                       <span class="f-fallback">
-                                      <strong>Recaudat:</strong> ${info.caja.recaudado} €
+                                      <strong>Recaudat:</strong> ${info.caja.recaudado.toFixed(2)} €
                                       </span>
                                     </td>
                                   </tr>																
                                   <tr>
                                     <td class="attributes_item">
                                       <span class="f-fallback">
-                                      <strong>Canvi inicial:</strong> ${info.caja.totalApertura} €
+                                      <strong>Canvi inicial:</strong> ${info.caja.totalApertura.toFixed(2)} €
                                       </span>
                                     </td>
                                   </tr>
                                   <tr>
                                     <td class="attributes_item">
                                       <span class="f-fallback">
-                                      <strong>Canvi final:</strong> ${info.caja.totalCierre} €
+                                      <strong>Canvi final:</strong> ${info.caja.totalCierre.toFixed(2)} €
                                       </span>
                                     </td>
                                   </tr>
@@ -614,7 +614,7 @@ function enviarEmail(info)
                                   <tr>
                                     <td class="attributes_item">
                                       <span class="f-fallback">
-                                      <strong>Introducido dependienta 3G:</strong> ${info.caja.totalDatafono3G.toFixed(2)}
+                                      <strong>Introducido dependienta 3G:</strong> ${info.caja.totalDatafono3G.toFixed(2)} €
                                       </span>
                                     </td>
                                   </tr>													
