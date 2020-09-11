@@ -183,7 +183,7 @@ app.on('ready', () => {
     //FINAL TICKETS INTERVALO
     //ENVIAR EMAIL
     ipcMain.on('enviar-email', (ev, data) => {
-        email.enviarEmail(data);
+        //email.enviarEmail(data);
     });
     //FINAL ENVIAR EMAIL
 

@@ -72,7 +72,21 @@ interface TiposIva
     importe2: number,
     importe3: number
 }
-
+interface ObjTicket {
+    calaixFet: number, 
+    nombreTrabajador: string, 
+    descuadre: number, 
+    nClientes: number, 
+    recaudado: number, 
+    arrayMovimientos: any,
+    nombreTienda: string, 
+    fechaInicio: number, 
+    fechaFinal: number, 
+    cInicioCaja: number, 
+    cFinalCaja: number, 
+    tipoImpresora: string,
+    totalTarjeta: number
+}
 interface Caja 
 {
     _id: string, //siempre es 'CAJA'

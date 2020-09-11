@@ -52,3 +52,42 @@ body {
   .estiloTicketSeleccionado {
     background-color: #f07070;
   }
+
+  /* CIERRE */
+.cierreCaja {
+  font-family: 'Consolas';
+}
+.cierreCaja #tienda {
+  text-align: center;
+}
+#tiendaResum {
+  display: block;
+  width: 100px;
+  height: 100%;
+  margin: 0 auto;
+  margin-top: -3vh;
+}
+#datosTienda {
+  font-size: 14px;
+}
+#datosVenta {
+  font-size: 20px;
+}
+#pagosTargeta {
+  position: absolute;
+  right: 0px;
+  height: 263px;
+  overflow-y: scroll;
+  width: 445px;
+  margin-top: -36%;
+}
+/* DATOS */
+.iconoDatos {
+  font-size: 72px;
+  cursor: pointer;
+}
+.botonBorrar {
+  cursor: pointer;
+  padding-right: 5px;
+  margin: 0 70px 0px 70px;
+}

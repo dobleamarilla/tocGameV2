@@ -170,6 +170,7 @@ var vueClausura = new Vue({
             dialog.showMessageBox(remote.getCurrentWindow(), options, (res) => {
                 if (res === 0) {
                     toc.cerrarCaja(this.getTotal, this.getDetalle, this.infoDinero, this.totalCon3G);
+                    vuePantallaCierre.abreModal();
                 }
             });
         },

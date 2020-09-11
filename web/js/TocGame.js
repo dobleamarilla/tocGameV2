@@ -1001,8 +1001,10 @@ class TocGame {
             totalEntradas: totalEntradas,
             cInicioCaja: cambioInicial,
             cFinalCaja: cambioFinal,
-            impresora: this.parametros.tipoImpresora
+            impresora: this.parametros.tipoImpresora,
+            totalTarjeta: totalTarjeta
         };
+        vuePantallaCierre.setVariables(objImpresion);
         try {
             this.imprimirCierreCaja(objImpresion);
         }

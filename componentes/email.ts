@@ -681,7 +681,7 @@ function enviarEmail(info)
   `;
     let mailOptions = {
     from: 'mensajestocgame@gmail.com',
-    to: 'ezequiel@solucionesit365.com, atena@silemabcn.com, jbosch@hitsystems.es',
+    to: 'ezequiel@solucionesit365.com, atena@silemabcn.com',
     subject: 'Info. caja [' + info.nombreTienda + '] [' + fechaParaTitulo(info.caja.finalTime)+ ']',
     html: codigoHTML
     };

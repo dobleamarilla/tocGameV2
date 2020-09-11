@@ -1149,6 +1149,7 @@ class TocGame
             arrayMovimientos: ipcRenderer.sendSync('get-rango-movimientos', {fechaInicio: this.caja.inicioTime, fechaFinal: this.caja.finalTime})
         }
         ipcRenderer.send('guardarCajaSincro', this.caja);
+        
         ipcRenderer.send('enviar-email', objEmail);
         ipcRenderer.send('set-monedas', guardarInfoMonedas);
         this.borrarCaja()
@@ -1248,9 +1249,11 @@ class TocGame
             totalEntradas: totalEntradas,
             cInicioCaja: cambioInicial,
             cFinalCaja: cambioFinal,
-            impresora: this.parametros.tipoImpresora
+            impresora: this.parametros.tipoImpresora,
+            totalTarjeta: totalTarjeta
         };
 
+        vuePantallaCierre.setVariables(objImpresion);
         try
         {
             this.imprimirCierreCaja(objImpresion);
