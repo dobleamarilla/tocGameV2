@@ -1097,6 +1097,8 @@ class TocGame
     }
     abrirModalCaja()
     {
+        const arrayCompletoTickets = ipcRenderer.sendSync('get-tickets-caja-abierta', this.caja.inicioTime); //TODOS LOS TICKETS (SIN LÍMITE) DE LA CAJA ACTUAL.
+        vueCaja.setArrayTotal(arrayCompletoTickets);
         const arrayTickets = ipcRenderer.sendSync('get-tickets');
         vueCaja.cargarListaTickets(arrayTickets);
         vueCaja.abreModal();

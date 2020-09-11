@@ -7,7 +7,7 @@ var vueCaja = new Vue({
 		<div class="modal-dialog" style="max-width: 80%" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Listado de tickets</h5>
+					<h5 class="modal-title">Listado de tickets (Total: {{getTotalEnDirecto}} €)</h5>
 				</div>
 				<div class="modal-body">
 					<div class="row">
@@ -36,10 +36,10 @@ var vueCaja = new Vue({
                         <div class="col-md-2">
                             <button type="button" class="btn btn-primary btn-block ml-0" @click="abrirModalCerrarCaja()"><i class="fas fa-lock fa-2x"></i></button>
                             <button type="button" class="btn btn-secondary btn-block ml-0" @click="abrirModalAbrirCaja()"><i class="fas fa-lock-open fa-2x"></i></button>
-                            <button type="button" class="btn btn-success btn-block ml-0" @click="abrirModalEntradaDinero()"><i class="fas fa-sign-in-alt fa-2x"></i></button>
                             <button type="button" class="btn btn-danger btn-block ml-0" @click="abrirModalSalidaDinero()"><i class="fas fa-sign-out-alt fa-2x"></i></button>
-                            <button type="button" class="btn btn-warning btn-block ml-0" @click="volverACaja()"><i class="fas fa-search-plus fa-2x"></i></button>
+                            <button type="button" class="btn btn-warning btn-block ml-0"><i class="fas fa-search-plus fa-2x"></i></button>
                             <button type="button" class="btn btn-info btn-block ml-0" @click="imprimirTicket()"><i class="fas fa-print fa-2x"></i></button>
+                            <button type="button" class="btn btn-success btn-block ml-0" @click="abrirModalEntradaDinero()"><i class="fas fa-sign-in-alt fa-2x"></i></button>
                             <button type="button" class="btn btn-dark btn-block ml-0" @click="cerrarModal()"><i class="fas fa-undo fa-2x"></i></button>                     
                         </div>
                     </div>
@@ -52,7 +52,8 @@ var vueCaja = new Vue({
     data() {
         return {
             ticketActivo: null,
-            listaTickets: null
+            listaTickets: null,
+            arrayCompleto: []
         };
     },
     methods: {
@@ -109,6 +110,18 @@ var vueCaja = new Vue({
         },
         convertirFecha(fecha) {
             return dateToString(fecha);
+        },
+        setArrayTotal(arrayCompleto) {
+            this.arrayCompleto = arrayCompleto;
+        }
+    },
+    computed: {
+        getTotalEnDirecto() {
+            let suma = 0;
+            for (let i = 0; i < this.arrayCompleto.length; i++) {
+                suma += this.arrayCompleto[i].total;
+            }
+            return suma.toFixed(2);
         }
     }
 });

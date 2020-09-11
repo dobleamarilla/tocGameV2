@@ -76,6 +76,7 @@ var imprimirTicketVenta = async function (event, numFactura, arrayCompra, total,
             if(arrayCompra[i].promocion.esPromo)
             {
                 let nombrePrincipal = await articulos.getNombreArticulo(arrayCompra[i].promocion.infoPromo.idPrincipal);
+                nombrePrincipal = "Oferta " + nombrePrincipal;
                 while (nombrePrincipal.length < 20) 
                 {
                     nombrePrincipal += ' ';
@@ -84,6 +85,7 @@ var imprimirTicketVenta = async function (event, numFactura, arrayCompra, total,
                 if(arrayCompra[i].promocion.infoPromo.cantidadSecundario > 0)
                 {
                     let nombreSecundario = await articulos.getNombreArticulo(arrayCompra[i].promocion.infoPromo.idSecundario);
+                    nombreSecundario = "Oferta " + nombreSecundario;
                     while (nombreSecundario.length < 20) 
                     {
                         nombreSecundario += ' ';

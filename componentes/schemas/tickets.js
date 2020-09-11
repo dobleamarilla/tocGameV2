@@ -77,9 +77,17 @@ function getTickets() {
 }
 function getTicketsIntervalo(unaCaja) {
     return Tickets.find({ timestamp: { $lte: unaCaja.finalTime, $gte: unaCaja.inicioTime } }, null, { sort: { _id: 1 } }, (err, respuesta) => {
-        console.log(err);
-        console.log("Lo que me ha encontrado del invervalo es: ", respuesta);
+        if (err) {
+            console.log(err);
+        }
     }).lean();
+}
+function getTicketsCajaActual(fechaInicioCaja) {
+    return Tickets.find({ timestamp: { $gte: fechaInicioCaja } }, null, { lean: true }, (err, respuesta) => {
+        if (err) {
+            console.log(err);
+        }
+    });
 }
 function getUltimoTicket() {
     return Tickets.find({}, null, { lean: true }).sort({ _id: -1 }).limit(1);
@@ -112,4 +120,5 @@ exports.getUltimoTicket = getUltimoTicket;
 exports.getParaSincronizar = getParaSincronizar;
 exports.confirmarEnvio = confirmarEnvio;
 exports.cleanTransit = cleanTransit;
+exports.getTicketsCajaActual = getTicketsCajaActual;
 //# sourceMappingURL=tickets.js.map

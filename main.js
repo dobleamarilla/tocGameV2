@@ -403,6 +403,13 @@ app.on('ready', () => {
         });
     });
     //FINAL GET TICKETS
+    //GET TICKETS CAJA ACTUAL (SIN CERRAR)
+    ipcMain.on('get-tickets-caja-abierta', (ev, fechaInicioCaja) => {
+        tick.getTicketsCajaActual(fechaInicioCaja).then((arrayTickets) => {
+            ev.returnValue = arrayTickets;
+        });
+    });
+    //FINAL GET TICKETS CAJA ACTUAL (SIN CERRAR)
     //NUEVO MOVIMIENTO A SINCRO
     ipcMain.on('sincronizar-movimientos', (ev, data) => {
         movi.getParaSincronizarMovimientos().then(res => {
@@ -515,6 +522,9 @@ app.on('ready', () => {
         });
     });
     ipcMain.on('testeoGuapo', (event, args) => {
+        // tick.test2(args).then(res=>{
+        //     event.returnValue = res;
+        // })
     });
     ipcMain.on('confirmar-envio', (event, args) => {
         tick.confirmarEnvio(args);
