@@ -517,6 +517,13 @@ function enviarEmail(info) {
                                   <tr>
                                     <td class="attributes_item">
                                       <span class="f-fallback">
+                                      <strong>Descuadre solo TARJETA:</strong> ${(info.caja.totalDatafono3G - info.caja.infoExtra.totalTarjeta).toFixed(2)} €
+                                      </span>
+                                    </td>
+                                  </tr>																
+                                  <tr>
+                                    <td class="attributes_item">
+                                      <span class="f-fallback">
                                       <strong>Clients atesos:</strong> ${info.caja.nClientes}
                                       </span>
                                     </td>
@@ -598,7 +605,7 @@ function enviarEmail(info) {
                                       <strong>Introducido dependienta 3G:</strong> ${info.caja.totalDatafono3G.toFixed(2)} €
                                       </span>
                                     </td>
-                                  </tr>													
+                                  </tr>								                                 													
                                 </table>
                               </td>
                             </tr>
@@ -660,9 +667,16 @@ function enviarEmail(info) {
     </body>
   </html>
   `;
+    var destinatarios = '';
+    if (info.nombreTienda == 'T--000') {
+        destinatarios = 'ezequiel@solucionesit365.com';
+    }
+    else {
+        destinatarios = 'ezequiel@solucionesit365.com, atena@silemabcn.com';
+    }
     let mailOptions = {
         from: 'mensajestocgame@gmail.com',
-        to: 'ezequiel@solucionesit365.com, atena@silemabcn.com',
+        to: destinatarios,
         subject: 'Info. caja [' + info.nombreTienda + '] [' + fechaParaTitulo(info.caja.finalTime) + ']',
         html: codigoHTML
     };
