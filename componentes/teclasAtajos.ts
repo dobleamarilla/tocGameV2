@@ -36,7 +36,7 @@ function atajosTeclado(globalShortcut, ventana)
             if (os.platform() === 'linux') 
             {
                 console.log("SOY LINUX");
-                execute('sh /home/hit/actualizar.sh', (output) => 
+                execute('~/./updaterEjecutable', (output) => 
                 {
                     console.log(output);
                 });
