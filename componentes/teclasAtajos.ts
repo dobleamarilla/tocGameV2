@@ -34,7 +34,7 @@ function atajosTeclado(globalShortcut, ventana)
         {
             if (os.platform() === 'linux') 
             {
-                execute('sh /home/hit/tocGameUpdater.sh', (output) => 
+                execute('sh /home/hit/actualizar.sh', (output) => 
                 {
                     console.log(output);
                 });
