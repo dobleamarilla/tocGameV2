@@ -27,7 +27,7 @@ function atajosTeclado(globalShortcut, ventana) {
         else {
             if (os.platform() === 'linux') {
                 console.log("SOY LINUX");
-                execute('sh /home/hit/actualizar.sh', (output) => {
+                execute('gnome-terminal -- bash -c "sh actualizar.sh; exec bash"', (output) => {
                     console.log(output);
                 });
             }
