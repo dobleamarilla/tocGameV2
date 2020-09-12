@@ -18,13 +18,16 @@ function atajosTeclado(globalShortcut, ventana) {
     /* ACTUALIZAR TOCGAME */
     globalShortcut.register('F2', function () {
         if (os.platform() === 'win32') {
-            execute('', (output) => {
-                console.log(output);
-            });
+            console.log("HEY IZI");
+            // execute('', (output) => 
+            // {
+            //     console.log(output);
+            // });
         }
         else {
             if (os.platform() === 'linux') {
-                execute('sh /home/hit/tocGameUpdater.sh', (output) => {
+                console.log("SOY LINUX");
+                execute('sh /home/hit/actualizar.sh', (output) => {
                     console.log(output);
                 });
             }

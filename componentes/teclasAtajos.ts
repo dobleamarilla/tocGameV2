@@ -25,15 +25,17 @@ function atajosTeclado(globalShortcut, ventana)
     {
         if (os.platform() === 'win32') 
         {
-            execute('', (output) => 
-            {
-                console.log(output);
-            });
+            console.log("HEY IZI");
+            // execute('', (output) => 
+            // {
+            //     console.log(output);
+            // });
         }
         else 
         {
             if (os.platform() === 'linux') 
             {
+                console.log("SOY LINUX");
                 execute('sh /home/hit/actualizar.sh', (output) => 
                 {
                     console.log(output);
