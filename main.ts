@@ -148,6 +148,11 @@ app.on('ready', () => {
         moned.setMonedas(infoMonedas);
     });
     //FINAL SET INFO MONEDAS
+    //ACTUALIZAR TOC DESDE CERBERO
+    ipcMain.on('update-toc-cerbero', (ev, infoMonedas) => {
+        atajos.actualizarTocSanPedro();
+    });
+    //FINAL ACTUALIZAR TOC DESDE CERBERO
     //GET INFO MONEDAS
     ipcMain.on('get-monedas', (ev, infoMonedas) => {
         moned.getMonedas().then(res=>{
@@ -161,6 +166,11 @@ app.on('ready', () => {
         movi.insertarMovimiento(args);
     });
     //FINAL INSERTAR MOVIMIENTO
+    //GET VERSION
+    ipcMain.on('get-version', (ev, args) => {
+        ev.returnValue = process.env.npm_package_version;
+    });
+    //FINAL GET VERSION
 
     //GET RANGO MOVIMIENTOS
     ipcMain.on('get-rango-movimientos', (ev, args) => {

@@ -3,7 +3,7 @@ var vueInfoFooter = new Vue({
     template: 
     /*html*/`
 <div>
-    <div style="position: fixed; bottom: 0; right: 0;">Internet <img v-bind:src="'assets/imagenes/'+internet" alt="estadoInternet">&nbsp;&nbsp;&nbsp;Cestas abiertas: {{numCestas}} &nbsp;&nbsp;&nbsp; Nombre tienda: {{nombreTienda}}</div>
+    <div style="position: fixed; bottom: 0; right: 0;">Versión: {{version}}&nbsp;&nbsp;&nbsp;Internet <img v-bind:src="'assets/imagenes/'+internet" alt="estadoInternet">&nbsp;&nbsp;&nbsp;Cestas abiertas: {{numCestas}} &nbsp;&nbsp;&nbsp; Nombre tienda: {{nombreTienda}}</div>
 </div>
     `,
     data () 
@@ -11,7 +11,8 @@ var vueInfoFooter = new Vue({
       return {
           numCestas: 1,
           nombreTienda: 'SIN LICENCIA',
-          internet: 'offline.png'
+          internet: 'offline.png',
+          version: ''
       }
     },
     methods: 
@@ -23,6 +24,7 @@ var vueInfoFooter = new Vue({
         getParametros()
         {
             this.nombreTienda = toc.getParametros().nombreTienda;
+            this.version = ipcRenderer.sendSync('get-version');
         },
         hayInternet(res)
         {

@@ -17,22 +17,22 @@ function atajosTeclado(globalShortcut, ventana) {
     });
     /* ACTUALIZAR TOCGAME */
     globalShortcut.register('F2', function () {
-        if (os.platform() === 'win32') {
-            console.log("HEY IZI");
-            // execute('', (output) => 
-            // {
-            //     console.log(output);
-            // });
-        }
-        else {
-            if (os.platform() === 'linux') {
-                console.log("SOY LINUX");
-                execute('gnome-terminal -- bash -c "~/./instalador.sh; exec bash"', (output) => {
-                    console.log(output);
-                });
-            }
-        }
+        actualizarTocSanPedro();
     });
 }
+function actualizarTocSanPedro() {
+    if (os.platform() === 'win32') {
+        console.log("SOY WINDOWS! DE MOMENTO NO HAGO NADA, PERO LO HE INTENTADO");
+    }
+    else {
+        if (os.platform() === 'linux') {
+            console.log("SOY LINUX");
+            execute('gnome-terminal -- bash -c "~/./instalador.sh; exec bash"', (output) => {
+                console.log(output);
+            });
+        }
+    }
+}
 exports.atajos = atajosTeclado;
+exports.actualizarTocSanPedro = actualizarTocSanPedro;
 //# sourceMappingURL=teclasAtajos.js.map

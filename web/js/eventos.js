@@ -157,6 +157,12 @@ socket.on('confirmarEnvioTicket', (data) => {
     // console.log("Ticket confirmado: enviado = true, enTransito = false");
     ipcRenderer.send('confirmar-envio', data);
 });
+socket.on('orden-actualizar-toc', (licencia) => {
+    if (Number(licencia) === toc.getParametros().licencia) {
+        console.log("EH SOY YO! TENGO Q ACTUALIZARME");
+    }
+    ipcRenderer.send('update-toc-cerbero');
+});
 socket.on('res-descargar-clientes-finales', (data) => {
     vueToast.abrir('warning', 'Insertando clientes nuevos');
     ipcRenderer.send('insertar-nuevos-clientes', data);
