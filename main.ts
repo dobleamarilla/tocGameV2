@@ -25,7 +25,7 @@ var moned       = require('./componentes/schemas/infoMonedas');
 var codiBarra   = require('./componentes/schemas/codigoBarras');
 var email       = require('./componentes/email');
 var eventos     = require('events');
-var pjson = require('./package.json');
+// var pjson = require('./package.json');
 
 const iconPath  = path.join(__dirname, "web", "assets", "imagenes", "favicon.png");
 const isOnline = require('is-online');
@@ -169,7 +169,7 @@ app.on('ready', () => {
     //FINAL INSERTAR MOVIMIENTO
     //GET VERSION
     ipcMain.on('get-version', (ev, args) => {
-        ev.returnValue = pjson.version;
+        ev.returnValue = '2.x';//pjson.version;
     });
     //FINAL GET VERSION
 
