@@ -484,7 +484,6 @@ class TocGame
             {
                 let infoArticulo = this.getInfoArticulo(cesta.lista[i]._id);
                 cesta.tiposIva = construirObjetoIvas(infoArticulo, cesta.lista[i].unidades, cesta.tiposIva);
-                console.log("Está entrando en promo = false:", infoArticulo);
             }
             else
             {
