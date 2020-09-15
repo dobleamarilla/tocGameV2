@@ -386,10 +386,25 @@ class TocGame {
             if (cesta.lista[i].promocion.esPromo === false) {
                 let infoArticulo = this.getInfoArticulo(cesta.lista[i]._id);
                 cesta.tiposIva = construirObjetoIvas(infoArticulo, cesta.lista[i].unidades, cesta.tiposIva);
+                console.log("Está entrando en promo = false:", infoArticulo);
             }
             else {
                 if (cesta.lista[i].promocion.esPromo === true) {
-                    //Con esto corregir bases de IVA de las promociones, con su %dto, etc.
+                    if (cesta.lista[i].nombre == 'Oferta combo') {
+                        let infoArticuloPrincipal = this.getInfoArticulo(cesta.lista[i].promocion.infoPromo.idPrincipal);
+                        infoArticuloPrincipal.precioConIva = cesta.lista[i].promocion.infoPromo.precioRealPrincipal / (cesta.lista[i].promocion.infoPromo.unidadesOferta * cesta.lista[i].promocion.infoPromo.cantidadPrincipal);
+                        cesta.tiposIva = construirObjetoIvas(infoArticuloPrincipal, cesta.lista[i].promocion.infoPromo.unidadesOferta * cesta.lista[i].promocion.infoPromo.cantidadPrincipal, cesta.tiposIva);
+                        let infoArticuloSecundario = this.getInfoArticulo(cesta.lista[i].promocion.infoPromo.idSecundario);
+                        infoArticuloSecundario.precioConIva = cesta.lista[i].promocion.infoPromo.precioRealSecundario / (cesta.lista[i].promocion.infoPromo.unidadesOferta * cesta.lista[i].promocion.infoPromo.cantidadSecundario);
+                        cesta.tiposIva = construirObjetoIvas(infoArticuloSecundario, cesta.lista[i].promocion.infoPromo.unidadesOferta * cesta.lista[i].promocion.infoPromo.cantidadSecundario, cesta.tiposIva);
+                    }
+                    else {
+                        if (cesta.lista[i].nombre == 'Oferta individual') {
+                            let infoArticulo = this.getInfoArticulo(cesta.lista[i].promocion.infoPromo.idPrincipal);
+                            infoArticulo.precioConIva = cesta.lista[i].promocion.infoPromo.precioRealPrincipal / (cesta.lista[i].promocion.infoPromo.unidadesOferta * cesta.lista[i].promocion.infoPromo.cantidadPrincipal);
+                            cesta.tiposIva = construirObjetoIvas(infoArticulo, cesta.lista[i].promocion.infoPromo.unidadesOferta * cesta.lista[i].promocion.infoPromo.cantidadPrincipal, cesta.tiposIva);
+                        }
+                    }
                 }
             }
         }
@@ -587,7 +602,8 @@ class TocGame {
         }
         return cesta;
     }
-    buscarOfertas(unaCesta) {
+    buscarOfertas(unaCesta, viejoIva) {
+        var hayOferta = false;
         unaCesta = this.deshacerOfertas(unaCesta); //ahora no hace nada
         for (let i = 0; i < this.promociones.length; i++) {
             for (let j = 0; j < this.promociones[i].principal.length; j++) {
@@ -597,11 +613,16 @@ class TocGame {
                         let preguntaSecundario = this.existeArticuloParaOfertaEnCesta(unaCesta, this.promociones[i].secundario[z]._id, this.promociones[i].cantidadSecundario);
                         if (this.promociones[i].secundario[z]._id === -1 || preguntaSecundario >= 0) {
                             unaCesta = this.teLoAplicoTodo(this.promociones[i].cantidadPrincipal, this.promociones[i].cantidadSecundario, unaCesta, preguntaPrincipal, preguntaSecundario, this.promociones[i].principal[j]._id, this.promociones[i].secundario[z]._id, this.promociones[i].precioFinal, this.promociones[i]._id);
+                            hayOferta = true;
                             break;
                         }
                     }
                 }
             }
+        }
+        if (hayOferta) {
+            unaCesta.tiposIva = viejoIva; //No se suma IVA en la promoción para calcularlo en la siguiente línea.
+            unaCesta = this.recalcularIvas(unaCesta);
         }
         this.setCesta(unaCesta);
     }
@@ -615,7 +636,7 @@ class TocGame {
             let encontrado = false;
             for (let i = 0; i < miCesta.lista.length; i++) {
                 if (miCesta.lista[i]._id === infoArticulo._id) {
-                    let viejoIva = miCesta.tiposIva;
+                    var viejoIva = miCesta.tiposIva;
                     if (infoAPeso == null) {
                         miCesta.lista[i].unidades += unidades;
                         miCesta.lista[i].subtotal += unidades * infoArticulo.precioConIva;
@@ -650,7 +671,7 @@ class TocGame {
                 miCesta.tiposIva = construirObjetoIvas(infoArticulo, unidades, miCesta.tiposIva, infoAPeso);
             }
         }
-        this.buscarOfertas(miCesta);
+        this.buscarOfertas(miCesta, viejoIva);
     }
     getInfoArticulo(idArticulo) {
         return ipcRenderer.sendSync('get-info-articulo', idArticulo);

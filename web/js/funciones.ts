@@ -87,6 +87,10 @@ function construirObjetoIvas(infoArticulo, unidades, tipoIvaAnterior: TiposIva, 
 
     
 }
+function ultimoVistazoIvas() //Esto corrige el problema de la base de IVA con las promociones.
+{
+
+}
 function dateToString(fecha)
 {
     var fechaFinal = null;;

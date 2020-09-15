@@ -93,6 +93,8 @@ function construirObjetoIvas(infoArticulo, unidades, tipoIvaAnterior, infoAPeso 
     };
     return aux;
 }
+function ultimoVistazoIvas() {
+}
 function dateToString(fecha) {
     var fechaFinal = null;
     ;
