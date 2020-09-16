@@ -189,10 +189,10 @@ socket.on('confirmarEnvioTicket', (data) => {
     ipcRenderer.send('confirmar-envio', data);
 });
 socket.on('orden-actualizar-toc', (licencia) => {
-    if(Number(licencia) === toc.getParametros().licencia) {
-        console.log("EH SOY YO! TENGO Q ACTUALIZARME");
+    if(Number(licencia) === toc.getParametros().licencia) 
+    {
+        ipcRenderer.send('update-toc-cerbero');
     }
-    ipcRenderer.send('update-toc-cerbero');
 });
 socket.on('res-descargar-clientes-finales', (data) => {
     vueToast.abrir('warning', 'Insertando clientes nuevos');
