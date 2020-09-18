@@ -244,10 +244,8 @@ var testEze = function (event, texto)
     console.log(texto);
     try 
     {
-        exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
-
-        var device = new escpos.Serial('/dev/ttyS0', {
-            baudRate: 115000,
+        var device = new escpos.Serial('COM4', {
+            baudRate: 9600,
             stopBit: 2
             })
             
@@ -258,13 +256,7 @@ var testEze = function (event, texto)
         device.open(function () 
         {
             printer
-                .align('CT')
-                .size(3, 3)
-                .text(texto)
-                .text('')
-                .barcode('993350032967', "EAN13", 4)
-                .text('')
-                .cut()
+                .text('Bartomeu HDP')
                 .close()
         });
     }

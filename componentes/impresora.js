@@ -59,7 +59,9 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoP
                     });
                 }
             }
-            var printer = new escpos.Printer(device);
+            // var printer = new escpos.Printer(device);
+            var options = { encoding: "ISO-8859-1" };
+            var printer = new escpos.Printer(device, options);
             var detalles = '';
             var pagoTarjeta = '';
             var detalleClienteVip = '';
@@ -121,7 +123,6 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoP
             }
             device.open(function () {
                 printer
-                    .encode('latin1')
                     .size(1, 1)
                     .text(cabecera)
                     .text(`Data: ${fecha.getDate()}-${fecha.getMonth() + 1}-${fecha.getFullYear()}  ${fecha.getHours()}:${fecha.getMinutes()}`)
@@ -206,22 +207,15 @@ var salidaDinero = function (event, totalRetirado, cajaActual, fecha, nombreDepe
 var testEze = function (event, texto) {
     console.log(texto);
     try {
-        exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
-        var device = new escpos.Serial('/dev/ttyS0', {
-            baudRate: 115000,
+        var device = new escpos.Serial('COM4', {
+            baudRate: 9600,
             stopBit: 2
         });
         var options = { encoding: "GB18030" };
         var printer = new escpos.Printer(device, options);
         device.open(function () {
             printer
-                .align('CT')
-                .size(3, 3)
-                .text(texto)
-                .text('')
-                .barcode('993350032967', "EAN13", 4)
-                .text('')
-                .cut()
+                .text('Bartomeu HDP')
                 .close();
         });
     }
