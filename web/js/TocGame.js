@@ -628,6 +628,7 @@ class TocGame {
     quitarClienteSeleccionado() {
         vueCesta.limpiarEstiloClienteActivo();
         this.clienteSeleccionado = null;
+        vueCesta.puntosClienteActivo = 0;
     }
     insertarArticuloCesta(infoArticulo, unidades, infoAPeso = null) {
         var miCesta = this.getCesta();
@@ -710,12 +711,13 @@ class TocGame {
         this.udsAplicar = 1;
     }
     abrirModalPago() {
-        let total = 0;
-        let cesta = this.getCesta();
-        for (let i = 0; i < cesta.lista.length; i++) {
-            total += cesta.lista[i].subtotal;
-        }
-        vueCobrar.prepararModalVenta(total, this.getArrayFichados());
+        // let total = 0;
+        // let cesta = this.getCesta();
+        // for(let i = 0; i < cesta.lista.length; i++)
+        // {
+        //     total += cesta.lista[i].subtotal;
+        // }
+        vueCobrar.prepararModalVenta(Number(vueCesta.getTotal), this.getArrayFichados());
         vueCobrar.abreModal();
     }
     getUltimoTicket() {
@@ -1063,6 +1065,7 @@ class TocGame {
     seleccionarCliente(cliente) {
         vueCesta.activarEstiloClienteActivo();
         this.clienteSeleccionado = cliente;
+        getPuntosCliente(cliente.id);
         var objEnviar = {
             parametros: this.getParametros(),
             idCliente: cliente.id
@@ -1089,6 +1092,9 @@ class TocGame {
         this.infoClienteVip = null;
         this.esVIP = false;
         vueCobrar.limpiarClienteVip();
+    }
+    convertirPuntosEnDinero(puntos) {
+        return Math.trunc(puntos * 0.03 * 0.02);
     }
     esClienteVip() {
         if (this.esVIP) {

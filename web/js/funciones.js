@@ -141,6 +141,11 @@ function sincronizarDatosRapidos() {
 function elTesteo() {
     console.log('El testeo guapo guapo es: ', ipcRenderer.sendSync('testeoGuapo'));
 }
-function calcularUltimoYPrimerTicket() {
+function getPuntosCliente(idCliente) {
+    const objEnviar = {
+        parametros: toc.getParametros(),
+        idCliente: idCliente
+    };
+    socket.emit('get-puntos-cliente', objEnviar);
 }
 //# sourceMappingURL=funciones.js.map

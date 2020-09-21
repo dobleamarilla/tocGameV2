@@ -59,9 +59,7 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoP
                     });
                 }
             }
-            // var printer = new escpos.Printer(device);
-            var options = { encoding: "ISO-8859-1" };
-            var printer = new escpos.Printer(device, options);
+            var printer = new escpos.Printer(device);
             var detalles = '';
             var pagoTarjeta = '';
             var detalleClienteVip = '';
@@ -123,6 +121,7 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoP
             }
             device.open(function () {
                 printer
+                    .encode('latin1')
                     .size(1, 1)
                     .text(cabecera)
                     .text(`Data: ${fecha.getDate()}-${fecha.getMonth() + 1}-${fecha.getFullYear()}  ${fecha.getHours()}:${fecha.getMinutes()}`)

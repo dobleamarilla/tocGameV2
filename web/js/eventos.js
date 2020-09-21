@@ -206,4 +206,10 @@ socket.on('res-descargar-teclado', (data) => {
     }
     toc.setStopNecesario(false);
 });
+socket.on('get-puntos-cliente', (puntos) => {
+    if (puntos >= 0 && puntos <= 100000) {
+        vueCesta.puntosClienteActivo = puntos;
+    }
+    console.log("Puntos de cliente: " + puntos);
+});
 //# sourceMappingURL=eventos.js.map

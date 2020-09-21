@@ -77,7 +77,7 @@ var vueClientes = new Vue({
             this.clientes = aux;
         },
         consultarPuntos(cliente) {
-            console.log("Entro en consultar puntos");
+            getPuntosCliente(cliente.id);
         },
         reset() {
             toc.quitarClienteSeleccionado();

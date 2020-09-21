@@ -23,6 +23,7 @@ class TocGame
     private stopNecesario: boolean;
     private auxTotalDatafono: number;
     public datafonoForzado3G: boolean;
+
     constructor() 
     {
         const info = ipcRenderer.sendSync('getParametros');
@@ -794,7 +795,7 @@ class TocGame
     {
         vueCesta.limpiarEstiloClienteActivo();
         this.clienteSeleccionado = null;
-
+        vueCesta.puntosClienteActivo = 0;
     }
     insertarArticuloCesta(infoArticulo, unidades: number, infoAPeso = null)
     {
@@ -900,13 +901,13 @@ class TocGame
     }
     abrirModalPago()
     {
-        let total = 0;
-        let cesta = this.getCesta();
-        for(let i = 0; i < cesta.lista.length; i++)
-        {
-            total += cesta.lista[i].subtotal;
-        }
-        vueCobrar.prepararModalVenta(total, this.getArrayFichados());
+        // let total = 0;
+        // let cesta = this.getCesta();
+        // for(let i = 0; i < cesta.lista.length; i++)
+        // {
+        //     total += cesta.lista[i].subtotal;
+        // }
+        vueCobrar.prepararModalVenta(Number(vueCesta.getTotal), this.getArrayFichados());
         vueCobrar.abreModal();
     }
 
@@ -1325,10 +1326,12 @@ class TocGame
     {
         ipcRenderer.send('imprimirCierreCaja', info);
     }
-    seleccionarCliente(cliente)
+    seleccionarCliente(cliente: Cliente)
     {
         vueCesta.activarEstiloClienteActivo();
+
         this.clienteSeleccionado = cliente;
+        getPuntosCliente(cliente.id);
         var objEnviar = {
             parametros: this.getParametros(),
             idCliente: cliente.id
@@ -1361,6 +1364,10 @@ class TocGame
         this.infoClienteVip = null;
         this.esVIP = false;
         vueCobrar.limpiarClienteVip();
+    }
+    convertirPuntosEnDinero(puntos: number): number
+    {
+        return Math.trunc(puntos*0.03*0.02);
     }
     esClienteVip()
     {

@@ -15,7 +15,8 @@ var vueCesta = new Vue({
 				</thead>
 				<tbody class="tableBody" :style="conCliente">
                     <tr v-for="(item, index) of listaAlReves" v-bind:class="{'estiloPromo': item.promocion.esPromo, 'seleccionado': activo === index}" @click="selectActivo(index)">
-                        <td>{{item.nombre}}</td>
+                        <td v-if="sePuedeRegalar(item.subtotal, item.promocion.esPromo)">{{item.nombre}} <img @click="regalar(index)" src="assets/imagenes/regalo.png" alt="Regalar"></td>
+                        <td v-else>{{item.nombre}}</td>
                         <td>{{item.unidades}}</td>
                         <td>{{item.subtotal.toFixed(2)}}</td>
 					</tr>
@@ -59,14 +60,18 @@ var vueCesta = new Vue({
                 lista: []
             },
             activo: null,
-            conCliente: {}
+            conCliente: {},
+            puntosClienteActivo: 0,
+            lineaDeRegalo: null
         };
     },
     computed: {
         getTotal() {
             let suma = 0;
             for (let i = 0; i < this.cesta.lista.length; i++) {
-                suma += this.cesta.lista[i].subtotal;
+                if (i !== this.lineaDeRegalo) {
+                    suma += this.cesta.lista[i].subtotal;
+                }
             }
             return suma.toFixed(2);
         },
@@ -92,6 +97,7 @@ var vueCesta = new Vue({
                 toc.borrarItemCesta(this.activo);
             }
             this.activo = null;
+            this.lineaDeRegalo = null;
         },
         cobrar() {
             if (this.cesta.lista.length > 0) {
@@ -123,6 +129,23 @@ var vueCesta = new Vue({
         },
         abrirModalTicketsAbiertos() {
             vueCestasAbiertas.abreModal();
+        },
+        sePuedeRegalar(subtotal, esPromo) {
+            if (esPromo) {
+                return false;
+            }
+            else {
+                if (subtotal <= toc.convertirPuntosEnDinero(this.puntosClienteActivo)) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        },
+        regalar(index) {
+            this.lineaDeRegalo = index;
+            this.puntosClienteActivo = 0;
         }
     }
 });

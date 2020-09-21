@@ -86,7 +86,7 @@ var vueClientes = new Vue({
         },
         consultarPuntos(cliente)
         {
-            console.log("Entro en consultar puntos");
+            getPuntosCliente(cliente.id);
         },
         reset()
         {
