@@ -74,10 +74,10 @@ app.on('ready', () => {
             var client = new net.Socket();
             client.connect(8890, '127.0.0.1', function () {
                 console.log('Conectado al CoLinux | Venta');
-                var ventaCliente = 489;
+                var ventaCliente = 547;
                 var nombreDependienta = info.nombreDependienta;
                 var numeroTicket = info.idTicket;
-                var tienda = 1;
+                var tienda = 91;
                 var tpv = 1;
                 var tipoOperacion = 1; //1=> VENTA
                 var importe = info.total; //EN CENTIMOS DE EURO
