@@ -89,10 +89,17 @@ var vueCantidad3G = new Vue({
         },
         confirmar()
         {
-            vueClausura.setTotalCon3G(Number(this.cantidad));
-            this.cerrarModal();
-            vueClausura.cerrarCaja();
-            this.cantidad = '0';
+            if(this.cantidad == '0' && toc.getParametros().tipoDatafono == TIPO_3G)
+            {
+                vueToast.abrir('error', 'Falta introducir el total con tarjeta 3G');
+            }
+            else
+            {
+                vueClausura.setTotalCon3G(Number(this.cantidad));
+                this.cerrarModal();
+                vueClausura.cerrarCaja();
+                this.cantidad = '0';
+            }
         }
     },
     computed: {
