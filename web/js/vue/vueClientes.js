@@ -39,6 +39,7 @@ var vueClientes = new Vue({
                 </div>
 			</div>
 			<div class="modal-footer">
+				<button type="button" class="btn btn-success btn-lg mr-0" @click="nuevoCliente()">NUEVO</button>
 				<button type="button" class="btn btn-danger btn-lg mr-0" @click="reset()">BORRAR</button>
 				<button type="button" class="btn btn-secondary btn-lg" @click="volver()">SALIR</button>
 			</div>
@@ -83,6 +84,10 @@ var vueClientes = new Vue({
             toc.quitarClienteSeleccionado();
             toc.limpiarClienteVIP();
             this.busqueda = '';
+        },
+        nuevoCliente() {
+            this.cerrarModal();
+            vueNuevoCliente.abrirModal();
         }
     },
     watch: {

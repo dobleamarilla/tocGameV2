@@ -298,6 +298,35 @@ app.on('ready', () => {
     });
     //FINAL BUSCAR TRABAJADOR
 
+    //CHECK EQUAL CLIENT
+    ipcMain.on('buscar-nombre-cliente-identico', (ev, data) => { //SE PUEDE CREAR? SÍ = TRUE, NO = FALSE
+        cliente.comprobarClienteIdentico(data).then(respuesta => {
+            if(respuesta.length > 0)
+            {
+                ev.returnValue = false;
+            }
+            else
+            {
+                ev.returnValue = true;
+            }
+        });
+    });
+    //FINAL CHECK EQUAL CLIENT
+    //CHECK EQUAL CLIENT TARJETA
+    ipcMain.on('buscar-tarjeta-cliente-identico', (ev, data) => { //SE PUEDE CREAR? SÍ = TRUE, NO = FALSE
+        cliente.comprobarClienteIdenticoTarjeta(data).then(respuesta => {
+            if(respuesta.length > 0)
+            {
+                ev.returnValue = false;
+            }
+            else
+            {
+                ev.returnValue = true;
+            }
+        });
+    });
+    //FINAL CHECK EQUAL CLIENT TARJETA
+
     //GET INFO UN TICKET
     ipcMain.on('get-info-un-ticket', (ev, data)=>{
         tick.getInfoTicket(data).then(res=>{
@@ -305,6 +334,12 @@ app.on('ready', () => {
         });
     });
     //FINAL GET INFO UN TICKET
+
+    //CREAR NUEVO CLIENTE CONFIRMADO
+    ipcMain.on('cliente-nuevo-crear-confirmado', (ev, data)=>{
+        cliente.crearNuevo(data);
+    });
+    //FINAL CREAR NUEVO CLIENTE CONFIRMADO
 
     //GET INFO PARAMS TICKET
     ipcMain.on('get-params-ticket', (ev, data)=>{

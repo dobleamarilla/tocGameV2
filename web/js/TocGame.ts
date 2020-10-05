@@ -1380,6 +1380,30 @@ class TocGame
             return false;
         }
     }
+    nuevoCliente(nombre, idTarjeta)
+    {
+        //ACTUALIZAR LOS CLIENTES DESDE EL SERVIDOR
+        
+        
+        //COMPROBAR QUE EL NOMBRE Y EL ID DE LA TARJETA NO EXISTAN
+        if(ipcRenderer.sendSync('buscar-nombre-cliente-identico', nombre))
+        {
+            if(ipcRenderer.sendSync('buscar-tarjeta-cliente-identico', idTarjeta))
+            {
+                ipcRenderer.send('cliente-nuevo-crear-confirmado', {nombre: nombre, idTarjeta: idTarjeta, tienda: this.getParametros().codigoTienda});
+                vueNuevoCliente.cerrarModal();
+                vueToast.abrir('success', 'Cliente creado');
+            }
+            else
+            {
+                vueToast.abrir('error', 'Ya existe este código de tarjeta');
+            }
+        }
+        else
+        {
+            vueToast.abrir('error', 'Ya existe este nombre de cliente');
+        }
+    }
     todoListo()
     {
         if(this.todoInstalado())

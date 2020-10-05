@@ -16,6 +16,12 @@ function insertarClientes(data) {
 function buscarCliente(busqueda) {
     return Clientes.find({ $or: [{ "nombre": { '$regex': new RegExp(busqueda, 'i') } }, { "tarjetaCliente": busqueda }] }, null, { lean: true, limit: 20 });
 }
+function comprobarClienteIdentico(nombre) {
+    return Clientes.find({ nombre: nombre }, null, { lean: true, limit: 1 });
+}
+function comprobarClienteIdenticoTarjeta(nombre) {
+    return Clientes.find({ nombre: nombre }, null, { lean: true, limit: 1 });
+}
 function borrarTodo() {
     return Clientes.deleteMany({}, err => {
         if (err) {
@@ -33,7 +39,13 @@ function cargarNuevosClientes(clientes) {
     });
     return devolver;
 }
+function crearNuevo(datos) {
+    var nuevo = new Clientes({ id: 'CliBotiga_' + datos.tienda + Date.now(), nombre: datos.nombre, tarjetaCliente: datos.idTarjeta });
+    nuevo.save();
+}
 exports.clientes = Clientes;
 exports.insertarClientes = insertarClientes;
 exports.buscarCliente = buscarCliente;
+exports.comprobarClienteIdentico = comprobarClienteIdentico;
+exports.comprobarClienteIdenticoTarjeta = comprobarClienteIdenticoTarjeta;
 //# sourceMappingURL=clientes.js.map
