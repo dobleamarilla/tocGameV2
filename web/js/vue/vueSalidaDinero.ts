@@ -18,7 +18,11 @@ var vueSalidaDinero = new Vue({
 				<div class="form-group row">
 					<label for="inputPassword" class="col-sm-3 col-form-label">Concepto</label>
 					<div class="col-sm-9">
-						<input type="text" v-model="concepto" class="form-control form-control-lg">
+                        <select v-model="concepto" class="custom-select">
+                            <option selected>ENTREGA DIARIA</option>
+                            <option>COMPRAS</option>
+                            <option>OTROS</option>
+                    </select>
 					</div>
 				</div>
 			</div>
@@ -33,7 +37,7 @@ var vueSalidaDinero = new Vue({
     data () {
       return {
           cantidad: 0,
-          concepto: 'Entrega diaria'
+          concepto: 'ENTREGA DIARIA'
       }
     },
     methods: {
