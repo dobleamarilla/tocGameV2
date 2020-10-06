@@ -195,7 +195,8 @@ var vueApertura = new Vue({
                         detalleCierre: [],
                         enviado: false,
                         enTransito: false,
-                        totalDatafono3G: null
+                        totalDatafono3G: null,
+                        totalClearOne: null
                     };
                     toc.abrirCaja(data);
                 }

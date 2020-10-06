@@ -185,6 +185,15 @@ app.on('ready', () => {
         });
     });
     //FINAL TICKETS INTERVALO
+    //GET TICKETS INTERVALO SIMPLE
+    ipcMain.on('getTicketsIntervaloSimple', (ev, args) => {
+        tick.getTicketsIntervaloSimple(args).then(res => {
+            ev.returnValue = res;
+        }).catch(err => {
+            console.log(err);
+        });
+    });
+    //FINAL TICKETS INTERVALO SIMPLE
     //ENVIAR EMAIL
     ipcMain.on('enviar-email', (ev, data) => {
         email.enviarEmail(data);

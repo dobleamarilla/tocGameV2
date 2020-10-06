@@ -40,7 +40,8 @@ var schemaSincro = new conexion.mongoose.Schema({
         type: Boolean,
         default: false
     },
-    totalDatafono3G: Number
+    totalDatafono3G: Number,
+    totalClearOne: Number
 });
 var SincroCajas = conexion.mongoose.model('sincro-cajas', schemaSincro);
 

@@ -47,12 +47,39 @@ var vueCantidad3G = new Vue({
                 `,
     data() {
         return {
-            cantidad: '0'
+            cantidad: '0',
+            hayCon3G: false
         };
     },
     methods: {
         abreModal() {
-            $('#modalCantidad3G').modal();
+            var arrayMovimientos = ipcRenderer.sendSync('get-rango-movimientos', { fechaInicio: toc.getInicioTimeCaja(), fechaFinal: Date.now() });
+            var suma3G = 0;
+            var sumaClearOne = 0;
+            for (let i = 0; i < arrayMovimientos.length; i++) {
+                if (arrayMovimientos[i].concepto == 'Targeta 3G') {
+                    suma3G += arrayMovimientos[i].valor;
+                }
+                else {
+                    if (arrayMovimientos[i].concepto == 'Targeta') {
+                        sumaClearOne += arrayMovimientos[i].valor;
+                    }
+                }
+            }
+            if (suma3G > 0) {
+                this.hayCon3G = true;
+                $('#modalCantidad3G').modal();
+            }
+            else {
+                if (suma3G == 0) {
+                    this.hayCon3G = false;
+                    this.cantidad = '0';
+                    if (sumaClearOne > 0) {
+                        vueClausura.setTotalClearOne(sumaClearOne);
+                    }
+                    this.confirmar();
+                }
+            }
         },
         cerrarModal() {
             $('#modalCantidad3G').modal('hide');
@@ -79,8 +106,8 @@ var vueCantidad3G = new Vue({
             vueClausura.abreModal();
         },
         confirmar() {
-            if (this.cantidad == '0' && toc.getParametros().tipoDatafono == TIPO_3G) {
-                vueToast.abrir('error', 'Falta introducir el total con tarjeta 3G');
+            if (this.hayCon3G && Number(this.cantidad) == 0) {
+                vueToast.abrir('error', 'Hay ventas con el datáfono 3G (manual)');
             }
             else {
                 vueClausura.setTotalCon3G(Number(this.cantidad));

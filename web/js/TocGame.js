@@ -59,7 +59,8 @@ class TocGame {
                 detalleCierre: [],
                 enviado: false,
                 enTransito: false,
-                totalDatafono3G: null
+                totalDatafono3G: null,
+                totalClearOne: null
             };
         }
         else {
@@ -124,6 +125,9 @@ class TocGame {
         else {
             return false;
         }
+    }
+    getInicioTimeCaja() {
+        return this.caja.inicioTime;
     }
     getTipoImpresora() {
         return this.parametros.tipoImpresora;
@@ -926,16 +930,18 @@ class TocGame {
             detalleCierre: [],
             enviado: false,
             enTransito: false,
-            totalDatafono3G: null
+            totalDatafono3G: null,
+            totalClearOne: null
         };
         ipcRenderer.send('actualizar-info-caja', this.caja);
     }
-    cerrarCaja(total, detalleCierre, guardarInfoMonedas, totalDatafono3G) {
+    cerrarCaja(total, detalleCierre, guardarInfoMonedas, totalDatafono3G, totalClearOne) {
         this.caja.totalCierre = total;
         this.caja.detalleCierre = detalleCierre;
         this.caja.finalTime = Date.now();
         this.caja.idDependienta = this.getCurrentTrabajador()._id;
         this.caja.totalDatafono3G = totalDatafono3G;
+        this.caja.totalClearOne = totalClearOne;
         this.caja = this.calcularDatosCaja(this.caja);
         let objEmail = {
             caja: this.caja,

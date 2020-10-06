@@ -517,7 +517,21 @@ function enviarEmail(info) {
                                   <tr>
                                     <td class="attributes_item">
                                       <span class="f-fallback">
-                                      <strong>Descuadre solo TARJETA:</strong> ${(info.caja.totalDatafono3G - info.caja.infoExtra.totalTarjeta).toFixed(2)} €
+                                      <strong>Descuadre solo TARJETA:</strong> ${((info.caja.totalDatafono3G + info.caja.totalClearOne) - info.caja.infoExtra.totalTarjeta).toFixed(2)} €
+                                      </span>
+                                    </td>
+                                  </tr>																
+                                  <tr>
+                                    <td class="attributes_item">
+                                      <span class="f-fallback">
+                                      <strong>3G:</strong> ${(info.caja.totalDatafono3G + info.caja.totalClearOne > 0) ? (((info.caja.totalDatafono3G) / info.caja.totalDatafono3G + info.caja.totalClearOne) * 100).toFixed(2) : '0'} %
+                                      </span>
+                                    </td>
+                                  </tr>																
+                                  <tr>
+                                    <td class="attributes_item">
+                                      <span class="f-fallback">
+                                      <strong>ClearOne:</strong> ${(info.caja.totalDatafono3G + info.caja.totalClearOne > 0) ? (((info.caja.totalClearOne) / info.caja.totalDatafono3G + info.caja.totalClearOne) * 100).toFixed(2) : '0'} %
                                       </span>
                                     </td>
                                   </tr>																
@@ -552,7 +566,9 @@ function enviarEmail(info) {
                                 </table>
                               </td>
                             </tr>
-                          </table>												<p>Información extra:</p>
+                          </table>
+                          												
+                          <p>Información extra:</p>
                           <table class="attributes" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                             <tr>
                               <td class="attributes_content">

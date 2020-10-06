@@ -122,7 +122,8 @@ interface Caja
     }[],
     enviado: boolean,
     enTransito: boolean,
-    totalDatafono3G: number
+    totalDatafono3G: number,
+    totalClearOne: number
 }
 
 interface Parametros

@@ -120,6 +120,7 @@ var vueClausura = new Vue({
             ],
             activo: 0,
             totalCon3G: 0,
+            totalClearOne: 0,
             sizeBilletes: '100%'
         };
     },
@@ -169,13 +170,16 @@ var vueClausura = new Vue({
             };
             dialog.showMessageBox(remote.getCurrentWindow(), options, (res) => {
                 if (res === 0) {
-                    toc.cerrarCaja(this.getTotal, this.getDetalle, this.infoDinero, this.totalCon3G);
+                    toc.cerrarCaja(this.getTotal, this.getDetalle, this.infoDinero, this.totalCon3G, this.totalClearOne);
                     vuePantallaCierre.abreModal();
                 }
             });
         },
         setTotalCon3G(x) {
             this.totalCon3G = x;
+        },
+        setTotalClearOne(x) {
+            this.totalClearOne = x;
         },
         abrirDatos3G() {
             this.cerrarModal();

@@ -92,6 +92,7 @@ function getTicketsIntervalo(unaCaja: Caja)
         }
     }).lean();
 }
+
 function getTicketsCajaActual(fechaInicioCaja: number)
 {
     return Tickets.find({timestamp: {$gte: fechaInicioCaja}}, null, {lean: true}, (err, respuesta) => {
