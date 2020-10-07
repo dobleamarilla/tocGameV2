@@ -543,14 +543,14 @@ function enviarEmail(info)
                                   <tr>
                                     <td class="attributes_item">
                                       <span class="f-fallback">
-                                      <strong>3G:</strong> ${(info.caja.totalDatafono3G+info.caja.totalClearOne > 0) ? (((info.caja.totalDatafono3G)/info.caja.totalDatafono3G+info.caja.totalClearOne)*100).toFixed(2): '0'} %
+                                      <strong>3G:</strong> ${(info.caja.totalDatafono3G+info.caja.totalClearOne != 0) ? (((info.caja.totalDatafono3G)/(info.caja.totalDatafono3G+info.caja.totalClearOne))*100).toFixed(2): '0'} %
                                       </span>
                                     </td>
                                   </tr>																
                                   <tr>
                                     <td class="attributes_item">
                                       <span class="f-fallback">
-                                      <strong>ClearOne:</strong> ${(info.caja.totalDatafono3G+info.caja.totalClearOne > 0) ? (((info.caja.totalClearOne)/info.caja.totalDatafono3G+info.caja.totalClearOne)*100).toFixed(2) : '0'} %
+                                      <strong>ClearOne:</strong> ${(info.caja.totalDatafono3G+info.caja.totalClearOne != 0) ? (((info.caja.totalClearOne)/(info.caja.totalDatafono3G+info.caja.totalClearOne))*100).toFixed(2) : '0'} %
                                       </span>
                                     </td>
                                   </tr>																

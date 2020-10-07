@@ -75,6 +75,7 @@ var vueCantidad3G = new Vue({
             if(suma3G > 0)
             {
                 this.hayCon3G = true;
+                vueClausura.setTotalClearOne(sumaClearOne);
                 $('#modalCantidad3G').modal();
             }
             else
