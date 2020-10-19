@@ -378,6 +378,8 @@ var cierreCaja = function (event, calaixFet, nombreTrabajador, descuadre, nClien
         
         var options = { encoding: "ISO-8859-15" }; //"GB18030" };
         var printer = new escpos.Printer(device, options);
+        let mesInicial = fechaInicio.getMonth()+1;
+        let mesFinal = fechaFinal.getMonth()+1;
         device.open(function () 
         {
             printer
@@ -389,8 +391,8 @@ var cierreCaja = function (event, calaixFet, nombreTrabajador, descuadre, nClien
                 .text('')
                 .align('LT')
                 .text('Resp.   : ' + nombreTrabajador)
-                .text('Inici: ' + fechaInicio.getDate() + '-' + fechaInicio.getMonth()+1 + '-' + fechaInicio.getFullYear() + ' ' + fechaInicio.getHours() + ':' + fechaInicio.getMinutes())
-                .text('Final: ' + fechaFinal.getDate() + '-' + fechaFinal.getMonth()+1 + '-' + fechaFinal.getFullYear() + ' ' + fechaFinal.getHours() + ':' + fechaFinal.getMinutes())
+                .text('Inici: ' + fechaInicio.getDate() + '-' + mesInicial + '-' + fechaInicio.getFullYear() + ' ' + fechaInicio.getHours() + ':' + fechaInicio.getMinutes())
+                .text('Final: ' + fechaFinal.getDate() + '-' + mesFinal + '-' + fechaFinal.getFullYear() + ' ' + fechaFinal.getHours() + ':' + fechaFinal.getMinutes())
                 .text('')
                 .size(1, 2)
                 .text('Calaix fet       :      ' + calaixFet.toFixed(2))

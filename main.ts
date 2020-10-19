@@ -61,7 +61,8 @@ app.on('ready', () => {
             frame: false, //cambiar a false
             webPreferences: {
                 nodeIntegration: true,
-                webSecurity: false
+                webSecurity: false,
+                enableRemoteModule: true
             },
             icon: iconPath
         });
