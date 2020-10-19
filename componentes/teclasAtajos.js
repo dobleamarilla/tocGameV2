@@ -27,7 +27,7 @@ function actualizarTocSanPedro() {
     else {
         if (os.platform() === 'linux') {
             console.log("SOY LINUX");
-            execute('gnome-terminal -- bash -c "~/./instalador.sh; exec bash"', (output) => {
+            execute('gnome-terminal -- bash -c "~/instalador/./instalador.sh; exec bash"', (output) => {
                 console.log(output);
             });
         }
