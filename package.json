@@ -11,7 +11,7 @@
         "start": "npm run compile && electron main.js",
         "reparar": "npx electron-rebuild -f -p",
         "build:windows": "electron-packager . tocGame --overwrite --platform=win32 --out=windowsBuild --icon=icon.ico",
-        "build:linux": "electron-packager . tocGame --overwrite --asar=true --platform=linux --arch=x64 --prune=true --out=linuxBuild --icon=icon.ico",
+        "build:linux": "electron-packager . tocGame --overwrite --platform=linux --arch=x64 --prune=true --out=linuxBuild --icon=icon.ico",
         "version": "npm run compile && standard-version"
     },
     "dependencies": {
