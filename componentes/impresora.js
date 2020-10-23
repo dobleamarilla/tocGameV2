@@ -359,7 +359,8 @@ var cierreCaja = function (event, calaixFet, nombreTrabajador, descuadre, nClien
     }
 };
 function errorImpresora(err, event) {
-    console.log("No se encuentra la impresora");
+    let fecha = new Date();
+    console.log(`${fecha.toLocaleDateString()} - ${fecha.toLocaleTimeString} -> No se encuentra la impresora`);
     console.log(err);
     event.sender.send('falloImpresora', 'La impresora no está configurada');
     if (os.platform() === 'win32') {

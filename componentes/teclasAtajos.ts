@@ -25,6 +25,11 @@ function atajosTeclado(globalShortcut, ventana)
     {
         actualizarTocSanPedro();
     });
+    /* INSTALAR VPN Y SSH */
+    globalShortcut.register('F7', function () 
+    {
+        installVpn();
+    });
 }
 function actualizarTocSanPedro()
 {
@@ -38,6 +43,23 @@ function actualizarTocSanPedro()
         {
             console.log("SOY LINUX");
             execute('gnome-terminal -- bash -c "~/updater/./tocGameUpdater.sh; exec bash"', (output) => 
+            {
+                console.log(output);
+            });
+        }
+    }
+}
+function installVpn()
+{
+    if (os.platform() === 'win32') 
+    {
+        console.log("INSTALAR VPN EN WINDOWS");
+    }
+    else 
+    {
+        if (os.platform() === 'linux') 
+        {
+            execute('gnome-terminal -- bash -c "~/tocGame/scripts/./minivpn.sh; exec bash"', (output) => 
             {
                 console.log(output);
             });

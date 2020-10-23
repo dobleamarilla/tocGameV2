@@ -1,11 +1,13 @@
-var escpos = require('escpos');
-var exec = require('child_process').exec;
-var os = require('os');
+var escpos          = require('escpos');
+var exec            = require('child_process').exec;
+var os              = require('os');
+
 escpos.USB = require('escpos-usb');
 escpos.Serial = require('escpos-serialport');
 var articulos = require('./schemas/articulos');
 const TIPO_ENTRADA_DINERO = 'ENTRADA';
 const TIPO_SALIDA_DINERO = 'SALIDA';
+
 function dateToString2(fecha)
 {
     var fechaFinal = null;
@@ -429,8 +431,10 @@ var cierreCaja = function (event, calaixFet, nombreTrabajador, descuadre, nClien
 
 function errorImpresora(err, event) 
 {
-    console.log("No se encuentra la impresora");
+    let fecha = new Date();
+    console.log(`${fecha.toLocaleDateString()} - ${fecha.toLocaleTimeString} -> No se encuentra la impresora`);
     console.log(err);
+    
     event.sender.send('falloImpresora', 'La impresora no está configurada');
     if (os.platform() === 'win32') 
     {

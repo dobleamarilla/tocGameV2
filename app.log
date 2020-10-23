@@ -1,0 +1,8 @@
+
+> toc-game@2.3.120 start /home/hit/entornoToc/tocGameV2
+> npm run compile && electron main.js
+
+
+> toc-game@2.3.120 compile /home/hit/entornoToc/tocGameV2
+> tsc
+
