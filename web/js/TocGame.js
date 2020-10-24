@@ -29,7 +29,10 @@ class TocGame {
                 nombreEmpresa: '',
                 nombreTienda: '',
                 tipoImpresora: TIPO_USB,
-                tipoDatafono: TIPO_CLEARONE
+                tipoDatafono: TIPO_CLEARONE,
+                clearOneCliente: 0,
+                clearOneTienda: 0,
+                clearOneTpv: 0
             };
         }
         if (infoCaja === null) {
@@ -836,7 +839,15 @@ class TocGame {
                 if (this.parametros.tipoDatafono === TIPO_CLEARONE && !this.datafonoForzado3G) {
                     vueCobrar.activoEsperaDatafono();
                     //this.ticketColaDatafono = objTicket;
-                    ipcRenderer.send('ventaDatafono', { objTicket: objTicket, nombreDependienta: infoTrabajador.nombre, idTicket: nuevoIdTicket, total: Number((total * 100).toFixed(2)).toString() });
+                    ipcRenderer.send('ventaDatafono', {
+                        objTicket: objTicket,
+                        nombreDependienta: infoTrabajador.nombre,
+                        idTicket: nuevoIdTicket,
+                        total: Number((total * 100).toFixed(2)).toString(),
+                        clearOneCliente: this.parametros.clearOneCliente,
+                        clearOneTienda: this.parametros.clearOneTienda,
+                        clearOneTpv: this.parametros.clearOneTpv
+                    });
                     this.auxTotalDatafono = Number((total).toFixed(2));
                     // this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Targeta', true);
                 }

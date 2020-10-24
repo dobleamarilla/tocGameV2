@@ -2,7 +2,7 @@ var vueConfigurador = new Vue({
     el: '#vueConfigurador',
     template: 
     /*html*/ `
-<div class="modal" id="modalConfigurador" tabindex="-1" role="dialog">
+    <div class="modal" id="modalConfigurador" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -28,6 +28,24 @@ var vueConfigurador = new Vue({
                         </select>
 					</div>
 				</div>
+				<div v-if="tipoDatafono == 'CLEARONE'" class="form-group row">
+                    <label for="inputDatafono" class="col-sm-3 col-form-label">Cliente</label>
+                    <div class="col-sm-9">
+                        <input v-model="clearOneCliente" type="text" class="form-control">
+                    </div>
+				</div>
+				<div v-if="tipoDatafono == 'CLEARONE'" class="form-group row">
+                    <label for="inputDatafono" class="col-sm-3 col-form-label">Tienda</label>
+                    <div class="col-sm-9">
+                        <input v-model="clearOneTienda" type="text" class="form-control">
+                    </div>
+				</div>
+				<div v-if="tipoDatafono == 'CLEARONE'" class="form-group row">
+                    <label for="inputDatafono" class="col-sm-3 col-form-label">TPV</label>
+                    <div class="col-sm-9">
+                        <input v-model="clearOneTpv" type="text" class="form-control">
+                    </div>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary" @click="confirmar()">Confirmar</button>
@@ -40,7 +58,10 @@ var vueConfigurador = new Vue({
     data() {
         return {
             tipoImpresora: '',
-            tipoDatafono: ''
+            tipoDatafono: '',
+            clearOneCliente: '',
+            clearOneTienda: '',
+            clearOneTpv: ''
         };
     },
     methods: {
@@ -49,6 +70,9 @@ var vueConfigurador = new Vue({
                 let parametros = toc.getParametros();
                 this.tipoImpresora = parametros.tipoImpresora;
                 this.tipoDatafono = parametros.tipoDatafono;
+                this.clearOneCliente = parametros.clearOneCliente;
+                this.clearOneTienda = parametros.clearOneTienda;
+                this.clearOneTpv = parametros.clearOneTpv;
                 $('#modalConfigurador').modal();
             }
             else {
@@ -63,7 +87,13 @@ var vueConfigurador = new Vue({
             this.tipoDatafono = 'CLEARONE';
         },
         confirmar() {
-            ipcRenderer.send('nueva-configuracion', { impresora: this.tipoImpresora, datafono: this.tipoDatafono });
+            ipcRenderer.send('nueva-configuracion', {
+                impresora: this.tipoImpresora,
+                datafono: this.tipoDatafono,
+                clearOneCliente: Number(this.clearOneCliente),
+                clearOneTienda: Number(this.clearOneTienda),
+                clearOneTpv: Number(this.clearOneTpv)
+            });
         }
     }
 });

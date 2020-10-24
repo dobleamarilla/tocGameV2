@@ -135,7 +135,10 @@ interface Parametros
     nombreEmpresa: string,
     nombreTienda: string,
     tipoDatafono: string,
-    tipoImpresora: string
+    tipoImpresora: string,
+    clearOneCliente?: number,
+    clearOneTienda?: number,
+    clearOneTpv?: number
 }
 
 interface Trabajador

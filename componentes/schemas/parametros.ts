@@ -9,7 +9,10 @@ var params = new conexion.mongoose.Schema({
     nombreTienda: String,
     tipoImpresora: String,
     tipoDatafono: String,
-    ultimoTicket: Number
+    ultimoTicket: Number,
+    clearOneCliente: Number,
+    clearOneTienda: Number,
+    clearOneTpv: Number
 });
 var Parametros = conexion.mongoose.model('Parametros', params);
 
@@ -40,7 +43,13 @@ function getParams()
 
 function setParams(info)
 {
-    return Parametros.update({_id: "PARAMETROS"}, {tipoImpresora: info.impresora, tipoDatafono: info.datafono});
+    return Parametros.update({_id: "PARAMETROS"}, {
+        tipoImpresora: info.impresora, 
+        tipoDatafono: info.datafono,
+        clearOneCliente: info.clearOneCliente,
+        clearOneTienda: info.clearOneTienda,
+        clearOneTpv: info.clearOneTpv
+    });
 }
 
 exports.parametros              = Parametros;

@@ -1,8 +1,9 @@
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -75,12 +76,11 @@ app.on('ready', () => {
     ipcMain.on('ventaDatafono', (event, info) => {
         var client = new net.Socket();
         client.connect(8890, '127.0.0.1', function () {
-            console.log('Conectado al CoLinux | Venta');
-            var ventaCliente = 547;
+            var ventaCliente = info.clearOneCliente;
             var nombreDependienta = info.nombreDependienta;
             var numeroTicket = info.idTicket;
-            var tienda = 91;
-            var tpv = 1;
+            var tienda = info.clearOneTienda;
+            var tpv = info.clearOneTpv;
             var tipoOperacion = 1; //1=> VENTA
             var importe = info.total; //EN CENTIMOS DE EURO
             var venta_t = `\x02${ventaCliente};${tienda};${tpv};ezequiel;${numeroTicket};${tipoOperacion};${importe};;;;;;;\x03`;
@@ -105,7 +105,6 @@ app.on('ready', () => {
         client.on('close', function () {
             console.log('Conexión cerrada');
         });
-        //event.sender.send('canal1', 'EJEMPLO DE EVENT SENDER SEND');
     });
     //GET PARAMETROS
     ipcMain.on('getParametros', (ev, args) => {

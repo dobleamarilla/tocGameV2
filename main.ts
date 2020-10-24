@@ -74,12 +74,11 @@ app.on('ready', () => {
     ipcMain.on('ventaDatafono', (event: any, info: any) => {
             var client = new net.Socket();
             client.connect(8890, '127.0.0.1', function () {
-                console.log('Conectado al CoLinux | Venta');
-                var ventaCliente = 547;
+                var ventaCliente = info.clearOneCliente;
                 var nombreDependienta = info.nombreDependienta;
                 var numeroTicket = info.idTicket;
-                var tienda = 91;
-                var tpv = 1;
+                var tienda = info.clearOneTienda;
+                var tpv = info.clearOneTpv;
                 var tipoOperacion = 1; //1=> VENTA
                 var importe = info.total; //EN CENTIMOS DE EURO
                 var venta_t = `\x02${ventaCliente};${tienda};${tpv};ezequiel;${numeroTicket};${tipoOperacion};${importe};;;;;;;\x03`;
@@ -105,7 +104,6 @@ app.on('ready', () => {
             client.on('close', function () {
                 console.log('Conexión cerrada');
             });
-            //event.sender.send('canal1', 'EJEMPLO DE EVENT SENDER SEND');
     });
 
     //GET PARAMETROS
