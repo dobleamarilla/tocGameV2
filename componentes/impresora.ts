@@ -314,18 +314,30 @@ var entradaDinero = function (event, totalIngresado, cajaActual, fecha, nombreDe
         errorImpresora(err, event);
     }
 }
-var abrirCajon = function (event) 
+var abrirCajon = function (event, tipoImpresora) 
 {
     try 
     {
         exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
-        var device = new escpos.USB('0x4B8', '0x202'); //USB
-        //  var device = new escpos.Serial('/dev/ttyS0', {
-        //      baudRate: 115000,
-        //      stopBit: 2
-        //  }) //SERIE
-        var options = { encoding: "GB18030" };
-        var printer = new escpos.Printer(device, options);
+        if(tipoImpresora === 'USB')
+        {
+            console.log('VA POR USB');
+            var device = new escpos.USB('0x4B8', '0x202'); //USB
+        }
+        else
+        {
+            if(tipoImpresora === 'SERIE')
+            {
+                console.log('VA POR SERIE');
+                var device = new escpos.Serial('/dev/ttyS0', {
+                    baudRate: 115000,
+                    stopBit: 2
+                  });
+            }
+        }
+
+        var printer = new escpos.Printer(device);
+
         device.open(function () 
         {
             printer
@@ -486,9 +498,9 @@ exports.imprimirTicketCierreCaja = function (req, event)
     cierreCaja(event, req.calaixFet, req.nombreTrabajador, req.descuadre, req.nClientes, req.recaudado, req.arrayMovimientos, req.nombreTienda, req.fechaInicio, req.fechaFinal, req.cInicioCaja, req.cFinalCaja, req.impresora);
 }
 
-exports.abrirCajon = function (event) 
+exports.abrirCajon = function (tipoImpresora, event) 
 {
-    abrirCajon(event);
+    abrirCajon(event, tipoImpresora);
 }
 
 exports.testEze = function (texto, event)

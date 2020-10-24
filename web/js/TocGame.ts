@@ -982,6 +982,7 @@ class TocGame
             if(tipo === "EFECTIVO")
             {
                 objTicket.tipoPago = "EFECTIVO";
+                ipcRenderer.send('abrirCajon', this.parametros.tipoImpresora)
             }
             else
             {

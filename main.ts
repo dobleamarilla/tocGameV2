@@ -659,7 +659,6 @@ app.on('ready', () => {
 
     });
     ipcMain.on('imprimir', (event: any, args: any) => {
-        console.log("OYE SIRVE ESTO: ", args);
         impresora.imprimirTicket(args, event);
     });
     ipcMain.on('imprimir-test', (event: any, args: any) => {
@@ -669,9 +668,9 @@ app.on('ready', () => {
 
         impresora.imprimirTicketSalida(args, event);
     });
-    ipcMain.on('abrirCajon', (event: any, args: any) => {
+    ipcMain.on('abrirCajon', (event: any, tipoImpresora: string) => {
 
-        impresora.abrirCajon(event);
+        impresora.abrirCajon(tipoImpresora, event);
     });
     ipcMain.on('imprimirEntradaDinero', (event: any, args: any) => {
 

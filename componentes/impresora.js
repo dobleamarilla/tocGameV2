@@ -1,8 +1,9 @@
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -264,16 +265,23 @@ var entradaDinero = function (event, totalIngresado, cajaActual, fecha, nombreDe
         errorImpresora(err, event);
     }
 };
-var abrirCajon = function (event) {
+var abrirCajon = function (event, tipoImpresora) {
     try {
         exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
-        var device = new escpos.USB('0x4B8', '0x202'); //USB
-        //  var device = new escpos.Serial('/dev/ttyS0', {
-        //      baudRate: 115000,
-        //      stopBit: 2
-        //  }) //SERIE
-        var options = { encoding: "GB18030" };
-        var printer = new escpos.Printer(device, options);
+        if (tipoImpresora === 'USB') {
+            console.log('VA POR USB');
+            var device = new escpos.USB('0x4B8', '0x202'); //USB
+        }
+        else {
+            if (tipoImpresora === 'SERIE') {
+                console.log('VA POR SERIE');
+                var device = new escpos.Serial('/dev/ttyS0', {
+                    baudRate: 115000,
+                    stopBit: 2
+                });
+            }
+        }
+        var printer = new escpos.Printer(device);
         device.open(function () {
             printer
                 .cashdraw(2)
@@ -395,8 +403,8 @@ exports.imprimirTicketEntrada = function (req, event) {
 exports.imprimirTicketCierreCaja = function (req, event) {
     cierreCaja(event, req.calaixFet, req.nombreTrabajador, req.descuadre, req.nClientes, req.recaudado, req.arrayMovimientos, req.nombreTienda, req.fechaInicio, req.fechaFinal, req.cInicioCaja, req.cFinalCaja, req.impresora);
 };
-exports.abrirCajon = function (event) {
-    abrirCajon(event);
+exports.abrirCajon = function (tipoImpresora, event) {
+    abrirCajon(event, tipoImpresora);
 };
 exports.testEze = function (texto, event) {
     testEze(event, texto);
