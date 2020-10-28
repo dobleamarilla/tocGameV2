@@ -1089,7 +1089,10 @@ class TocGame
         }
         this.datafonoForzado3G = false;
         this.resetEstados();
-        vueCobrar.resetEstados();
+        if(tipo != "TARJETA" || this.datafonoForzado3G)
+        {
+            vueCobrar.resetEstados();
+        }
     }
     limpiarDevolucion()
     {

@@ -2,7 +2,7 @@ var vueCobrar = new Vue({
     el: '#vueCobrar',
     template: 
     /*html*/ `
-<div class="modal" id="modalVueCobrar" tabindex="-1" role="dialog">
+<div class="modal" id="modalVueCobrar" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
 	<div class="modal-dialog" role="document" style="max-width: 1350px">
 		<div class="modal-content">
 			<div class="modal-body">
@@ -111,7 +111,7 @@ var vueCobrar = new Vue({
                 </div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary btn-lg" @click="cerrarModal()">Cancelar</button>
+				<button type="button" class="btn btn-primary" style="font-size: 50px" @click="cerrarModal()">Cancelar</button>
 			</div>
 		</div>
     </div>
@@ -143,8 +143,14 @@ var vueCobrar = new Vue({
             $('#modalVueCobrar').modal();
         },
         cerrarModal() {
-            this.setEsperando(false);
-            $('#modalVueCobrar').modal('hide');
+            if (!this.esperando && this.esperandoDatafono.display == 'none') {
+                console.log("Esperando es: ", this.esperando);
+                this.setEsperando(false);
+                $('#modalVueCobrar').modal('hide');
+            }
+            else {
+                vueToast.abrir('warning', 'Hay una operación pendiente');
+            }
         },
         agregarTecla(x) {
             this.cuentaAsistenteTeclado = String(Number(this.cuentaAsistenteTeclado + x));
@@ -178,6 +184,7 @@ var vueCobrar = new Vue({
             this.esDevolucion = data;
         },
         activoEsperaDatafono() {
+            this.setEsperando(true);
             this.esperandoDatafono.display = 'unset';
         },
         desactivoEsperaDatafono() {

@@ -70,6 +70,7 @@ app.on('ready', () => {
 
     atajos.atajos(globalShortcut, ventanaPrincipal);
 
+    
     /* ACCIONES IPC-MAIN */
     ipcMain.on('ventaDatafono', (event: any, info: any) => {
             var client = new net.Socket();
@@ -103,6 +104,7 @@ app.on('ready', () => {
             });
             client.on('close', function () {
                 console.log('Conexión cerrada');
+                client.destroy();
             });
     });
 
