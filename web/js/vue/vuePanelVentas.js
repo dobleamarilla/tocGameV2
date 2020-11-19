@@ -22,10 +22,10 @@ var vuePanelVentas = new Vue({
             <template v-for="index2 in 6">
                 <div class="col colJuntitas"  v-if="listadoTeclas[(index-1)*6+(index2-1)].idArticle >= 0">
                     <template v-if="listadoTeclas[(index-1)*6+(index2-1)].esSumable === true">
-                        <button v-bind:id="listadoTeclas[(index-1)*6+(index2-1)].idBoton" v-bind:class="['btn', 'btn-primary', 'rounded-0', 'w-100', 'teclas', 'colorIvan'+index]" @click="clickTecla(listadoTeclas[(index-1)*6+(index2-1)])" v-on:contextmenu="abrirFicha(listadoTeclas[(index-1)*6+(index2-1)])" style="background-color: #dee3e9;">{{listadoTeclas[(index-1)*6+(index2-1)].nombreArticulo}}</button>
+                        <button v-bind:id="listadoTeclas[(index-1)*6+(index2-1)].idBoton" v-bind:class="['btn', 'btn-primary', 'rounded-0', 'w-100', 'teclas', 'colorIvan'+index]" @click="clickTecla(listadoTeclas[(index-1)*6+(index2-1)])" v-on:contextmenu="abrirFicha(listadoTeclas[(index-1)*6+(index2-1)])" style="background-color: #dee3e9;">{{listadoTeclas[(index-1)*6+(index2-1)].nombreArticulo.nombre}}</button>
                     </template>
                     <template v-else>
-                        <button v-bind:id="listadoTeclas[(index-1)*6+(index2-1)].idBoton" v-bind:class="['btn', 'btn-primary', 'rounded-0', 'w-100', 'teclas', 'colorIvan'+index]" @click="modalesSumable(listadoTeclas[(index-1)*6+(index2-1)], listadoTeclas[(index-1)*6+(index2-1)].idBoton)" style="background-color: #dee3e9;">{{listadoTeclas[(index-1)*6+(index2-1)].nombreArticulo}}</button>
+                        <button v-bind:id="listadoTeclas[(index-1)*6+(index2-1)].idBoton" v-bind:class="['btn', 'btn-primary', 'rounded-0', 'w-100', 'teclas', 'colorIvan'+index]" @click="modalesSumable(listadoTeclas[(index-1)*6+(index2-1)], listadoTeclas[(index-1)*6+(index2-1)].idBoton)" style="background-color: #dee3e9;">{{listadoTeclas[(index-1)*6+(index2-1)].nombreArticulo.nombre}}</button>
                     </template>
                 </div>
                 <div class="col colJuntitas" v-else></div>
@@ -37,45 +37,47 @@ var vuePanelVentas = new Vue({
     data() {
         return {
             listaMenus: [],
+            listaPrecios: [],
             menuActivo: 0,
             listadoTeclas: [
-                { idBoton: 'tecla0', idArticle: -1, pos: -1, color: 1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla1', idArticle: -1, pos: -1, color: 2, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla2', idArticle: -1, pos: -1, color: 3, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla3', idArticle: -1, pos: -1, color: 4, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla4', idArticle: -1, pos: -1, color: 5, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla5', idArticle: -1, pos: -1, color: 6, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla6', idArticle: -1, pos: -1, color: 1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla7', idArticle: -1, pos: -1, color: 2, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla8', idArticle: -1, pos: -1, color: 3, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla9', idArticle: -1, pos: -1, color: 4, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla10', idArticle: -1, pos: -1, color: 5, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla11', idArticle: -1, pos: -1, color: 6, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla12', idArticle: -1, pos: -1, color: 1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla13', idArticle: -1, pos: -1, color: 2, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla14', idArticle: -1, pos: -1, color: 3, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla15', idArticle: -1, pos: -1, color: 4, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla16', idArticle: -1, pos: -1, color: 5, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla17', idArticle: -1, pos: -1, color: 6, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla18', idArticle: -1, pos: -1, color: 1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla19', idArticle: -1, pos: -1, color: 2, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla20', idArticle: -1, pos: -1, color: 3, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla21', idArticle: -1, pos: -1, color: 4, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla22', idArticle: -1, pos: -1, color: 5, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla23', idArticle: -1, pos: -1, color: 6, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla24', idArticle: -1, pos: -1, color: 1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla25', idArticle: -1, pos: -1, color: 2, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla26', idArticle: -1, pos: -1, color: 3, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla27', idArticle: -1, pos: -1, color: 4, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla28', idArticle: -1, pos: -1, color: 5, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla29', idArticle: -1, pos: -1, color: 6, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla30', idArticle: -1, pos: -1, color: 1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla31', idArticle: -1, pos: -1, color: 2, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla32', idArticle: -1, pos: -1, color: 3, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla33', idArticle: -1, pos: -1, color: 4, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla34', idArticle: -1, pos: -1, color: 5, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla35', idArticle: -1, pos: -1, color: 6, nombreArticulo: '', esSumable: true }
-            ]
+                { idBoton: 'tecla0', idArticle: -1, pos: -1, color: 1, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla1', idArticle: -1, pos: -1, color: 2, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla2', idArticle: -1, pos: -1, color: 3, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla3', idArticle: -1, pos: -1, color: 4, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla4', idArticle: -1, pos: -1, color: 5, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla5', idArticle: -1, pos: -1, color: 6, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla6', idArticle: -1, pos: -1, color: 1, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla7', idArticle: -1, pos: -1, color: 2, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla8', idArticle: -1, pos: -1, color: 3, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla9', idArticle: -1, pos: -1, color: 4, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla10', idArticle: -1, pos: -1, color: 5, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla11', idArticle: -1, pos: -1, color: 6, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla12', idArticle: -1, pos: -1, color: 1, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla13', idArticle: -1, pos: -1, color: 2, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla14', idArticle: -1, pos: -1, color: 3, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla15', idArticle: -1, pos: -1, color: 4, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla16', idArticle: -1, pos: -1, color: 5, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla17', idArticle: -1, pos: -1, color: 6, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla18', idArticle: -1, pos: -1, color: 1, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla19', idArticle: -1, pos: -1, color: 2, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla20', idArticle: -1, pos: -1, color: 3, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla21', idArticle: -1, pos: -1, color: 4, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla22', idArticle: -1, pos: -1, color: 5, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla23', idArticle: -1, pos: -1, color: 6, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla24', idArticle: -1, pos: -1, color: 1, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla25', idArticle: -1, pos: -1, color: 2, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla26', idArticle: -1, pos: -1, color: 3, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla27', idArticle: -1, pos: -1, color: 4, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla28', idArticle: -1, pos: -1, color: 5, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla29', idArticle: -1, pos: -1, color: 6, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla30', idArticle: -1, pos: -1, color: 1, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla31', idArticle: -1, pos: -1, color: 2, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla32', idArticle: -1, pos: -1, color: 3, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla33', idArticle: -1, pos: -1, color: 4, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla34', idArticle: -1, pos: -1, color: 5, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla35', idArticle: -1, pos: -1, color: 6, nombreArticulo: { nombre: '', precio: '' }, esSumable: true }
+            ],
+            controlDatosTecla: true
         };
     },
     methods: {
@@ -103,10 +105,13 @@ var vuePanelVentas = new Vue({
         cargarTeclado(data) {
             this.resetTeclado();
             for (let i = 0; i < data.length; i++) {
-                this.listadoTeclas[data[i].pos].nombreArticulo = data[i].nombreArticulo;
+                this.listadoTeclas[data[i].pos].nombreArticulo.nombre = data[i].nombreArticulo;
                 this.listadoTeclas[data[i].pos].idArticle = data[i].idArticle;
                 this.listadoTeclas[data[i].pos].color = data[i].color;
                 this.listadoTeclas[data[i].pos].esSumable = data[i].esSumable;
+                /* LISTADO PRECIOS */
+                let datosProducto = this.listaPrecios.find(x => x.nombre === data[i].nombreArticulo);
+                this.listadoTeclas[data[i].pos].nombreArticulo.precio = (datosProducto !== undefined) ? datosProducto.precioConIva + "€" : "0€";
             }
         },
         cargarMenus(data) {
@@ -115,7 +120,12 @@ var vuePanelVentas = new Vue({
                 this.clickMenu(0);
             }
         },
+        cargarPrecios(data) {
+            this.listaPrecios = data;
+            //console.log(this.listaPrecios.length);
+        },
         clickTecla(objListadoTeclas, esAPeso = false) {
+            console.log(objListadoTeclas);
             if (!toc.getStopNecesario()) {
                 toc.addItem(objListadoTeclas.idArticle, objListadoTeclas.idBoton, esAPeso);
             }
@@ -123,44 +133,52 @@ var vuePanelVentas = new Vue({
                 vueToast.abrir('warning', 'Precios y teclado en proceso de actualización');
             }
         },
+        alternar() {
+            for (let i = 0; i < this.listadoTeclas.length; i++) {
+                let precioTemp = this.listadoTeclas[i].nombreArticulo.precio;
+                this.listadoTeclas[i].nombreArticulo.precio = this.listadoTeclas[i].nombreArticulo.nombre;
+                this.listadoTeclas[i].nombreArticulo.nombre = precioTemp;
+            }
+            this.controlDatosTecla = (this.controlDatosTecla) ? false : true;
+        },
         resetTeclado() {
             this.listadoTeclas = [
-                { idBoton: 'tecla0', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla1', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla2', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla3', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla4', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla5', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla6', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla7', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla8', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla9', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla10', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla11', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla12', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla13', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla14', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla15', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla16', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla17', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla18', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla19', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla20', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla21', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla22', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla23', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla24', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla25', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla26', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla27', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla28', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla29', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla30', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla31', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla32', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla33', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla34', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true },
-                { idBoton: 'tecla35', idArticle: -1, pos: -1, color: -1, nombreArticulo: '', esSumable: true }
+                { idBoton: 'tecla0', idArticle: -1, pos: -1, color: 1, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla1', idArticle: -1, pos: -1, color: 2, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla2', idArticle: -1, pos: -1, color: 3, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla3', idArticle: -1, pos: -1, color: 4, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla4', idArticle: -1, pos: -1, color: 5, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla5', idArticle: -1, pos: -1, color: 6, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla6', idArticle: -1, pos: -1, color: 1, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla7', idArticle: -1, pos: -1, color: 2, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla8', idArticle: -1, pos: -1, color: 3, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla9', idArticle: -1, pos: -1, color: 4, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla10', idArticle: -1, pos: -1, color: 5, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla11', idArticle: -1, pos: -1, color: 6, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla12', idArticle: -1, pos: -1, color: 1, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla13', idArticle: -1, pos: -1, color: 2, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla14', idArticle: -1, pos: -1, color: 3, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla15', idArticle: -1, pos: -1, color: 4, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla16', idArticle: -1, pos: -1, color: 5, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla17', idArticle: -1, pos: -1, color: 6, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla18', idArticle: -1, pos: -1, color: 1, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla19', idArticle: -1, pos: -1, color: 2, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla20', idArticle: -1, pos: -1, color: 3, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla21', idArticle: -1, pos: -1, color: 4, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla22', idArticle: -1, pos: -1, color: 5, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla23', idArticle: -1, pos: -1, color: 6, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla24', idArticle: -1, pos: -1, color: 1, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla25', idArticle: -1, pos: -1, color: 2, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla26', idArticle: -1, pos: -1, color: 3, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla27', idArticle: -1, pos: -1, color: 4, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla28', idArticle: -1, pos: -1, color: 5, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla29', idArticle: -1, pos: -1, color: 6, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla30', idArticle: -1, pos: -1, color: 1, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla31', idArticle: -1, pos: -1, color: 2, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla32', idArticle: -1, pos: -1, color: 3, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla33', idArticle: -1, pos: -1, color: 4, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla34', idArticle: -1, pos: -1, color: 5, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
+                { idBoton: 'tecla35', idArticle: -1, pos: -1, color: 6, nombreArticulo: { nombre: '', precio: '' }, esSumable: true }
             ];
         },
         modalesSumable(articuloAPeso, idBoton) {

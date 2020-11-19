@@ -251,6 +251,13 @@ app.on('ready', () => {
         });
     });
     //FINAL MENUS
+    // GET PRECIOS
+    ipcMain.on('get-precios', (ev, data) => {
+        arti.getPrecios().then(respuesta => {
+            ev.sender.send('res-get-precios', respuesta);
+        });
+    });
+    // FINAL PRECIOS
     //GUARDAR CAJA SINCRO
     ipcMain.on('guardarCajaSincro', (ev, data) => {
         sincro.nuevoItemSincroCajas(data);
@@ -277,6 +284,13 @@ app.on('ready', () => {
         });
     });
     //FINAL BUSCAR CLIENTE
+    //BUSCAR ARTÍCULO
+    ipcMain.on('buscar-articulo', (ev, data) => {
+        arti.buscarArticulo(data).then(respuesta => {
+            ev.sender.send('res-buscar-articulo', respuesta);
+        });
+    });
+    //FINAL BUSCAR ARTÍCULO
     //BUSCAR TRABAJADOR
     ipcMain.on('buscar-trabajador-sincrono', (ev, data) => {
         trabaj.buscarTrabajador(data).then(respuesta => {
@@ -416,6 +430,13 @@ app.on('ready', () => {
         });
     });
     //FINAL GET PRECIO ARTICULO
+    //GET PRECIO ARTICULOS
+    ipcMain.on('getPrecios', (ev, nombre) => {
+        arti.getPrecios(nombre).then(infoArticulo => {
+            ev.returnValue = { precio: infoArticulo.precioConIva, nombre: infoArticulo.nomre };
+        });
+    });
+    //FINAL GET PRECIO ARTICULOS
     //BUSCAR FICHADOS
     ipcMain.on('buscar-fichados', (ev, data) => {
         trabaj.buscarFichados().then(arrayFichados => {

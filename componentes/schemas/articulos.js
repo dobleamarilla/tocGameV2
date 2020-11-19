@@ -23,6 +23,9 @@ function insertarArticulos(data) {
     // });
     // return devolver;
 }
+function buscarArticulo(busqueda) {
+    return Articulos.find({ $or: [{ "nombre": { '$regex': new RegExp(busqueda, 'i') } }] }, null, { lean: true, limit: 20 });
+}
 function getInfoArticulo(idArticulo) {
     return Articulos.findById(idArticulo).lean();
 }
@@ -37,6 +40,9 @@ function getNombreArticulo(id) {
 function getPrecio(id) {
     return Articulos.findById(id).lean();
 }
+function getPrecios() {
+    return Articulos.find({}, { _id: 0, nombre: 1, precioConIva: 1 }).lean();
+}
 function borrarArticulos() {
     return Articulos.deleteMany({}, (err) => {
         if (err) {
@@ -46,8 +52,10 @@ function borrarArticulos() {
 }
 exports.articulos = Articulos;
 exports.insertarArticulos = insertarArticulos;
+exports.buscarArticulo = buscarArticulo;
 exports.getInfoArticulo = getInfoArticulo;
 exports.getNombreArticulo = getNombreArticulo;
 exports.getPrecio = getPrecio;
+exports.getPrecios = getPrecios;
 exports.borrarArticulos = borrarArticulos;
 //# sourceMappingURL=articulos.js.map

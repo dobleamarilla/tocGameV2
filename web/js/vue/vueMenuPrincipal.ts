@@ -72,6 +72,10 @@ var vueMenuPrincipal = new Vue({
             this.cerrarModal();
             toc.activarConsumoPersonal();
             vueToast.abrir('success', 'Consumo personal activado');
+        },
+        abrirBuscarProducto() {
+            this.cerrarModal();
+            vueBuscarProducto.abrirModal();
         }
     }
 });

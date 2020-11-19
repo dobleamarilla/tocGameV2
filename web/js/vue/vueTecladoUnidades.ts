@@ -72,6 +72,9 @@ var vueTecladoUnidades = new Vue({
         {
             this.unidades = this.unidades.slice(0, -1);
         },
+        cambiarUnidadesCesta() {
+            console.log(this.getUnidades());
+        },
         okey()
         {
             toc.setUnidades(Number(this.unidades));

@@ -24,7 +24,7 @@ var vueCesta = new Vue({
 			</table>
 		</div>
 	</div>
-	<div class="col-md-7">
+	<div class="col-md-7 scrollVer">
 		<div class="row">
 			<div class="col-md-7 paraRowsTotal" id="botonTotal">
 				<button class="btn btn-primary btn-block sizeMenus" @click="cobrar()"><i class="fas fa-shopping-cart"></i> {{getTotal}} €</button>
@@ -48,6 +48,14 @@ var vueCesta = new Vue({
 			</div>
 			<div class="col-md-3 paraRowClientes" id="botonBorrar">
 				<button @click="abrirModalClientes()" class="btn btn-primary btn-block sizeMenus"><i class="fas fa-users"></i></button>
+            </div>
+        </div>
+        <div class="row pt-1">
+			<div class="col-md-3 paraNumerico" id="botonClientes">
+				<button class="btn btn-primary btn-block sizeMenus" @click="abrirModalBuscarProductos()"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="col-md-3 paraNumerico" id="botonMenus">
+				<button class="btn btn-primary btn-block sizeMenus" @click="alternarDatoTecla()"><i class="fas fa-euro-sign"></i></button>
 			</div>
 		</div>
 	</div>
@@ -129,6 +137,12 @@ var vueCesta = new Vue({
         },
         abrirModalTicketsAbiertos() {
             vueCestasAbiertas.abreModal();
+        },
+        abrirModalBuscarProductos() {
+            vueBuscarProducto.abrirModal();
+        },
+        alternarDatoTecla() {
+            vuePanelVentas.alternar();
         },
         sePuedeRegalar(subtotal, esPromo) {
             if (esPromo) {

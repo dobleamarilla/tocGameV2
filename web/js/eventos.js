@@ -40,6 +40,9 @@ ipcRenderer.on('res-buscar-trabajador', (ev, data) => {
 ipcRenderer.on('res-buscar-cliente', (ev, data) => {
     vueClientes.setClientes(data);
 });
+ipcRenderer.on('res-buscar-articulo', (ev, data) => {
+    vueBuscarProducto.setProductos(data);
+});
 ipcRenderer.on('res-fichar-trabajador', (ev, data) => {
     vueToast.abrir('success', 'FICHAJE OK');
 });
@@ -51,6 +54,9 @@ ipcRenderer.on('res-get-teclas', (ev, data) => {
 });
 ipcRenderer.on('res-get-menus', (ev, data) => {
     vuePanelVentas.cargarMenus(data);
+});
+ipcRenderer.on('res-get-precios', (ev, data) => {
+    vuePanelVentas.cargarPrecios(data);
 });
 ipcRenderer.on('res-get-cesta', (ev, data) => {
     toc.setCesta(data);

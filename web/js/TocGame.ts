@@ -875,9 +875,12 @@ class TocGame
             try
             {
                 $('#'+idBoton).attr('disabled', true);
+                console.log(aPeso);
+                console.log(typeof aPeso);
                 if(!aPeso) //TIPO NORMAL
                 {
                     let infoArticulo = this.getInfoArticulo(idArticulo);
+                    console.log(infoArticulo)
                     if(infoArticulo) //AQUI PENSAR ALGUNA COMPROBACIÓN CUANDO NO EXISTA O FALLE ESTE GET
                     {
                         this.insertarArticuloCesta(infoArticulo, unidades);
@@ -1360,6 +1363,15 @@ class TocGame
 
         socket.emit('comprobarClienteVIP', objEnviar);
     }
+    seleccionarArticulo(producto: Articulo) {
+        let peso = (producto.esSumable) ? false : true;
+        let datosProducto = {idArticle: producto._id, idBoton: 'tecla0'};
+        if(!peso) {
+            vuePanelVentas.clickTecla(datosProducto, peso);
+        } else {
+            vueTecladoPeso.abrirModal(datosProducto.idArticle, datosProducto.idBoton);
+        }
+    }
     hayClienteSeleccionado()
     {
         if(this.clienteSeleccionado !== null)
@@ -1439,6 +1451,7 @@ class TocGame
     }
     iniciar(): void //COMPROBADA
     {
+        ipcRenderer.send('get-precios');
         $('.modal').modal('hide');
         vueInfoFooter.getParametros();
         ipcRenderer.send('buscar-fichados');
