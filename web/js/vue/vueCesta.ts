@@ -134,6 +134,7 @@ var vueCesta = new Vue({
             if(this.activo === null) {
                 // Nada
             } else {
+                
                 vueTecladoUnidades.cambiarUnidadesCesta();
             }
         },
