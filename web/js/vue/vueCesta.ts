@@ -106,6 +106,12 @@ var vueCesta = new Vue({
         {
             this.activo = index;
         },
+        returnCesta() {
+            return this.cesta.lista[this.activo];
+        },
+        getActivo() {
+            return this.activo;
+        },
         borrar()
         {
             if(this.activo === null)
@@ -128,14 +134,6 @@ var vueCesta = new Vue({
             else
             {
                 vueToast.abrir('danger', 'Cesta vacía');
-            }
-        },
-        cambiarUnidadesCesta() {
-            if(this.activo === null) {
-                // Nada
-            } else {
-                
-                vueTecladoUnidades.cambiarUnidadesCesta();
             }
         },
         abrirMenuPrincipal()

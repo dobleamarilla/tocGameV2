@@ -7,6 +7,7 @@ var params = new conexion.mongoose.Schema({
     nombreEmpresa: String,
     nombreTienda: String,
     tipoImpresora: String,
+    impresoraCafeteria: String,
     tipoDatafono: String,
     ultimoTicket: Number,
     clearOneCliente: Number,
@@ -34,6 +35,7 @@ function getParams() {
 function setParams(info) {
     return Parametros.update({ _id: "PARAMETROS" }, {
         tipoImpresora: info.impresora,
+        impresoraCafeteria: info.impresoraCafeteria,
         tipoDatafono: info.datafono,
         clearOneCliente: info.clearOneCliente,
         clearOneTienda: info.clearOneTienda,

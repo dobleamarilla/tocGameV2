@@ -136,6 +136,7 @@ interface Parametros
     nombreTienda: string,
     tipoDatafono: string,
     tipoImpresora: string,
+    impresoraCafeteria: string,
     clearOneCliente?: number,
     clearOneTienda?: number,
     clearOneTpv?: number

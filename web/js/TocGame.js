@@ -30,6 +30,7 @@ class TocGame {
                 nombreTienda: '',
                 tipoImpresora: TIPO_USB,
                 tipoDatafono: TIPO_CLEARONE,
+                impresoraCafeteria: 'NO',
                 clearOneCliente: 0,
                 clearOneTienda: 0,
                 clearOneTpv: 0
@@ -135,6 +136,9 @@ class TocGame {
     getTipoImpresora() {
         return this.parametros.tipoImpresora;
     }
+    getImpresoraCafeteria() {
+        return this.parametros.impresoraCafeteria;
+    }
     getTipoDatafono() {
         return this.parametros.tipoDatafono;
     }
@@ -144,19 +148,23 @@ class TocGame {
     setTipoDatafono(data) {
         this.parametros.tipoDatafono = data;
     }
-    setParametros(licencia, codigoTienda, database, nombreEmpresa, nombreTienda, tipoImpresora, tipoDatafono) {
+    setImpresoraCafeteria(data) {
+        this.parametros.impresoraCafeteria = data;
+    }
+    setParametros(licencia, codigoTienda, database, nombreEmpresa, nombreTienda, tipoImpresora, impresoraCafeteria, tipoDatafono) {
         this.parametros.licencia = licencia;
         this.parametros.codigoTienda = codigoTienda;
         this.parametros.database = database;
         this.parametros.nombreEmpresa = nombreEmpresa;
         this.parametros.nombreTienda = nombreTienda;
         this.parametros.tipoImpresora = tipoImpresora;
+        this.parametros.impresoraCafeteria = impresoraCafeteria;
         this.parametros.tipoDatafono = tipoDatafono;
     }
     setupToc(info) {
         if (info.licencia > 0 && info.codigoTienda > 0 && info.database.length > 0 && info.nombreEmpresa.length > 0 && info.nombreTienda.length > 0 && info.tipoImpresora.length > 0 && info.tipoDatafono.length > 0) {
             ipcRenderer.send('setParametros', info);
-            this.setParametros(info.licencia, info.codigoTienda, info.database, info.nombreEmpresa, info.nombreTienda, info.tipoImpresora, info.tipoDatafono);
+            this.setParametros(info.licencia, info.codigoTienda, info.database, info.nombreEmpresa, info.nombreTienda, info.tipoImpresora, info.impresoraCafeteria, info.tipoDatafono);
             this.descargarDatos();
         }
     }
@@ -685,15 +693,13 @@ class TocGame {
     }
     addItem(idArticulo, idBoton, aPeso, infoAPeso = null) {
         var unidades = this.udsAplicar;
+        console.log("Unidades cambiadas: " + unidades);
         if (this.cajaAbierta()) {
             try {
                 $('#' + idBoton).attr('disabled', true);
-                console.log(aPeso);
-                console.log(typeof aPeso);
                 if (!aPeso) //TIPO NORMAL
                  {
                     let infoArticulo = this.getInfoArticulo(idArticulo);
-                    console.log(infoArticulo);
                     if (infoArticulo) //AQUI PENSAR ALGUNA COMPROBACIÓN CUANDO NO EXISTA O FALLE ESTE GET
                      {
                         this.insertarArticuloCesta(infoArticulo, unidades);

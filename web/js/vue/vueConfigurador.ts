@@ -50,6 +50,7 @@ var vueConfigurador = new Vue({
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary" @click="confirmar()">Confirmar</button>
 				<button type="button" class="btn btn-danger" @click="reset()">Reset</button>
+				<button type="button" class="btn btn-danger" @click="volver()">Volver</button>
 			</div>
 		</div>
     </div>
@@ -100,6 +101,10 @@ var vueConfigurador = new Vue({
                 clearOneTienda: Number(this.clearOneTienda),
                 clearOneTpv: Number(this.clearOneTpv)
             });
+        },
+        volver() {
+            this.cerrarModal();
+            vueMenuTecnico.abrirModal();
         }
     }
   });

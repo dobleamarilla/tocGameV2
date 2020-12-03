@@ -56,6 +56,7 @@ var vueTecladoUnidades = new Vue({
     methods: {
         abrirModal() {
             $('#modalUnidades').modal();
+            console.log(vueCesta.getActivo());
         },
         cerrarModal() {
             $('#modalUnidades').modal('hide');
@@ -68,6 +69,11 @@ var vueTecladoUnidades = new Vue({
         },
         okey() {
             toc.setUnidades(Number(this.unidades));
+            if (vueCesta.getActivo() != null) {
+                let art = vueCesta.returnCesta();
+                vueCesta.borrar();
+                toc.addItem(art._id, 'tecla0', false);
+            }
             this.cerrarModal();
             this.unidades = '0';
         }

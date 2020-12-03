@@ -149,6 +149,7 @@ socket.on('install-licencia', (data) => {
             nombreEmpresa: data.nombreEmpresa,
             nombreTienda: data.nombreTienda,
             tipoImpresora: toc.getTipoImpresora(),
+            impresoraCafeteria: toc.getImpresoraCafeteria(),
             tipoDatafono: toc.getTipoDatafono(),
             ultimoTicket: data.ultimoTicket
         };

@@ -42,6 +42,15 @@ var vueInstallWizard = new Vue({
                             <option value="3G">3G</option>
                         </select>
 					</div>
+                </div>
+                <div class="form-group row">
+					<label for="inputImpresoraCafe" class="col-sm-3 col-form-label">Impresora cafeteria</label>
+					<div class="col-sm-9">
+                        <select v-model="impresoraCafeteria" class="custom-select">
+                            <option selected value="SI">SI</option>
+                            <option value="NO">NO</option>
+                        </select>
+					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -57,7 +66,8 @@ var vueInstallWizard = new Vue({
           licencia: '',
           password: '',
           tipoImpresora: 'USB',
-          tipoDatafono: 'CLEARONE'
+          tipoDatafono: 'CLEARONE',
+          impresoraCafeteria: 'NO'
       }
     },
     methods: {
@@ -75,12 +85,14 @@ var vueInstallWizard = new Vue({
             this.password = '';
             this.tipoImpresora = 'USB';
             this.tipoDatafono = 'CLEARONE';
+            this.impresoraCafeteria = 'NO';
         },
         confirmar() //CONFIRMADA
         {
             vueToast.abrir("normal", "Petición al servidor enviada");
             toc.setTipoDatafono(this.tipoDatafono);
             toc.setTipoImpresora(this.tipoImpresora);
+            toc.setImpresoraCafeteria(this.impresoraCafeteria);
             console.log(this.tipoImpresora);
             socket.emit('install-licencia', {numLicencia: Number(this.licencia), password: this.password});
         }

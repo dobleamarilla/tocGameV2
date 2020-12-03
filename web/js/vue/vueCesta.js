@@ -97,6 +97,12 @@ var vueCesta = new Vue({
         selectActivo(index) {
             this.activo = index;
         },
+        returnCesta() {
+            return this.cesta.lista[this.activo];
+        },
+        getActivo() {
+            return this.activo;
+        },
         borrar() {
             if (this.activo === null) {
                 toc.borrarCesta();

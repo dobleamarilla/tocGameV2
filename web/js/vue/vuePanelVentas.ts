@@ -136,7 +136,6 @@ var vuePanelVentas = new Vue({
         },
         clickTecla(objListadoTeclas, esAPeso: boolean = false) //CUANDO SEA A PESO PASAR CON clickTecla(objListadoTeclas, true)
         {
-            console.log(objListadoTeclas);
             if(!toc.getStopNecesario())
             {
                 toc.addItem(objListadoTeclas.idArticle, objListadoTeclas.idBoton, esAPeso);

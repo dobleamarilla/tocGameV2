@@ -76,8 +76,7 @@ var vuePanelVentas = new Vue({
                 { idBoton: 'tecla33', idArticle: -1, pos: -1, color: 4, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
                 { idBoton: 'tecla34', idArticle: -1, pos: -1, color: 5, nombreArticulo: { nombre: '', precio: '' }, esSumable: true },
                 { idBoton: 'tecla35', idArticle: -1, pos: -1, color: 6, nombreArticulo: { nombre: '', precio: '' }, esSumable: true }
-            ],
-            controlDatosTecla: true
+            ]
         };
     },
     methods: {
@@ -122,10 +121,8 @@ var vuePanelVentas = new Vue({
         },
         cargarPrecios(data) {
             this.listaPrecios = data;
-            //console.log(this.listaPrecios.length);
         },
         clickTecla(objListadoTeclas, esAPeso = false) {
-            console.log(objListadoTeclas);
             if (!toc.getStopNecesario()) {
                 toc.addItem(objListadoTeclas.idArticle, objListadoTeclas.idBoton, esAPeso);
             }
@@ -139,7 +136,6 @@ var vuePanelVentas = new Vue({
                 this.listadoTeclas[i].nombreArticulo.precio = this.listadoTeclas[i].nombreArticulo.nombre;
                 this.listadoTeclas[i].nombreArticulo.nombre = precioTemp;
             }
-            this.controlDatosTecla = (this.controlDatosTecla) ? false : true;
         },
         resetTeclado() {
             this.listadoTeclas = [
