@@ -1067,7 +1067,6 @@ class TocGame
                 if(this.parametros.tipoDatafono === TIPO_CLEARONE && !this.datafonoForzado3G)
                 {
                     vueCobrar.activoEsperaDatafono();
-                    //this.ticketColaDatafono = objTicket;
 
                     ipcRenderer.send('ventaDatafono', {
                         objTicket: objTicket, 
@@ -1079,7 +1078,6 @@ class TocGame
                         clearOneTpv: this.parametros.clearOneTpv
                     });
                     this.auxTotalDatafono = Number((total).toFixed(2));
-                    // this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Targeta', true);
                 }
                 else
                 {
@@ -1087,7 +1085,9 @@ class TocGame
                     {
                         ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
                         ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
-                        this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Targeta 3G', 'TARJETA', true);
+                        //this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Targeta 3G', 'TARJETA', true);
+                        let pagadoTarjeta = `Pagat Targeta: ${objTicket._id}`;
+                        this.nuevaSalidaDinero(Number((total).toFixed(2)), pagadoTarjeta, pagadoTarjeta, true);
                         this.borrarCesta();
                         vueCobrar.cerrarModal();
                         vueToast.abrir('success', 'Ticket creado');

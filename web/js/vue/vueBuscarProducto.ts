@@ -88,8 +88,6 @@ var vueBuscarProducto = new Vue({
         },
         getPrecioProducto(nombre) {
             for(let i = 0; i < this.productos.length; i++) {
-                console.log(this.productos[i].nombre == nombre);
-                console.log(nombre);
                 if(this.productos[i].nombre == nombre) return this.productos[i].precioConIva;
             }
             // Esto devuelve 0 en el caso de no encontrar el producto, pero muy difícilmente entrara aquí, pero está por si acaso. 

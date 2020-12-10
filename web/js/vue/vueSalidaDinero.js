@@ -18,12 +18,14 @@ var vueSalidaDinero = new Vue({
 				<div class="form-group row">
 					<label for="inputPassword" class="col-sm-3 col-form-label">Concepto</label>
 					<div class="col-sm-9">
-                        <select v-model="concepto" class="custom-select">
-                            <option selected>ENTREGA DIARIA</option>
-                            <option>COMPRAS</option>
-                            <option>OTROS</option>
-                    </select>
-					</div>
+                        <select v-model="concepto" class="custom-select" @change="selectOption($event)">
+                            <option value="ENTREGA DIARIA" selected>ENTREGA DIARIA</option>
+                            <option value="COMPRAS">COMPRAS</option>
+                            <option value="OTROS">OTROS</option>
+                        </select>
+                        <br><br>
+                        <input v-if="mostrarInput" type="text" class="form-control conceptoInput" id="inputBusqueda" placeholder="CONCEPTO">
+					</div> 
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -37,7 +39,8 @@ var vueSalidaDinero = new Vue({
     data() {
         return {
             cantidad: 0,
-            concepto: 'ENTREGA DIARIA'
+            concepto: 'Entrega Diària',
+            mostrarInput: false
         };
     },
     methods: {
@@ -49,6 +52,8 @@ var vueSalidaDinero = new Vue({
         },
         confirmarSalida() {
             const cantidadLimpia = Number(this.cantidad);
+            var conceptoInput = $(".conceptoInput").val();
+            this.concepto = conceptoInput == '' ? "OTROS" : conceptoInput;
             let options = {
                 buttons: ["&SÍ", "&NO"],
                 message: "Confirmar salida de " + cantidadLimpia + "€"
@@ -65,6 +70,14 @@ var vueSalidaDinero = new Vue({
                     }
                 }
             });
+        },
+        selectOption(event) {
+            if (event.target.value == "OTROS") {
+                this.mostrarInput = true;
+            }
+            else {
+                this.mostrarInput = false;
+            }
         },
         volverACaja() {
             this.cerrarModal();

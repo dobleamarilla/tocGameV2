@@ -14,7 +14,7 @@ var vueMenuTecnico = new Vue({
                 <div class="row">
                     <div class="col-md-12">
                         <button type="button" @click="abrirConfigurador()" class="btn btn-dark btn-block w-100 ml-0" style="font-size: 35px; text-align: left !important;">1 - Configuración</button>
-                        <button type="button" @click="menuPedidos()" class="btn btn-success btn-block w-100 ml-0" style="font-size: 35px; text-align: left !important;">2 - Quitar licencia</button>
+                        <button type="button" @click="quitarLicencia()" class="btn btn-success btn-block w-100 ml-0" style="font-size: 35px; text-align: left !important;">2 - Quitar licencia</button>
                     </div>
                 </div>
 			</div>
