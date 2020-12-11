@@ -147,6 +147,8 @@ var vueCobrar = new Vue({
         },
         cerrarModal()
         {
+            console.log(this.esperando);
+            console.log(this.esperandoDatafono.display);
             if(!this.esperando && this.esperandoDatafono.display == 'none')
             {
                 console.log("Esperando es: ", this.esperando);

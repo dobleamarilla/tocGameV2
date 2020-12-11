@@ -211,6 +211,7 @@ class TocGame {
             codigoBarras: codigoBarras,
             tipoExtra: tipoExtra
         };
+        console.log("Hola buenas que tal");
         ipcRenderer.send('nuevo-movimiento', objSalida);
         if (!noImprimir) {
             ipcRenderer.sendSync('actualizar-ultimo-codigo-barras');
@@ -866,9 +867,10 @@ class TocGame {
                         let pagadoTarjeta = `Pagat Targeta: ${objTicket._id}`;
                         this.nuevaSalidaDinero(Number((total).toFixed(2)), pagadoTarjeta, pagadoTarjeta, true);
                         this.borrarCesta();
-                        vueCobrar.cerrarModal();
                         vueToast.abrir('success', 'Ticket creado');
                         this.quitarClienteSeleccionado();
+                        vueCobrar.setEsperando(false);
+                        vueCobrar.cerrarModal();
                     }
                 }
             }
