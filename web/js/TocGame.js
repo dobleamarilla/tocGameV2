@@ -840,7 +840,7 @@ class TocGame {
                 ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
             }
             this.borrarCesta();
-            // vueCobrar.setEsperando(false);
+            vueCobrar.setEsperando(false);
             vueCobrar.cerrarModal();
             vueToast.abrir('success', 'Ticket creado');
             this.quitarClienteSeleccionado();
@@ -859,6 +859,8 @@ class TocGame {
                         clearOneTpv: this.parametros.clearOneTpv
                     });
                     this.auxTotalDatafono = Number((total).toFixed(2));
+                    let pagadoTarjeta = `Pagat Targeta: ${objTicket._id}`;
+                    this.nuevaSalidaDinero(this.auxTotalDatafono, pagadoTarjeta, pagadoTarjeta, true);
                 }
                 else {
                     if (this.parametros.tipoDatafono === TIPO_3G || this.datafonoForzado3G) {
@@ -870,13 +872,12 @@ class TocGame {
                         this.borrarCesta();
                         vueToast.abrir('success', 'Ticket creado');
                         this.quitarClienteSeleccionado();
-                        // vueCobrar.setEsperando(false);
+                        vueCobrar.setEsperando(false);
                         vueCobrar.cerrarModal();
                     }
                 }
             }
         }
-        vueCobrar.setEsperando(false);
         this.datafonoForzado3G = false;
         this.resetEstados();
         if (tipo != "TARJETA" || this.datafonoForzado3G) {
@@ -906,7 +907,8 @@ class TocGame {
         if (respuesta.data[1] === 48) //Primero STX, segundo estado transacción: correcta = 48, incorrecta != 48
          {
             console.log("Operación APROBADA");
-            this.nuevaSalidaDinero(this.auxTotalDatafono, 'Targeta', 'TARJETA', true);
+            var pagadoTarjeta = `Pagat Targeta: ${respuesta.objTicket._id}`;
+            this.nuevaSalidaDinero(this.auxTotalDatafono, pagadoTarjeta, pagadoTarjeta, true);
             ipcRenderer.send('set-ticket', respuesta.objTicket);
             ipcRenderer.send('set-ultimo-ticket-parametros', respuesta.objTicket._id);
             this.borrarCesta();
