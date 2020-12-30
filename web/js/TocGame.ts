@@ -1056,6 +1056,7 @@ class TocGame
                 ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
             }
             this.borrarCesta();
+            vueCobrar.setEsperando(false);
             vueCobrar.cerrarModal();
             vueToast.abrir('success', 'Ticket creado');
             this.quitarClienteSeleccionado();
@@ -1132,7 +1133,8 @@ class TocGame
         if(respuesta.data[1] === 48) //Primero STX, segundo estado transacción: correcta = 48, incorrecta != 48
         {
             console.log("Operación APROBADA");
-            this.nuevaSalidaDinero(this.auxTotalDatafono, 'Targeta', 'TARJETA', true);
+            var pagadoTarjeta = `Pagat Targeta: ${respuesta.objTicket._id}`;
+            this.nuevaSalidaDinero(this.auxTotalDatafono, pagadoTarjeta, pagadoTarjeta, true);
             ipcRenderer.send('set-ticket', respuesta.objTicket);
             
             ipcRenderer.send('set-ultimo-ticket-parametros', respuesta.objTicket._id);

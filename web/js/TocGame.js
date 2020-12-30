@@ -840,6 +840,7 @@ class TocGame {
                 ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
             }
             this.borrarCesta();
+            // vueCobrar.setEsperando(false);
             vueCobrar.cerrarModal();
             vueToast.abrir('success', 'Ticket creado');
             this.quitarClienteSeleccionado();
@@ -869,12 +870,13 @@ class TocGame {
                         this.borrarCesta();
                         vueToast.abrir('success', 'Ticket creado');
                         this.quitarClienteSeleccionado();
-                        vueCobrar.setEsperando(false);
+                        // vueCobrar.setEsperando(false);
                         vueCobrar.cerrarModal();
                     }
                 }
             }
         }
+        vueCobrar.setEsperando(false);
         this.datafonoForzado3G = false;
         this.resetEstados();
         if (tipo != "TARJETA" || this.datafonoForzado3G) {

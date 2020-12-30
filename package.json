@@ -1,6 +1,6 @@
 {
     "name": "toc-game",
-    "version": "2.3.121",
+    "version": "2.3.122",
     "description": "Versión v2 del tocGame",
     "author": {
         "name": "Ezequiel"
@@ -18,19 +18,19 @@
         "escpos": "^3.0.0-alpha.3",
         "escpos-network": "^3.0.0-alpha.5",
         "escpos-serialport": "^3.0.0-alpha.2",
-        "escpos-usb": "^3.0.0-alpha.2",
-        "is-online": "^8.4.0",
+        "escpos-usb": "^3.0.0-alpha.4",
+        "is-online": "^8.5.1",
         "jquery": "^3.5.1",
-        "moment": "^2.27.0",
-        "mongoose": "^5.9.13",
-        "nodemailer": "^6.4.11",
+        "moment": "^2.29.1",
+        "mongoose": "^5.11.8",
+        "nodemailer": "^6.4.17",
         "socket.io-client": "^2.3.0",
         "source-map-support": "^0.5.19"
     },
     "devDependencies": {
         "copyfiles": "2.1.1",
         "electron": "6.0.0",
-        "electron-packager": "^15.1.0",
+        "electron-packager": "^15.2.0",
         "electron-rebuild": "^1.10.1",
         "standard-version": "^9.0.0",
         "typescript": "3.5.3"
