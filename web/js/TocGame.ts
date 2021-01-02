@@ -270,7 +270,7 @@ class TocGame
         } catch(err) {
             console.log(err);
         }
-        
+        codigoBarras = this.fixLength12(codigoBarras);
         let objSalida: Movimientos = {
             _id: Date.now(),
             tipo: TIPO_SALIDA,
@@ -316,6 +316,14 @@ class TocGame
             }
         }
         return devolver;
+    }
+    fixLength12(numero) {
+        let newNum = '';
+        for(let i = 0; i < 12; i++) {
+            if(numero[i] != undefined) newNum += numero[i];
+            else newNum += '0';
+        }
+        return newNum;
     }
     generarCodigoBarrasSalida()
     {

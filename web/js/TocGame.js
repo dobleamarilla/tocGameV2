@@ -201,7 +201,16 @@ class TocGame {
         ipcRenderer.send('imprimir-test', texto);
     }
     nuevaSalidaDinero(cantidad, concepto, tipoExtra, noImprimir = false) {
-        let codigoBarras = this.generarCodigoBarrasSalida();
+        let codigoBarras = "";
+        try {
+            codigoBarras = this.generarCodigoBarrasSalida();
+        }
+        catch (err) {
+            console.log(err);
+        }
+        codigoBarras = this.fixLength12(codigoBarras);
+        console.log(codigoBarras);
+        console.log(codigoBarras.length);
         let objSalida = {
             _id: Date.now(),
             tipo: TIPO_SALIDA,
@@ -240,6 +249,18 @@ class TocGame {
             }
         }
         return devolver;
+    }
+    fixLength12(numero) {
+        console.log("Length inicial:", numero.length);
+        let newNum = '';
+        for (let i = 0; i < 12; i++) {
+            console.log(numero[i]);
+            if (numero[i] != undefined)
+                newNum += numero[i];
+            else
+                newNum += '0';
+        }
+        return newNum;
     }
     generarCodigoBarrasSalida() {
         let objCodigoBarras = ipcRenderer.sendSync('get-ultimo-codigo-barras');
