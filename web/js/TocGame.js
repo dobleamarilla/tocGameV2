@@ -859,8 +859,6 @@ class TocGame {
                         clearOneTpv: this.parametros.clearOneTpv
                     });
                     this.auxTotalDatafono = Number((total).toFixed(2));
-                    let pagadoTarjeta = `Pagat Targeta: ${objTicket._id}`;
-                    this.nuevaSalidaDinero(this.auxTotalDatafono, pagadoTarjeta, pagadoTarjeta, true);
                 }
                 else {
                     if (this.parametros.tipoDatafono === TIPO_3G || this.datafonoForzado3G) {
@@ -907,10 +905,10 @@ class TocGame {
         if (respuesta.data[1] === 48) //Primero STX, segundo estado transacción: correcta = 48, incorrecta != 48
          {
             console.log("Operación APROBADA");
-            var pagadoTarjeta = `Pagat Targeta: ${respuesta.objTicket._id}`;
-            this.nuevaSalidaDinero(this.auxTotalDatafono, pagadoTarjeta, pagadoTarjeta, true);
             ipcRenderer.send('set-ticket', respuesta.objTicket);
             ipcRenderer.send('set-ultimo-ticket-parametros', respuesta.objTicket._id);
+            var pagadoTarjeta = "Pagat Targeta: " + respuesta.objTicket._id;
+            this.nuevaSalidaDinero(this.auxTotalDatafono, pagadoTarjeta, pagadoTarjeta, true);
             this.borrarCesta();
             vueCobrar.cerrarModal();
             vueToast.abrir('success', 'Ticket creado');

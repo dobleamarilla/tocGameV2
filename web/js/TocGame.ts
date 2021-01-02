@@ -263,8 +263,14 @@ class TocGame
         ipcRenderer.send('imprimir-test', texto);
     }
     nuevaSalidaDinero(cantidad: number, concepto: string, tipoExtra: string, noImprimir: boolean = false)
-    {
-        let codigoBarras = this.generarCodigoBarrasSalida();
+    {   
+        let codigoBarras = "";
+        try {
+            codigoBarras = this.generarCodigoBarrasSalida();
+        } catch(err) {
+            console.log(err);
+        }
+        
         let objSalida: Movimientos = {
             _id: Date.now(),
             tipo: TIPO_SALIDA,
@@ -1133,11 +1139,11 @@ class TocGame
         if(respuesta.data[1] === 48) //Primero STX, segundo estado transacción: correcta = 48, incorrecta != 48
         {
             console.log("Operación APROBADA");
+            ipcRenderer.send('set-ticket', respuesta.objTicket);
+            ipcRenderer.send('set-ultimo-ticket-parametros', respuesta.objTicket._id);
+            
             var pagadoTarjeta = "Pagat Targeta: " +  respuesta.objTicket._id;
             this.nuevaSalidaDinero(this.auxTotalDatafono, pagadoTarjeta, pagadoTarjeta, true);
-            ipcRenderer.send('set-ticket', respuesta.objTicket);
-            
-            ipcRenderer.send('set-ultimo-ticket-parametros', respuesta.objTicket._id);
             this.borrarCesta();
             vueCobrar.cerrarModal();
             vueToast.abrir('success', 'Ticket creado');
