@@ -251,16 +251,15 @@ class TocGame {
         return devolver;
     }
     fixLength12(numero) {
-        console.log("Length inicial:", numero.length);
+        numero = numero.split("").reverse().join("");
         let newNum = '';
         for (let i = 0; i < 12; i++) {
-            console.log(numero[i]);
             if (numero[i] != undefined)
                 newNum += numero[i];
             else
                 newNum += '0';
         }
-        return newNum;
+        return newNum.split("").reverse().join("");
     }
     generarCodigoBarrasSalida() {
         let objCodigoBarras = ipcRenderer.sendSync('get-ultimo-codigo-barras');

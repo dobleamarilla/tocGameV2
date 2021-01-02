@@ -271,6 +271,8 @@ class TocGame
             console.log(err);
         }
         codigoBarras = this.fixLength12(codigoBarras);
+        console.log(codigoBarras);
+        console.log(codigoBarras.length);
         let objSalida: Movimientos = {
             _id: Date.now(),
             tipo: TIPO_SALIDA,
@@ -280,7 +282,6 @@ class TocGame
             codigoBarras: codigoBarras,
             tipoExtra: tipoExtra
         }
-        console.log("Hola buenas que tal");
         ipcRenderer.send('nuevo-movimiento', objSalida);
         if(!noImprimir)
         {
@@ -318,12 +319,13 @@ class TocGame
         return devolver;
     }
     fixLength12(numero) {
+        numero = numero.split("").reverse().join("");
         let newNum = '';
         for(let i = 0; i < 12; i++) {
             if(numero[i] != undefined) newNum += numero[i];
             else newNum += '0';
         }
-        return newNum;
+        return newNum.split("").reverse().join("");
     }
     generarCodigoBarrasSalida()
     {
