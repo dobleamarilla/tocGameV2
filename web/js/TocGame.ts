@@ -271,8 +271,6 @@ class TocGame
             console.log(err);
         }
         codigoBarras = this.fixLength12(codigoBarras);
-        console.log(codigoBarras);
-        console.log(codigoBarras.length);
         let objSalida: Movimientos = {
             _id: Date.now(),
             tipo: TIPO_SALIDA,
