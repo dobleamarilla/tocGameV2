@@ -209,8 +209,6 @@ class TocGame {
             console.log(err);
         }
         codigoBarras = this.fixLength12(codigoBarras);
-        console.log(codigoBarras);
-        console.log(codigoBarras.length);
         let objSalida = {
             _id: Date.now(),
             tipo: TIPO_SALIDA,
@@ -220,7 +218,6 @@ class TocGame {
             codigoBarras: codigoBarras,
             tipoExtra: tipoExtra
         };
-        console.log("Hola buenas que tal");
         ipcRenderer.send('nuevo-movimiento', objSalida);
         if (!noImprimir) {
             ipcRenderer.sendSync('actualizar-ultimo-codigo-barras');

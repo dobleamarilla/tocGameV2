@@ -19,7 +19,7 @@ var vueSalidaDinero = new Vue({
 					<label for="inputPassword" class="col-sm-3 col-form-label">Concepto</label>
 					<div class="col-sm-9">
                         <select v-model="concepto" class="custom-select" @change="selectOption($event)">
-                            <option value="ENTREGA DIARIA" selected>ENTREGA DIARIA</option>
+                            <option value="Entrega Diària" selected>ENTREGA DIARIA</option>
                             <option value="COMPRAS">COMPRAS</option>
                             <option value="OTROS">OTROS</option>
                         </select>
@@ -40,6 +40,7 @@ var vueSalidaDinero = new Vue({
         return {
             cantidad: 0,
             concepto: 'Entrega Diària',
+            valoresSelect: ["Entrega Diària", "COMPRAS"],
             mostrarInput: false
         };
     },
@@ -52,8 +53,11 @@ var vueSalidaDinero = new Vue({
         },
         confirmarSalida() {
             const cantidadLimpia = Number(this.cantidad);
-            var conceptoInput = $(".conceptoInput").val();
-            this.concepto = conceptoInput == '' ? "OTROS" : conceptoInput;
+            if (!this.valoresSelect.includes(this.concepto)) {
+                var conceptoInput = $(".conceptoInput").val();
+                this.concepto = conceptoInput == '' ? "OTROS" : conceptoInput;
+            }
+            console.log(this.concepto);
             let options = {
                 buttons: ["&SÍ", "&NO"],
                 message: "Confirmar salida de " + cantidadLimpia + "€"
