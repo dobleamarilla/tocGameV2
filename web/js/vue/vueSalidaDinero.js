@@ -57,7 +57,6 @@ var vueSalidaDinero = new Vue({
                 var conceptoInput = $(".conceptoInput").val();
                 this.concepto = conceptoInput == '' ? "OTROS" : conceptoInput;
             }
-            console.log(this.concepto);
             let options = {
                 buttons: ["&SÍ", "&NO"],
                 message: "Confirmar salida de " + cantidadLimpia + "€"

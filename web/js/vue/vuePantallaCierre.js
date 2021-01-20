@@ -81,24 +81,26 @@ var vuePantallaCierre = new Vue({
             var sumaTarjetas = 0;
             var textoMovimientos = '';
             this.arrayMovimientos = [];
-            for (let i = 0; i < info.arrayMovimientos.length; i++) {
+            /*for(let i=0; i < info.arrayMovimientos.length; i++) {
                 var auxFecha = new Date(info.arrayMovimientos[i]._id);
-                this.arrayMovimientos.push({
-                    valor: info.arrayMovimientos[i].valor,
-                    dia: auxFecha.getDate(),
-                    mes: auxFecha.getMonth(),
-                    anyo: auxFecha.getFullYear(),
-                    hora: auxFecha.getHours(),
-                    minuto: auxFecha.getMinutes(),
-                    concepto: info.arrayMovimientos[i].concepto,
-                    tipo: info.arrayMovimientos[i].tipo
-                });
-                if (info.arrayMovimientos[i].tipo === TIPO_SALIDA_DINERO) {
-                    if (info.arrayMovimientos[i].concepto == 'Targeta' || info.arrayMovimientos[i].concepto == 'Tarjeta 3G') {
+                if(info.arrayMovimientos[i].concepto != 'Targeta' && info.arrayMovimientos[i].concepto != 'Tarjeta 3G') {
+                    this.arrayMovimientos.push({
+                        valor: info.arrayMovimientos[i].valor,
+                        dia: auxFecha.getDate(),
+                        mes: auxFecha.getMonth(),
+                        anyo: auxFecha.getFullYear(),
+                        hora: auxFecha.getHours(),
+                        minuto: auxFecha.getMinutes(),
+                        concepto: info.arrayMovimientos[i].concepto,
+                        tipo: info.arrayMovimientos[i].tipo
+                    });
+                }
+                if(info.arrayMovimientos[i].tipo === TIPO_SALIDA_DINERO) {
+                    if(info.arrayMovimientos[i].concepto == 'Targeta' || info.arrayMovimientos[i].concepto == 'Tarjeta 3G') {
                         sumaTarjetas += info.arrayMovimientos[i].valor;
                     }
                 }
-            }
+            }*/
             this.totalTarjeta = info.totalTarjeta;
             this.diaI = fechaInicio.getDate();
             this.mesI = fechaInicio.getMonth();
@@ -111,7 +113,7 @@ var vuePantallaCierre = new Vue({
             this.horaF = fechaFinal.getHours();
             this.minutoF = fechaFinal.getMinutes();
             this.textoTarjetas = `Total targeta:      ${sumaTarjetas.toFixed(2)}`;
-            this.textoMovimientos = textoMovimientos;
+            //this.textoMovimientos = textoMovimientos;
             this.calaixFet = info.calaixFet;
             this.nombreTrabajador = info.nombreTrabajador;
             this.descuadre = info.descuadre;
