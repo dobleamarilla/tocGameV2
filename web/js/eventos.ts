@@ -256,3 +256,18 @@ socket.on('get-puntos-cliente', (puntos)=>{
     
     console.log("Puntos de cliente: " + puntos);
 });
+
+socket.on('ordenSincronizarTrabajadores', (data)=>{
+    if(toc.todoListo())
+    {
+        toc.actualizarTrabajadores();
+    }
+});
+socket.on('descargar-trabajadores', (data)=>{
+    if(data.length > 0)
+    {
+        ipcRenderer.send('insertar-trabajadores', data);
+    }
+    toc.setStopNecesario(false);
+    vueToast.abrir('success', 'Trabajadores actualizados');
+});

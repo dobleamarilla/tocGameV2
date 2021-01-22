@@ -14,7 +14,7 @@ var Trabajadores = conexion.mongoose.model('trabajadores', schemaTrabajadores);
 
 function insertarTrabajadores(data) 
 {
-    return Trabajadores.insertMany(data, function (error, docs) 
+    return Trabajadores.insertMany(data, {ordered: false}, function (error, docs) 
     {
         if(error)
         {

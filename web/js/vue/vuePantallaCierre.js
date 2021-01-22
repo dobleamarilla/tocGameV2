@@ -28,7 +28,7 @@ var vuePantallaCierre = new Vue({
                         <p><span style="font-weight: bold;">Total targeta teòric&nbsp;&nbsp;&nbsp;:</span> {{totalTarjeta.toFixed(2)}}</p>                    
                     </div>
                     <br>
-                    <p>Moviments de caixa</p> 
+                    <!-- <p>Moviments de caixa</p> --> 
                     <hr>
                     <p v-for="item of arrayMovimientos"><span v-if="item.concepto != 'Targeta 3G' && item.concepto != 'Targeta'">{{item.tipo}}: Cantidad: {{item.valor.toFixed(2)}}€ Fecha: {{item.dia}}/{{item.mes}}/{{item.anyo}} {{item.hora}}:{{item.minuto}} Concepto: {{item.concepto}}</span> </p> 
 				</div>

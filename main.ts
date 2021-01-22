@@ -233,6 +233,13 @@ app.on('ready', () => {
         ev.sender.send('res-cargar-todo', true);
     });
     //FINAL CARGAR TODO
+
+    //INSERTAR TRABAJADORES SINCRO
+    ipcMain.on('insertar-trabajadores', (ev, data) => {
+        trabaj.insertarTrabajadores(data);
+
+    });
+    //FINAL INSERTAR TRABAJADORES SINCRO
     //ACTUALIZAR TECLADO
     ipcMain.on('actualizar-teclado', async (ev, data) => {
         await arti.borrarArticulos();

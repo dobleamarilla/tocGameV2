@@ -229,6 +229,11 @@ class TocGame
         this.setStopNecesario(true);
         socket.emit('descargar-teclado', { licencia: this.parametros.licencia, database: this.parametros.database, codigoTienda: this.parametros.codigoTienda});
     }
+    actualizarTrabajadores()
+    {
+        this.setStopNecesario(true);
+        socket.emit('descargar-trabajadores', { licencia: this.parametros.licencia, database: this.parametros.database, codigoTienda: this.parametros.codigoTienda});
+    }
     hayFichados()
     {
         if(this.getArrayFichados().length > 0)
