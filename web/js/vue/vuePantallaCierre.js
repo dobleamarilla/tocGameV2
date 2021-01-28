@@ -28,7 +28,7 @@ var vuePantallaCierre = new Vue({
                         <p><span style="font-weight: bold;">Total targeta teòric&nbsp;&nbsp;&nbsp;:</span> {{totalTarjeta.toFixed(2)}}</p>                    
                     </div>
                     <br>
-                    <!-- <p>Moviments de caixa</p> --> 
+                    <p>Moviments de caixa</p>
                     <hr>
                     <p v-for="item of arrayMovimientos"><span v-if="item.concepto != 'Targeta 3G' && item.concepto != 'Targeta'">{{item.tipo}}: Cantidad: {{item.valor.toFixed(2)}}€ Fecha: {{item.dia}}/{{item.mes}}/{{item.anyo}} {{item.hora}}:{{item.minuto}} Concepto: {{item.concepto}}</span> </p> 
 				</div>
@@ -81,9 +81,9 @@ var vuePantallaCierre = new Vue({
             var sumaTarjetas = 0;
             var textoMovimientos = '';
             this.arrayMovimientos = [];
-            /*for(let i=0; i < info.arrayMovimientos.length; i++) {
+            for (let i = 0; i < info.arrayMovimientos.length; i++) {
                 var auxFecha = new Date(info.arrayMovimientos[i]._id);
-                if(info.arrayMovimientos[i].concepto != 'Targeta' && info.arrayMovimientos[i].concepto != 'Tarjeta 3G') {
+                if (info.arrayMovimientos[i].concepto != 'Targeta' && info.arrayMovimientos[i].concepto != 'Tarjeta 3G') {
                     this.arrayMovimientos.push({
                         valor: info.arrayMovimientos[i].valor,
                         dia: auxFecha.getDate(),
@@ -95,12 +95,12 @@ var vuePantallaCierre = new Vue({
                         tipo: info.arrayMovimientos[i].tipo
                     });
                 }
-                if(info.arrayMovimientos[i].tipo === TIPO_SALIDA_DINERO) {
-                    if(info.arrayMovimientos[i].concepto == 'Targeta' || info.arrayMovimientos[i].concepto == 'Tarjeta 3G') {
+                if (info.arrayMovimientos[i].tipo === TIPO_SALIDA_DINERO) {
+                    if (info.arrayMovimientos[i].concepto == 'Targeta' || info.arrayMovimientos[i].concepto == 'Tarjeta 3G') {
                         sumaTarjetas += info.arrayMovimientos[i].valor;
                     }
                 }
-            }*/
+            }
             this.totalTarjeta = info.totalTarjeta;
             this.diaI = fechaInicio.getDate();
             this.mesI = fechaInicio.getMonth();
@@ -113,7 +113,7 @@ var vuePantallaCierre = new Vue({
             this.horaF = fechaFinal.getHours();
             this.minutoF = fechaFinal.getMinutes();
             this.textoTarjetas = `Total targeta:      ${sumaTarjetas.toFixed(2)}`;
-            //this.textoMovimientos = textoMovimientos;
+            this.textoMovimientos = textoMovimientos;
             this.calaixFet = info.calaixFet;
             this.nombreTrabajador = info.nombreTrabajador;
             this.descuadre = info.descuadre;

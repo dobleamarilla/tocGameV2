@@ -204,7 +204,7 @@ class TocGame {
     imprimirTest(texto) {
         ipcRenderer.send('imprimir-test', texto);
     }
-    nuevaSalidaDinero(cantidad, concepto, tipoExtra, noImprimir = false) {
+    nuevaSalidaDinero(cantidad, concepto, tipoExtra, noImprimir = false, idTicket = -100) {
         let codigoBarras = "";
         try {
             codigoBarras = this.generarCodigoBarrasSalida();
@@ -220,7 +220,8 @@ class TocGame {
             concepto: concepto,
             idTrabajador: this.getCurrentTrabajador()._id,
             codigoBarras: codigoBarras,
-            tipoExtra: tipoExtra
+            tipoExtra: tipoExtra,
+            idTicket: idTicket
         };
         ipcRenderer.send('nuevo-movimiento', objSalida);
         if (!noImprimir) {
@@ -885,9 +886,9 @@ class TocGame {
                     if (this.parametros.tipoDatafono === TIPO_3G || this.datafonoForzado3G) {
                         ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
                         ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
-                        //this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Targeta 3G', 'TARJETA', true);
-                        let pagadoTarjeta = `Pagat Targeta: ${objTicket._id}`;
-                        this.nuevaSalidaDinero(Number((total).toFixed(2)), pagadoTarjeta, pagadoTarjeta, true);
+                        this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Targeta 3G', 'TARJETA', true, objTicket._id);
+                        /*let pagadoTarjeta = `Pagat Targeta: ${objTicket._id}`;
+                        this.nuevaSalidaDinero(Number((total).toFixed(2)), pagadoTarjeta, pagadoTarjeta, true);*/
                         this.borrarCesta();
                         vueToast.abrir('success', 'Ticket creado');
                         this.quitarClienteSeleccionado();
@@ -926,10 +927,11 @@ class TocGame {
         if (respuesta.data[1] === 48) //Primero STX, segundo estado transacción: correcta = 48, incorrecta != 48
          {
             console.log("Operación APROBADA");
+            this.nuevaSalidaDinero(this.auxTotalDatafono, 'Targeta', 'TARJETA', true, respuesta.objTicket._id);
             ipcRenderer.send('set-ticket', respuesta.objTicket);
             ipcRenderer.send('set-ultimo-ticket-parametros', respuesta.objTicket._id);
-            var pagadoTarjeta = "Pagat Targeta: " + respuesta.objTicket._id;
-            this.nuevaSalidaDinero(this.auxTotalDatafono, pagadoTarjeta, pagadoTarjeta, true);
+            /*var pagadoTarjeta = "Pagat Targeta: " +  respuesta.objTicket._id;
+            this.nuevaSalidaDinero(this.auxTotalDatafono, pagadoTarjeta, pagadoTarjeta, true);*/
             this.borrarCesta();
             vueCobrar.cerrarModal();
             vueToast.abrir('success', 'Ticket creado');

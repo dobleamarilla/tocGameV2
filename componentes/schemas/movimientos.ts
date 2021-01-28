@@ -15,7 +15,8 @@ var schemaMovimientos = new conexion.mongoose.Schema({
         type: Boolean,
         default: false
     },
-    tipoExtra: String
+    tipoExtra: String,
+    idTicket: Number
 });
 var Movimientos = conexion.mongoose.model('movimientos', schemaMovimientos);
 

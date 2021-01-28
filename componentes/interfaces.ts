@@ -200,7 +200,8 @@ interface Movimientos
     concepto: string,
     idTrabajador: number,
     tipoExtra: string,
-    codigoBarras: string
+    codigoBarras: string,
+    idTicket: number
 };
 
 interface Cliente
