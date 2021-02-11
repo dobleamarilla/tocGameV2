@@ -23,7 +23,8 @@ class TocGame
     private stopNecesario: boolean;
     private auxTotalDatafono: number;
     public datafonoForzado3G: boolean;
-
+    public idClienteVIP: number;
+    public tecladoTarifaEspecial: boolean; //Si es TRUE = tarifa especial cliente vip activado
     constructor() 
     {
         const info = ipcRenderer.sendSync('getParametros');
@@ -35,6 +36,9 @@ class TocGame
         this.esDevolucion = false;
         this.esConsumoPersonal = false;
         this.stopNecesario = false;
+        this.idClienteVIP = null;
+        this.tecladoTarifaEspecial = false;
+
         if (info !== null) 
         {
             this.parametros = info;
@@ -832,6 +836,11 @@ class TocGame
         vueCesta.limpiarEstiloClienteActivo();
         this.clienteSeleccionado = null;
         vueCesta.puntosClienteActivo = 0;
+        if(this.tecladoTarifaEspecial)
+        {
+            this.tecladoTarifaEspecial = false;
+            toc.iniciar();
+        }
     }
     insertarArticuloCesta(infoArticulo, unidades: number, infoAPeso = null)
     {
@@ -893,12 +902,18 @@ class TocGame
     }
     getInfoArticulo(idArticulo: number): Articulo
     {
-        return ipcRenderer.sendSync('get-info-articulo', idArticulo);
+        if(!this.tecladoTarifaEspecial)
+        {
+            return ipcRenderer.sendSync('get-info-articulo', idArticulo);
+        }
+        else
+        {
+            return ipcRenderer.sendSync('get-info-articulo-tarifa-especial', idArticulo);
+        }
     }
     addItem(idArticulo: number, idBoton: String, aPeso: Boolean, infoAPeso = null)
     {
         var unidades = this.udsAplicar;
-        console.log("Unidades cambiadas: " + unidades);
         if(this.cajaAbierta())
         {
             try
@@ -1420,6 +1435,11 @@ class TocGame
         this.infoClienteVip = data;
         this.esVIP = true;
         vueMenuVip.abreModal();
+        console.log(data);
+    }
+    peticionActivarTarifaEspecial()
+    {
+        socket.emit('cargarPreciosVIP', { licencia: this.parametros.licencia, database: this.parametros.database, idCliente:  this.idClienteVIP});
     }
     limpiarClienteVIP()
     {
@@ -1427,6 +1447,7 @@ class TocGame
         this.infoClienteVip = null;
         this.esVIP = false;
         vueCobrar.limpiarClienteVip();
+        this.idClienteVIP = null;
     }
     convertirPuntosEnDinero(puntos: number): number
     {
@@ -1482,6 +1503,9 @@ class TocGame
     iniciar(): void //COMPROBADA
     {
         ipcRenderer.send('get-precios');
+        
+        // ipcRenderer.send('get-precios-tarifa-especial');
+        
         $('.modal').modal('hide');
         vueInfoFooter.getParametros();
         ipcRenderer.send('buscar-fichados');

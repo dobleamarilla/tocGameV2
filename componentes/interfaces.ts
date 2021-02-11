@@ -210,3 +210,10 @@ interface Cliente
     nombre: string,
     tarjetaCliente: string
 }
+
+interface resClienteVIP
+{
+    esVip: boolean,
+    info: any,
+    idCliente: number
+}

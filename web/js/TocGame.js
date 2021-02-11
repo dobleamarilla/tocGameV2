@@ -17,6 +17,8 @@ class TocGame {
         this.esDevolucion = false;
         this.esConsumoPersonal = false;
         this.stopNecesario = false;
+        this.idClienteVIP = null;
+        this.tecladoTarifaEspecial = false;
         if (info !== null) {
             this.parametros = info;
         }
@@ -667,6 +669,10 @@ class TocGame {
         vueCesta.limpiarEstiloClienteActivo();
         this.clienteSeleccionado = null;
         vueCesta.puntosClienteActivo = 0;
+        if (this.tecladoTarifaEspecial) {
+            this.tecladoTarifaEspecial = false;
+            toc.iniciar();
+        }
     }
     insertarArticuloCesta(infoArticulo, unidades, infoAPeso = null) {
         var miCesta = this.getCesta();
@@ -712,11 +718,15 @@ class TocGame {
         this.buscarOfertas(miCesta, viejoIva);
     }
     getInfoArticulo(idArticulo) {
-        return ipcRenderer.sendSync('get-info-articulo', idArticulo);
+        if (!this.tecladoTarifaEspecial) {
+            return ipcRenderer.sendSync('get-info-articulo', idArticulo);
+        }
+        else {
+            return ipcRenderer.sendSync('get-info-articulo-tarifa-especial', idArticulo);
+        }
     }
     addItem(idArticulo, idBoton, aPeso, infoAPeso = null) {
         var unidades = this.udsAplicar;
-        console.log("Unidades cambiadas: " + unidades);
         if (this.cajaAbierta()) {
             try {
                 $('#' + idBoton).attr('disabled', true);
@@ -1152,12 +1162,17 @@ class TocGame {
         this.infoClienteVip = data;
         this.esVIP = true;
         vueMenuVip.abreModal();
+        console.log(data);
+    }
+    peticionActivarTarifaEspecial() {
+        socket.emit('cargarPreciosVIP', { licencia: this.parametros.licencia, database: this.parametros.database, idCliente: this.idClienteVIP });
     }
     limpiarClienteVIP() {
         vueCesta.limpiarEstiloClienteActivo();
         this.infoClienteVip = null;
         this.esVIP = false;
         vueCobrar.limpiarClienteVip();
+        this.idClienteVIP = null;
     }
     convertirPuntosEnDinero(puntos) {
         return Math.trunc(puntos * 0.03 * 0.02);
@@ -1198,6 +1213,7 @@ class TocGame {
     }
     iniciar() {
         ipcRenderer.send('get-precios');
+        // ipcRenderer.send('get-precios-tarifa-especial');
         $('.modal').modal('hide');
         vueInfoFooter.getParametros();
         ipcRenderer.send('buscar-fichados');

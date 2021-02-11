@@ -25,6 +25,7 @@ var moned       = require('./componentes/schemas/infoMonedas');
 var codiBarra   = require('./componentes/schemas/codigoBarras');
 var email       = require('./componentes/email');
 var eventos     = require('events');
+var artiTarifaEspecial = require('./componentes/schemas/articulosTarifaEspecial');
 // var pjson = require('./package.json');
 
 const iconPath  = path.join(__dirname, "web", "assets", "imagenes", "favicon.png");
@@ -261,6 +262,14 @@ app.on('ready', () => {
     });
     //FINAL ACTUALIZAR TECLADO
 
+    //CAMBIAR A TARIFA ESPECIAL CLIENTE VIP
+    ipcMain.on('insertar-tarifa-especial', async (ev, data) => {
+        await artiTarifaEspecial.borrarArticulosTarifaEspecial();
+        await artiTarifaEspecial.insertarArticulosTarifaEspecial(data);
+        ev.sender.send('res-cargar-tarifa-especial', true);
+    });
+    //FINAL CAMBIAR A TARIFA ESPECIAL CLIENTE VIP
+
     //GET TECLAS
     ipcMain.on('get-teclas', (ev, data) => {
         tec.getTecladoMain(data).then(respuesta => {
@@ -464,6 +473,24 @@ app.on('ready', () => {
 
     });
     //FIN GET INFO ARTICULO
+
+
+    //GET INFO ARTICULO CON TARIFA ESPECIAL
+    ipcMain.on('get-info-articulo-tarifa-especial', (ev, data) => {
+        artiTarifaEspecial.getInfoArticuloTarifaEspecial(data).then(infoArticulo=>{
+            if(infoArticulo)
+            {
+                ev.returnValue = infoArticulo;
+            }
+            else
+            {
+                console.log("Algo pasa con infoArticulo: ", infoArticulo);
+                ev.returnValue = false;
+            }
+        });
+
+    });
+    //FIN GET INFO ARTICULO CON TARIFA ESPECIAL
 
     //DESFICHAR TRABAJADOR
     ipcMain.on('desfichar-trabajador', (ev, data) => {

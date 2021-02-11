@@ -44,6 +44,19 @@ ipcRenderer.on('res-cargar-teclado', (ev, data) =>
         vueToast.abrir('error', 'Error en cargar-TECLADO');
     }
 });
+ipcRenderer.on('res-cargar-tarifa-especial', (ev, data) => 
+{
+    if (data) 
+    {
+        vueToast.abrir('success', "TARIFA ESPECIAL CARGADA");
+        toc.tecladoTarifaEspecial = true;
+        toc.iniciar();
+    }
+    else 
+    {
+        vueToast.abrir('error', 'Error en cargar-TARIFA ESPECIAL');
+    }
+});
 
 ipcRenderer.on('res-buscar-trabajador', (ev, data) => {
     vueFichajes.setTrabajadores(data);
@@ -219,11 +232,11 @@ socket.on('confirmarEnvioFichaje', (data) => {
     // console.log("Ticket confirmado: enviado = true, enTransito = false");
     ipcRenderer.send('confirmar-envio-fichaje', data);
 });
-socket.on('respuestaClienteEsVIP', (data) => {
-    console.log("restos: ", data);
+socket.on('respuestaClienteEsVIP', (data: resClienteVIP) => {
     if(data.esVip)
     {
         //ES VIP
+        toc.idClienteVIP = data.idCliente;
         toc.vipConfirmado(data);
     }
     else
@@ -235,6 +248,12 @@ socket.on('ordenSincronizarTeclado', (data) => {
     if(toc.todoListo())
     {
         toc.actualizarTeclado();
+    }
+});
+socket.on('resCargarPreciosVIP', (data) => {
+    if(toc.todoListo())
+    {
+        ipcRenderer.send('insertar-tarifa-especial', data);
     }
 });
 socket.on('res-descargar-teclado', (data) => {

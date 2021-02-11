@@ -40,6 +40,7 @@ var vueMenuVip = new Vue({
         },
         cerrarModal()
         {
+            toc.peticionActivarTarifaEspecial();
             $('#vueMenuVip').modal('hide');
         }
     }
