@@ -161,6 +161,8 @@ socket.on('install-licencia', (data) => {
             tipoImpresora: toc.getTipoImpresora(),
             impresoraCafeteria: toc.getImpresoraCafeteria(),
             tipoDatafono: toc.getTipoDatafono(),
+            botonesConPrecios: data.botonesConPrecios,
+            prohibirBuscarArticulos: data.prohibirBuscarArticulos,
             ultimoTicket: data.ultimoTicket
         };
         vueToast.abrir("success", "OK!");

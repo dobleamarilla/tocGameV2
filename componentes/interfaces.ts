@@ -139,7 +139,9 @@ interface Parametros
     impresoraCafeteria: string,
     clearOneCliente?: number,
     clearOneTienda?: number,
-    clearOneTpv?: number
+    clearOneTpv?: number,
+    botonesConPrecios: string,
+    prohibirBuscarArticulos: string
 }
 
 interface Trabajador

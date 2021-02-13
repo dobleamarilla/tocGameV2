@@ -35,7 +35,9 @@ class TocGame {
                 impresoraCafeteria: 'NO',
                 clearOneCliente: 0,
                 clearOneTienda: 0,
-                clearOneTpv: 0
+                clearOneTpv: 0,
+                botonesConPrecios: 'No',
+                prohibirBuscarArticulos: 'No'
             };
         }
         if (infoCaja === null) {
@@ -153,7 +155,7 @@ class TocGame {
     setImpresoraCafeteria(data) {
         this.parametros.impresoraCafeteria = data;
     }
-    setParametros(licencia, codigoTienda, database, nombreEmpresa, nombreTienda, tipoImpresora, impresoraCafeteria, tipoDatafono) {
+    setParametros(licencia, codigoTienda, database, nombreEmpresa, nombreTienda, tipoImpresora, impresoraCafeteria, tipoDatafono, botonesConPrecios, prohibirBuscarArticulos) {
         this.parametros.licencia = licencia;
         this.parametros.codigoTienda = codigoTienda;
         this.parametros.database = database;
@@ -162,11 +164,13 @@ class TocGame {
         this.parametros.tipoImpresora = tipoImpresora;
         this.parametros.impresoraCafeteria = impresoraCafeteria;
         this.parametros.tipoDatafono = tipoDatafono;
+        this.parametros.botonesConPrecios = botonesConPrecios;
+        this.parametros.prohibirBuscarArticulos = prohibirBuscarArticulos;
     }
     setupToc(info) {
         if (info.licencia > 0 && info.codigoTienda > 0 && info.database.length > 0 && info.nombreEmpresa.length > 0 && info.nombreTienda.length > 0 && info.tipoImpresora.length > 0 && info.tipoDatafono.length > 0) {
             ipcRenderer.send('setParametros', info);
-            this.setParametros(info.licencia, info.codigoTienda, info.database, info.nombreEmpresa, info.nombreTienda, info.tipoImpresora, info.impresoraCafeteria, info.tipoDatafono);
+            this.setParametros(info.licencia, info.codigoTienda, info.database, info.nombreEmpresa, info.nombreTienda, info.tipoImpresora, info.impresoraCafeteria, info.tipoDatafono, info.botonesConPrecios, info.prohibirBuscarArticulos);
             this.descargarDatos();
         }
     }
@@ -1228,4 +1232,5 @@ class TocGame {
         ipcRenderer.send('get-cesta');
     }
 }
+// db.tickets.aggregate([dateConversionStage,sortStage, {$match: {convertedDate: {$gte: ISODate("2021-01-18T00:00:00.0Z"), $lte: ISODate("2021-01-19T00:00:00.0Z")}}}, {$group: _id:null, sumaTotal: {$sum:"$total"}}])
 //# sourceMappingURL=TocGame.js.map

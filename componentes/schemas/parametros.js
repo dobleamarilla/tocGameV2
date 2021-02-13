@@ -12,7 +12,9 @@ var params = new conexion.mongoose.Schema({
     ultimoTicket: Number,
     clearOneCliente: Number,
     clearOneTienda: Number,
-    clearOneTpv: Number
+    clearOneTpv: Number,
+    botonesConPrecios: String,
+    prohibirBuscarArticulos: String
 });
 var Parametros = conexion.mongoose.model('Parametros', params);
 function insertParams(data) {
@@ -39,7 +41,9 @@ function setParams(info) {
         tipoDatafono: info.datafono,
         clearOneCliente: info.clearOneCliente,
         clearOneTienda: info.clearOneTienda,
-        clearOneTpv: info.clearOneTpv
+        clearOneTpv: info.clearOneTpv,
+        botonesConPrecios: info.botonesConPrecio,
+        prohibirBuscarArticulos: info.prohibirBuscarArticulos
     });
 }
 exports.parametros = Parametros;

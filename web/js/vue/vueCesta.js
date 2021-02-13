@@ -50,13 +50,10 @@ var vueCesta = new Vue({
 				<button @click="abrirModalClientes()" class="btn btn-primary btn-block sizeMenus"><i class="fas fa-users"></i></button>
             </div>
         </div>
-        <div class="row pt-1">
+        <div class="row pt-1" v-if="prohibirBuscarArticulos === false">
 			<div class="col-md-3 paraNumerico" id="botonClientes">
 				<button class="btn btn-primary btn-block sizeMenus" @click="abrirModalBuscarProductos()"><i class="fas fa-search"></i></button>
             </div>
-            <div class="col-md-3 paraNumerico" id="botonMenus">
-				<button class="btn btn-primary btn-block sizeMenus" @click="alternarDatoTecla()"><i class="fas fa-euro-sign"></i></button>
-			</div>
 		</div>
 	</div>
 </div>
@@ -70,7 +67,8 @@ var vueCesta = new Vue({
             activo: null,
             conCliente: {},
             puntosClienteActivo: 0,
-            lineaDeRegalo: null
+            lineaDeRegalo: null,
+            prohibirBuscarArticulos: true
         };
     },
     computed: {
@@ -93,6 +91,11 @@ var vueCesta = new Vue({
         },
         recibirCesta(data) {
             this.cesta = data;
+            let params = toc.getParametros();
+            if (params.prohibirBuscarArticulos == "No")
+                this.prohibirBuscarArticulos = false;
+            else
+                this.prohibirBuscarArticulos = true;
         },
         selectActivo(index) {
             this.activo = index;
@@ -146,9 +149,6 @@ var vueCesta = new Vue({
         },
         abrirModalBuscarProductos() {
             vueBuscarProducto.abrirModal();
-        },
-        alternarDatoTecla() {
-            vuePanelVentas.alternar();
         },
         sePuedeRegalar(subtotal, esPromo) {
             if (esPromo) {

@@ -22,7 +22,12 @@ var vuePanelVentas = new Vue({
             <template v-for="index2 in 6">
                 <div class="col colJuntitas"  v-if="listadoTeclas[(index-1)*6+(index2-1)].idArticle >= 0">
                     <template v-if="listadoTeclas[(index-1)*6+(index2-1)].esSumable === true">
-                        <button v-bind:id="listadoTeclas[(index-1)*6+(index2-1)].idBoton" v-bind:class="['btn', 'btn-primary', 'rounded-0', 'w-100', 'teclas', 'colorIvan'+index]" @click="clickTecla(listadoTeclas[(index-1)*6+(index2-1)])" v-on:contextmenu="abrirFicha(listadoTeclas[(index-1)*6+(index2-1)])" style="background-color: #dee3e9;">{{listadoTeclas[(index-1)*6+(index2-1)].nombreArticulo.nombre}}</button>
+                        <div v-if="botonesPrecio === true">
+                            <button v-bind:id="listadoTeclas[(index-1)*6+(index2-1)].idBoton" v-bind:class="['btn', 'btn-primary', 'rounded-0', 'w-100', 'teclas', 'colorIvan'+index]" @click="clickTecla(listadoTeclas[(index-1)*6+(index2-1)])" v-on:contextmenu="abrirFicha(listadoTeclas[(index-1)*6+(index2-1)])" style="background-color: #dee3e9; font-size: 1.02vw;">{{listadoTeclas[(index-1)*6+(index2-1)].nombreArticulo.nombre}} {{listadoTeclas[(index-1)*6+(index2-1)].nombreArticulo.precio}}</button>
+                        </div>
+                        <div v-else>
+                            <button v-bind:id="listadoTeclas[(index-1)*6+(index2-1)].idBoton" v-bind:class="['btn', 'btn-primary', 'rounded-0', 'w-100', 'teclas', 'colorIvan'+index]" @click="clickTecla(listadoTeclas[(index-1)*6+(index2-1)])" v-on:contextmenu="abrirFicha(listadoTeclas[(index-1)*6+(index2-1)])" style="background-color: #dee3e9;">{{listadoTeclas[(index-1)*6+(index2-1)].nombreArticulo.nombre}}</button>
+                        </div>
                     </template>
                     <template v-else>
                         <button v-bind:id="listadoTeclas[(index-1)*6+(index2-1)].idBoton" v-bind:class="['btn', 'btn-primary', 'rounded-0', 'w-100', 'teclas', 'colorIvan'+index]" @click="modalesSumable(listadoTeclas[(index-1)*6+(index2-1)], listadoTeclas[(index-1)*6+(index2-1)].idBoton)" style="background-color: #dee3e9;">{{listadoTeclas[(index-1)*6+(index2-1)].nombreArticulo.nombre}}</button>
@@ -76,7 +81,8 @@ var vuePanelVentas = new Vue({
             {idBoton: 'tecla33', idArticle: -1, pos: -1, color: 4, nombreArticulo: {nombre: '', precio: ''}, esSumable: true},
             {idBoton: 'tecla34', idArticle: -1, pos: -1, color: 5, nombreArticulo: {nombre: '', precio: ''}, esSumable: true},
             {idBoton: 'tecla35', idArticle: -1, pos: -1, color: 6, nombreArticulo: {nombre: '', precio: ''}, esSumable: true}
-        ]
+        ],
+        botonesPrecio: false
       }
     },
     methods: {
@@ -133,6 +139,9 @@ var vuePanelVentas = new Vue({
         },
         cargarPrecios(data) {
             this.listaPrecios = data;
+            let params = toc.getParametros();
+            if(params.botonesConPrecios == "Si") this.botonesPrecio = true;
+            else this.botonesPrecio = false;
         },
         clickTecla(objListadoTeclas, esAPeso: boolean = false) //CUANDO SEA A PESO PASAR CON clickTecla(objListadoTeclas, true)
         {
