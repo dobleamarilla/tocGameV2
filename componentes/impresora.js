@@ -207,6 +207,41 @@ var salidaDinero = function (event, totalRetirado, cajaActual, fecha, nombreDepe
         errorImpresora(err, event);
     }
 };
+var entregaDiaria = function (event, data, tipoImpresora) {
+    console.log(data);
+    try {
+        exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
+        if (tipoImpresora === 'USB') {
+            var device = new escpos.USB('0x4B8', '0x202'); //USB
+        }
+        else {
+            if (tipoImpresora === 'SERIE') {
+                var device = new escpos.Serial('/dev/ttyS0', {
+                    baudRate: 115000,
+                    stopBit: 2
+                });
+            }
+        }
+        var options = { encoding: "GB18030" };
+        var printer = new escpos.Printer(device, options);
+        device.open(function () {
+            printer
+                .font('a')
+                .style('b')
+                .align('CT')
+                .size(0, 0)
+                .text(data)
+                .text('')
+                .text('')
+                .text('')
+                .cut()
+                .close();
+        });
+    }
+    catch (err) {
+        errorImpresora(err, event);
+    }
+};
 var testEze = function (event, texto) {
     console.log(texto);
     try {
@@ -395,6 +430,9 @@ exports.imprimirTicket = function (req, event) {
 };
 exports.imprimirTicketSalida = function (req, event) {
     salidaDinero(event, req.cantidad, req.cajaActual, req.fecha, req.nombreTrabajador, req.nombreTienda, req.concepto, req.impresora, req.codigoBarras);
+};
+exports.entregaDiaria = function (req, event) {
+    entregaDiaria(event, req.data, req.tipoImpresora);
 };
 exports.imprimirTicketEntrada = function (req, event) {
     entradaDinero(event, req.cantidad, req.cajaActual, req.fecha, req.nombreTrabajador, req.nombreTienda);

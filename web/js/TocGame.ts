@@ -1,6 +1,7 @@
 // import {Cesta} from './Cesta';
 // import {conexion} from '@/funciones/conexion';
 
+
 const TIPO_USB = 'USB';
 const TIPO_SERIE = 'SERIE';
 const TIPO_CLEARONE = 'CLEARONE';
@@ -1492,6 +1493,25 @@ class TocGame
         {
             vueToast.abrir('error', 'Ya existe este nombre de cliente');
         }
+    }
+    imprimirEntrega() {
+        let licencia = this.getNumeroTresDigitos(this.getParametros().licencia);
+        axios.get(`http://dsv.hiterp.com/TpvInforma.asp?Llic=00${licencia}&Versio=6001010&Tipus=EntregasPendientes`).then(response => {
+            let data = response.data;
+            let imprimir = "";
+            let valid = false;
+            for(let i = 0; i < data.length; i++) {
+                if((data[i-1] == "]" && data[i-2] == "a") || valid) {
+                    valid = true;
+                    if(data[i] == "]") break;
+                    imprimir += data[i];
+                } 
+            }
+            ipcRenderer.send('imprimirEntregaDiaria', {
+                data: imprimir,
+                impresora: this.parametros.tipoImpresora,
+            })
+        })
     }
     todoListo()
     {

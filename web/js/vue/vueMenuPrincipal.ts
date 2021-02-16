@@ -17,7 +17,8 @@ var vueMenuPrincipal = new Vue({
                         <button type="button" @click="menuPedidos()" class="btn btn-success btn-block w-100 ml-0" style="font-size: 35px; text-align: left !important;">2 - Pedidos</button>
                         <button type="button" @click="activarDevolucion()" class="btn btn-danger btn-block w-100 ml-0" style="font-size: 35px; text-align: left !important;">3 - Devolución</button>
                         <button type="button" @click="activarConsumoPersonal()" class="btn btn-secondary btn-block w-100 ml-0" style="font-size: 35px; text-align: left !important;">4 - Consumo personal</button>
-                        <button type="button" @click="abrirMenuTecnico()" class="btn btn-warning btn-block w-100 ml-0" style="font-size: 35px; text-align: left !important;">5 - Menú técnico</button>
+                        <button type="button" @click="entregas()" class="btn btn-secondary btn-block w-100 ml-0" style="font-size: 35px; text-align: left !important;">5 - Entregas</button>
+                        <button type="button" @click="abrirMenuTecnico()" class="btn btn-warning btn-block w-100 ml-0" style="font-size: 35px; text-align: left !important;">6 - Menú técnico</button>
                     </div>
                 </div>
 			</div>
@@ -70,6 +71,12 @@ var vueMenuPrincipal = new Vue({
         abrirBuscarProducto() {
             this.cerrarModal();
             vueBuscarProducto.abrirModal();
+        },
+        entregas() {
+            /*this.http.get('http://dsv.hiterp.com/TpvInforma.asp?Llic=00819&Versio=6001010&Tipus=EntregasPendientes').then(function(response){
+                console.log(response);
+            })*/
+            toc.imprimirEntrega();
         },
         abrirMenuTecnico() {
             vuePasswd.abrirModal();

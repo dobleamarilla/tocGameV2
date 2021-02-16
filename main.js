@@ -643,6 +643,9 @@ app.on('ready', () => {
     ipcMain.on('imprimirSalidaDinero', (event, args) => {
         impresora.imprimirTicketSalida(args, event);
     });
+    ipcMain.on('imprimirEntregaDiaria', (event, args) => {
+        impresora.entregaDiaria(args, event);
+    });
     ipcMain.on('abrirCajon', (event, tipoImpresora) => {
         impresora.abrirCajon(tipoImpresora, event);
     });

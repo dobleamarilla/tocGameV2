@@ -724,6 +724,10 @@ app.on('ready', () => {
 
         impresora.imprimirTicketSalida(args, event);
     });
+    ipcMain.on('imprimirEntregaDiaria', (event: any, args: any) => {
+
+        impresora.entregaDiaria(args, event);
+    });
     ipcMain.on('abrirCajon', (event: any, tipoImpresora: string) => {
 
         impresora.abrirCajon(tipoImpresora, event);
