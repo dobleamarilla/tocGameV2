@@ -522,7 +522,7 @@ exports.imprimirTicketSalida = function (req, event)
 {
     salidaDinero(event, req.cantidad, req.cajaActual, req.fecha, req.nombreTrabajador, req.nombreTienda, req.concepto, req.impresora, req.codigoBarras);
 }
-exports.entregaDiaria = function(req, event) {
+exports.entregaDiariaEvent = function(req, event) {
     entregaDiaria(event, req.data, req.tipoImpresora);
 }
 exports.imprimirTicketEntrada = function (req, event) 
