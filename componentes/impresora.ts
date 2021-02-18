@@ -247,6 +247,8 @@ var salidaDinero = function (event, totalRetirado, cajaActual, fecha, nombreDepe
 
 var entregaDiaria = function (event, data, tipoImpresora) 
 {
+    console.log(data)
+    console.log(tipoImpresora)
     try {
         exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
         if(tipoImpresora === 'USB') {
@@ -523,7 +525,7 @@ exports.imprimirTicketSalida = function (req, event)
     salidaDinero(event, req.cantidad, req.cajaActual, req.fecha, req.nombreTrabajador, req.nombreTienda, req.concepto, req.impresora, req.codigoBarras);
 }
 exports.entregaDiariaEvent = function(req, event) {
-    entregaDiaria(event, req.data, req.tipoImpresora);
+    entregaDiaria(event, req.data, req.impresora);
 }
 exports.imprimirTicketEntrada = function (req, event) 
 {
