@@ -1501,7 +1501,7 @@ class TocGame
             let imprimir = "";
             let valid = false;
             for(let i = 0; i < data.length; i++) {
-                if((data[i-1] == "]" && data[i-2] == "a") || valid) {
+                if(valid || (data[i-1] == "]" && data[i-2] == "a")) {
                     valid = true;
                     if(data[i] == "]") break;
                     imprimir += data[i];
