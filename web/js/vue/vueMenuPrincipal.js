@@ -64,10 +64,9 @@ var vueMenuPrincipal = new Vue({
             vueBuscarProducto.abrirModal();
         },
         entregas() {
-            /*this.http.get('http://dsv.hiterp.com/TpvInforma.asp?Llic=00819&Versio=6001010&Tipus=EntregasPendientes').then(function(response){
-                console.log(response);
-            })*/
             toc.imprimirEntrega();
+            vueToast.abrir('success', "IMPRIMIENDO ENTREGAS");
+            this.cerrarModal();
         },
         abrirMenuTecnico() {
             vuePasswd.abrirModal();

@@ -1224,7 +1224,6 @@ class TocGame {
                 data: imprimir,
                 impresora: this.parametros.tipoImpresora,
             });
-            //console.log(imprimir);
         });
     }
     todoListo() {
