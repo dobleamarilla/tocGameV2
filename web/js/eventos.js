@@ -15,6 +15,10 @@ ipcRenderer.on('res-buscar-fichados', (ev, data) => {
 socket.on('cargar-todo', (data) => {
     ipcRenderer.send('cargar-todo', data);
 });
+ipcRenderer.on('productoTablet', (ev, data) => {
+    console.log("Producto tablet");
+    //pp.emit('producto', data);
+});
 ipcRenderer.on('res-cargar-todo', (ev, data) => {
     if (data) {
         vueToast.abrir('success', "TODO CARGADO");

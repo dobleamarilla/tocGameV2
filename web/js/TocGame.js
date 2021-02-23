@@ -1227,7 +1227,7 @@ class TocGame {
         });
     }
     horaActual() {
-        return moment().format('LTS');
+        return moment().format('LT');
     }
     todoListo() {
         if (this.todoInstalado()) {

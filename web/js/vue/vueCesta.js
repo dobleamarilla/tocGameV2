@@ -109,9 +109,11 @@ var vueCesta = new Vue({
         borrar() {
             if (this.activo === null) {
                 toc.borrarCesta();
+                ipcRenderer.send('mostrar-visor', { texto: "", precio: "", total: toc.getCesta().tiposIva.importe2, tienda: 842 });
             }
             else {
                 toc.borrarItemCesta(this.activo);
+                ipcRenderer.send('mostrar-visor', { texto: "", precio: "", total: toc.getCesta().tiposIva.importe2, tienda: 842 });
             }
             this.activo = null;
             this.lineaDeRegalo = null;

@@ -210,6 +210,13 @@ app.on('ready', () => {
         params.insertarParametros(data);
     });
     //FINAL SET PARAMETROS
+    //VISOR 
+    ipcMain.on('mostrar-visor', (ev, data) => {
+        console.log("En el ipcOn", data);
+        //ev.sender.send('productoTablet', data)
+        impresora.mostrarVisorEvent(data);
+    });
+    //FIN VISOR
     //CARGAR TODO
     ipcMain.on('cargar-todo', (ev, data) => __awaiter(this, void 0, void 0, function* () {
         yield trabaj.insertarTrabajadores(data.dependentes);

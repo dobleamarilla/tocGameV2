@@ -23,14 +23,14 @@ var vuePanelVentas = new Vue({
                 <div class="col colJuntitas"  v-if="listadoTeclas[(index-1)*6+(index2-1)].idArticle >= 0">
                     <template v-if="listadoTeclas[(index-1)*6+(index2-1)].esSumable === true">
                         <div v-if="botonesPrecio === true">
-                            <button v-bind:id="listadoTeclas[(index-1)*6+(index2-1)].idBoton" v-bind:class="['btn', 'btn-primary', 'rounded-0', 'w-100', 'teclas', 'colorIvan'+index]" @click="clickTecla(listadoTeclas[(index-1)*6+(index2-1)])" v-on:contextmenu="abrirFicha(listadoTeclas[(index-1)*6+(index2-1)])" style="background-color: #dee3e9; font-size: 1.02vw;">{{listadoTeclas[(index-1)*6+(index2-1)].nombreArticulo.nombre}} {{listadoTeclas[(index-1)*6+(index2-1)].nombreArticulo.precio}}</button>
+                            <button v-bind:id="listadoTeclas[(index-1)*6+(index2-1)].idBoton" v-bind:class="['btn', 'btn-primary', 'rounded-0', 'w-100', 'teclas', 'colorIvan'+index]" @click="clickTecla(listadoTeclas[(index-1)*6+(index2-1)]); mostrarInfoVisor(listadoTeclas[(index-1)*6+(index2-1)]);" v-on:contextmenu="abrirFicha(listadoTeclas[(index-1)*6+(index2-1)])" style="background-color: #dee3e9; font-size: 1.02vw;">{{listadoTeclas[(index-1)*6+(index2-1)].nombreArticulo.nombre}} {{listadoTeclas[(index-1)*6+(index2-1)].nombreArticulo.precio}}</button>
                         </div>
                         <div v-else>
-                            <button v-bind:id="listadoTeclas[(index-1)*6+(index2-1)].idBoton" v-bind:class="['btn', 'btn-primary', 'rounded-0', 'w-100', 'teclas', 'colorIvan'+index]" @click="clickTecla(listadoTeclas[(index-1)*6+(index2-1)])" v-on:contextmenu="abrirFicha(listadoTeclas[(index-1)*6+(index2-1)])" style="background-color: #dee3e9;">{{listadoTeclas[(index-1)*6+(index2-1)].nombreArticulo.nombre}}</button>
+                            <button v-bind:id="listadoTeclas[(index-1)*6+(index2-1)].idBoton" v-bind:class="['btn', 'btn-primary', 'rounded-0', 'w-100', 'teclas', 'colorIvan'+index]" @click="clickTecla(listadoTeclas[(index-1)*6+(index2-1)]); mostrarInfoVisor(listadoTeclas[(index-1)*6+(index2-1)]);" v-on:contextmenu="abrirFicha(listadoTeclas[(index-1)*6+(index2-1)])" style="background-color: #dee3e9;">{{listadoTeclas[(index-1)*6+(index2-1)].nombreArticulo.nombre}}</button>
                         </div>
                     </template>
                     <template v-else>
-                        <button v-bind:id="listadoTeclas[(index-1)*6+(index2-1)].idBoton" v-bind:class="['btn', 'btn-primary', 'rounded-0', 'w-100', 'teclas', 'colorIvan'+index]" @click="modalesSumable(listadoTeclas[(index-1)*6+(index2-1)], listadoTeclas[(index-1)*6+(index2-1)].idBoton)" style="background-color: #dee3e9;">{{listadoTeclas[(index-1)*6+(index2-1)].nombreArticulo.nombre}}</button>
+                        <button v-bind:id="listadoTeclas[(index-1)*6+(index2-1)].idBoton" v-bind:class="['btn', 'btn-primary', 'rounded-0', 'w-100', 'teclas', 'colorIvan'+index]" @click="modalesSumable(listadoTeclas[(index-1)*6+(index2-1)], listadoTeclas[(index-1)*6+(index2-1)].idBoton); mostrarInfoVisor(listadoTeclas[(index-1)*6+(index2-1)])" style="background-color: #dee3e9;">{{listadoTeclas[(index-1)*6+(index2-1)].nombreArticulo.nombre}}</button>
                     </template>
                 </div>
                 <div class="col colJuntitas" v-else></div>
@@ -160,6 +160,15 @@ var vuePanelVentas = new Vue({
                 this.listadoTeclas[i].nombreArticulo.precio = this.listadoTeclas[i].nombreArticulo.nombre;
                 this.listadoTeclas[i].nombreArticulo.nombre = precioTemp;
             }
+        },
+        mostrarInfoVisor(objListadoTeclas) {
+            // let infoArticulo = ipcRenderer.sendSync('get-info-articulo', Number(objListadoTeclas.idArticle));;
+            let nombreArticulo = objListadoTeclas.nombreArticulo.nombre;
+            let precioArticulo = objListadoTeclas.nombreArticulo.precio;
+            console.log(nombreArticulo, precioArticulo);
+            // console.log(typeof toc.getCesta())
+
+            ipcRenderer.send('mostrar-visor', {texto: nombreArticulo, precio: precioArticulo, total: toc.getCesta().tiposIva.importe2, tienda: 842});
         },
         resetTeclado()
         {

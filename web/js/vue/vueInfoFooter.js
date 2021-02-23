@@ -22,8 +22,7 @@ var vueInfoFooter = new Vue({
         getParametros() {
             this.nombreTienda = toc.getParametros().nombreTienda;
             this.version = ipcRenderer.sendSync('get-version');
-            this.hora = toc.horaActual();
-            setInterval(this.getParametros, 1000);
+            this.horaActual();
         },
         hayInternet(res) {
             if (res) {
@@ -33,12 +32,10 @@ var vueInfoFooter = new Vue({
                 this.internet = 'offline.png';
             }
         },
-        time() {
-            // var self = this;
+        horaActual() {
+            this.hora = toc.horaActual();
+            setInterval(this.horaActual, 60000);
         }
-    },
-    mounted: function () {
-        this.time();
     }
 });
 //# sourceMappingURL=vueInfoFooter.js.map
