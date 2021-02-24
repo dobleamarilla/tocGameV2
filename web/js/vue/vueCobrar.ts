@@ -153,8 +153,9 @@ var vueCobrar = new Vue({
             {
                 console.log("Esperando es: ", this.esperando);
                 this.setEsperando(false);
+		$('#modalVueCobrar').modal('hide');
+
                 /*ipcRenderer.send('mostrar-visor', {texto: 'Muchas gracias!', precio: ':D'});
-                $('#modalVueCobrar').modal('hide');
                 setTimeout(() => {
                     ipcRenderer.send('mostrar-visor', {texto: 'Bienvenida/o a', precio:'365!'})
                 }, 2500)*/
