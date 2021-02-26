@@ -277,6 +277,28 @@ class TocGame
     {
         ipcRenderer.send('imprimir-test', texto);
     }
+    round(value) 
+    {
+        return Math.trunc(value/10) * 10;
+    }
+    
+    generarEAN13(codigo12: string)
+    {
+        var sumaPares = 0;
+        var sumaImpares = 0;
+        for(let i = 0; i < codigo12.length; i++){ 
+            if(i % 2 == 0){
+                sumaPares += Number(codigo12[i])
+            }
+            else {
+                sumaImpares += Number(codigo12[i])
+            }
+        }
+        var cosa = sumaImpares*3+sumaPares;
+        var control = (this.round(cosa)+10)-cosa;
+        console.log("Control: ", control, "codigo12: ", codigo12);
+        return codigo12 + control;
+    }
     nuevaSalidaDinero(cantidad: number, concepto: string, tipoExtra: string, noImprimir: boolean = false, idTicket: number = -100)
     {   
         let codigoBarras = "";
@@ -286,6 +308,8 @@ class TocGame
             console.log(err);
         }
         codigoBarras = this.fixLength12(codigoBarras);
+
+        codigoBarras = this.generarEAN13(codigoBarras);
         let objSalida: Movimientos = {
             _id: Date.now(),
             tipo: TIPO_SALIDA,

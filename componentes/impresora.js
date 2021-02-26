@@ -195,7 +195,7 @@ var salidaDinero = function (event, totalRetirado, cajaActual, fecha, nombreDepe
                 .size(1, 1)
                 .text(concepto)
                 .text('')
-                .barcode(codigoBarras, "EAN13", 4)
+                .barcode(codigoBarras.slice(0, 11), "EAN13", 4)
                 .text('')
                 .text('')
                 .text('')
