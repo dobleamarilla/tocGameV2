@@ -307,7 +307,7 @@ class TocGame
         } catch(err) {
             console.log(err);
         }
-        codigoBarras = this.fixLength12(codigoBarras);
+        //codigoBarras = this.fixLength12(codigoBarras);
 
         codigoBarras = this.generarEAN13(codigoBarras);
         let objSalida: Movimientos = {
@@ -374,7 +374,7 @@ class TocGame
         let digitYear = new Date().getFullYear().toString()[3];
 
 
-        codigoFinal = `98${codigoLicenciaStr}${digitYear}${moment().dayOfYear()}${strNumeroCodigosDeBarras}`;
+        codigoFinal = `98${codigoLicenciaStr}${digitYear}${this.getNumeroTresDigitos(moment().dayOfYear())}${strNumeroCodigosDeBarras}`;
         return codigoFinal;
     }
 
@@ -1015,7 +1015,7 @@ class TocGame
         }
     }
     
-    crearTicket(tipo: string)
+    crearTicket(tipo: string, totalTkrs: number = 0)
     {
         let total = 0;
         for(let i = 0; i < this.cesta.lista.length; i++)

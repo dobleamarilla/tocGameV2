@@ -237,7 +237,7 @@ class TocGame {
         catch (err) {
             console.log(err);
         }
-        codigoBarras = this.fixLength12(codigoBarras);
+        //codigoBarras = this.fixLength12(codigoBarras);
         codigoBarras = this.generarEAN13(codigoBarras);
         let objSalida = {
             _id: Date.now(),
@@ -295,7 +295,7 @@ class TocGame {
         let strNumeroCodigosDeBarras = this.getNumeroTresDigitos(objCodigoBarras);
         let codigoFinal = '';
         let digitYear = new Date().getFullYear().toString()[3];
-        codigoFinal = `98${codigoLicenciaStr}${digitYear}${moment().dayOfYear()}${strNumeroCodigosDeBarras}`;
+        codigoFinal = `98${codigoLicenciaStr}${digitYear}${this.getNumeroTresDigitos(moment().dayOfYear())}${strNumeroCodigosDeBarras}`;
         return codigoFinal;
     }
     nuevaEntradaDinero(cantidad, concepto) {
@@ -809,7 +809,7 @@ class TocGame {
             }
         }
     }
-    crearTicket(tipo) {
+    crearTicket(tipo, totalTkrs = 0) {
         let total = 0;
         for (let i = 0; i < this.cesta.lista.length; i++) {
             total += this.cesta.lista[i].subtotal;

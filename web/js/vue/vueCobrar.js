@@ -60,18 +60,22 @@ var vueCobrar = new Vue({
                                 <div class="col-md-6 text-center pt-2" style="background-color: #F9FFF4">
                                     <span style="font-size: 25px;">Total a cobrar: {{total.toFixed(2)}} €</span><br>
                                     <span style="font-size: 25px;">Dinero recibido: {{cuenta.toFixed(2)}} €</span><br>
-                                    <span v-if="cuenta-total < 0" style="font-size: 25px; color:red;">Faltan: {{(cuenta-total).toFixed(2)}} €</span>
-                                    <span v-else style="font-size: 25px; color: green;">Sobran: {{(cuenta-total).toFixed(2)}} €</span>
+                                    <span style="font-size: 25px;">Ticket restaurante: {{totalTkrs.toFixed(2)}} €</span><br>
+                                    <span v-if="(cuenta+totalTkrs)-total < 0" style="font-size: 25px; color:red;">Faltan: {{((cuenta+totalTkrs)-total).toFixed(2)}} €</span>
+                                    <span v-else style="font-size: 25px; color: green;">Sobran: {{((cuenta+totalTkrs)-total).toFixed(2)}} €</span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-5">
                             <div v-if="esVIP === false && esDevolucion === false && esConsumoPersonal === false" class="row">
                                 <div class="col-md-6 text-center">
-                                    <img @click="cobrar('EFECTIVO')" src="assets/imagenes/img-efectivo.png" alt="Cobrar con efectivo" width="250px">
+                                    <img @click="cobrar('EFECTIVO')" src="assets/imagenes/img-efectivo.png" alt="Cobrar con efectivo" width="225px">
                                 </div>
                                 <div class="col-md-6 text-center">
-                                    <img @click="cobrar('TARJETA')" src="assets/imagenes/img-tarjetas.png" alt="Cobrar con tarjeta" width="250px">
+                                    <img @click="cobrar('TARJETA')" src="assets/imagenes/img-tarjetas.png" alt="Cobrar con tarjeta" width="225px">
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <img @click="ticketTkrs('TKRS')" src="assets/imagenes/img-efectivo.png" alt="Cobrar con ticket restaurante" width="225px" style="margin-top: 5px;">
                                 </div>
                             </div>
                             <div v-if="esVIP === true" class="row">
@@ -131,7 +135,8 @@ var vueCobrar = new Vue({
             sizeBilletes: '150px',
             cuentaAsistente: 0,
             cuentaAsistenteTeclado: '',
-            cuenta: 0
+            cuenta: 0,
+            totalTkrs: 0
         };
     },
     methods: {
@@ -178,9 +183,19 @@ var vueCobrar = new Vue({
             if (!this.esperando) {
                 this.setEsperando(true);
                 toc.crearTicket(tipo);
+                console.log(this.totalTkrs);
             }
             else {
                 vueToast.abrir('danger', 'Ya existe una operación en curso');
+            }
+        },
+        ticketTkrs() {
+            if (this.cuentaAsistente == 0) {
+                vueToast.abrir('error', "No puedes cobrar un ticket restaurante con el valor de 0");
+            }
+            else {
+                this.totalTkrs += this.cuentaAsistente - this.totalTkrs;
+                this.cuenta -= this.cuentaAsistente;
             }
         },
         setEsperando(res) {
