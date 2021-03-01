@@ -303,7 +303,7 @@ class TocGame
     {   
         let codigoBarras = "";
         try {
-            codigoBarras = this.generarCodigoBarrasSalida();
+            if(tipoExtra != 'TARJETA') codigoBarras = this.generarCodigoBarrasSalida();
         } catch(err) {
             console.log(err);
         }
