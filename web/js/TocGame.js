@@ -232,7 +232,8 @@ class TocGame {
     nuevaSalidaDinero(cantidad, concepto, tipoExtra, noImprimir = false, idTicket = -100) {
         let codigoBarras = "";
         try {
-            codigoBarras = this.generarCodigoBarrasSalida();
+            if (tipoExtra != 'TARJETA')
+                codigoBarras = this.generarCodigoBarrasSalida();
         }
         catch (err) {
             console.log(err);

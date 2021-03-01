@@ -162,6 +162,8 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoP
     });
 };
 var salidaDinero = function (event, totalRetirado, cajaActual, fecha, nombreDependienta, nombreTienda, concepto, tipoImpresora, codigoBarras) {
+    console.log("BARRAS");
+    console.log(codigoBarras.slice(0, 11));
     try {
         fecha = dateToString2(fecha);
         exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
