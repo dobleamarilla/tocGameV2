@@ -69,7 +69,7 @@ var vueSalidaDinero = new Vue({
                 }
                 else {
                     if (res === 1) {
-                        console.log("CANCELADA");
+                        vueToast.abrir('info', 'Operación cancelada');
                     }
                 }
             });

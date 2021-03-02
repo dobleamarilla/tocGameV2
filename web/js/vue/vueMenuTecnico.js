@@ -13,9 +13,9 @@ var vueMenuTecnico = new Vue({
 			<div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <button type="button" @click="abrirConfigurador()" class="btn btn-dark btn-block w-100 ml-0" style="font-size: 35px; text-align: left !important;">1 - Configuración</button>
-                        <button type="button" @click="quitarLicencia()" class="btn btn-success btn-block w-100 ml-0" style="font-size: 35px; text-align: left !important;">2 - Quitar licencia</button>
-                        <button type="button" @click="actualizarTrabajadores()" class="btn btn-info btn-block w-100 ml-0" style="font-size: 35px; text-align: left !important;">3 - Actualizar trabajadores</button>
+                        <button type="button" @click="abrirConfigurador()" class="btn btn-dark btn-block w-100 ml-0" style="font-size: 25px; text-align: left !important;">1 - Configuración</button>
+                        <button type="button" @click="quitarLicencia()" class="btn btn-success btn-block w-100 ml-0" style="font-size: 25px; text-align: left !important;">2 - Quitar licencia</button>
+                        <button type="button" @click="actualizarTrabajadores()" class="btn btn-info btn-block w-100 ml-0" style="font-size: 25px; text-align: left !important;">3 - Actualizar trabajadores</button>
                     </div>
                 </div>
 			</div>
@@ -45,6 +45,9 @@ var vueMenuTecnico = new Vue({
         actualizarTrabajadores() {
             toc.actualizarTrabajadores();
             this.cerrarModal();
+        },
+        quitarLicencia() {
+            ipcRenderer.send("borrar-database");
         }
     }
 });

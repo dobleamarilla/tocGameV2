@@ -152,11 +152,8 @@ var vueCobrar = new Vue({
         },
         cerrarModal()
         {
-            console.log(this.esperando);
-            console.log(this.esperandoDatafono.display);
             if(!this.esperando && this.esperandoDatafono.display == 'none')
             {
-                console.log("Esperando es: ", this.esperando);
                 this.setEsperando(false);
 		        $('#modalVueCobrar').modal('hide');
 
@@ -196,8 +193,7 @@ var vueCobrar = new Vue({
             if(!this.esperando)
             {
                 this.setEsperando(true);
-                toc.crearTicket(tipo);
-                console.log(this.totalTkrs);           
+                toc.crearTicket(tipo);       
             }
             else
             {

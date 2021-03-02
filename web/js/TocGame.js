@@ -226,7 +226,6 @@ class TocGame {
         }
         var cosa = sumaImpares * 3 + sumaPares;
         var control = (this.round(cosa) + 10) - cosa;
-        console.log("Control: ", control, "codigo12: ", codigo12);
         return codigo12 + control;
     }
     nuevaSalidaDinero(cantidad, concepto, tipoExtra, noImprimir = false, idTicket = -100) {
@@ -961,7 +960,6 @@ class TocGame {
         vueCobrar.desactivoEsperaDatafono();
         if (respuesta.data[1] === 48) //Primero STX, segundo estado transacción: correcta = 48, incorrecta != 48
          {
-            console.log("Operación APROBADA");
             this.nuevaSalidaDinero(this.auxTotalDatafono, 'Targeta', 'TARJETA', true, respuesta.objTicket._id);
             ipcRenderer.send('set-ticket', respuesta.objTicket);
             ipcRenderer.send('set-ultimo-ticket-parametros', respuesta.objTicket._id);
@@ -972,7 +970,6 @@ class TocGame {
             vueToast.abrir('success', 'Ticket creado');
         }
         else {
-            console.log("Operación DENEGADA");
             vueToast.abrir('error', 'Operación DENEGADA');
             ipcRenderer.send('change-pinpad');
         }
@@ -1187,7 +1184,6 @@ class TocGame {
         this.infoClienteVip = data;
         this.esVIP = true;
         vueMenuVip.abreModal();
-        console.log(data);
     }
     peticionActivarTarifaEspecial() {
         socket.emit('cargarPreciosVIP', { licencia: this.parametros.licencia, database: this.parametros.database, idCliente: this.idClienteVIP });
@@ -1247,9 +1243,6 @@ class TocGame {
             });
         });
     }
-    horaActual() {
-        return moment().format('LT');
-    }
     todoListo() {
         if (this.todoInstalado()) {
             return true;
@@ -1260,20 +1253,25 @@ class TocGame {
         //Tal vez falten comprobaciones extra
     }
     iniciar() {
-        ipcRenderer.send('get-precios');
-        // ipcRenderer.send('get-precios-tarifa-especial');
-        $('.modal').modal('hide');
-        vueInfoFooter.getParametros();
-        ipcRenderer.send('buscar-fichados');
-        const infoPromociones = ipcRenderer.sendSync('get-promociones');
-        if (infoPromociones.length > 0) {
-            this.promociones = infoPromociones;
+        if (this.todoInstalado()) {
+            ipcRenderer.send('get-precios');
+            // ipcRenderer.send('get-precios-tarifa-especial');
+            $('.modal').modal('hide');
+            vueInfoFooter.getParametros();
+            //ipcRenderer.send('buscar-fichados'); //Este comprueba si hay licencia (también)
+            const infoPromociones = ipcRenderer.sendSync('get-promociones');
+            if (infoPromociones.length > 0) {
+                this.promociones = infoPromociones;
+            }
+            else {
+                this.promociones = [];
+            }
+            ipcRenderer.send('get-menus');
+            ipcRenderer.send('get-cesta');
         }
         else {
-            this.promociones = [];
+            abrirInstallWizard();
         }
-        ipcRenderer.send('get-menus');
-        ipcRenderer.send('get-cesta');
     }
 }
 // db.tickets.aggregate([dateConversionStage,sortStage, {$match: {convertedDate: {$gte: ISODate("2021-01-18T00:00:00.0Z"), $lte: ISODate("2021-01-19T00:00:00.0Z")}}}, {$group: _id:null, sumaTotal: {$sum:"$total"}}])

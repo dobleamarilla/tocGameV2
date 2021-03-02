@@ -22,6 +22,7 @@ ipcRenderer.on('productoTablet', (ev, data) => {
 ipcRenderer.on('res-cargar-todo', (ev, data) => {
     if (data) {
         vueToast.abrir('success', "TODO CARGADO");
+        vueInstallWizard.esperando = false;
         vueInstallWizard.cerrarModal();
         toc.iniciar();
     }
@@ -134,6 +135,9 @@ ipcRenderer.on('pregunta-cambio-datafono', (ev, data) => {
         }
     });
 });
+ipcRenderer.on('borrar-database', (ev, data) => {
+    toc.iniciar();
+});
 ipcRenderer.on('res-sincronizar-movimientos', (ev, data) => {
     const objEnviar = {
         parametros: toc.getParametros(),
@@ -173,6 +177,7 @@ socket.on('install-licencia', (data) => {
         toc.setupToc(misParams);
     }
     else {
+        vueInstallWizard.esperando = false;
         vueToast.abrir("error", "Datos incorrectos");
     }
 });

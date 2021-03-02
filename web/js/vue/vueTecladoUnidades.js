@@ -56,7 +56,6 @@ var vueTecladoUnidades = new Vue({
     methods: {
         abrirModal() {
             $('#modalUnidades').modal();
-            console.log(vueCesta.getActivo());
         },
         cerrarModal() {
             $('#modalUnidades').modal('hide');

@@ -25,6 +25,8 @@ var moned       = require('./componentes/schemas/infoMonedas');
 var codiBarra   = require('./componentes/schemas/codigoBarras');
 var email       = require('./componentes/email');
 var eventos     = require('events');
+var exec        = require('child_process').exec;
+
 var artiTarifaEspecial = require('./componentes/schemas/articulosTarifaEspecial');
 // var pjson = require('./package.json');
 
@@ -184,7 +186,12 @@ app.on('ready', () => {
         });
     });
     //FINAL GET RANGO MOVIMIENTOS
-
+    //BORRAR DATABASE ENTERA
+    ipcMain.on("borrar-database", (ev, args)=>{
+        exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/borrarDatabase.sh');
+        ev.sender.send('borrar-database');
+    })
+    //FINAL BORRAR DATABASE ENTERA
     //GET TICKETS INTERVALO
     ipcMain.on('getTicketsIntervalo', (ev, args) => {
         tick.getTicketsIntervalo(args).then(res => {

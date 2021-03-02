@@ -22,7 +22,6 @@ var vueInfoFooter = new Vue({
         getParametros() {
             this.nombreTienda = toc.getParametros().nombreTienda;
             this.version = ipcRenderer.sendSync('get-version');
-            this.horaActual();
         },
         hayInternet(res) {
             if (res) {
@@ -31,10 +30,6 @@ var vueInfoFooter = new Vue({
             else {
                 this.internet = 'offline.png';
             }
-        },
-        horaActual() {
-            //this.hora = toc.horaActual();
-            //setInterval(this.horaActual, 60000);
         }
     }
 });

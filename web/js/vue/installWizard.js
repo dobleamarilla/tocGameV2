@@ -49,6 +49,9 @@ var vueInstallWizard = new Vue({
                         </select>
 					</div>
 				</div>
+                <div class="row" v-if="esperando">
+                    <img src="assets/imagenes/loading.gif" style="display:block;margin:auto;" alt="Esperando respuesta del servidor">
+                </div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary" @click="confirmar()">Confirmar</button>
@@ -64,7 +67,8 @@ var vueInstallWizard = new Vue({
             password: '',
             tipoImpresora: 'USB',
             tipoDatafono: 'CLEARONE',
-            impresoraCafeteria: 'NO'
+            impresoraCafeteria: 'NO',
+            esperando: false
         };
     },
     methods: {
@@ -82,12 +86,17 @@ var vueInstallWizard = new Vue({
             this.impresoraCafeteria = 'NO';
         },
         confirmar() {
-            vueToast.abrir("normal", "Petición al servidor enviada");
-            toc.setTipoDatafono(this.tipoDatafono);
-            toc.setTipoImpresora(this.tipoImpresora);
-            toc.setImpresoraCafeteria(this.impresoraCafeteria);
-            console.log(this.tipoImpresora);
-            socket.emit('install-licencia', { numLicencia: Number(this.licencia), password: this.password });
+            if (!toc.todoListo()) {
+                vueToast.abrir("normal", "Petición al servidor enviada");
+                toc.setTipoDatafono(this.tipoDatafono);
+                toc.setTipoImpresora(this.tipoImpresora);
+                toc.setImpresoraCafeteria(this.impresoraCafeteria);
+                socket.emit('install-licencia', { numLicencia: Number(this.licencia), password: this.password });
+                this.esperando = true;
+            }
+            else {
+                vueToast.abrir("danger", "Ya hay una licencia configurada. Borra la licencia para poder cargar otra");
+            }
         }
     }
 });

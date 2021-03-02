@@ -64,7 +64,7 @@ var vueEntradaDinero = new Vue({
              {
                  if(res === 1)
                  {
-                    console.log("CANCELADA");
+                    vueToast.abrir('info', 'Operación cancelada');
                  }
              }
             })
