@@ -1259,7 +1259,7 @@ class TocGame {
             // ipcRenderer.send('get-precios-tarifa-especial');
             $('.modal').modal('hide');
             vueInfoFooter.getParametros();
-            //ipcRenderer.send('buscar-fichados'); //Este comprueba si hay licencia (también)
+            ipcRenderer.send('buscar-fichados'); //Este comprueba si hay licencia (también)
             const infoPromociones = ipcRenderer.sendSync('get-promociones');
             if (infoPromociones.length > 0) {
                 this.promociones = infoPromociones;

@@ -75,7 +75,7 @@ var vueCobrar = new Vue({
                                     <img @click="cobrar('TARJETA')" src="assets/imagenes/img-tarjetas.png" alt="Cobrar con tarjeta" width="225px">
                                 </div>
                                 <div class="col-md-6 text-center">
-                                    <img @click="ticketTkrs('TKRS')" src="assets/imagenes/img-efectivo.png" alt="Cobrar con ticket restaurante" width="225px" style="margin-top: 5px;">
+                                    <img @click="ticketTkrs('TKRS')" src="assets/imagenes/img-restaurant.png" alt="Cobrar con ticket restaurante" width="225px" style="margin-top: 5px;">
                                 </div>
                             </div>
                             <div v-if="esVIP === true" class="row">
