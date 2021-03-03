@@ -19,6 +19,7 @@ class TocGame {
         this.stopNecesario = false;
         this.idClienteVIP = null;
         this.tecladoTarifaEspecial = false;
+        this.arrayFichados = [];
         if (info !== null) {
             this.parametros = info;
         }
