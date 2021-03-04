@@ -49,7 +49,12 @@ function testeoGuapo()
 
 function cleanFichajes()
 {
-    SincroFichajes.updateMany({enviado: false, enTransito: true}, {enTransito: false});
+    SincroFichajes.updateMany({enviado: false, enTransito: true}, {enTransito: false}).then(info=>{
+        if(info.n > 0)
+        {
+            console.log("SincroFichajes pendientes enviados al servidor");
+        }
+    });
 }
 
 exports.SincroFichajes          = SincroFichajes;

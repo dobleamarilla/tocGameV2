@@ -40,7 +40,11 @@ function testeoGuapo() {
     return SincroFichajes.findOneAndUpdate({ enviado: false, enTransito: false }, { enTransito: true }, { lean: true, sort: { _id: 1 } });
 }
 function cleanFichajes() {
-    SincroFichajes.updateMany({ enviado: false, enTransito: true }, { enTransito: false });
+    SincroFichajes.updateMany({ enviado: false, enTransito: true }, { enTransito: false }).then(info => {
+        if (info.n > 0) {
+            console.log("SincroFichajes pendientes enviados al servidor");
+        }
+    });
 }
 exports.SincroFichajes = SincroFichajes;
 exports.nuevoItem = nuevoItem;

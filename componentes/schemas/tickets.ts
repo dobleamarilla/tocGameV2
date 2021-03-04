@@ -129,7 +129,10 @@ function confirmarEnvio(data)
 function cleanTransit()
 {
     Tickets.updateMany({enviado: false, enTransito: true}, {enTransito: false}).then(info=>{
-        
+        if(info.n > 0)
+        {
+            console.log("Tickets pendientes enviados al servidor");
+        }
     });
 }
 

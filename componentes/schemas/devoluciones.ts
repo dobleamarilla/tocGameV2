@@ -92,7 +92,12 @@ function confirmarEnvioDevo(data)
 
 function cleanDevoluciones()
 {
-    Devoluciones.updateMany({enviado: false, enTransito: true}, {enTransito: false});
+    Devoluciones.updateMany({enviado: false, enTransito: true}, {enTransito: false}).then(info=>{
+        if(info.n > 0)
+        {
+            console.log("Devoluciones pendientes enviados al servidor");
+        }
+    });
 }
 
 exports.insertarDevolucion        = insertarDevolucion;

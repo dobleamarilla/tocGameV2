@@ -34,7 +34,11 @@ function confirmarMovimiento(id) {
     }));
 }
 function cleanMovimientos() {
-    Movimientos.updateMany({ enviado: false, enTransito: true }, { enTransito: false });
+    Movimientos.updateMany({ enviado: false, enTransito: true }, { enTransito: false }).then(info => {
+        if (info.n > 0) {
+            console.log("Movimientos pendientes enviados al servidor");
+        }
+    });
 }
 exports.insertarMovimiento = insertarMovimiento;
 exports.getMovimientosRango = getMovimientosRango;

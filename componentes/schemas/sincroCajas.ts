@@ -67,7 +67,12 @@ function confirmarEnvioCaja(data)
 }
 function cleanCajas()
 {
-    SincroCajas.updateMany({enviado: false, enTransito: true}, {enTransito: false});
+    SincroCajas.updateMany({enviado: false, enTransito: true}, {enTransito: false}).then(info=>{
+        if(info.n > 0)
+        {
+            console.log("Cajas pendientes enviados al servidor");
+        }
+    });
 }
 
 exports.nuevoItemSincroCajas        = nuevoItemSincroCajas;
