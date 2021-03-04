@@ -19,7 +19,6 @@ var schemaMovimientos = new conexion.mongoose.Schema({
 });
 var Movimientos = conexion.mongoose.model('movimientos', schemaMovimientos);
 function insertarMovimiento(data) {
-    console.log(data);
     var nuevo = new Movimientos(data);
     nuevo.save();
 }

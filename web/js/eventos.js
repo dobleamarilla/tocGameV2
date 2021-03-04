@@ -202,6 +202,7 @@ socket.on('confirmarEnvioCaja', (data) => {
     ipcRenderer.send('confirmar-envio-caja', data);
 });
 socket.on('confirmarEnvioMovimiento', (data) => {
+    console.log("Movimiento guardado en bbdd");
     ipcRenderer.send('movimiento-confirmado', data);
 });
 socket.on('confirmarEnvioFichaje', (data) => {

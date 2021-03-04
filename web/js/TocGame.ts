@@ -303,13 +303,16 @@ class TocGame
     {   
         let codigoBarras = "";
         try {
-            if(tipoExtra != 'TARJETA' && tipoExtra != 'TKRS') codigoBarras = this.generarCodigoBarrasSalida();
+            if(tipoExtra != 'TARJETA' && tipoExtra != 'TKRS'){
+                codigoBarras = this.generarCodigoBarrasSalida();
+                codigoBarras = this.generarEAN13(codigoBarras);
+            } 
         } catch(err) {
             console.log(err);
         }
         //codigoBarras = this.fixLength12(codigoBarras);
 
-        codigoBarras = this.generarEAN13(codigoBarras);
+        
         let objSalida: Movimientos = {
             _id: Date.now(),
             tipo: TIPO_SALIDA,
@@ -1023,7 +1026,7 @@ class TocGame
             total += this.cesta.lista[i].subtotal;
         }
         total -= Number(totalTkrs);
-        console.log(total);
+
         const infoTrabajador: Trabajador = this.getCurrentTrabajador();
         const nuevoIdTicket = this.getUltimoTicket()+1;
 

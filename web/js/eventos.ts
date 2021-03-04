@@ -168,7 +168,7 @@ ipcRenderer.on('res-sincronizar-movimientos', (ev, data) => {
         parametros: toc.getParametros(),
         info: data
     }
-    
+
     if(objEnviar.info !== null)
     {
         socket.emit('guardarMovimiento', objEnviar);
@@ -238,6 +238,7 @@ socket.on('confirmarEnvioCaja', (data) => {
     ipcRenderer.send('confirmar-envio-caja', data);
 });
 socket.on('confirmarEnvioMovimiento', (data) => {
+    console.log("Movimiento guardado en bbdd");
     ipcRenderer.send('movimiento-confirmado', data);
 });
 socket.on('confirmarEnvioFichaje', (data) => {

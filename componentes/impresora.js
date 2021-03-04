@@ -47,12 +47,10 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoP
         try {
             exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
             if (tipoImpresora === 'USB') {
-                console.log('VA POR USB');
                 var device = new escpos.USB('0x4B8', '0x202'); //USB
             }
             else {
                 if (tipoImpresora === 'SERIE') {
-                    console.log('VA POR SERIE');
                     var device = new escpos.Serial('/dev/ttyS0', {
                         baudRate: 115000,
                         stopBit: 2
@@ -162,8 +160,6 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoP
     });
 };
 var salidaDinero = function (event, totalRetirado, cajaActual, fecha, nombreDependienta, nombreTienda, concepto, tipoImpresora, codigoBarras) {
-    console.log("BARRAS");
-    console.log(codigoBarras.slice(0, 11));
     try {
         fecha = dateToString2(fecha);
         exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
@@ -244,7 +240,6 @@ var entregaDiaria = function (event, data, tipoImpresora) {
     }
 };
 var testEze = function (event, texto) {
-    console.log(texto);
     try {
         var device = new escpos.Serial('COM4', {
             baudRate: 9600,
@@ -341,12 +336,10 @@ var abrirCajon = function (event, tipoImpresora) {
     try {
         exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
         if (tipoImpresora === 'USB') {
-            console.log('VA POR USB');
             var device = new escpos.USB('0x4B8', '0x202'); //USB
         }
         else {
             if (tipoImpresora === 'SERIE') {
-                console.log('VA POR SERIE');
                 var device = new escpos.Serial('/dev/ttyS0', {
                     baudRate: 115000,
                     stopBit: 2
