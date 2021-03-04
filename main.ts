@@ -120,6 +120,18 @@ app.on('ready', () => {
         });
     });
     //FINAL GET PARAMETROS
+    //GET ENTORNO DSV/PRODUCCION
+    ipcMain.on('getEntorno', (ev, args) => {
+        if(process.argv[2] == 'test')
+        {
+            ev.returnValue = 'http://localhost:8080'
+        }
+        else
+        {
+            ev.returnValue = 'http://54.74.52.150:8080';
+        }
+    });
+    //FINAL GET ENTORNO DSV/PRODUCCION
     //PREGUNTAR CAMBIO DATAFONO
     ipcMain.on('change-pinpad', (ev, args) => {
         ev.sender.send('pregunta-cambio-datafono');

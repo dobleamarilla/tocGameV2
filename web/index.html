@@ -55,7 +55,10 @@
     <script>window.$ = window.jQuery = require('jquery');</script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/socket.io.js"></script>
-    <script>const socket = io('http://54.74.52.150:8080');</script>
+	<script>
+		const tipoEntorno = ipcRenderer.sendSync('getEntorno');
+		const socket = io(tipoEntorno);
+    </script>
     <script src="assets/js/vue.js"></script>
     <script src="assets/js/jqbtk.min.js"></script>
     <script src="js/render.js"></script>
