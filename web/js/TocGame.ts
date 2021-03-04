@@ -303,7 +303,7 @@ class TocGame
     {   
         let codigoBarras = "";
         try {
-            if(tipoExtra != 'TARJETA') codigoBarras = this.generarCodigoBarrasSalida();
+            if(tipoExtra != 'TARJETA' && tipoExtra != 'TKRS') codigoBarras = this.generarCodigoBarrasSalida();
         } catch(err) {
             console.log(err);
         }
@@ -1015,13 +1015,15 @@ class TocGame
         }
     }
     
-    crearTicket(tipo: string, totalTkrs: number = 0)
+    crearTicket(tipo: string, totalTkrs: number)
     {
         let total = 0;
         for(let i = 0; i < this.cesta.lista.length; i++)
         {
             total += this.cesta.lista[i].subtotal;
         }
+        total -= Number(totalTkrs);
+        console.log(total);
         const infoTrabajador: Trabajador = this.getCurrentTrabajador();
         const nuevoIdTicket = this.getUltimoTicket()+1;
 
@@ -1162,6 +1164,9 @@ class TocGame
                     }
                 }
             }
+        }
+        if(totalTkrs > 0) {
+            this.nuevaSalidaDinero(Number(totalTkrs.toFixed(2)), 'TKRS', 'TKRS', true, objTicket._id);
         }
         this.datafonoForzado3G = false;
         this.resetEstados();

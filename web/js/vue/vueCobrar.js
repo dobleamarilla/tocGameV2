@@ -75,7 +75,7 @@ var vueCobrar = new Vue({
                                     <img @click="cobrar('TARJETA')" src="assets/imagenes/img-tarjetas.png" alt="Cobrar con tarjeta" width="225px">
                                 </div>
                                 <div class="col-md-6 text-center">
-                                    <img @click="ticketTkrs('TKRS')" src="assets/imagenes/img-restaurant.png" alt="Cobrar con ticket restaurante" width="225px" style="margin-top: 5px;">
+                                    <img @click="alternarTkrs(true)" src="assets/imagenes/img-restaurant.png" alt="Cobrar con ticket restaurante" width="225px" style="margin-top: 5px;">
                                 </div>
                             </div>
                             <div v-if="esVIP === true" class="row">
@@ -115,7 +115,8 @@ var vueCobrar = new Vue({
                 </div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" style="font-size: 50px" @click="cerrarModal()">Cancelar</button>
+                <button v-if="tkrs" type="button" class="btn btn-primary" style="font-size: 50px" @click="alternarTkrs(false)">Salir de ticket restaurante</button>
+                <button type="button" class="btn btn-primary" style="font-size: 50px" @click="cerrarModal()">Cancelar</button>
 			</div>
 		</div>
     </div>
@@ -136,7 +137,8 @@ var vueCobrar = new Vue({
             cuentaAsistente: 0,
             cuentaAsistenteTeclado: '',
             cuenta: 0,
-            totalTkrs: 0
+            totalTkrs: 0,
+            tkrs: false
         };
     },
     methods: {
@@ -161,10 +163,16 @@ var vueCobrar = new Vue({
             }
         },
         agregarTecla(x) {
-            this.cuentaAsistenteTeclado = String(Number(this.cuentaAsistenteTeclado + x));
+            if (this.tkrs)
+                this.totalTkrs = String(Number(this.totalTkrs + x));
+            else
+                this.cuentaAsistenteTeclado = String(Number(this.cuentaAsistenteTeclado + x));
         },
         agregarComa() {
-            this.cuentaAsistenteTeclado = this.cuentaAsistenteTeclado.replace('.', '') + '.';
+            if (this.tkrs)
+                this.totalTkrs = this.totalTkrs.replace('.', '') + '.';
+            else
+                this.cuentaAsistenteTeclado = this.cuentaAsistenteTeclado.replace('.', '') + '.';
         },
         borrarCuentas() {
             this.resetAsistente();
@@ -179,7 +187,7 @@ var vueCobrar = new Vue({
         cobrar(tipo) {
             if (!this.esperando) {
                 this.setEsperando(true);
-                toc.crearTicket(tipo);
+                toc.crearTicket(tipo, this.totalTkrs);
             }
             else {
                 vueToast.abrir('danger', 'Ya existe una operación en curso');
@@ -192,7 +200,11 @@ var vueCobrar = new Vue({
             else {
                 this.totalTkrs += this.cuentaAsistente - this.totalTkrs;
                 this.cuenta -= this.cuentaAsistente;
+                this.cuentaAsistente = 0;
             }
+        },
+        alternarTkrs(estado) {
+            this.tkrs = estado;
         },
         setEsperando(res) {
             this.esperando = res;
@@ -225,7 +237,10 @@ var vueCobrar = new Vue({
             this.esVIP = false;
         },
         agregar(valor) {
-            this.cuentaAsistente += valor;
+            if (this.tkrs)
+                this.totalTkrs += valor;
+            else
+                this.cuentaAsistente += valor;
         },
         resetAsistente() {
             this.cuentaAsistente = 0;

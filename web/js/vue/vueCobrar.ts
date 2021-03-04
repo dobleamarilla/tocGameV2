@@ -75,7 +75,7 @@ var vueCobrar = new Vue({
                                     <img @click="cobrar('TARJETA')" src="assets/imagenes/img-tarjetas.png" alt="Cobrar con tarjeta" width="225px">
                                 </div>
                                 <div class="col-md-6 text-center">
-                                    <img @click="ticketTkrs('TKRS')" src="assets/imagenes/img-restaurant.png" alt="Cobrar con ticket restaurante" width="225px" style="margin-top: 5px;">
+                                    <img @click="alternarTkrs(true)" src="assets/imagenes/img-restaurant.png" alt="Cobrar con ticket restaurante" width="225px" style="margin-top: 5px;">
                                 </div>
                             </div>
                             <div v-if="esVIP === true" class="row">
@@ -115,7 +115,8 @@ var vueCobrar = new Vue({
                 </div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" style="font-size: 50px" @click="cerrarModal()">Cancelar</button>
+                <button v-if="tkrs" type="button" class="btn btn-primary" style="font-size: 50px" @click="alternarTkrs(false)">Salir de ticket restaurante</button>
+                <button type="button" class="btn btn-primary" style="font-size: 50px" @click="cerrarModal()">Cancelar</button>
 			</div>
 		</div>
     </div>
@@ -137,7 +138,8 @@ var vueCobrar = new Vue({
           cuentaAsistente: 0,
           cuentaAsistenteTeclado: '',
           cuenta: 0,
-          totalTkrs: 0
+          totalTkrs: 0,
+          tkrs: false
       }
     },
     methods: 
@@ -156,7 +158,6 @@ var vueCobrar = new Vue({
             {
                 this.setEsperando(false);
 		        $('#modalVueCobrar').modal('hide');
-
                 /*ipcRenderer.send('mostrar-visor', {texto: 'Muchas gracias!', precio: ':D'});
                 setTimeout(() => {
                     ipcRenderer.send('mostrar-visor', {texto: 'Bienvenida/o a', precio:'365!'})
@@ -169,11 +170,15 @@ var vueCobrar = new Vue({
         },
         agregarTecla(x: string)
         {
-            this.cuentaAsistenteTeclado = String(Number(this.cuentaAsistenteTeclado + x));
+            if(this.tkrs) this.totalTkrs = String(Number(this.totalTkrs + x));
+            else this.cuentaAsistenteTeclado = String(Number(this.cuentaAsistenteTeclado + x));
+            
         },
         agregarComa()
         {
-            this.cuentaAsistenteTeclado = this.cuentaAsistenteTeclado.replace('.', '') + '.';
+            if(this.tkrs) this.totalTkrs = this.totalTkrs.replace('.', '') + '.';
+            else this.cuentaAsistenteTeclado = this.cuentaAsistenteTeclado.replace('.', '') + '.';
+            
         },
         borrarCuentas()
         {
@@ -193,7 +198,7 @@ var vueCobrar = new Vue({
             if(!this.esperando)
             {
                 this.setEsperando(true);
-                toc.crearTicket(tipo);       
+                toc.crearTicket(tipo, this.totalTkrs);       
             }
             else
             {
@@ -206,7 +211,11 @@ var vueCobrar = new Vue({
             } else {
                 this.totalTkrs += this.cuentaAsistente - this.totalTkrs;
                 this.cuenta -= this.cuentaAsistente;
+                this.cuentaAsistente = 0;
             }
+        },
+        alternarTkrs(estado: boolean) {
+            this.tkrs = estado;
         },
         setEsperando(res: boolean)
         {
@@ -247,8 +256,9 @@ var vueCobrar = new Vue({
             this.esVIP = false;
         },
         agregar(valor: number)
-        {
-            this.cuentaAsistente += valor;
+        {   
+            if(this.tkrs) this.totalTkrs += valor;
+            else this.cuentaAsistente += valor;
         },
         resetAsistente()
         {
