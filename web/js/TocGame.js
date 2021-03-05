@@ -921,7 +921,7 @@ class TocGame {
             }
         }
         if (totalTkrs > 0) {
-            this.nuevaSalidaDinero(Number(totalTkrs.toFixed(2)), 'TKRS', 'TKRS', true, objTicket._id);
+            this.nuevaSalidaDinero(Number(totalTkrs.toFixed(2)), `Pagat TkRs (TkRs): ${objTicket._id}`, 'TKRS', true, objTicket._id);
         }
         this.datafonoForzado3G = false;
         this.resetEstados();

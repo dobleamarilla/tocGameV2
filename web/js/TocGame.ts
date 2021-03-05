@@ -1008,8 +1008,10 @@ class TocGame
         {
             total += this.cesta.lista[i].subtotal;
         }
-        total -= Number(totalTkrs);
-
+        if(totalTkrs > 0) {
+            total -= Number(totalTkrs);
+            this.nuevaSalidaDinero(Number(totalTkrs.toFixed(2)), `Pagat TkRs (TkRs): ${objTicket._id}`, 'TKRS', true, objTicket._id);
+        }
         const infoTrabajador: Trabajador = this.getCurrentTrabajador();
         const nuevoIdTicket = this.getUltimoTicket()+1;
 
@@ -1150,9 +1152,6 @@ class TocGame
                     }
                 }
             }
-        }
-        if(totalTkrs > 0) {
-            this.nuevaSalidaDinero(Number(totalTkrs.toFixed(2)), 'TKRS', 'TKRS', true, objTicket._id);
         }
         this.datafonoForzado3G = false;
         this.resetEstados();

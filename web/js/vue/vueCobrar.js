@@ -243,6 +243,7 @@ var vueCobrar = new Vue({
                 this.cuentaAsistente += valor;
         },
         resetAsistente() {
+            this.totalTkrs = 0;
             this.cuentaAsistente = 0;
             this.cuentaAsistenteTeclado = '';
         }

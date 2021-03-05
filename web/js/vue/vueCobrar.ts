@@ -198,6 +198,7 @@ var vueCobrar = new Vue({
             if(!this.esperando)
             {
                 this.setEsperando(true);
+                //if(this.totalTkrs > 0) tipo += ' TKRS';
                 toc.crearTicket(tipo, this.totalTkrs);       
             }
             else
@@ -262,6 +263,7 @@ var vueCobrar = new Vue({
         },
         resetAsistente()
         {
+            this.totalTkrs = 0;
             this.cuentaAsistente = 0;
             this.cuentaAsistenteTeclado = '';
         }
