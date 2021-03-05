@@ -219,7 +219,7 @@ class TocGame {
         try {
             if (tipoExtra != 'TARJETA' && tipoExtra != 'TKRS') {
                 codigoBarras = this.generarCodigoBarrasSalida();
-                codigoBarras = ipcRenderer.sendSync("calcular-ean13", codigoBarras);
+                codigoBarras = String(ipcRenderer.sendSync("calcular-ean13", codigoBarras));
             }
         }
         catch (err) {
