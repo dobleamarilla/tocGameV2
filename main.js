@@ -34,6 +34,7 @@ var codiBarra = require('./componentes/schemas/codigoBarras');
 var email = require('./componentes/email');
 var eventos = require('events');
 var exec = require('child_process').exec;
+var Ean13Utils = require('ean13-lib').Ean13Utils;
 var artiTarifaEspecial = require('./componentes/schemas/articulosTarifaEspecial');
 // var pjson = require('./package.json');
 const iconPath = path.join(__dirname, "web", "assets", "imagenes", "favicon.png");
@@ -631,6 +632,11 @@ app.on('ready', () => {
         });
     });
     //FIN GET ULTIMO CODIGO BARRAS
+    //INICIO CALCULAR EAN13
+    ipcMain.on("calcular-ean13", (event, data) => {
+        event.returnValue = Ean13Utils.generate(data);
+    });
+    //FINAL CALCULAR EAN13
     // //Guardar primer codigo barras
     // ipcMain.on('guardar-primer-codigo-barras', (event: any, data: any)=>{
     //     codiBarra.guardarPrimero();

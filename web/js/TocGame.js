@@ -214,27 +214,12 @@ class TocGame {
     round(value) {
         return Math.trunc(value / 10) * 10;
     }
-    generarEAN13(codigo12) {
-        var sumaPares = 0;
-        var sumaImpares = 0;
-        for (let i = 0; i < codigo12.length; i++) {
-            if (i % 2 == 0) {
-                sumaPares += Number(codigo12[i]);
-            }
-            else {
-                sumaImpares += Number(codigo12[i]);
-            }
-        }
-        var cosa = sumaImpares * 3 + sumaPares;
-        var control = (this.round(cosa) + 10) - cosa;
-        return codigo12 + control;
-    }
     nuevaSalidaDinero(cantidad, concepto, tipoExtra, noImprimir = false, idTicket = -100) {
         let codigoBarras = "";
         try {
             if (tipoExtra != 'TARJETA' && tipoExtra != 'TKRS') {
                 codigoBarras = this.generarCodigoBarrasSalida();
-                codigoBarras = this.generarEAN13(codigoBarras);
+                codigoBarras = ipcRenderer.sendSync("calcular-ean13", codigoBarras);
             }
         }
         catch (err) {

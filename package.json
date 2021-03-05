@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "axios": "^0.21.1",
+        "ean13-lib": "0.0.5",
         "escpos": "^3.0.0-alpha.3",
         "escpos-network": "^3.0.0-alpha.5",
         "escpos-serialport": "^3.0.0-alpha.2",
