@@ -284,8 +284,7 @@ socket.on('get-puntos-cliente', (puntos)=>{
     {
         vueCesta.puntosClienteActivo = puntos;
     }
-    
-    console.log("Puntos de cliente: " + puntos);
+    vueToast.abrir("success", "El cliente tiene " + puntos + " pts.");
 });
 
 socket.on('ordenSincronizarTrabajadores', (data)=>{

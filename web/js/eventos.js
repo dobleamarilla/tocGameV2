@@ -241,7 +241,7 @@ socket.on('get-puntos-cliente', (puntos) => {
     if (puntos >= 0 && puntos <= 100000) {
         vueCesta.puntosClienteActivo = puntos;
     }
-    console.log("Puntos de cliente: " + puntos);
+    vueToast.abrir("success", "El cliente tiene " + puntos + " pts.");
 });
 socket.on('ordenSincronizarTrabajadores', (data) => {
     if (toc.todoListo()) {
