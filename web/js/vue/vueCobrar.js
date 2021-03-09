@@ -187,6 +187,7 @@ var vueCobrar = new Vue({
         cobrar(tipo) {
             if (!this.esperando) {
                 this.setEsperando(true);
+                //if(this.totalTkrs > 0) tipo += ' TKRS';
                 toc.crearTicket(tipo, this.totalTkrs);
             }
             else {

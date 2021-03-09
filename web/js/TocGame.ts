@@ -1008,13 +1008,9 @@ class TocGame
         {
             total += this.cesta.lista[i].subtotal;
         }
-        if(totalTkrs > 0) {
-            total -= Number(totalTkrs);
-            this.nuevaSalidaDinero(Number(totalTkrs.toFixed(2)), `Pagat TkRs (TkRs): ${objTicket._id}`, 'TKRS', true, objTicket._id);
-        }
         const infoTrabajador: Trabajador = this.getCurrentTrabajador();
         const nuevoIdTicket = this.getUltimoTicket()+1;
-
+        
         var objTicket: Ticket = {
             _id: nuevoIdTicket,
             timestamp: Date.now(),
@@ -1033,7 +1029,11 @@ class TocGame
                 ciudad: ''
             }
         }   
-
+        if(totalTkrs > 0) {
+            total -= Number(totalTkrs);
+            this.nuevaSalidaDinero(Number(totalTkrs.toFixed(2)), `Pagat TkRs (TkRs): ${objTicket._id}`, 'TARJETA', true, objTicket._id);
+        }
+        
         if(tipo === "DEUDA")
         {
             objTicket.tipoPago                  = "DEUDA";

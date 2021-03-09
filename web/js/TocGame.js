@@ -801,7 +801,6 @@ class TocGame {
         for (let i = 0; i < this.cesta.lista.length; i++) {
             total += this.cesta.lista[i].subtotal;
         }
-        total -= Number(totalTkrs);
         const infoTrabajador = this.getCurrentTrabajador();
         const nuevoIdTicket = this.getUltimoTicket() + 1;
         var objTicket = {
@@ -822,6 +821,10 @@ class TocGame {
                 ciudad: ''
             }
         };
+        if (totalTkrs > 0) {
+            total -= Number(totalTkrs);
+            this.nuevaSalidaDinero(Number(totalTkrs.toFixed(2)), `Pagat TkRs (TkRs): ${objTicket._id}`, 'TARJETA', true, objTicket._id);
+        }
         if (tipo === "DEUDA") {
             objTicket.tipoPago = "DEUDA";
             objTicket.infoClienteVip.nif = this.infoClienteVip.datos.nif;
@@ -919,9 +922,6 @@ class TocGame {
                     }
                 }
             }
-        }
-        if (totalTkrs > 0) {
-            this.nuevaSalidaDinero(Number(totalTkrs.toFixed(2)), `Pagat TkRs (TkRs): ${objTicket._id}`, 'TKRS', true, objTicket._id);
         }
         this.datafonoForzado3G = false;
         this.resetEstados();
