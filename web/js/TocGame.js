@@ -801,6 +801,13 @@ class TocGame {
         for (let i = 0; i < this.cesta.lista.length; i++) {
             total += this.cesta.lista[i].subtotal;
         }
+<<<<<<< HEAD
+=======
+        if (totalTkrs > 0) {
+            total -= Number(totalTkrs);
+            this.nuevaSalidaDinero(Number(totalTkrs.toFixed(2)), `Pagat TkRs (TkRs): ${objTicket._id}`, 'TKRS', true, objTicket._id);
+        }
+>>>>>>> a991dccecff9f7f38a8358211662d9cafefd2129
         const infoTrabajador = this.getCurrentTrabajador();
         const nuevoIdTicket = this.getUltimoTicket() + 1;
         var objTicket = {
