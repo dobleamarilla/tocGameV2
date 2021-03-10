@@ -655,6 +655,9 @@ app.on('ready', () => {
     ipcMain.on('confirmar-envio', (event, args) => {
         tick.confirmarEnvio(args);
     });
+    ipcMain.on('confirmar-envio-devolucion', (event, args) => {
+        devolu.confirmarEnvioDevo(args);
+    });
     ipcMain.on('confirmar-envio-fichaje', (event, data) => {
         sincroFicha.confirmarEnvioFichajes(data);
     });

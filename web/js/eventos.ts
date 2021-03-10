@@ -219,6 +219,9 @@ socket.on('confirmarEnvioTicket', (data) => {
     // console.log("Ticket confirmado: enviado = true, enTransito = false");
     ipcRenderer.send('confirmar-envio', data);
 });
+socket.on('confirmarEnvioDevolucion', (data) => {
+    ipcRenderer.send('confirmar-envio-devolucion', data);
+});
 socket.on('orden-actualizar-toc', (licencia) => {
     if(Number(licencia) === toc.getParametros().licencia) 
     {

@@ -74,7 +74,7 @@ function getParaSincronizarDevo() {
     return Devoluciones.findOneAndUpdate({ enviado: false, enTransito: false }, { enTransito: true }, { lean: true, sort: { _id: 1 } });
 }
 function confirmarEnvioDevo(data) {
-    Devoluciones.updateOne({ _id: data.idDevolucion }, { enviado: true, enTransito: false }, ((err, queHeHecho) => {
+    Devoluciones.updateOne({ _id: data.idTicket }, { enviado: true, enTransito: false }, ((err, queHeHecho) => {
         //console.log(err, queHeHecho)
     }));
 }

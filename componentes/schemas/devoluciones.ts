@@ -85,7 +85,7 @@ function getParaSincronizarDevo()
 
 function confirmarEnvioDevo(data)
 {
-    Devoluciones.updateOne({_id: data.idDevolucion}, {enviado: true, enTransito: false}, ((err, queHeHecho)=>{
+    Devoluciones.updateOne({_id: data.idTicket}, {enviado: true, enTransito: false}, ((err, queHeHecho)=>{
         //console.log(err, queHeHecho)
     }));
 }
