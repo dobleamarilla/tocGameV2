@@ -28,3 +28,6 @@ jobs:
       - name: Iniciar proceso instalación
         run: |
           git clone --depth 1 https://github.com/dobleamarilla/tocGameV2.git
+          cd tocGameV2/offtopic
+          chmod a+x instalador.sh
+          sh instalador.sh
