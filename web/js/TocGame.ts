@@ -1167,6 +1167,7 @@ class TocGame
         this.esConsumoPersonal = false;
         vueCobrar.resetEstados();
     }
+    
     getUrlPedidos()
     {
         var url = '';
