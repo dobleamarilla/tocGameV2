@@ -1167,7 +1167,7 @@ class TocGame
         this.esConsumoPersonal = false;
         vueCobrar.resetEstados();
     }
-    
+
     getUrlPedidos()
     {
         var url = '';
@@ -1177,6 +1177,7 @@ class TocGame
         }
         return url;
     }
+    
     devolucion()
     {
         this.desactivarConsumoPersonal();
