@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=clearOneStartup
+GenericName=clearOne arranque
+Comment=abre el CoLinux al arrancar Gnome
+Exec=/home/hit/clearOne/clearOne.sh
+Terminal=false
+Type=Application
+X-GNOME-Autostart-enabled=true

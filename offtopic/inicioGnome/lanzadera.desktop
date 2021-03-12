@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=lanzadera
+GenericName=lanzadera persistente
+Comment=abre el toc cuando no esta abierto
+Exec=/home/hit/tocGame/scripts/lanzadera.sh
+Terminal=false
+Type=Application
+X-GNOME-Autostart-enabled=true
