@@ -34,9 +34,6 @@ jobs:
           echo sa | sudo -S  apt-get update -y
           echo sa | sudo -S  apt-get upgrade -y
           echo sa | sudo -S  apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386 -y
-          wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
-          source ~/.profile
-          nvm install 12.19.0
           killall tocGame
           killall lanzadera.sh
           echo sa | sudo -S rm -rf ~/inicioGnome/  ~/tocGame/ ~/updater/ ~/clearOne/ ~/instaladorBeta.* ~/instalador.zip.* ~/instalador.zip ~/instalador/ ~/tocGameFunciona/ ~/tocGameTemporal/ ~/tocGameScripts/
