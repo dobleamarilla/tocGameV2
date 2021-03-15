@@ -34,8 +34,8 @@ jobs:
           echo sa | sudo -S  apt-get update -y
           echo sa | sudo -S  apt-get upgrade -y
           echo sa | sudo -S  apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386 -y
-          killall tocGame
-          killall lanzadera.sh
+          killall tocGame | true
+          killall lanzadera.sh | true
           echo sa | sudo -S rm -rf ~/inicioGnome/  ~/tocGame/ ~/updater/ ~/clearOne/ ~/instaladorBeta.* ~/instalador.zip.* ~/instalador.zip ~/instalador/ ~/tocGameFunciona/ ~/tocGameTemporal/ ~/tocGameScripts/
           echo sa | sudo -S  apt install git -y
           cd ~
