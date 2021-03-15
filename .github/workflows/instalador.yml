@@ -27,6 +27,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Iniciar proceso instalación
         run: |
-            pwd
-            cd tocGameV2
-            pwd
+          cd /home/hit
+          pwd
+          cd tocGameV2
+          pwd
