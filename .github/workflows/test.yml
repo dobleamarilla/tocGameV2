@@ -28,4 +28,5 @@ jobs:
       # Runs a single command using the runners shell
       - name: Test de Eze
         run: |
-          echo "$TPV_PASSWORD"
+          echo "Ahora $TPV_PASSWORD" > file1.txt
+          head file1.txt
