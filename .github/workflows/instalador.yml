@@ -69,4 +69,4 @@ jobs:
           sudo systemctl daemon-reload
           sudo systemctl enable mongod
           echo sa | sudo -S rm -rf ~/instalador/ ~/instalador.sh
-          sudo reboot
+          echo sa | sudo shutdown -r +1
