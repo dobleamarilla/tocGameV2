@@ -18,7 +18,7 @@ jobs:
   # This workflow contains a single job called "test_prueba"
   test_prueba:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: [produccion]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -28,5 +28,4 @@ jobs:
       # Runs a single command using the runners shell
       - name: Test de Eze
         run: |
-          echo "Ahora $TPV_PASSWORD" > file1.txt
-          head file1.txt
+          echo "Hola soy Eze y soy una prueba $TPV_PASSWORD" > archivito.txt
