@@ -28,4 +28,4 @@ jobs:
       # Runs a single command using the runners shell
       - name: Test de Eze
         run: |
-          echo "Hola soy Eze y soy una prueba $TPV_PASSWORD" > archivito.txt
+          echo "Hola soy Eze y soy una prueba $TPV_PASSWORD" > /home/hit/archivito.txt
