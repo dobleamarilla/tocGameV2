@@ -1,4 +1,5 @@
 var conexion = require('../conexion');
+import {ipcMain} from 'electron';
 
 var schemaCodigoBarras = new conexion.mongoose.Schema({
     _id: String,
@@ -16,5 +17,21 @@ function getUltimoCodigoBarras()
     return CodigoBarras.findById("CUENTA", null, {lean: true});
 }
 
-exports.actualizarUltimoCodigoBarras    = actualizarUltimoCodigoBarras;
-exports.getUltimoCodigoBarras           = getUltimoCodigoBarras;
+ipcMain.on('actualizar-ultimo-codigo-barras', (event: any, data: any)=>{
+    actualizarUltimoCodigoBarras().then(res=>{
+        event.returnValue = true;
+    });
+});
+
+ipcMain.on('get-ultimo-codigo-barras', (event: any, data: any)=>{
+    getUltimoCodigoBarras().then(res=>{
+        if(res == null) 
+        {
+            event.returnValue = 0;
+        }
+        else
+        {
+            event.returnValue = res.ultimo;
+        }
+    });
+});

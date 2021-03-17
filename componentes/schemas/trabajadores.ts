@@ -1,4 +1,5 @@
 var conexion = require('../conexion');
+import {ipcMain} from 'electron';
 
 var schemaTrabajadores = new conexion.mongoose.Schema({
     _id: Number,
@@ -56,10 +57,43 @@ function buscarFichados()
 {
     return Trabajadores.find({fichado: true}).lean();
 }
-exports.trabajadores = Trabajadores;
-exports.insertarTrabajadores    = insertarTrabajadores;
-exports.buscarTrabajador        = buscarTrabajador;
-exports.ficharTrabajador        = ficharTrabajador;
-exports.desficharTrabajador     = desficharTrabajador;
-exports.buscarFichados          = buscarFichados;
-exports.getTrabajadorPorId      = getTrabajadorPorId;
+
+ipcMain.on('insertar-trabajadores', (ev, data) => {
+    insertarTrabajadores(data);
+});
+
+ipcMain.on('buscar-trabajador', (ev, data) => {
+    buscarTrabajador(data).then(respuesta => {
+        ev.sender.send('res-buscar-trabajador', respuesta);
+    });
+});
+
+ipcMain.on('buscar-trabajador-sincrono', (ev, data) => {
+    buscarTrabajador(data).then(respuesta => {
+        ev.returnValue = respuesta;
+    });
+});
+
+ipcMain.on('get-infotrabajador-id', (ev, data)=>{
+    getTrabajadorPorId(data).then(res=>{
+        ev.returnValue = res;
+    });
+});
+
+ipcMain.on('fichar-trabajador', (ev, data) => {
+    ficharTrabajador(data).then(() => {
+        ev.sender.send('res-fichar-trabajador', '');
+    });
+});
+
+ipcMain.on('desfichar-trabajador', (ev, data) => {
+    desficharTrabajador(data).then(() => {
+        ev.sender.send('res-desfichar-trabajador', '');
+    });
+});
+
+ipcMain.on('buscar-fichados', (ev, data)=>{
+    buscarFichados().then(arrayFichados=>{
+        ev.sender.send('res-buscar-fichados', arrayFichados);
+    })
+});

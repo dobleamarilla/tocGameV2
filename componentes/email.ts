@@ -1,4 +1,6 @@
 const nodemailer = require('nodemailer');
+import {ipcMain} from 'electron';
+
 //https://myaccount.google.com/lesssecureapps?pli=1
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -728,4 +730,6 @@ function enviarEmail(info)
     
 }
 
-exports.enviarEmail = enviarEmail;
+ipcMain.on('enviar-email', (ev, data) => {
+  enviarEmail(data);
+});

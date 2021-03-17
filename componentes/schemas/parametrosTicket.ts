@@ -1,4 +1,5 @@
 var conexion = require('../conexion');
+import {ipcMain} from 'electron';
 
 var schemaParametrosTicket = new conexion.mongoose.Schema({
     nombreDato: String,
@@ -24,6 +25,9 @@ function getParamsTicket()
         }
     })).lean();
 }
-exports.parametrosTicket            = ParametrosTicket;
-exports.insertarParametrosTicket    = insertarParametrosTicket;
-exports.getParamsTicket             = getParamsTicket;
+
+ipcMain.on('get-params-ticket', (ev, data)=>{
+    getParamsTicket().then(res=>{
+        ev.returnValue = res;
+    });
+});

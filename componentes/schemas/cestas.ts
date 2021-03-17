@@ -1,4 +1,5 @@
 var conexion = require('../conexion');
+import {ipcMain} from 'electron';
 
 var schemaCestas = new conexion.mongoose.Schema({
     _id: Number,
@@ -92,10 +93,69 @@ function contarCestas()
 {
     return Cestas.countDocuments({});
 }
-exports.cestas                  = Cestas;
-exports.setCesta                = setCesta;
-exports.getUnaCesta             = getUnaCesta;
-exports.borrarCesta             = borrarCesta;
-exports.getAllCestas            = getAllCestas;
-exports.nuevaCesta              = nuevaCesta;
-exports.contarCestas            = contarCestas;
+
+function crearCestaVacia()
+{
+    const cestaVacia = {
+        _id: Date.now(),
+        tiposIva: {
+            base1: 0,
+            base2: 0,
+            base3: 0,
+            valorIva1: 0,
+            valorIva2: 0,
+            valorIva3: 0,
+            importe1: 0,
+            importe2: 0,
+            importe3: 0
+        },
+        lista: []
+    }
+    return cestaVacia;
+}
+
+ipcMain.on('get-cesta', (ev, data = -1) => {
+    getUnaCesta(data).then(respuesta => 
+    {
+        if(respuesta != undefined && respuesta != null && respuesta.lista.length != 0 && respuesta._id != null)
+        {
+            ev.sender.send('res-get-cesta', respuesta);
+        }
+        else
+        {
+            ev.sender.send('res-get-cesta', crearCestaVacia());
+        }
+    });
+});
+
+ipcMain.on('del-cesta', (ev, id) => {
+    borrarCesta(id).then(() => {
+        ev.returnValue = true;
+    });
+});
+
+ipcMain.on('borrar-cesta', (ev, idCesta: number) => {
+    borrarCesta(idCesta);
+});
+
+ipcMain.on('count-cesta', (ev, id) => {
+    contarCestas().then((info) => {
+        ev.sender.send('res-contar-cestas', info);
+    });
+});
+
+ipcMain.on('new-cesta', (ev, data) => {
+    let aux = crearCestaVacia();
+    ev.sender.send('res-get-cesta', aux);
+    nuevaCesta(aux);
+});
+
+ipcMain.on('getAllCestas', (event: any, data: any)=>{
+    getAllCestas().then(res=>{
+        event.returnValue = res;
+    });
+});
+
+ipcMain.on('set-cesta', (ev, data) => {
+    setCesta(data);
+});

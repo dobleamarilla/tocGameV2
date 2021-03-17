@@ -1,4 +1,5 @@
 var conexion = require('../conexion');
+import {ipcMain} from 'electron';
 
 var schemaCajas = new conexion.mongoose.Schema({
     _id: String,
@@ -12,7 +13,7 @@ var schemaCajas = new conexion.mongoose.Schema({
 });
 var Cajas = conexion.mongoose.model('cajas', schemaCajas);
 
-function getInfoCaja(data)
+function getInfoCaja()
 {
     return Cajas.findById("CAJA", function (err, kes) {
         if(err)
@@ -32,6 +33,14 @@ function setInfoCaja(data)
     });
 }
 
-exports.cajas           = Cajas;
-exports.setInfoCaja     = setInfoCaja;
-exports.getInfoCaja     = getInfoCaja;
+ipcMain.on('getInfoCaja', (ev, args) => {
+    getInfoCaja().then(res => {
+        ev.returnValue = res;
+    }).catch(err => {
+        console.log(err);
+    });
+});
+
+ipcMain.on('actualizar-info-caja', (ev, data) => {
+    setInfoCaja(data);
+});

@@ -1,4 +1,5 @@
 var conexion = require('../conexion');
+import {ipcMain} from 'electron';
 
 var schemaSincro = new conexion.mongoose.Schema({
     _id: Number,
@@ -75,7 +76,16 @@ function cleanCajas()
     });
 }
 
-exports.nuevoItemSincroCajas        = nuevoItemSincroCajas;
-exports.getCaja                     = getCaja;
-exports.confirmarEnvioCaja          = confirmarEnvioCaja;
-exports.cleanCajas                  = cleanCajas;
+ipcMain.on('guardarCajaSincro', (ev, data) => {
+    nuevoItemSincroCajas(data);
+});
+
+ipcMain.on('sincronizar-caja', (ev, data) => {
+    getCaja().then(respuesta => {
+        ev.sender.send('res-sincronizar-caja', respuesta);
+    });
+});
+
+ipcMain.on('confirmar-envio-caja', (ev, data)=>{
+    confirmarEnvioCaja(data.idCaja);
+});

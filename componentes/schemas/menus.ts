@@ -1,4 +1,5 @@
 var conexion = require('../conexion');
+import {ipcMain} from 'electron';
 
 var schemaMenus = new conexion.mongoose.Schema({
     nomMenu: String
@@ -25,7 +26,8 @@ function borrarMenus()
     });
 }
 
-exports.menus          = Menus;
-exports.insertarMenus  = insertarMenus;
-exports.getMenus       = getMenus;
-exports.borrarMenus    = borrarMenus;
+ipcMain.on('get-menus', (ev, data) => {
+    getMenus().then(respuesta => {
+        ev.sender.send('res-get-menus', respuesta);
+    });
+});

@@ -1,4 +1,5 @@
 var conexion = require('../conexion');
+import {ipcMain} from 'electron';
 
 var schemaMonedas = new conexion.mongoose.Schema({
     _id: String,
@@ -31,5 +32,13 @@ function getMonedas()
 {
     return Monedas.findById("INFO_MONEDAS", 'infoDinero -_id', {lean: true});
 }
-exports.setMonedas  = setMonedas;
-exports.getMonedas  = getMonedas;
+
+ipcMain.on('set-monedas', (ev, infoMonedas) => {
+    setMonedas(infoMonedas);
+});
+
+ipcMain.on('get-monedas', (ev, infoMonedas) => {
+    getMonedas().then(res=>{
+        ev.returnValue = res;
+    });
+});

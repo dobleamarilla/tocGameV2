@@ -1,4 +1,5 @@
 var conexion = require('../conexion');
+import {ipcMain} from 'electron';
 
 var schemaFamilias = new conexion.mongoose.Schema({
     nombre: String,
@@ -24,6 +25,4 @@ function borrarFamilias()
         }
     });
 }
-exports.familias                = Familias;
-exports.insertarFamilias        = insertarFamilias;
-exports.borrarFamilias          = borrarFamilias;
+

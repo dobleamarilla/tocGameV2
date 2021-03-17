@@ -1,4 +1,5 @@
 var conexion = require('../conexion');
+import {ipcMain} from 'electron';
 
 var schemaTeclas = new conexion.mongoose.Schema({
     nomMenu: String,
@@ -30,7 +31,8 @@ function borrarTeclas()
     });
 }
 
-exports.teclas                  = Teclas;
-exports.insertarTeclasMain      = insertarTeclasMain;
-exports.getTecladoMain          = getTecladoMain;
-exports.borrarTeclas            = borrarTeclas;
+ipcMain.on('get-teclas', (ev, data) => {
+    getTecladoMain(data).then(respuesta => {
+        ev.sender.send('res-get-teclas', respuesta);
+    });
+});

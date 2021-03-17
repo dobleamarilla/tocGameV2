@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -6,6 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var net = require('net');
 var impresora = require('./componentes/impresora');
 var atajos = require('./componentes/teclasAtajos');
@@ -41,7 +43,7 @@ const iconPath = path.join(__dirname, "web", "assets", "imagenes", "favicon.png"
 const isOnline = require('is-online');
 var sincroEnCurso = false;
 require('source-map-support').install();
-const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
+const electron_1 = require("electron");
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 function crearCestaVacia() {
     const cestaVacia = {
@@ -61,21 +63,22 @@ function crearCestaVacia() {
     };
     return cestaVacia;
 }
-app.on('ready', () => {
-    var ventanaPrincipal = new BrowserWindow({
+electron_1.app.on('ready', () => {
+    var ventanaPrincipal = new electron_1.BrowserWindow({
         kiosk: true,
         frame: false,
         webPreferences: {
             nodeIntegration: true,
             webSecurity: false,
-            enableRemoteModule: true
+            enableRemoteModule: true,
+            contextIsolation: false
         },
         icon: iconPath
     });
     ventanaPrincipal.loadFile('./web/index.html');
-    atajos.atajos(globalShortcut, ventanaPrincipal);
+    atajos.atajos(electron_1.globalShortcut, ventanaPrincipal);
     /* ACCIONES IPC-MAIN */
-    ipcMain.on('ventaDatafono', (event, info) => {
+    electron_1.ipcMain.on('ventaDatafono', (event, info) => {
         var client = new net.Socket();
         client.connect(8890, '127.0.0.1', function () {
             var ventaCliente = info.clearOneCliente;
@@ -110,7 +113,7 @@ app.on('ready', () => {
         });
     });
     //GET PARAMETROS
-    ipcMain.on('getParametros', (ev, args) => {
+    electron_1.ipcMain.on('getParametros', (ev, args) => {
         params.getParams().then(res => {
             ev.returnValue = res;
         }).catch(err => {
@@ -119,7 +122,7 @@ app.on('ready', () => {
     });
     //FINAL GET PARAMETROS
     //GET ENTORNO DSV/PRODUCCION
-    ipcMain.on('getEntorno', (ev, args) => {
+    electron_1.ipcMain.on('getEntorno', (ev, args) => {
         if (process.argv[2] == 'test') {
             ev.returnValue = 'http://localhost:8080';
         }
@@ -129,23 +132,23 @@ app.on('ready', () => {
     });
     //FINAL GET ENTORNO DSV/PRODUCCION
     //PREGUNTAR CAMBIO DATAFONO
-    ipcMain.on('change-pinpad', (ev, args) => {
+    electron_1.ipcMain.on('change-pinpad', (ev, args) => {
         ev.sender.send('pregunta-cambio-datafono');
         ev.sender.send('nuevo-toast', { tipo: 'error', mensaje: 'Datáfono no configurado' });
     });
     //FINAL PREGUNTAR CAMBIO DATAFONO
     //GUARDAR SINCRO FICHAJES
-    ipcMain.on('guardar-sincro-fichaje', (ev, data) => {
+    electron_1.ipcMain.on('guardar-sincro-fichaje', (ev, data) => {
         sincroFicha.nuevoItem(data);
     });
     //FINAL GUARDAR SINCRO FICHAJES
     //SET ULTIMO TICKET EN PARAMETROS
-    ipcMain.on('set-ultimo-ticket-parametros', (ev, args) => {
+    electron_1.ipcMain.on('set-ultimo-ticket-parametros', (ev, args) => {
         params.setUltimoTicket(args);
     });
     //FINAL SET ULTIMO TICKET EN PARAMETROS
     //GET INFO CAJA
-    ipcMain.on('getInfoCaja', (ev, args) => {
+    electron_1.ipcMain.on('getInfoCaja', (ev, args) => {
         caj.getInfoCaja().then(res => {
             ev.returnValue = res;
         }).catch(err => {
@@ -154,34 +157,34 @@ app.on('ready', () => {
     });
     //FINAL INFO CAJA
     //SET INFO MONEDAS
-    ipcMain.on('set-monedas', (ev, infoMonedas) => {
+    electron_1.ipcMain.on('set-monedas', (ev, infoMonedas) => {
         moned.setMonedas(infoMonedas);
     });
     //FINAL SET INFO MONEDAS
     //ACTUALIZAR TOC DESDE CERBERO
-    ipcMain.on('update-toc-cerbero', (ev, infoMonedas) => {
+    electron_1.ipcMain.on('update-toc-cerbero', (ev, infoMonedas) => {
         atajos.actualizarTocSanPedro();
     });
     //FINAL ACTUALIZAR TOC DESDE CERBERO
     //GET INFO MONEDAS
-    ipcMain.on('get-monedas', (ev, infoMonedas) => {
+    electron_1.ipcMain.on('get-monedas', (ev, infoMonedas) => {
         moned.getMonedas().then(res => {
             ev.returnValue = res;
         });
     });
     //FINAL GET INFO MONEDAS
     //INSERTAR MOVIMIENTO
-    ipcMain.on('nuevo-movimiento', (ev, args) => {
+    electron_1.ipcMain.on('nuevo-movimiento', (ev, args) => {
         movi.insertarMovimiento(args);
     });
     //FINAL INSERTAR MOVIMIENTO
     //GET VERSION
-    ipcMain.on('get-version', (ev, args) => {
+    electron_1.ipcMain.on('get-version', (ev, args) => {
         ev.returnValue = '2.x'; //pjson.version;
     });
     //FINAL GET VERSION
     //GET RANGO MOVIMIENTOS
-    ipcMain.on('get-rango-movimientos', (ev, args) => {
+    electron_1.ipcMain.on('get-rango-movimientos', (ev, args) => {
         movi.getMovimientosRango(args.fechaInicio, args.fechaFinal).then(res => {
             ev.returnValue = res;
         }).catch(err => {
@@ -190,13 +193,13 @@ app.on('ready', () => {
     });
     //FINAL GET RANGO MOVIMIENTOS
     //BORRAR DATABASE ENTERA
-    ipcMain.on("borrar-database", (ev, args) => {
+    electron_1.ipcMain.on("borrar-database", (ev, args) => {
         exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/borrarDatabase.sh');
         ev.sender.send('borrar-database');
     });
     //FINAL BORRAR DATABASE ENTERA
     //GET TICKETS INTERVALO
-    ipcMain.on('getTicketsIntervalo', (ev, args) => {
+    electron_1.ipcMain.on('getTicketsIntervalo', (ev, args) => {
         tick.getTicketsIntervalo(args).then(res => {
             ev.returnValue = res;
         }).catch(err => {
@@ -205,7 +208,7 @@ app.on('ready', () => {
     });
     //FINAL TICKETS INTERVALO
     //GET TICKETS INTERVALO SIMPLE
-    ipcMain.on('getTicketsIntervaloSimple', (ev, args) => {
+    electron_1.ipcMain.on('getTicketsIntervaloSimple', (ev, args) => {
         tick.getTicketsIntervaloSimple(args).then(res => {
             ev.returnValue = res;
         }).catch(err => {
@@ -214,29 +217,29 @@ app.on('ready', () => {
     });
     //FINAL TICKETS INTERVALO SIMPLE
     //ENVIAR EMAIL
-    ipcMain.on('enviar-email', (ev, data) => {
+    electron_1.ipcMain.on('enviar-email', (ev, data) => {
         email.enviarEmail(data);
     });
     //FINAL ENVIAR EMAIL
     //ACTUALIZAR INFO CAJA
-    ipcMain.on('actualizar-info-caja', (ev, data) => {
+    electron_1.ipcMain.on('actualizar-info-caja', (ev, data) => {
         caj.setInfoCaja(data);
     });
     //FINAL ACTUALIZAR INFO CAJA
     //SET PARAMETROS
-    ipcMain.on('setParametros', (ev, data) => {
+    electron_1.ipcMain.on('setParametros', (ev, data) => {
         params.insertarParametros(data);
     });
     //FINAL SET PARAMETROS
     //VISOR 
-    ipcMain.on('mostrar-visor', (ev, data) => {
+    electron_1.ipcMain.on('mostrar-visor', (ev, data) => {
         console.log("En el ipcOn", data);
         //ev.sender.send('productoTablet', data)
         impresora.mostrarVisorEvent(data);
     });
     //FIN VISOR
     //CARGAR TODO
-    ipcMain.on('cargar-todo', (ev, data) => __awaiter(this, void 0, void 0, function* () {
+    electron_1.ipcMain.on('cargar-todo', (ev, data) => __awaiter(this, void 0, void 0, function* () {
         yield trabaj.insertarTrabajadores(data.dependentes);
         yield arti.insertarArticulos(data.articulos);
         yield cliente.insertarClientes(data.clientes);
@@ -249,12 +252,12 @@ app.on('ready', () => {
     }));
     //FINAL CARGAR TODO
     //INSERTAR TRABAJADORES SINCRO
-    ipcMain.on('insertar-trabajadores', (ev, data) => {
+    electron_1.ipcMain.on('insertar-trabajadores', (ev, data) => {
         trabaj.insertarTrabajadores(data);
     });
     //FINAL INSERTAR TRABAJADORES SINCRO
     //ACTUALIZAR TECLADO
-    ipcMain.on('actualizar-teclado', (ev, data) => __awaiter(this, void 0, void 0, function* () {
+    electron_1.ipcMain.on('actualizar-teclado', (ev, data) => __awaiter(this, void 0, void 0, function* () {
         yield arti.borrarArticulos();
         yield arti.insertarArticulos(data.articulos);
         yield fami.borrarFamilias();
@@ -269,75 +272,75 @@ app.on('ready', () => {
     }));
     //FINAL ACTUALIZAR TECLADO
     //CAMBIAR A TARIFA ESPECIAL CLIENTE VIP
-    ipcMain.on('insertar-tarifa-especial', (ev, data) => __awaiter(this, void 0, void 0, function* () {
+    electron_1.ipcMain.on('insertar-tarifa-especial', (ev, data) => __awaiter(this, void 0, void 0, function* () {
         yield artiTarifaEspecial.borrarArticulosTarifaEspecial();
         yield artiTarifaEspecial.insertarArticulosTarifaEspecial(data);
         ev.sender.send('res-cargar-tarifa-especial', true);
     }));
     //FINAL CAMBIAR A TARIFA ESPECIAL CLIENTE VIP
     //GET TECLAS
-    ipcMain.on('get-teclas', (ev, data) => {
+    electron_1.ipcMain.on('get-teclas', (ev, data) => {
         tec.getTecladoMain(data).then(respuesta => {
             ev.sender.send('res-get-teclas', respuesta);
         });
     });
     //FINAL GET TECLAS
     //GET MENUS
-    ipcMain.on('get-menus', (ev, data) => {
+    electron_1.ipcMain.on('get-menus', (ev, data) => {
         men.getMenus(data).then(respuesta => {
             ev.sender.send('res-get-menus', respuesta);
         });
     });
     //FINAL MENUS
     // GET PRECIOS
-    ipcMain.on('get-precios', (ev, data) => {
+    electron_1.ipcMain.on('get-precios', (ev, data) => {
         arti.getPrecios().then(respuesta => {
             ev.sender.send('res-get-precios', respuesta);
         });
     });
     // FINAL PRECIOS
     //GUARDAR CAJA SINCRO
-    ipcMain.on('guardarCajaSincro', (ev, data) => {
+    electron_1.ipcMain.on('guardarCajaSincro', (ev, data) => {
         sincro.nuevoItemSincroCajas(data);
     });
     //FINAL GUARDAR CAJA SINCRO
     //BUSCAR TRABAJADOR
-    ipcMain.on('buscar-trabajador', (ev, data) => {
+    electron_1.ipcMain.on('buscar-trabajador', (ev, data) => {
         trabaj.buscarTrabajador(data).then(respuesta => {
             ev.sender.send('res-buscar-trabajador', respuesta);
         });
     });
     //FINAL BUSCAR TRABAJADOR
     //SINCRO CAJAS
-    ipcMain.on('sincronizar-caja', (ev, data) => {
+    electron_1.ipcMain.on('sincronizar-caja', (ev, data) => {
         sincro.getCaja().then(respuesta => {
             ev.sender.send('res-sincronizar-caja', respuesta);
         });
     });
     //FINAL SINCRO CAJAS
     //BUSCAR CLIENTE
-    ipcMain.on('buscar-clientes', (ev, data) => {
+    electron_1.ipcMain.on('buscar-clientes', (ev, data) => {
         cliente.buscarCliente(data).then(respuesta => {
             ev.sender.send('res-buscar-cliente', respuesta);
         });
     });
     //FINAL BUSCAR CLIENTE
     //BUSCAR ARTÍCULO
-    ipcMain.on('buscar-articulo', (ev, data) => {
+    electron_1.ipcMain.on('buscar-articulo', (ev, data) => {
         arti.buscarArticulo(data).then(respuesta => {
             ev.sender.send('res-buscar-articulo', respuesta);
         });
     });
     //FINAL BUSCAR ARTÍCULO
     //BUSCAR TRABAJADOR
-    ipcMain.on('buscar-trabajador-sincrono', (ev, data) => {
+    electron_1.ipcMain.on('buscar-trabajador-sincrono', (ev, data) => {
         trabaj.buscarTrabajador(data).then(respuesta => {
             ev.returnValue = respuesta;
         });
     });
     //FINAL BUSCAR TRABAJADOR
     //CHECK EQUAL CLIENT
-    ipcMain.on('buscar-nombre-cliente-identico', (ev, data) => {
+    electron_1.ipcMain.on('buscar-nombre-cliente-identico', (ev, data) => {
         cliente.comprobarClienteIdentico(data).then(respuesta => {
             if (respuesta.length > 0) {
                 ev.returnValue = false;
@@ -349,7 +352,7 @@ app.on('ready', () => {
     });
     //FINAL CHECK EQUAL CLIENT
     //CHECK EQUAL CLIENT TARJETA
-    ipcMain.on('buscar-tarjeta-cliente-identico', (ev, data) => {
+    electron_1.ipcMain.on('buscar-tarjeta-cliente-identico', (ev, data) => {
         cliente.comprobarClienteIdenticoTarjeta(data).then(respuesta => {
             if (respuesta.length > 0) {
                 ev.returnValue = false;
@@ -361,38 +364,38 @@ app.on('ready', () => {
     });
     //FINAL CHECK EQUAL CLIENT TARJETA
     //GET INFO UN TICKET
-    ipcMain.on('get-info-un-ticket', (ev, data) => {
+    electron_1.ipcMain.on('get-info-un-ticket', (ev, data) => {
         tick.getInfoTicket(data).then(res => {
             ev.returnValue = res;
         });
     });
     //FINAL GET INFO UN TICKET
     //CREAR NUEVO CLIENTE CONFIRMADO
-    ipcMain.on('cliente-nuevo-crear-confirmado', (ev, data) => {
+    electron_1.ipcMain.on('cliente-nuevo-crear-confirmado', (ev, data) => {
         cliente.crearNuevo(data);
     });
     //FINAL CREAR NUEVO CLIENTE CONFIRMADO
     //GET INFO PARAMS TICKET
-    ipcMain.on('get-params-ticket', (ev, data) => {
+    electron_1.ipcMain.on('get-params-ticket', (ev, data) => {
         paramtick.getParamsTicket().then(res => {
             ev.returnValue = res;
         });
     });
     //FINAL GET INFO PARAMS TICKET
     //GET INFO trabajador por ID
-    ipcMain.on('get-infotrabajador-id', (ev, data) => {
+    electron_1.ipcMain.on('get-infotrabajador-id', (ev, data) => {
         trabaj.getTrabajadorPorId(data).then(res => {
             ev.returnValue = res;
         });
     });
     //FINAL GET INFO trabajador por ID
     //CONFIRMAR ENVIO CAJA
-    ipcMain.on('confirmar-envio-caja', (ev, data) => {
+    electron_1.ipcMain.on('confirmar-envio-caja', (ev, data) => {
         sincro.confirmarEnvioCaja(data.idCaja);
     });
     //FINAL CONFIRMAR ENVIO CAJA
     //GET CESTA
-    ipcMain.on('get-cesta', (ev, data = -1) => {
+    electron_1.ipcMain.on('get-cesta', (ev, data = -1) => {
         cest.getUnaCesta(data).then(respuesta => {
             if (respuesta != undefined && respuesta != null && respuesta.lista.length != 0 && respuesta._id != null) {
                 ev.sender.send('res-get-cesta', respuesta);
@@ -404,40 +407,40 @@ app.on('ready', () => {
     });
     //FINAL GET CESTA
     //NUEVA CESTA
-    ipcMain.on('new-cesta', (ev, data) => {
+    electron_1.ipcMain.on('new-cesta', (ev, data) => {
         let aux = crearCestaVacia();
         ev.sender.send('res-get-cesta', aux);
         cest.nuevaCesta(aux);
     });
     //FINAL NUEVA CESTA
     //FICHAR TRABAJADOR
-    ipcMain.on('fichar-trabajador', (ev, data) => {
+    electron_1.ipcMain.on('fichar-trabajador', (ev, data) => {
         trabaj.ficharTrabajador(data).then(() => {
             ev.sender.send('res-fichar-trabajador', '');
         });
     });
     //FINAL FICHAR TRABAJADOR
     //BORRAR CESTA
-    ipcMain.on('del-cesta', (ev, id) => {
+    electron_1.ipcMain.on('del-cesta', (ev, id) => {
         cest.borrarCesta(id).then(() => {
             ev.returnValue = true;
         });
     });
     //FINAL BORRAR CESTA
     //CONTAR CESTAS
-    ipcMain.on('count-cesta', (ev, id) => {
+    electron_1.ipcMain.on('count-cesta', (ev, id) => {
         cest.contarCestas().then((info) => {
             ev.sender.send('res-contar-cestas', info);
         });
     });
     //FINAL CONTAR CESTAS
     //BORRAR CESTA
-    ipcMain.on('borrar-cesta', (ev, idCesta) => {
+    electron_1.ipcMain.on('borrar-cesta', (ev, idCesta) => {
         cest.borrarCesta(idCesta);
     });
     //FINAL BORRAR CESTA
     //GET INFO ARTICULO
-    ipcMain.on('get-info-articulo', (ev, data) => {
+    electron_1.ipcMain.on('get-info-articulo', (ev, data) => {
         arti.getInfoArticulo(data).then(infoArticulo => {
             if (infoArticulo) {
                 ev.returnValue = infoArticulo;
@@ -450,7 +453,7 @@ app.on('ready', () => {
     });
     //FIN GET INFO ARTICULO
     //GET INFO ARTICULO CON TARIFA ESPECIAL
-    ipcMain.on('get-info-articulo-tarifa-especial', (ev, data) => {
+    electron_1.ipcMain.on('get-info-articulo-tarifa-especial', (ev, data) => {
         artiTarifaEspecial.getInfoArticuloTarifaEspecial(data).then(infoArticulo => {
             if (infoArticulo) {
                 ev.returnValue = infoArticulo;
@@ -463,40 +466,40 @@ app.on('ready', () => {
     });
     //FIN GET INFO ARTICULO CON TARIFA ESPECIAL
     //DESFICHAR TRABAJADOR
-    ipcMain.on('desfichar-trabajador', (ev, data) => {
+    electron_1.ipcMain.on('desfichar-trabajador', (ev, data) => {
         trabaj.desficharTrabajador(data).then(() => {
             ev.sender.send('res-desfichar-trabajador', '');
         });
     });
     //FINAL DESFICHAR TRABAJADOR
     //SET CESTA
-    ipcMain.on('set-cesta', (ev, data) => {
+    electron_1.ipcMain.on('set-cesta', (ev, data) => {
         cest.setCesta(data);
     });
     //FINAL SET CESTA
     //GET PRECIO ARTICULO
-    ipcMain.on('getPrecioArticulo', (ev, id) => {
+    electron_1.ipcMain.on('getPrecioArticulo', (ev, id) => {
         arti.getPrecio(id).then(infoArticulo => {
             ev.returnValue = infoArticulo.precioConIva;
         });
     });
     //FINAL GET PRECIO ARTICULO
     //GET PRECIO ARTICULOS
-    ipcMain.on('getPrecios', (ev, nombre) => {
+    electron_1.ipcMain.on('getPrecios', (ev, nombre) => {
         arti.getPrecios(nombre).then(infoArticulo => {
             ev.returnValue = { precio: infoArticulo.precioConIva, nombre: infoArticulo.nomre };
         });
     });
     //FINAL GET PRECIO ARTICULOS
     //BUSCAR FICHADOS
-    ipcMain.on('buscar-fichados', (ev, data) => {
+    electron_1.ipcMain.on('buscar-fichados', (ev, data) => {
         trabaj.buscarFichados().then(arrayFichados => {
             ev.sender.send('res-buscar-fichados', arrayFichados);
         });
     });
     //FINAL BUSCAR FICHADOS
     //CHECK INTERNET
-    ipcMain.on('check-internet', (ev, data) => __awaiter(this, void 0, void 0, function* () {
+    electron_1.ipcMain.on('check-internet', (ev, data) => __awaiter(this, void 0, void 0, function* () {
         try {
             ev.sender.send('res-check-internet', yield isOnline());
         }
@@ -506,52 +509,52 @@ app.on('ready', () => {
     }));
     //FINAL CHECK INTERNET
     //GET PROMOCIONES
-    ipcMain.on('get-promociones', (ev, data) => {
+    electron_1.ipcMain.on('get-promociones', (ev, data) => {
         promo.getPromociones().then(arrayPromociones => {
             ev.returnValue = arrayPromociones;
         });
     });
     //FINAL GET PROMOCIONES
     //INSERTAR TICKET
-    ipcMain.on('set-ticket', (ev, data) => {
+    electron_1.ipcMain.on('set-ticket', (ev, data) => {
         tick.insertarTicket(data);
     });
     //FINAL INSERTAR TICKET
     //GET TICKETS
-    ipcMain.on('get-tickets', (ev, data) => {
+    electron_1.ipcMain.on('get-tickets', (ev, data) => {
         tick.getTickets().then((arrayTickets) => {
             ev.returnValue = arrayTickets;
         });
     });
     //FINAL GET TICKETS
     //GET TICKETS CAJA ACTUAL (SIN CERRAR)
-    ipcMain.on('get-tickets-caja-abierta', (ev, fechaInicioCaja) => {
+    electron_1.ipcMain.on('get-tickets-caja-abierta', (ev, fechaInicioCaja) => {
         tick.getTicketsCajaActual(fechaInicioCaja).then((arrayTickets) => {
             ev.returnValue = arrayTickets;
         });
     });
     //FINAL GET TICKETS CAJA ACTUAL (SIN CERRAR)
     //NUEVO MOVIMIENTO A SINCRO
-    ipcMain.on('sincronizar-movimientos', (ev, data) => {
+    electron_1.ipcMain.on('sincronizar-movimientos', (ev, data) => {
         movi.getParaSincronizarMovimientos().then(res => {
             ev.sender.send('res-sincronizar-movimientos', res);
         });
     });
     //FINAL NUEVO MOVIMIENTO A SINCRO
     //CONFIRMAR MOVIMIENTO
-    ipcMain.on('movimiento-confirmado', (ev, data) => {
+    electron_1.ipcMain.on('movimiento-confirmado', (ev, data) => {
         movi.confirmarMovimiento(data.idMovimiento);
     });
     //FINAL CONFIRMAR MOVIMIENTO
     //GET ULTIMO TICKET
-    ipcMain.on('getUltimoTicket', (ev, data) => {
+    electron_1.ipcMain.on('getUltimoTicket', (ev, data) => {
         tick.getUltimoTicket().then(res => {
             ev.returnValue = res;
         });
     });
     //FINAL GET ULTIMO TICKET
     //SINCRONIZAR CON SAN PEDRO
-    ipcMain.on('sincronizar-toc', (event, args) => {
+    electron_1.ipcMain.on('sincronizar-toc', (event, args) => {
         if (!sincroEnCurso) {
             sincroEnCurso = true;
             tick.getParaSincronizar().then(res => {
@@ -564,7 +567,7 @@ app.on('ready', () => {
     });
     //FINAL SINCRONIZAR CON SAN PEDRO
     //SINCRONIZAR CON SAN PEDRO FICHAJES SOLO
-    ipcMain.on('sincronizar-fichajes', (event, args) => {
+    electron_1.ipcMain.on('sincronizar-fichajes', (event, args) => {
         sincroFicha.getFichajes().then(res => {
             event.sender.send('res-sincronizar-fichajes', res);
         }).catch(err => {
@@ -573,7 +576,7 @@ app.on('ready', () => {
     });
     //FINAL SINCRONIZAR CON SAN PEDRO FICHAJES SOLO
     //SINCRONIZAR CON SAN PEDRO DEVOLUCIONES SOLO
-    ipcMain.on('sincronizar-devoluciones', (event, args) => {
+    electron_1.ipcMain.on('sincronizar-devoluciones', (event, args) => {
         devolu.getParaSincronizarDevo().then(res => {
             event.sender.send('res-sincronizar-devoluciones', res);
         }).catch(err => {
@@ -582,19 +585,19 @@ app.on('ready', () => {
     });
     //FINAL SINCRONIZAR CON SAN PEDRO DEVOLUCIONES SOLO
     //GUARDAR DEVOLUCION
-    ipcMain.on('guardarDevolucion', (event, data) => {
+    electron_1.ipcMain.on('guardarDevolucion', (event, data) => {
         devolu.insertarDevolucion(data);
     });
     //FIN GUARDAR DEVOLUCION
     //GET ALL CESTAS
-    ipcMain.on('getAllCestas', (event, data) => {
+    electron_1.ipcMain.on('getAllCestas', (event, data) => {
         cest.getAllCestas().then(res => {
             event.returnValue = res;
         });
     });
     //FIN GET ALL CESTAS
     //LIMPIAR ESTADO EN TRANSITO
-    ipcMain.on('limpiar-enTransito', (event, data) => {
+    electron_1.ipcMain.on('limpiar-enTransito', (event, data) => {
         tick.cleanTransit();
         sincroFicha.cleanFichajes();
         devolu.cleanDevoluciones();
@@ -603,14 +606,14 @@ app.on('ready', () => {
     });
     //FIN LIMPIAR ESTADO EN TRANSITO
     //ACTUALIZAR ULTIMO CODIGO DE BARRAS
-    ipcMain.on('actualizar-ultimo-codigo-barras', (event, data) => {
+    electron_1.ipcMain.on('actualizar-ultimo-codigo-barras', (event, data) => {
         codiBarra.actualizarUltimoCodigoBarras().then(res => {
             event.returnValue = true;
         });
     });
     //FIN ACTUALIZAR ULTIMO CODIGO DE BARRAS
     //SET CONFIGURACION NUEVA PARAMETROS
-    ipcMain.on('nueva-configuracion', (event, data) => {
+    electron_1.ipcMain.on('nueva-configuracion', (event, data) => {
         params.setParams(data).then(function () {
             event.sender.send('res-configuracion-nueva', true);
             acciones.refresh(ventanaPrincipal);
@@ -621,7 +624,7 @@ app.on('ready', () => {
     });
     //FIN SET CONFIGURACION NUEVA PARAMETROS
     //GET ULTIMO CODIGO BARRAS
-    ipcMain.on('get-ultimo-codigo-barras', (event, data) => {
+    electron_1.ipcMain.on('get-ultimo-codigo-barras', (event, data) => {
         codiBarra.getUltimoCodigoBarras().then(res => {
             if (res == null) {
                 event.returnValue = 0;
@@ -633,7 +636,7 @@ app.on('ready', () => {
     });
     //FIN GET ULTIMO CODIGO BARRAS
     //INICIO CALCULAR EAN13
-    ipcMain.on("calcular-ean13", (event, data) => {
+    electron_1.ipcMain.on("calcular-ean13", (event, data) => {
         event.returnValue = Ean13Utils.generate(data);
     });
     //FINAL CALCULAR EAN13
@@ -642,56 +645,56 @@ app.on('ready', () => {
     //     codiBarra.guardarPrimero();
     // });
     // //FIN guardar primer codigo barras
-    ipcMain.on('insertar-nuevos-clientes', (event, data) => {
+    electron_1.ipcMain.on('insertar-nuevos-clientes', (event, data) => {
         cliente.insertarClientes(data).then(info => {
             event.sender.send('nuevo-toast', { tipo: 'success', mensaje: 'Clientes cargados correctamente' });
         });
     });
-    ipcMain.on('testeoGuapo', (event, args) => {
+    electron_1.ipcMain.on('testeoGuapo', (event, args) => {
         // tick.test2(args).then(res=>{
         //     event.returnValue = res;
         // })
     });
-    ipcMain.on('confirmar-envio', (event, args) => {
+    electron_1.ipcMain.on('confirmar-envio', (event, args) => {
         tick.confirmarEnvio(args);
     });
-    ipcMain.on('confirmar-envio-devolucion', (event, args) => {
+    electron_1.ipcMain.on('confirmar-envio-devolucion', (event, args) => {
         devolu.confirmarEnvioDevo(args);
     });
-    ipcMain.on('confirmar-envio-fichaje', (event, data) => {
+    electron_1.ipcMain.on('confirmar-envio-fichaje', (event, data) => {
         sincroFicha.confirmarEnvioFichajes(data);
     });
-    ipcMain.on('devolucion', (event, args) => {
+    electron_1.ipcMain.on('devolucion', (event, args) => {
     });
-    ipcMain.on('anulacion', (event, args) => {
+    electron_1.ipcMain.on('anulacion', (event, args) => {
     });
-    ipcMain.on('consulta', (event, args) => {
+    electron_1.ipcMain.on('consulta', (event, args) => {
     });
-    ipcMain.on('imprimir', (event, args) => {
+    electron_1.ipcMain.on('imprimir', (event, args) => {
         impresora.imprimirTicket(args, event);
     });
-    ipcMain.on('imprimir-test', (event, args) => {
+    electron_1.ipcMain.on('imprimir-test', (event, args) => {
         impresora.testEze(args, event);
     });
-    ipcMain.on('imprimirSalidaDinero', (event, args) => {
+    electron_1.ipcMain.on('imprimirSalidaDinero', (event, args) => {
         impresora.imprimirTicketSalida(args, event);
     });
-    ipcMain.on('imprimirEntregaDiaria', (event, args) => {
+    electron_1.ipcMain.on('imprimirEntregaDiaria', (event, args) => {
         impresora.entregaDiariaEvent(args, event);
     });
-    ipcMain.on('abrirCajon', (event, tipoImpresora) => {
+    electron_1.ipcMain.on('abrirCajon', (event, tipoImpresora) => {
         impresora.abrirCajon(tipoImpresora, event);
     });
-    ipcMain.on('imprimirEntradaDinero', (event, args) => {
+    electron_1.ipcMain.on('imprimirEntradaDinero', (event, args) => {
         impresora.imprimirTicketEntrada(args, event);
     });
-    ipcMain.on('imprimirCierreCaja', (event, args) => {
+    electron_1.ipcMain.on('imprimirCierreCaja', (event, args) => {
         impresora.imprimirTicketCierreCaja(args, event);
     });
-    ipcMain.on('cerrarToc', (event, args) => {
+    electron_1.ipcMain.on('cerrarToc', (event, args) => {
         acciones.cerrar(ventanaPrincipal);
     });
-    ipcMain.on('refreshToc', (event, args) => {
+    electron_1.ipcMain.on('refreshToc', (event, args) => {
         acciones.refresh(ventanaPrincipal);
     });
 });

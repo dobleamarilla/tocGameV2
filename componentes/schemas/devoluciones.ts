@@ -1,4 +1,5 @@
 var conexion = require('../conexion');
+import {ipcMain} from 'electron';
 
 var schemaDevoluciones = new conexion.mongoose.Schema({
     _id: Number,
@@ -100,8 +101,18 @@ function cleanDevoluciones()
     });
 }
 
-exports.insertarDevolucion        = insertarDevolucion;
-exports.getDevoluciones           = getDevoluciones;
-exports.getParaSincronizarDevo    = getParaSincronizarDevo;
-exports.confirmarEnvioDevo        = confirmarEnvioDevo;
-exports.cleanDevoluciones         = cleanDevoluciones;
+ipcMain.on('sincronizar-devoluciones', (event: any, args: any) => {
+    getParaSincronizarDevo().then(res=>{
+        event.sender.send('res-sincronizar-devoluciones', res);
+    }).catch(err=>{
+        console.log("Error en main, getDevoluciones", err);
+    });
+});
+
+ipcMain.on('guardarDevolucion', (event: any, data: any)=>{
+    insertarDevolucion(data);
+});
+
+ipcMain.on('confirmar-envio-devolucion', (event: any, args: any) => {
+    confirmarEnvioDevo(args);
+});

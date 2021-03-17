@@ -1,4 +1,5 @@
 var conexion = require('../conexion');
+import {ipcMain} from 'electron';
 
 var params = new conexion.mongoose.Schema({
     _id: String,
@@ -58,8 +59,28 @@ function setParams(info)
     });
 }
 
-exports.parametros              = Parametros;
-exports.insertarParametros      = insertParams;
-exports.setUltimoTicket         = setUltimoTicket;
-exports.getParams               = getParams;
-exports.setParams               = setParams;
+ipcMain.on('setParametros', (ev, data) => {
+    insertParams(data);
+});
+
+ipcMain.on('set-ultimo-ticket-parametros', (ev, args) => {
+    setUltimoTicket(args);
+});
+
+ipcMain.on('getParametros', (ev, args) => {
+    getParams().then(res=>{
+        ev.returnValue = res;
+    }).catch(err=>{
+        console.log(err);
+    });
+});
+
+ipcMain.on('nueva-configuracion', (event: any, data: any)=>{
+    setParams(data).then(function(){
+        event.sender.send('res-configuracion-nueva', true);
+        acciones.refresh(ventanaPrincipal);
+    }).catch(err=>{
+        event.sender.send('res-configuracion-nueva', false);
+        console.log(err);
+    });
+});

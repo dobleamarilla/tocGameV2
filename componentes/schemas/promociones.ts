@@ -1,4 +1,5 @@
 var conexion = require('../conexion');
+import {ipcMain} from 'electron';
 
 var schemaPromociones = new conexion.mongoose.Schema({
     _id: String,
@@ -41,7 +42,8 @@ function borrarPromociones()
     });
 }
 
-exports.promociones             = Promociones;
-exports.insertarPromociones     = insertarPromociones;
-exports.getPromociones          = getPromociones;
-exports.borrarPromociones       = borrarPromociones;
+ipcMain.on('get-promociones', (ev, data)=>{
+    getPromociones().then(arrayPromociones=>{
+        ev.returnValue = arrayPromociones;
+    });
+});

@@ -1,4 +1,5 @@
 var conexion = require('../conexion');
+import {ipcMain} from 'electron';
 
 var schemaClientes = new conexion.mongoose.Schema({
     id: String,
@@ -55,8 +56,44 @@ function crearNuevo(datos)
     nuevo.save();
 }
 
-exports.clientes             = Clientes;
-exports.insertarClientes     = insertarClientes;
-exports.buscarCliente        = buscarCliente;
-exports.comprobarClienteIdentico           = comprobarClienteIdentico;
-exports.comprobarClienteIdenticoTarjeta    = comprobarClienteIdenticoTarjeta;
+ipcMain.on('buscar-clientes', (ev, data) => {
+    buscarCliente(data).then(respuesta => {
+        ev.sender.send('res-buscar-cliente', respuesta);
+    });
+});
+
+ipcMain.on('buscar-nombre-cliente-identico', (ev, data) => { //SE PUEDE CREAR? SÍ = TRUE, NO = FALSE
+    comprobarClienteIdentico(data).then(respuesta => {
+        if(respuesta.length > 0)
+        {
+            ev.returnValue = false;
+        }
+        else
+        {
+            ev.returnValue = true;
+        }
+    });
+});
+
+ipcMain.on('buscar-tarjeta-cliente-identico', (ev, data) => { //SE PUEDE CREAR? SÍ = TRUE, NO = FALSE
+    comprobarClienteIdenticoTarjeta(data).then(respuesta => {
+        if(respuesta.length > 0)
+        {
+            ev.returnValue = false;
+        }
+        else
+        {
+            ev.returnValue = true;
+        }
+    });
+});
+
+ipcMain.on('cliente-nuevo-crear-confirmado', (ev, data)=>{
+    crearNuevo(data);
+});
+
+ipcMain.on('insertar-nuevos-clientes', (event: any, data: any)=>{
+    insertarClientes(data).then(info=>{
+        event.sender.send('nuevo-toast', {tipo: 'success', mensaje:'Clientes cargados correctamente'});
+    });
+});

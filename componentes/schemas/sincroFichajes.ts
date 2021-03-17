@@ -1,4 +1,5 @@
 var conexion = require('../conexion');
+import {ipcMain} from 'electron';
 
 var schemaSincroFichajes = new conexion.mongoose.Schema({
     _id: Number,
@@ -57,8 +58,18 @@ function cleanFichajes()
     });
 }
 
-exports.SincroFichajes          = SincroFichajes;
-exports.nuevoItem               = nuevoItem;
-exports.getFichajes             = getFichajes;
-exports.confirmarEnvioFichajes  = confirmarEnvioFichajes;
-exports.cleanFichajes           = cleanFichajes;
+ipcMain.on('guardar-sincro-fichaje', (ev, data) => {
+    nuevoItem(data);
+});
+
+ipcMain.on('sincronizar-fichajes', (event: any, args: any) => {
+    getFichajes().then(res=>{
+        event.sender.send('res-sincronizar-fichajes', res);
+    }).catch(err=>{
+        console.log("Error en main, getFichajes", err);
+    });
+});
+
+ipcMain.on('confirmar-envio-fichaje', (event: any, data: any) => {
+    confirmarEnvioFichajes(data);
+});

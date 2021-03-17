@@ -1,4 +1,5 @@
 var conexion = require('../conexion');
+import {ipcMain} from 'electron';
 
 var schemaMovimientos = new conexion.mongoose.Schema({
     _id: Number,
@@ -50,8 +51,24 @@ function cleanMovimientos()
     });
 }
 
-exports.insertarMovimiento              = insertarMovimiento;
-exports.getMovimientosRango             = getMovimientosRango;
-exports.getParaSincronizarMovimientos   = getParaSincronizarMovimientos;
-exports.confirmarMovimiento             = confirmarMovimiento;
-exports.cleanMovimientos                = cleanMovimientos;
+ipcMain.on('nuevo-movimiento', (ev, args) => {
+    insertarMovimiento(args);
+});
+
+ipcMain.on('get-rango-movimientos', (ev, args) => {
+    getMovimientosRango(args.fechaInicio, args.fechaFinal).then(res=>{
+        ev.returnValue = res;
+    }).catch(err=>{
+        console.log(err);
+    });
+});
+
+ipcMain.on('movimiento-confirmado', (ev, data)=>{
+    confirmarMovimiento(data.idMovimiento);
+});
+
+ipcMain.on('sincronizar-movimientos', (ev, data)=>{
+    getParaSincronizarMovimientos().then(res=>{
+        ev.sender.send('res-sincronizar-movimientos', res);
+    });
+});
