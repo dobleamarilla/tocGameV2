@@ -1,4 +1,7 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var conexion = require('../conexion');
+const electron_1 = require("electron");
 var schemaSincroFichajes = new conexion.mongoose.Schema({
     _id: Number,
     infoFichaje: {
@@ -46,9 +49,18 @@ function cleanFichajes() {
         }
     });
 }
-exports.SincroFichajes = SincroFichajes;
-exports.nuevoItem = nuevoItem;
-exports.getFichajes = getFichajes;
-exports.confirmarEnvioFichajes = confirmarEnvioFichajes;
 exports.cleanFichajes = cleanFichajes;
+electron_1.ipcMain.on('guardar-sincro-fichaje', (ev, data) => {
+    nuevoItem(data);
+});
+electron_1.ipcMain.on('sincronizar-fichajes', (event, args) => {
+    getFichajes().then(res => {
+        event.sender.send('res-sincronizar-fichajes', res);
+    }).catch(err => {
+        console.log("Error en main, getFichajes", err);
+    });
+});
+electron_1.ipcMain.on('confirmar-envio-fichaje', (event, data) => {
+    confirmarEnvioFichajes(data);
+});
 //# sourceMappingURL=sincroFichajes.js.map

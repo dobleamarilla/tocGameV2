@@ -1,4 +1,7 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var conexion = require('../conexion');
+const electron_1 = require("electron");
 var schemaTeclas = new conexion.mongoose.Schema({
     nomMenu: String,
     idArticle: Number,
@@ -11,6 +14,7 @@ var Teclas = conexion.mongoose.model('teclas', schemaTeclas);
 function insertarTeclasMain(data) {
     return Teclas.insertMany(data);
 }
+exports.insertarTeclasMain = insertarTeclasMain;
 function getTecladoMain(nombreMenu) {
     return Teclas.find({ nomMenu: nombreMenu }).lean();
 }
@@ -21,8 +25,10 @@ function borrarTeclas() {
         }
     });
 }
-exports.teclas = Teclas;
-exports.insertarTeclasMain = insertarTeclasMain;
-exports.getTecladoMain = getTecladoMain;
 exports.borrarTeclas = borrarTeclas;
+electron_1.ipcMain.on('get-teclas', (ev, data) => {
+    getTecladoMain(data).then(respuesta => {
+        ev.sender.send('res-get-teclas', respuesta);
+    });
+});
 //# sourceMappingURL=teclas.js.map

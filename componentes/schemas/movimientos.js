@@ -1,4 +1,7 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var conexion = require('../conexion');
+const electron_1 = require("electron");
 var schemaMovimientos = new conexion.mongoose.Schema({
     _id: Number,
     tipo: String,
@@ -40,9 +43,23 @@ function cleanMovimientos() {
         }
     });
 }
-exports.insertarMovimiento = insertarMovimiento;
-exports.getMovimientosRango = getMovimientosRango;
-exports.getParaSincronizarMovimientos = getParaSincronizarMovimientos;
-exports.confirmarMovimiento = confirmarMovimiento;
 exports.cleanMovimientos = cleanMovimientos;
+electron_1.ipcMain.on('nuevo-movimiento', (ev, args) => {
+    insertarMovimiento(args);
+});
+electron_1.ipcMain.on('get-rango-movimientos', (ev, args) => {
+    getMovimientosRango(args.fechaInicio, args.fechaFinal).then(res => {
+        ev.returnValue = res;
+    }).catch(err => {
+        console.log(err);
+    });
+});
+electron_1.ipcMain.on('movimiento-confirmado', (ev, data) => {
+    confirmarMovimiento(data.idMovimiento);
+});
+electron_1.ipcMain.on('sincronizar-movimientos', (ev, data) => {
+    getParaSincronizarMovimientos().then(res => {
+        ev.sender.send('res-sincronizar-movimientos', res);
+    });
+});
 //# sourceMappingURL=movimientos.js.map

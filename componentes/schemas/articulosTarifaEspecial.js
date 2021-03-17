@@ -1,4 +1,15 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 var conexion = require('../conexion');
+const electron_1 = require("electron");
 var schemaArticulosTarifaEspecial = new conexion.mongoose.Schema({
     _id: Number,
     nombre: String,
@@ -44,12 +55,20 @@ function borrarArticulosTarifaEspecial() {
         }
     });
 }
-exports.ArticulosTarifaEspecial = ArticulosTarifaEspecial;
-exports.insertarArticulosTarifaEspecial = insertarArticulosTarifaEspecial;
-exports.buscarArticuloTarifaEspecial = buscarArticuloTarifaEspecial;
-exports.getInfoArticuloTarifaEspecial = getInfoArticuloTarifaEspecial;
-exports.getNombreArticuloTarifaEspecial = getNombreArticuloTarifaEspecial;
-exports.getPrecioTarifaEspecial = getPrecioTarifaEspecial;
-exports.getPreciosTarifaEspecial = getPreciosTarifaEspecial;
-exports.borrarArticulosTarifaEspecial = borrarArticulosTarifaEspecial;
+electron_1.ipcMain.on('insertar-tarifa-especial', (ev, data) => __awaiter(this, void 0, void 0, function* () {
+    yield borrarArticulosTarifaEspecial();
+    yield insertarArticulosTarifaEspecial(data);
+    ev.sender.send('res-cargar-tarifa-especial', true);
+}));
+electron_1.ipcMain.on('get-info-articulo-tarifa-especial', (ev, data) => {
+    getInfoArticuloTarifaEspecial(data).then(infoArticulo => {
+        if (infoArticulo) {
+            ev.returnValue = infoArticulo;
+        }
+        else {
+            console.log("Algo pasa con infoArticulo: ", infoArticulo);
+            ev.returnValue = false;
+        }
+    });
+});
 //# sourceMappingURL=articulosTarifaEspecial.js.map

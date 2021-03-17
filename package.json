@@ -16,6 +16,8 @@
         "test": "tsc && electron main.js test"
     },
     "dependencies": {
+        "@electron/remote": "^1.0.4",
+        "@types/node": "^14.14.35",
         "axios": "^0.21.1",
         "ean13-lib": "0.0.5",
         "escpos": "^3.0.0-alpha.3",

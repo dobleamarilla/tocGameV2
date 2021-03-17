@@ -1,4 +1,7 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var conexion = require('../conexion');
+const electron_1 = require("electron");
 var schemaArticulos = new conexion.mongoose.Schema({
     _id: Number,
     nombre: String,
@@ -23,6 +26,7 @@ function insertarArticulos(data) {
     // });
     // return devolver;
 }
+exports.insertarArticulos = insertarArticulos;
 function buscarArticulo(busqueda) {
     return Articulos.find({ $or: [{ "nombre": { '$regex': new RegExp(busqueda, 'i') } }] }, null, { lean: true, limit: 20 });
 }
@@ -50,12 +54,31 @@ function borrarArticulos() {
         }
     });
 }
-exports.articulos = Articulos;
-exports.insertarArticulos = insertarArticulos;
-exports.buscarArticulo = buscarArticulo;
-exports.getInfoArticulo = getInfoArticulo;
-exports.getNombreArticulo = getNombreArticulo;
-exports.getPrecio = getPrecio;
-exports.getPrecios = getPrecios;
 exports.borrarArticulos = borrarArticulos;
+electron_1.ipcMain.on('buscar-articulo', (ev, data) => {
+    buscarArticulo(data).then(respuesta => {
+        ev.sender.send('res-buscar-articulo', respuesta);
+    });
+});
+electron_1.ipcMain.on('get-info-articulo', (ev, data) => {
+    getInfoArticulo(data).then(infoArticulo => {
+        if (infoArticulo) {
+            ev.returnValue = infoArticulo;
+        }
+        else {
+            console.log("Algo pasa con infoArticulo: ", infoArticulo);
+            ev.returnValue = false;
+        }
+    });
+});
+electron_1.ipcMain.on('getPrecioArticulo', (ev, id) => {
+    getPrecio(id).then(infoArticulo => {
+        ev.returnValue = infoArticulo.precioConIva;
+    });
+});
+electron_1.ipcMain.on('get-precios', (ev, data) => {
+    getPrecios().then(respuesta => {
+        ev.sender.send('res-get-precios', respuesta);
+    });
+});
 //# sourceMappingURL=articulos.js.map

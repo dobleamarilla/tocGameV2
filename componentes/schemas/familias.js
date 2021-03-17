@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var conexion = require('../conexion');
 var schemaFamilias = new conexion.mongoose.Schema({
     nombre: String,
@@ -12,6 +14,7 @@ function insertarFamilias(data) {
     });
     return devolver;
 }
+exports.insertarFamilias = insertarFamilias;
 function borrarFamilias() {
     return Familias.deleteMany({}, (err) => {
         if (err) {
@@ -19,7 +22,5 @@ function borrarFamilias() {
         }
     });
 }
-exports.familias = Familias;
-exports.insertarFamilias = insertarFamilias;
 exports.borrarFamilias = borrarFamilias;
 //# sourceMappingURL=familias.js.map

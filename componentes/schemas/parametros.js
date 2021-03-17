@@ -1,4 +1,7 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var conexion = require('../conexion');
+const electron_1 = require("electron");
 var params = new conexion.mongoose.Schema({
     _id: String,
     licencia: Number,
@@ -46,9 +49,18 @@ function setParams(info) {
         prohibirBuscarArticulos: info.prohibirBuscarArticulos
     });
 }
-exports.parametros = Parametros;
-exports.insertarParametros = insertParams;
-exports.setUltimoTicket = setUltimoTicket;
-exports.getParams = getParams;
 exports.setParams = setParams;
+electron_1.ipcMain.on('setParametros', (ev, data) => {
+    insertParams(data);
+});
+electron_1.ipcMain.on('set-ultimo-ticket-parametros', (ev, args) => {
+    setUltimoTicket(args);
+});
+electron_1.ipcMain.on('getParametros', (ev, args) => {
+    getParams().then(res => {
+        ev.returnValue = res;
+    }).catch(err => {
+        console.log(err);
+    });
+});
 //# sourceMappingURL=parametros.js.map

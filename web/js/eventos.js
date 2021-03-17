@@ -129,7 +129,7 @@ ipcRenderer.on('pregunta-cambio-datafono', (ev, data) => {
         buttons: ["&SÍ", "&NO"],
         message: "Cambiar a datáfono 3G (manual)?"
     };
-    dialog.showMessageBox(remote.getCurrentWindow(), options, (res) => {
+    dialog.showMessageBox(options, (res) => {
         if (res === 0) {
             toc.datafonoForzado3G = true;
         }

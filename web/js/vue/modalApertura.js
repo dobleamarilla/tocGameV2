@@ -167,7 +167,7 @@ var vueApertura = new Vue({
                 buttons: ["&SÍ", "&NO"],
                 message: "Se abrirá la caja con " + cantidadLimpia + " €. ¿CAMBIO CORRECTO?"
             };
-            dialog.showMessageBox(remote.getCurrentWindow(), options, (res) => {
+            dialog.showMessageBox(options, (res) => {
                 if (res === 0) {
                     const data = {
                         _id: 'CAJA',

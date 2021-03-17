@@ -1,4 +1,7 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var conexion = require('../conexion');
+const electron_1 = require("electron");
 var schemaMonedas = new conexion.mongoose.Schema({
     _id: String,
     infoDinero: [{
@@ -23,6 +26,12 @@ function setMonedas(data) {
 function getMonedas() {
     return Monedas.findById("INFO_MONEDAS", 'infoDinero -_id', { lean: true });
 }
-exports.setMonedas = setMonedas;
-exports.getMonedas = getMonedas;
+electron_1.ipcMain.on('set-monedas', (ev, infoMonedas) => {
+    setMonedas(infoMonedas);
+});
+electron_1.ipcMain.on('get-monedas', (ev, infoMonedas) => {
+    getMonedas().then(res => {
+        ev.returnValue = res;
+    });
+});
 //# sourceMappingURL=infoMonedas.js.map

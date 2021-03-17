@@ -146,13 +146,13 @@ ipcMain.on('getTicketsIntervalo', (ev, args) => {
     });
 });
 
-ipcMain.on('getTicketsIntervaloSimple', (ev, args) => {
-    getTicketsIntervaloSimple(args).then(res => {
-        ev.returnValue = res;
-    }).catch(err => {
-        console.log(err);
-    });
-});
+// ipcMain.on('getTicketsIntervaloSimple', (ev, args) => {
+//     getTicketsIntervaloSimple(args).then(res => {
+//         ev.returnValue = res;
+//     }).catch(err => {
+//         console.log(err);
+//     });
+// });
 
 ipcMain.on('get-info-un-ticket', (ev, data)=>{
     getInfoTicket(data).then(res=>{

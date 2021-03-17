@@ -1,4 +1,7 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const nodemailer = require('nodemailer');
+const electron_1 = require("electron");
 //https://myaccount.google.com/lesssecureapps?pli=1
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -705,5 +708,7 @@ function enviarEmail(info) {
         }
     });
 }
-exports.enviarEmail = enviarEmail;
+electron_1.ipcMain.on('enviar-email', (ev, data) => {
+    enviarEmail(data);
+});
 //# sourceMappingURL=email.js.map

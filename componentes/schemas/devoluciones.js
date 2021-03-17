@@ -1,4 +1,7 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var conexion = require('../conexion');
+const electron_1 = require("electron");
 var schemaDevoluciones = new conexion.mongoose.Schema({
     _id: Number,
     timestamp: Number,
@@ -85,9 +88,18 @@ function cleanDevoluciones() {
         }
     });
 }
-exports.insertarDevolucion = insertarDevolucion;
-exports.getDevoluciones = getDevoluciones;
-exports.getParaSincronizarDevo = getParaSincronizarDevo;
-exports.confirmarEnvioDevo = confirmarEnvioDevo;
 exports.cleanDevoluciones = cleanDevoluciones;
+electron_1.ipcMain.on('sincronizar-devoluciones', (event, args) => {
+    getParaSincronizarDevo().then(res => {
+        event.sender.send('res-sincronizar-devoluciones', res);
+    }).catch(err => {
+        console.log("Error en main, getDevoluciones", err);
+    });
+});
+electron_1.ipcMain.on('guardarDevolucion', (event, data) => {
+    insertarDevolucion(data);
+});
+electron_1.ipcMain.on('confirmar-envio-devolucion', (event, args) => {
+    confirmarEnvioDevo(args);
+});
 //# sourceMappingURL=devoluciones.js.map

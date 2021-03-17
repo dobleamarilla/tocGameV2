@@ -1,4 +1,7 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var conexion = require('../conexion');
+const electron_1 = require("electron");
 var schemaSincro = new conexion.mongoose.Schema({
     _id: Number,
     inicioTime: Number,
@@ -65,8 +68,16 @@ function cleanCajas() {
         }
     });
 }
-exports.nuevoItemSincroCajas = nuevoItemSincroCajas;
-exports.getCaja = getCaja;
-exports.confirmarEnvioCaja = confirmarEnvioCaja;
 exports.cleanCajas = cleanCajas;
+electron_1.ipcMain.on('guardarCajaSincro', (ev, data) => {
+    nuevoItemSincroCajas(data);
+});
+electron_1.ipcMain.on('sincronizar-caja', (ev, data) => {
+    getCaja().then(respuesta => {
+        ev.sender.send('res-sincronizar-caja', respuesta);
+    });
+});
+electron_1.ipcMain.on('confirmar-envio-caja', (ev, data) => {
+    confirmarEnvioCaja(data.idCaja);
+});
 //# sourceMappingURL=sincroCajas.js.map

@@ -168,7 +168,7 @@ var vueClausura = new Vue({
                 buttons: ["&SÍ", "&NO"],
                 message: "Se cerrará la caja con " + cantidadLimpia + " €. ¿CAMBIO CORRECTO?"
             };
-            dialog.showMessageBox(remote.getCurrentWindow(), options, (res) => {
+            dialog.showMessageBox(options, (res) => {
                 if (res === 0) {
                     toc.cerrarCaja(this.getTotal, this.getDetalle, this.infoDinero, this.totalCon3G, this.totalClearOne);
                     vuePantallaCierre.abreModal();

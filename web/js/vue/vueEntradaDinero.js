@@ -49,7 +49,7 @@ var vueEntradaDinero = new Vue({
                 buttons: ["&SÍ", "&NO"],
                 message: "Confirmar entrada de " + cantidadLimpia + "€"
             };
-            dialog.showMessageBox(remote.getCurrentWindow(), options, (res) => {
+            dialog.showMessageBox(options, (res) => {
                 if (res === 0) {
                     toc.nuevaEntradaDinero(this.cantidad, this.concepto);
                     this.cerrarModal();

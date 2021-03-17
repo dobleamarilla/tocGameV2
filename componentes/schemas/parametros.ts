@@ -45,7 +45,7 @@ function getParams()
     }).lean();
 }
 
-function setParams(info)
+export function setParams(info)
 {
     return Parametros.update({_id: "PARAMETROS"}, {
         tipoImpresora: info.impresora, 
@@ -71,16 +71,6 @@ ipcMain.on('getParametros', (ev, args) => {
     getParams().then(res=>{
         ev.returnValue = res;
     }).catch(err=>{
-        console.log(err);
-    });
-});
-
-ipcMain.on('nueva-configuracion', (event: any, data: any)=>{
-    setParams(data).then(function(){
-        event.sender.send('res-configuracion-nueva', true);
-        acciones.refresh(ventanaPrincipal);
-    }).catch(err=>{
-        event.sender.send('res-configuracion-nueva', false);
         console.log(err);
     });
 });

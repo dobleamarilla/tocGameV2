@@ -1,4 +1,4 @@
-import {ipcMain} from 'electron';
+import {ipcMain, dialog} from 'electron';
 import {exec} from 'child_process';
 import isOnline from 'is-online';
 import net from  'net';
@@ -131,4 +131,10 @@ ipcMain.on('cargar-todo', async (ev, data) => {
 
 ipcMain.on("calcular-ean13", (event:any, data:any)=>{
     event.returnValue = Ean13Utils.generate(data);
+});
+ipcMain.on("dialogo", (event:any, data:any)=>{
+    dialog.showMessageBox({
+        buttons: ["&SÍ","&NO"],
+        message: "Cambiar a datáfono 3G (manual)?"
+    });
 });

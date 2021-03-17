@@ -61,7 +61,7 @@ var vueSalidaDinero = new Vue({
                 buttons: ["&SÍ", "&NO"],
                 message: "Confirmar salida de " + cantidadLimpia + "€"
             };
-            dialog.showMessageBox(remote.getCurrentWindow(), options, (res) => {
+            dialog.showMessageBox(options, (res) => {
                 if (res === 0) {
                     toc.nuevaSalidaDinero(this.cantidad, this.concepto, 'SALIDA');
                     this.cerrarModal();

@@ -1,4 +1,7 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var conexion = require('../conexion');
+const electron_1 = require("electron");
 var schemaParametrosTicket = new conexion.mongoose.Schema({
     nombreDato: String,
     valorDato: String
@@ -12,6 +15,7 @@ function insertarParametrosTicket(data) {
     });
     return devolver;
 }
+exports.insertarParametrosTicket = insertarParametrosTicket;
 function getParamsTicket() {
     return ParametrosTicket.find({}, ((err, resultado) => {
         if (err) {
@@ -19,7 +23,9 @@ function getParamsTicket() {
         }
     })).lean();
 }
-exports.parametrosTicket = ParametrosTicket;
-exports.insertarParametrosTicket = insertarParametrosTicket;
-exports.getParamsTicket = getParamsTicket;
+electron_1.ipcMain.on('get-params-ticket', (ev, data) => {
+    getParamsTicket().then(res => {
+        ev.returnValue = res;
+    });
+});
 //# sourceMappingURL=parametrosTicket.js.map

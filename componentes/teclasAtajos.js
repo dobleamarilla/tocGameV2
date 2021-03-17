@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var exec = require('child_process').exec;
 var os = require('os');
 function execute(command, callback) {
@@ -24,6 +26,7 @@ function atajosTeclado(globalShortcut, ventana) {
         installVpn();
     });
 }
+exports.atajosTeclado = atajosTeclado;
 function actualizarTocSanPedro() {
     if (os.platform() === 'win32') {
         console.log("SOY WINDOWS! DE MOMENTO NO HAGO NADA, PERO LO HE INTENTADO");
@@ -37,6 +40,7 @@ function actualizarTocSanPedro() {
         }
     }
 }
+exports.actualizarTocSanPedro = actualizarTocSanPedro;
 function installVpn() {
     if (os.platform() === 'win32') {
         console.log("INSTALAR VPN EN WINDOWS");
@@ -49,6 +53,4 @@ function installVpn() {
         }
     }
 }
-exports.atajos = atajosTeclado;
-exports.actualizarTocSanPedro = actualizarTocSanPedro;
 //# sourceMappingURL=teclasAtajos.js.map

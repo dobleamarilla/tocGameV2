@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -6,9 +7,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var escpos = require('escpos');
 var exec = require('child_process').exec;
 var os = require('os');
+const electron_1 = require("electron");
 escpos.USB = require('escpos-usb');
 escpos.Serial = require('escpos-serialport');
 var articulos = require('./schemas/articulos');
@@ -257,7 +260,7 @@ var testEze = function (event, texto) {
         errorImpresora(err, event);
     }
 };
-var mostrarVisor = function (event, data) {
+function mostrarVisor(data) {
     // Limito el texto a 15, ya que la línea completa tiene 20 espacios. (1-15 -> artículo, 16 -> espacio en blanco, 17-20 -> precio)
     data.texto = data.texto.substring(0, 15);
     data.texto += " " + data.precio;
@@ -293,7 +296,7 @@ var mostrarVisor = function (event, data) {
         console.log("Error: ", err);
         //errorImpresora(err, event);
     }
-};
+}
 var entradaDinero = function (event, totalIngresado, cajaActual, fecha, nombreDependienta, nombreTienda) {
     try {
         fecha = dateToString2(fecha);
@@ -456,28 +459,25 @@ function errorCajon(err, event) {
         }
     }
 }
-exports.imprimirTicket = function (req, event) {
+electron_1.ipcMain.on('mostrar-visor', (ev, data) => {
+    mostrarVisor(data);
+});
+electron_1.ipcMain.on('imprimir', (event, req) => {
     imprimirTicketVenta(event, req.numFactura, req.arrayCompra, req.total, req.visa, req.tiposIva, req.cabecera, req.pie, req.nombreTrabajador, req.impresora, req.infoClienteVip);
-};
-exports.imprimirTicketSalida = function (req, event) {
+});
+electron_1.ipcMain.on('imprimirSalidaDinero', (event, req) => {
     salidaDinero(event, req.cantidad, req.cajaActual, req.fecha, req.nombreTrabajador, req.nombreTienda, req.concepto, req.impresora, req.codigoBarras);
-};
-exports.entregaDiariaEvent = function (req, event) {
+});
+electron_1.ipcMain.on('imprimirEntregaDiaria', (event, req) => {
     entregaDiaria(event, req.data, req.impresora);
-};
-exports.imprimirTicketEntrada = function (req, event) {
-    entradaDinero(event, req.cantidad, req.cajaActual, req.fecha, req.nombreTrabajador, req.nombreTienda);
-};
-exports.imprimirTicketCierreCaja = function (req, event) {
-    cierreCaja(event, req.calaixFet, req.nombreTrabajador, req.descuadre, req.nClientes, req.recaudado, req.arrayMovimientos, req.nombreTienda, req.fechaInicio, req.fechaFinal, req.cInicioCaja, req.cFinalCaja, req.impresora);
-};
-exports.abrirCajon = function (tipoImpresora, event) {
+});
+electron_1.ipcMain.on('abrirCajon', (event, tipoImpresora) => {
     abrirCajon(event, tipoImpresora);
-};
-exports.testEze = function (texto, event) {
-    testEze(event, texto);
-};
-exports.mostrarVisorEvent = function (data, event) {
-    mostrarVisor(event, data);
-};
+});
+electron_1.ipcMain.on('imprimirEntradaDinero', (event, req) => {
+    entradaDinero(event, req.cantidad, req.cajaActual, req.fecha, req.nombreTrabajador, req.nombreTienda);
+});
+electron_1.ipcMain.on('imprimirCierreCaja', (event, req) => {
+    cierreCaja(event, req.calaixFet, req.nombreTrabajador, req.descuadre, req.nClientes, req.recaudado, req.arrayMovimientos, req.nombreTienda, req.fechaInicio, req.fechaFinal, req.cInicioCaja, req.cFinalCaja, req.impresora);
+});
 //# sourceMappingURL=impresora.js.map

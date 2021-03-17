@@ -1,4 +1,8 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var conexion = require('../conexion');
+const electron_1 = require("electron");
+var sincroEnCurso = false;
 var schemaTickets = new conexion.mongoose.Schema({
     _id: Number,
     timestamp: Number,
@@ -114,14 +118,56 @@ function cleanTransit() {
         }
     });
 }
-exports.tickets = Tickets;
-exports.insertarTicket = insertarTicket;
-exports.getInfoTicket = getInfoTicket;
-exports.getTickets = getTickets;
-exports.getTicketsIntervalo = getTicketsIntervalo;
-exports.getUltimoTicket = getUltimoTicket;
-exports.getParaSincronizar = getParaSincronizar;
-exports.confirmarEnvio = confirmarEnvio;
 exports.cleanTransit = cleanTransit;
-exports.getTicketsCajaActual = getTicketsCajaActual;
+electron_1.ipcMain.on('getTicketsIntervalo', (ev, args) => {
+    getTicketsIntervalo(args).then(res => {
+        ev.returnValue = res;
+    }).catch(err => {
+        console.log(err);
+    });
+});
+// ipcMain.on('getTicketsIntervaloSimple', (ev, args) => {
+//     getTicketsIntervaloSimple(args).then(res => {
+//         ev.returnValue = res;
+//     }).catch(err => {
+//         console.log(err);
+//     });
+// });
+electron_1.ipcMain.on('get-info-un-ticket', (ev, data) => {
+    getInfoTicket(data).then(res => {
+        ev.returnValue = res;
+    });
+});
+electron_1.ipcMain.on('set-ticket', (ev, data) => {
+    insertarTicket(data);
+});
+electron_1.ipcMain.on('get-tickets', (ev, data) => {
+    getTickets().then((arrayTickets) => {
+        ev.returnValue = arrayTickets;
+    });
+});
+electron_1.ipcMain.on('get-tickets-caja-abierta', (ev, fechaInicioCaja) => {
+    getTicketsCajaActual(fechaInicioCaja).then((arrayTickets) => {
+        ev.returnValue = arrayTickets;
+    });
+});
+electron_1.ipcMain.on('getUltimoTicket', (ev, data) => {
+    getUltimoTicket().then(res => {
+        ev.returnValue = res;
+    });
+});
+electron_1.ipcMain.on('sincronizar-toc', (event, args) => {
+    if (!sincroEnCurso) {
+        sincroEnCurso = true;
+        getParaSincronizar().then(res => {
+            sincroEnCurso = false;
+            event.sender.send('res-sincronizar-toc', res);
+        }).catch(err => {
+            console.log("Error en main, getParaSincronizar", err);
+        });
+    }
+});
+electron_1.ipcMain.on('confirmar-envio', (event, args) => {
+    confirmarEnvio(args);
+});
 //# sourceMappingURL=tickets.js.map
