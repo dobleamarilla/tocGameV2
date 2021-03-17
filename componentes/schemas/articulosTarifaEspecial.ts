@@ -1,4 +1,5 @@
 var conexion = require('../conexion');
+import {ipcMain} from 'electron';
 
 var schemaArticulosTarifaEspecial = new conexion.mongoose.Schema({
     _id: Number,
@@ -53,11 +54,24 @@ function borrarArticulosTarifaEspecial()
         }
     });
 }
-exports.ArticulosTarifaEspecial                             = ArticulosTarifaEspecial;
-exports.insertarArticulosTarifaEspecial                     = insertarArticulosTarifaEspecial;
-exports.buscarArticuloTarifaEspecial                        = buscarArticuloTarifaEspecial;
-exports.getInfoArticuloTarifaEspecial                       = getInfoArticuloTarifaEspecial;
-exports.getNombreArticuloTarifaEspecial                     = getNombreArticuloTarifaEspecial;
-exports.getPrecioTarifaEspecial                             = getPrecioTarifaEspecial;
-exports.getPreciosTarifaEspecial                            = getPreciosTarifaEspecial;
-exports.borrarArticulosTarifaEspecial                       = borrarArticulosTarifaEspecial;
+
+ipcMain.on('insertar-tarifa-especial', async (ev, data) => {
+    await borrarArticulosTarifaEspecial();
+    await insertarArticulosTarifaEspecial(data);
+    ev.sender.send('res-cargar-tarifa-especial', true);
+});
+
+ipcMain.on('get-info-articulo-tarifa-especial', (ev, data) => {
+    getInfoArticuloTarifaEspecial(data).then(infoArticulo=>{
+        if(infoArticulo)
+        {
+            ev.returnValue = infoArticulo;
+        }
+        else
+        {
+            console.log("Algo pasa con infoArticulo: ", infoArticulo);
+            ev.returnValue = false;
+        }
+    });
+
+});

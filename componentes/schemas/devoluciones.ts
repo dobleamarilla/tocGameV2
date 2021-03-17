@@ -91,7 +91,7 @@ function confirmarEnvioDevo(data)
     }));
 }
 
-function cleanDevoluciones()
+export function cleanDevoluciones()
 {
     Devoluciones.updateMany({enviado: false, enTransito: true}, {enTransito: false}).then(info=>{
         if(info.n > 0)

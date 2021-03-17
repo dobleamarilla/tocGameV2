@@ -17,7 +17,7 @@ var schemaPromociones = new conexion.mongoose.Schema({
 });
 var Promociones = conexion.mongoose.model('promociones', schemaPromociones);
 
-function insertarPromociones(data)
+export function insertarPromociones(data)
 {
     var devolver = new Promise((dev, rej)=>{
         Promociones.insertMany(data).then(()=>{
@@ -32,7 +32,7 @@ function getPromociones()
     return Promociones.find().lean();
 }
 
-function borrarPromociones()
+export function borrarPromociones()
 {
     return Promociones.deleteMany({}, (err)=>{
         if(err)

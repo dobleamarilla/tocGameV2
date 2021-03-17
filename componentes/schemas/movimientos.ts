@@ -41,7 +41,7 @@ function confirmarMovimiento(id)
     }));
 }
 
-function cleanMovimientos()
+export function cleanMovimientos()
 {
     Movimientos.updateMany({enviado: false, enTransito: true}, {enTransito: false}).then(info=>{
         if(info.n > 0)

@@ -7,7 +7,7 @@ var schemaFamilias = new conexion.mongoose.Schema({
 });
 var Familias = conexion.mongoose.model('familias', schemaFamilias);
 
-function insertarFamilias(data)
+export function insertarFamilias(data)
 {
     var devolver = new Promise((dev, rej)=>{
         Familias.insertMany(data).then(()=>{
@@ -16,7 +16,7 @@ function insertarFamilias(data)
     });
     return devolver;
 }
-function borrarFamilias()
+export function borrarFamilias()
 {
     return Familias.deleteMany({}, (err)=>{
         if(err)

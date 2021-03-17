@@ -13,7 +13,7 @@ var schemaTrabajadores = new conexion.mongoose.Schema({
 });
 var Trabajadores = conexion.mongoose.model('trabajadores', schemaTrabajadores);
 
-function insertarTrabajadores(data) 
+export function insertarTrabajadores(data) 
 {
     return Trabajadores.insertMany(data, {ordered: false}, function (error, docs) 
     {

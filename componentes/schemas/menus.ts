@@ -6,7 +6,7 @@ var schemaMenus = new conexion.mongoose.Schema({
 });
 var Menus = conexion.mongoose.model('menus', schemaMenus);
 
-function insertarMenus(data: any)
+export function insertarMenus(data: any)
 {
     return Menus.insertMany(data);
 
@@ -16,7 +16,7 @@ function getMenus()
     return Menus.find().lean();
 }
 
-function borrarMenus()
+export function borrarMenus()
 {
     return Menus.deleteMany({}, (err)=>{
         if(err)

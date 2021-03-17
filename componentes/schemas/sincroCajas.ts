@@ -66,7 +66,7 @@ function confirmarEnvioCaja(data)
        }
     }));
 }
-function cleanCajas()
+export function cleanCajas()
 {
     SincroCajas.updateMany({enviado: false, enTransito: true}, {enTransito: false}).then(info=>{
         if(info.n > 0)

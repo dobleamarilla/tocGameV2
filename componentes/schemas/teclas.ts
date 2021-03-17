@@ -11,7 +11,7 @@ var schemaTeclas = new conexion.mongoose.Schema({
 });
 var Teclas = conexion.mongoose.model('teclas', schemaTeclas);
 
-function insertarTeclasMain(data: any)
+export function insertarTeclasMain(data: any)
 {
     return Teclas.insertMany(data);
 
@@ -21,7 +21,7 @@ function getTecladoMain(nombreMenu: string)
     return Teclas.find({nomMenu: nombreMenu}).lean();
 }
 
-function borrarTeclas()
+export function borrarTeclas()
 {
     return Teclas.deleteMany({}, (err)=>{
         if(err)

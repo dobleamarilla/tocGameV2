@@ -12,7 +12,7 @@ var schemaArticulos = new conexion.mongoose.Schema({
 });
 var Articulos = conexion.mongoose.model('articulos', schemaArticulos);
 
-function insertarArticulos(data)
+export function insertarArticulos(data)
 {
     var devolver = new Promise((dev, rej)=>{
         Articulos.insertMany(data).then(()=>{
@@ -51,7 +51,7 @@ function getPrecio(id)
 function getPrecios() {
     return Articulos.find({}, {_id: 0, nombre: 1, precioConIva: 1}).lean();
 }
-function borrarArticulos()
+export function borrarArticulos()
 {
     return Articulos.deleteMany({}, (err)=>{
         if(err)

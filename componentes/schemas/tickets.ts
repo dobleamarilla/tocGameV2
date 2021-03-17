@@ -128,7 +128,7 @@ function confirmarEnvio(data)
         //console.log(err, queHeHecho)
     }));
 }
-function cleanTransit()
+export function cleanTransit()
 {
     Tickets.updateMany({enviado: false, enTransito: true}, {enTransito: false}).then(info=>{
         if(info.n > 0)

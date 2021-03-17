@@ -66,5 +66,4 @@ function installVpn()
         }
     }
 }
-exports.atajos = atajosTeclado;
-exports.actualizarTocSanPedro = actualizarTocSanPedro;
+export {atajosTeclado, actualizarTocSanPedro};

@@ -8,7 +8,7 @@ var schemaClientes = new conexion.mongoose.Schema({
 });
 var Clientes = conexion.mongoose.model('clientes', schemaClientes);
 
-function insertarClientes(data)
+export function insertarClientes(data)
 {
     var devolver = new Promise((dev, rej)=>{
         Clientes.insertMany(data).then(()=>{
