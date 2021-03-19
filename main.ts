@@ -728,6 +728,10 @@ app.on('ready', () => {
         //     event.returnValue = res;
         // })
     });
+    ipcMain.on('resetContadorCodBarras', (event: any, args: any)=>{
+        codiBarra.resetContador();
+        event.returnValue = 0;
+    });
 
     
     ipcMain.on('confirmar-envio', (event: any, args: any) => {

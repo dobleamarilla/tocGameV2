@@ -652,6 +652,10 @@ app.on('ready', () => {
         //     event.returnValue = res;
         // })
     });
+    ipcMain.on('resetContadorCodBarras', (event, args) => {
+        codiBarra.resetContador();
+        event.returnValue = 0;
+    });
     ipcMain.on('confirmar-envio', (event, args) => {
         tick.confirmarEnvio(args);
     });

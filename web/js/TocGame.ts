@@ -354,8 +354,19 @@ class TocGame
     }
     generarCodigoBarrasSalida()
     {
-        ipcRenderer.sendSync('actualizar-ultimo-codigo-barras');
         let objCodigoBarras = ipcRenderer.sendSync('get-ultimo-codigo-barras');
+        if(objCodigoBarras == 999)
+        {
+            ipcRenderer.sendSync('resetContadorCodBarras');
+            
+        }
+        else
+        {
+            ipcRenderer.sendSync('actualizar-ultimo-codigo-barras');
+        }
+
+        objCodigoBarras = ipcRenderer.sendSync('get-ultimo-codigo-barras');
+
         let codigoLicenciaStr: string = this.getNumeroTresDigitos(this.getParametros().licencia);
         let strNumeroCodigosDeBarras: string = this.getNumeroTresDigitos(objCodigoBarras);
         let codigoFinal: string =  '';
