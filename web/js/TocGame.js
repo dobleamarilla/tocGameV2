@@ -239,7 +239,6 @@ class TocGame {
         };
         ipcRenderer.send('nuevo-movimiento', objSalida);
         if (!noImprimir) {
-            ipcRenderer.sendSync('actualizar-ultimo-codigo-barras');
             ipcRenderer.send('imprimirSalidaDinero', {
                 cantidad: objSalida.valor,
                 fecha: objSalida._id,
@@ -278,6 +277,7 @@ class TocGame {
         return newNum.split("").reverse().join("");
     }
     generarCodigoBarrasSalida() {
+        ipcRenderer.sendSync('actualizar-ultimo-codigo-barras');
         let objCodigoBarras = ipcRenderer.sendSync('get-ultimo-codigo-barras');
         let codigoLicenciaStr = this.getNumeroTresDigitos(this.getParametros().licencia);
         let strNumeroCodigosDeBarras = this.getNumeroTresDigitos(objCodigoBarras);
