@@ -215,7 +215,7 @@ class TocGame {
         try {
             if (tipoExtra != 'TARJETA' && tipoExtra != 'TKRS') {
                 codigoBarras = this.generarCodigoBarrasSalida();
-                codigoBarras = String(ipcRenderer.sendSync("calcular-ean13", codigoBarras));
+                codigoBarras = String(tocgame.getCalcularEAN13(codigoBarras));
             }
         }
         catch (err) {
@@ -232,10 +232,10 @@ class TocGame {
             tipoExtra: tipoExtra,
             idTicket: idTicket
         };
-        ipcRenderer.send('nuevo-movimiento', objSalida);
+        tocgame.setNuevoMovimiento(objSalida);
         if (!noImprimir) {
-            ipcRenderer.sendSync('actualizar-ultimo-codigo-barras');
-            ipcRenderer.send('imprimirSalidaDinero', {
+            tocgame.setUltimoCodigoBarras();
+            tocgame.setImprimirSalida({
                 cantidad: objSalida.valor,
                 fecha: objSalida._id,
                 nombreTrabajador: this.getCurrentTrabajador().nombre,
@@ -273,7 +273,7 @@ class TocGame {
         return newNum.split("").reverse().join("");
     }
     generarCodigoBarrasSalida() {
-        let objCodigoBarras = ipcRenderer.sendSync('get-ultimo-codigo-barras');
+        let objCodigoBarras = tocgame.getUltimoCodigoBarras();
         let codigoLicenciaStr = this.getNumeroTresDigitos(this.getParametros().licencia);
         let strNumeroCodigosDeBarras = this.getNumeroTresDigitos(objCodigoBarras);
         let codigoFinal = '';
@@ -289,7 +289,7 @@ class TocGame {
             concepto: concepto,
             idTrabajador: this.getCurrentTrabajador()._id
         };
-        ipcRenderer.send('nuevo-movimiento', objEntrada);
+        tocgame.setNuevoMovimiento(objEntrada);
         // imprimirSalidaDinero({
         //     cantidad: cantidad,
         //     fecha: fecha,
@@ -297,7 +297,7 @@ class TocGame {
         //     nombreTienda: nombreTienda,
         //     concepto: concepto
         // });
-        ipcRenderer.send('imprimirEntradaDinero', {
+        tocgame.setImprimirEntrada({
             cantidad: objEntrada.valor,
             fecha: objEntrada._id,
             nombreTrabajador: this.getCurrentTrabajador().nombre,
@@ -325,7 +325,7 @@ class TocGame {
             },
             tipo: "ENTRADA"
         };
-        ipcRenderer.send('guardar-sincro-fichaje', objGuardar);
+        tocgame.setSincroFichaje(objGuardar);
         ipcRenderer.send('fichar-trabajador', trabajador._id);
     }
     delFichado(trabajador) {

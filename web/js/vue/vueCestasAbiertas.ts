@@ -88,7 +88,7 @@ var vueCestasAbiertas = new Vue({
         },
         seleccionarCesta()
         {
-            ipcRenderer.send('get-cesta', this.listaCestas[this.activo2]._id);
+            tocgame.getCesta(this.listaCestas[this.activo2]._id);
             this.cerrarModal();
         },
         borrar()

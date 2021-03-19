@@ -124,9 +124,6 @@ electron_1.ipcMain.on('cargar-todo', (ev, data) => __awaiter(this, void 0, void 
 electron_1.ipcMain.on("calcular-ean13", (event, data) => {
     event.returnValue = ean13_lib_1.Ean13Utils.generate(data);
 });
-electron_1.ipcMain.on("TEST", (event, data) => {
-    event.returnValue = "osoooooo";
-});
 electron_1.ipcMain.on("dialogo", (event, data) => {
     electron_1.dialog.showMessageBox({
         buttons: ["&SÍ", "&NO"],

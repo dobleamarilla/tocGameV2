@@ -408,7 +408,7 @@ class TocGame
             tipo: "ENTRADA"
         };
         tocgame.setSincroFichaje(objGuardar);
-        ipcRenderer.send('fichar-trabajador', trabajador._id);
+        tocgame.setFicharTrabajador(trabajador._id);
 
     }
     delFichado(trabajador: any): void //COMPROBADA
@@ -417,7 +417,7 @@ class TocGame
             return item._id != trabajador._id;
         });
 
-        ipcRenderer.send('desfichar-trabajador', trabajador._id);
+        tocgame.setDesficharTrabajador(trabajador._id);
         var auxTime = new Date();
         let objGuardar = {
             _id: Date.now(),
@@ -434,12 +434,12 @@ class TocGame
             },
             tipo: "SALIDA"
         };
-        ipcRenderer.send('guardar-sincro-fichaje', objGuardar);
+        tocgame.setSincroFichaje(objGuardar);
     }
     abrirCaja(data: Caja) //Guarda los datos de la caja nueva en memoria y en la bbdd. Cierra el modal de apertura e inicia otra vez el programa. Solo se llama desde el modal.
     {
         this.setCaja(data);
-        ipcRenderer.send('actualizar-info-caja', data);
+        tocgame.setActualizarInfoCaja(data);
         vueApertura.cerrarModal();
         vueToast.abrir('success', 'CAJA ABIERTA');
         this.iniciar();
@@ -496,11 +496,11 @@ class TocGame
     }
     clickMenu(nombreMenu: string)
     {
-        ipcRenderer.send('get-teclas', nombreMenu);
+        tocgame.getTeclas(nombreMenu);
     }
     borrarCesta()
     {
-        ipcRenderer.send('borrar-cesta', this.cesta._id);
+        tocgame.setBorrarCesta(this.cesta._id);
         const nuevaCesta: Cesta = {
             _id: Date.now(),
             tiposIva: {
@@ -589,13 +589,13 @@ class TocGame
         {
             data.lista[i].subtotal = Number(data.lista[i].subtotal.toFixed(2));
         }
-        ipcRenderer.send('set-cesta', data);
+        tocgame.setCesta(data);
         this.cesta = data;
         this.enviarCesta();
     }
     cargarCesta() //En memoria de la clase
     {
-        ipcRenderer.send('get-cesta');
+        tocgame.getCesta();
     }
     enviarCesta()
     {
@@ -1556,8 +1556,8 @@ class TocGame
                 this.promociones = [];
             }
     
-            ipcRenderer.send('get-menus');
-            ipcRenderer.send('get-cesta');
+            tocgame.getMenus();
+            tocgame.getCesta();
         }
         else
         {

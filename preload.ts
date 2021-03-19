@@ -13,6 +13,14 @@ contextBridge.exposeInMainWorld(
       setImprimirSalida: (data) => ipcRenderer.send('imprimirSalidaDinero', data),
       setImprimirEntrada: (data) => ipcRenderer.send('imprimirEntradaDinero', data),
       getUltimoCodigoBarras: () => ipcRenderer.sendSync('get-ultimo-codigo-barras'),
-      setSincroFichaje: (data) => ipcRenderer.send('guardar-sincro-fichaje', data)
+      setSincroFichaje: (data) => ipcRenderer.send('guardar-sincro-fichaje', data),
+      setFicharTrabajador: (data) => ipcRenderer.invoke('fichar-trabajador', data),
+      setDesficharTrabajador: (data) => ipcRenderer.invoke('desfichar-trabajador', data),
+      setActualizarInfoCaja: (data) => ipcRenderer.send('actualizar-info-caja', data),
+      getTeclas: (data) => ipcRenderer.invoke('get-teclas', data),
+      setBorrarCesta: (data) => ipcRenderer.send('borrar-cesta', data),
+      setCesta: (data) => ipcRenderer.send('set-cesta', data),
+      getCesta: (data) => ipcRenderer.invoke('get-cesta', data),
+      getMenus: () => ipcRenderer.invoke('get-menus')
     }
   )
