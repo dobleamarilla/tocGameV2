@@ -8,10 +8,8 @@ const TIPO_3G = '3G';
 const TIPO_ENTRADA = 'ENTRADA';
 const TIPO_SALIDA = 'SALIDA';
 class TocGame {
-    constructor() {
-        const info = ipcRenderer.sendSync('getParametros');
-        const infoCaja = ipcRenderer.sendSync('getInfoCaja');
-        ipcRenderer.send('limpiar-enTransito');
+    constructor(info, infoCaja) {
+        tocgame.setLimpiarTransito();
         this.clienteSeleccionado = null;
         this.udsAplicar = 1;
         this.esVIP = false;
@@ -171,7 +169,7 @@ class TocGame {
     }
     setupToc(info) {
         if (info.licencia > 0 && info.codigoTienda > 0 && info.database.length > 0 && info.nombreEmpresa.length > 0 && info.nombreTienda.length > 0 && info.tipoImpresora.length > 0 && info.tipoDatafono.length > 0) {
-            ipcRenderer.send('setParametros', info);
+            tocgame.setParametros(info);
             this.setParametros(info.licencia, info.codigoTienda, info.database, info.nombreEmpresa, info.nombreTienda, info.tipoImpresora, info.impresoraCafeteria, info.tipoDatafono, info.botonesConPrecios, info.prohibirBuscarArticulos);
             this.descargarDatos();
         }
@@ -208,9 +206,6 @@ class TocGame {
     desactivarDevolucion() {
         this.esDevolucion = false;
         vueCobrar.setEsDevolucion(false);
-    }
-    imprimirTest(texto) {
-        ipcRenderer.send('imprimir-test', texto);
     }
     round(value) {
         return Math.trunc(value / 10) * 10;

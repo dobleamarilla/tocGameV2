@@ -27,12 +27,8 @@ function setInfoCaja(data) {
         }
     });
 }
-electron_1.ipcMain.on('getInfoCaja', (ev, args) => {
-    getInfoCaja().then(res => {
-        ev.returnValue = res;
-    }).catch(err => {
-        console.log(err);
-    });
+electron_1.ipcMain.handle('getInfoCaja', (ev, args) => {
+    return getInfoCaja();
 });
 electron_1.ipcMain.on('actualizar-info-caja', (ev, data) => {
     setInfoCaja(data);

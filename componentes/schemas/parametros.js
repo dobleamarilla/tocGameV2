@@ -56,11 +56,12 @@ electron_1.ipcMain.on('setParametros', (ev, data) => {
 electron_1.ipcMain.on('set-ultimo-ticket-parametros', (ev, args) => {
     setUltimoTicket(args);
 });
-electron_1.ipcMain.on('getParametros', (ev, args) => {
-    getParams().then(res => {
-        ev.returnValue = res;
-    }).catch(err => {
-        console.log(err);
-    });
+electron_1.ipcMain.handle('getParametros', (ev, args) => {
+    // getParams().then(res=>{
+    //     ev.returnValue = res;
+    // }).catch(err=>{
+    //     console.log(err);
+    // });
+    return getParams();
 });
 //# sourceMappingURL=parametros.js.map

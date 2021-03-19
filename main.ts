@@ -1,6 +1,7 @@
 import {atajosTeclado, actualizarTocSanPedro} from './componentes/teclasAtajos';
 import {setParams} from './componentes/schemas/parametros';
 import path from 'path';
+require('./componentes/schemas/cajas');
 require('./componentes/general');
 require('@electron/remote/main').initialize();
 // var pjson = require('./package.json');

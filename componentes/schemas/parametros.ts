@@ -67,10 +67,11 @@ ipcMain.on('set-ultimo-ticket-parametros', (ev, args) => {
     setUltimoTicket(args);
 });
 
-ipcMain.on('getParametros', (ev, args) => {
-    getParams().then(res=>{
-        ev.returnValue = res;
-    }).catch(err=>{
-        console.log(err);
-    });
+ipcMain.handle('getParametros', (ev, args) => {
+    // getParams().then(res=>{
+    //     ev.returnValue = res;
+    // }).catch(err=>{
+    //     console.log(err);
+    // });
+    return getParams();
 });

@@ -132,6 +132,7 @@ ipcMain.on('cargar-todo', async (ev, data) => {
 ipcMain.on("calcular-ean13", (event:any, data:any)=>{
     event.returnValue = Ean13Utils.generate(data);
 });
+
 ipcMain.on("dialogo", (event:any, data:any)=>{
     dialog.showMessageBox({
         buttons: ["&SÍ","&NO"],

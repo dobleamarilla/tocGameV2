@@ -27,11 +27,9 @@ class TocGame
     public datafonoForzado3G: boolean;
     public idClienteVIP: number;
     public tecladoTarifaEspecial: boolean; //Si es TRUE = tarifa especial cliente vip activado
-    constructor() 
+    constructor(info, infoCaja) 
     {
-        const info = ipcRenderer.sendSync('getParametros');
-        const infoCaja = ipcRenderer.sendSync('getInfoCaja');
-        ipcRenderer.send('limpiar-enTransito');
+        tocgame.setLimpiarTransito();
         this.clienteSeleccionado = null;
         this.udsAplicar = 1;
         this.esVIP = false;
@@ -226,7 +224,7 @@ class TocGame
     {
         if (info.licencia > 0 && info.codigoTienda > 0 && info.database.length > 0 && info.nombreEmpresa.length > 0 && info.nombreTienda.length > 0 && info.tipoImpresora.length > 0 && info.tipoDatafono.length > 0) 
         {
-            ipcRenderer.send('setParametros', info);
+            tocgame.setParametros(info);
             this.setParametros(info.licencia, info.codigoTienda, info.database, info.nombreEmpresa, info.nombreTienda, info.tipoImpresora, info.impresoraCafeteria, info.tipoDatafono, info.botonesConPrecios, info.prohibirBuscarArticulos);
             this.descargarDatos();
         }
@@ -274,10 +272,6 @@ class TocGame
         vueCobrar.setEsDevolucion(false);
     }
 
-    imprimirTest(texto)
-    {
-        ipcRenderer.send('imprimir-test', texto);
-    }
     round(value) 
     {
         return Math.trunc(value/10) * 10;
@@ -289,7 +283,7 @@ class TocGame
         try {
             if(tipoExtra != 'TARJETA' && tipoExtra != 'TKRS'){
                 codigoBarras = this.generarCodigoBarrasSalida();
-                codigoBarras = String(ipcRenderer.sendSync("calcular-ean13", codigoBarras));
+                codigoBarras = String(tocgame.getCalcularEAN13(codigoBarras));
             } 
         } catch(err) {
             console.log(err);
@@ -307,11 +301,12 @@ class TocGame
             tipoExtra: tipoExtra,
             idTicket: idTicket
         }
-        ipcRenderer.send('nuevo-movimiento', objSalida);
+
+        tocgame.setNuevoMovimiento(objSalida);
         if(!noImprimir)
         {
-            ipcRenderer.sendSync('actualizar-ultimo-codigo-barras');
-            ipcRenderer.send('imprimirSalidaDinero', {
+            tocgame.setUltimoCodigoBarras();
+            tocgame.setImprimirSalida({
                 cantidad: objSalida.valor,
                 fecha: objSalida._id,
                 nombreTrabajador: this.getCurrentTrabajador().nombre,
@@ -354,7 +349,7 @@ class TocGame
     }
     generarCodigoBarrasSalida()
     {
-        let objCodigoBarras = ipcRenderer.sendSync('get-ultimo-codigo-barras');
+        let objCodigoBarras = tocgame.getUltimoCodigoBarras();
         let codigoLicenciaStr: string = this.getNumeroTresDigitos(this.getParametros().licencia);
         let strNumeroCodigosDeBarras: string = this.getNumeroTresDigitos(objCodigoBarras);
         let codigoFinal: string =  '';
@@ -374,7 +369,7 @@ class TocGame
             concepto: concepto,
             idTrabajador: this.getCurrentTrabajador()._id
         }
-        ipcRenderer.send('nuevo-movimiento', objEntrada);
+        tocgame.setNuevoMovimiento(objEntrada);
 
         // imprimirSalidaDinero({
         //     cantidad: cantidad,
@@ -383,7 +378,7 @@ class TocGame
         //     nombreTienda: nombreTienda,
         //     concepto: concepto
         // });
-        ipcRenderer.send('imprimirEntradaDinero', {
+        tocgame.setImprimirEntrada({
             cantidad: objEntrada.valor,
             fecha: objEntrada._id,
             nombreTrabajador: this.getCurrentTrabajador().nombre,
@@ -412,7 +407,7 @@ class TocGame
             },
             tipo: "ENTRADA"
         };
-        ipcRenderer.send('guardar-sincro-fichaje', objGuardar);
+        tocgame.setSincroFichaje(objGuardar);
         ipcRenderer.send('fichar-trabajador', trabajador._id);
 
     }

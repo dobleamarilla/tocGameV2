@@ -6,7 +6,7 @@ ipcRenderer.on('res-buscar-fichados', (ev, data)=>{
         {
             toc.setArrayFichados([]);
             abrirModalFichajes();
-        }    
+        }
     }
     else 
     {

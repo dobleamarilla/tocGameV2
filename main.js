@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const teclasAtajos_1 = require("./componentes/teclasAtajos");
 const parametros_1 = require("./componentes/schemas/parametros");
 const path_1 = __importDefault(require("path"));
+require('./componentes/schemas/cajas');
 require('./componentes/general');
 require('@electron/remote/main').initialize();
 // var pjson = require('./package.json');
