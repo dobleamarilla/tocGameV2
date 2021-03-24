@@ -1111,7 +1111,7 @@ class TocGame
                 if(tipo === "CONSUMO_PERSONAL")
                 {
                     objTicket.total = 0;
-                    this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Consum personal', 'CONSUMO_PERSONAL', true);
+                    //this.nuevaSalidaDinero(0, 'Consum personal', 'CONSUMO_PERSONAL', true);
                 }
                 else
                 {
