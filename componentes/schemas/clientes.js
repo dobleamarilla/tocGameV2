@@ -7,8 +7,10 @@ var schemaClientes = new conexion.mongoose.Schema({
 var Clientes = conexion.mongoose.model('clientes', schemaClientes);
 function insertarClientes(data) {
     var devolver = new Promise((dev, rej) => {
-        Clientes.insertMany(data).then(() => {
-            dev(true);
+        borrarTodo().then(() => {
+            Clientes.insertMany(data).then(() => {
+                dev(true);
+            });
         });
     });
     return devolver;
