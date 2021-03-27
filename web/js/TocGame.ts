@@ -1154,6 +1154,7 @@ class TocGame
                 }
             }
         }
+        if(this.parametros.licencia == 872) toc.imprimirTicket(objTicket._id);
         this.datafonoForzado3G = false;
         this.resetEstados();
         if(tipo != "TARJETA" || this.datafonoForzado3G)
@@ -1561,6 +1562,7 @@ class TocGame
                 this.promociones = [];
             }
     
+            ipcRenderer.send('mostrar-visor', {texto: "Bienvenida/o a", precio: "365!"})
             ipcRenderer.send('get-menus');
             ipcRenderer.send('get-cesta');
         }

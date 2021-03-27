@@ -153,10 +153,10 @@ var vueCobrar = new Vue({
             if (!this.esperando && this.esperandoDatafono.display == 'none') {
                 this.setEsperando(false);
                 $('#modalVueCobrar').modal('hide');
-                /*ipcRenderer.send('mostrar-visor', {texto: 'Muchas gracias!', precio: ':D'});
+                ipcRenderer.send('mostrar-visor', { texto: 'Muchas gracias!', precio: ':D' });
                 setTimeout(() => {
-                    ipcRenderer.send('mostrar-visor', {texto: 'Bienvenida/o a', precio:'365!'})
-                }, 2500)*/
+                    ipcRenderer.send('mostrar-visor', { texto: 'Bienvenida/o a', precio: '365!' });
+                }, 2500);
             }
             else {
                 vueToast.abrir('warning', 'Hay una operación pendiente');

@@ -1,3 +1,4 @@
+/* BUENAS EZE QUE TAL */
 // import {Cesta} from './Cesta';
 // import {conexion} from '@/funciones/conexion';
 const TIPO_USB = 'USB';
@@ -801,13 +802,6 @@ class TocGame {
         for (let i = 0; i < this.cesta.lista.length; i++) {
             total += this.cesta.lista[i].subtotal;
         }
-<<<<<<< HEAD
-=======
-        if (totalTkrs > 0) {
-            total -= Number(totalTkrs);
-            this.nuevaSalidaDinero(Number(totalTkrs.toFixed(2)), `Pagat TkRs (TkRs): ${objTicket._id}`, 'TKRS', true, objTicket._id);
-        }
->>>>>>> a991dccecff9f7f38a8358211662d9cafefd2129
         const infoTrabajador = this.getCurrentTrabajador();
         const nuevoIdTicket = this.getUltimoTicket() + 1;
         var objTicket = {
@@ -1264,6 +1258,7 @@ class TocGame {
             else {
                 this.promociones = [];
             }
+            ipcRenderer.send('mostrar-visor', { texto: "Bienvenida/o a", precio: "365!" });
             ipcRenderer.send('get-menus');
             ipcRenderer.send('get-cesta');
         }
