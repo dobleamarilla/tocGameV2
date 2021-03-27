@@ -1585,20 +1585,3 @@ class TocGame
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// db.tickets.aggregate([dateConversionStage,sortStage, {$match: {convertedDate: {$gte: ISODate("2021-01-18T00:00:00.0Z"), $lte: ISODate("2021-01-19T00:00:00.0Z")}}}, {$group: _id:null, sumaTotal: {$sum:"$total"}}])
