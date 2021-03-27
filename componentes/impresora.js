@@ -274,10 +274,11 @@ var mostrarVisor = function (event, data) {
     }
     try {
         //exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
-        var device = new escpos.Serial('COM3', {
+        var device = new escpos.USB('067b', '2303');
+        /*var device = new escpos.Serial('COM3', {
             baudRate: 9600,
             stopBit: 2
-        });
+        });*/
         var options = { encoding: "ISO-8859-1" };
         var printer = new escpos.Printer(device, options);
         device.open(function () {

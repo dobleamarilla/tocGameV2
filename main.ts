@@ -243,7 +243,7 @@ app.on('ready', () => {
     ipcMain.on('mostrar-visor', (ev, data) => {
         console.log("En el ipcOn", data);
         //ev.sender.send('productoTablet', data)
-        impresora.mostrarVisorEvent(data);
+        //impresora.mostrarVisorEvent(data);
     })
     //FIN VISOR
     //CARGAR TODO

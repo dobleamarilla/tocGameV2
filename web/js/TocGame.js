@@ -1264,6 +1264,7 @@ class TocGame {
             else {
                 this.promociones = [];
             }
+            ipcRenderer.send('mostrar-visor', { texto: "Bienvenida/o a", precio: "365!" });
             ipcRenderer.send('get-menus');
             ipcRenderer.send('get-cesta');
         }

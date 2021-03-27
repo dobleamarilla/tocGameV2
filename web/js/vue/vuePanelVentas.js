@@ -151,6 +151,7 @@ var vuePanelVentas = new Vue({
         mostrarInfoVisor(objListadoTeclas) {
             let nombreArticulo = objListadoTeclas.nombreArticulo.nombre;
             let precioArticulo = objListadoTeclas.nombreArticulo.precio;
+            ipcRenderer.send('mostrar-visor', { texto: nombreArticulo, precio: precioArticulo, total: toc.getCesta().tiposIva.importe2, tienda: 842 });
         },
         resetTeclado() {
             this.listadoTeclas = [
