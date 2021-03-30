@@ -31,7 +31,7 @@ class TocGame
     {
         const info = ipcRenderer.sendSync('getParametros');
         const infoCaja = ipcRenderer.sendSync('getInfoCaja');
-        ipcRenderer.send('limpiar-enTransito');
+        
         this.clienteSeleccionado = null;
         this.udsAplicar = 1;
         this.esVIP = false;
@@ -868,7 +868,7 @@ class TocGame
         if(this.tecladoTarifaEspecial)
         {
             this.tecladoTarifaEspecial = false;
-            toc.iniciar();
+            this.iniciar();
         }
     }
     insertarArticuloCesta(infoArticulo, unidades: number, infoAPeso = null)
@@ -1557,6 +1557,7 @@ class TocGame
     {
         if(this.todoInstalado())
         {
+            ipcRenderer.send('limpiar-enTransito');
             ipcRenderer.send('get-precios');
         
             // ipcRenderer.send('get-precios-tarifa-especial');

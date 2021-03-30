@@ -11,7 +11,6 @@ class TocGame {
     constructor() {
         const info = ipcRenderer.sendSync('getParametros');
         const infoCaja = ipcRenderer.sendSync('getInfoCaja');
-        ipcRenderer.send('limpiar-enTransito');
         this.clienteSeleccionado = null;
         this.udsAplicar = 1;
         this.esVIP = false;
@@ -689,7 +688,7 @@ class TocGame {
         vueCesta.puntosClienteActivo = 0;
         if (this.tecladoTarifaEspecial) {
             this.tecladoTarifaEspecial = false;
-            toc.iniciar();
+            this.iniciar();
         }
     }
     insertarArticuloCesta(infoArticulo, unidades, infoAPeso = null) {
@@ -1254,6 +1253,7 @@ class TocGame {
     }
     iniciar() {
         if (this.todoInstalado()) {
+            ipcRenderer.send('limpiar-enTransito');
             ipcRenderer.send('get-precios');
             // ipcRenderer.send('get-precios-tarifa-especial');
             $('.modal').modal('hide');
@@ -1275,5 +1275,4 @@ class TocGame {
         }
     }
 }
-// db.tickets.aggregate([dateConversionStage,sortStage, {$match: {convertedDate: {$gte: ISODate("2021-01-18T00:00:00.0Z"), $lte: ISODate("2021-01-19T00:00:00.0Z")}}}, {$group: _id:null, sumaTotal: {$sum:"$total"}}])
 //# sourceMappingURL=TocGame.js.map
