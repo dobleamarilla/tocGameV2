@@ -304,8 +304,8 @@ var testEze = function (event, texto)
     }
 }
 var mostrarVisor = function(event, data) {
-    // Limito el texto a 15, ya que la línea completa tiene 20 espacios. (1-15 -> artículo, 16 -> espacio en blanco, 17-20 -> precio)
-    data.texto = data.texto.substring(0, 15);
+    // Limito el texto a 14, ya que la línea completa tiene 20 espacios. (1-15 -> artículo, 16 -> espacio en blanco, 17-20 -> precio)
+    data.texto = data.texto.substring(0, 14);
     data.texto += " " + data.precio;
     // Los caracteres totales que tiene todo el texto en conjunto (articulo + precio)
     var caracteresTotales = data.texto.length;
@@ -320,13 +320,13 @@ var mostrarVisor = function(event, data) {
     }
     try 
     {
-        //exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
+        exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
 
-        var device = new escpos.USB('067b','2303');
-        /*var device = new escpos.Serial('COM3', {
-            baudRate: 9600,
-            stopBit: 2
-        });*/ 
+        //var device = new escpos.USB('067b','2303');
+        var device = new escpos.Serial('/dev/ttyUSB0', {
+		baudRate: 9600,
+		stopBit: 2
+	}); 
         var options = { encoding: "ISO-8859-1" };
         var printer = new escpos.Printer(device, options);
         device.open(function () 

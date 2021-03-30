@@ -930,6 +930,8 @@ class TocGame {
                 }
             }
         }
+        if (this.parametros.licencia == 872)
+            toc.imprimirTicket(objTicket._id);
         this.datafonoForzado3G = false;
         this.resetEstados();
         if (tipo != "TARJETA" || this.datafonoForzado3G) {
