@@ -307,7 +307,7 @@ var mostrarVisor = function(event, data) {
     // Limito el texto a 14, ya que la línea completa tiene 20 espacios. (1-14 -> artículo, 16 -> espacio en blanco, 17-20 -> precio)
     data.texto = data.texto.substring(0, 14);
     data.texto += " " + data.precio;
-    datosExtra = data.dependienta.substring(0, 8) + " " + data.total; 
+    var datosExtra = data.dependienta.substring(0, 8) + " " + data.total; 
     console.log(data.texto)
     // Los caracteres totales que tiene todo el texto en conjunto (articulo + precio)
     var caracteresTotales = data.texto.length;
