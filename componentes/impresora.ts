@@ -316,7 +316,10 @@ var mostrarVisor = function(event, data) {
     }
     // Limito el texto a 14, ya que la línea completa tiene 20 espacios. (1-14 -> artículo, 15 -> espacio en blanco, 16-20 -> precio)
     var datosExtra = data.dependienta.substring(0, limitNombre) + " " + data.total + eur; 
-    if(datosExtra.length <= 2) datosExtra = ""; eur = "";
+    if(datosExtra.length <= 2){
+        datosExtra = ""; 
+        eur = "";
+    }
     data.texto = datosExtra + "" + data.texto.substring(0, 14);
     data.texto += " " + data.precio + eur;
     try 
