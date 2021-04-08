@@ -165,7 +165,7 @@ var vuePanelVentas = new Vue({
             let nombreArticulo = objListadoTeclas.nombreArticulo.nombre;
             let precioArticulo = objListadoTeclas.nombreArticulo.precio;
             precioArticulo = precioArticulo.replace("€", "");
-            let totalCesta = toc.getCesta().tiposIva.importe1 + toc.getCesta().importe2 + toc.getCesta().importe3;
+            let totalCesta = toc.getCesta().tiposIva.importe1 + toc.getCesta().tiposIva.importe2 + toc.getCesta().tiposIva.importe3;
             ipcRenderer.send('mostrar-visor', {texto: nombreArticulo, precio: precioArticulo, total: totalCesta, dependienta: toc.getCurrentTrabajador().nombre});
         },
         resetTeclado()
