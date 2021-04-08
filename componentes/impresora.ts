@@ -306,7 +306,7 @@ var testEze = function (event, texto)
 var mostrarVisor = function(event, data) {
     var eur = String.fromCharCode(128);
     var limitNombre = 13;
-    var lengthTotal = 0;
+    var lengthTotal = '0';
     if(data.total !== undefined) {
         lengthTotal = (data.total).toString();
         if(lengthTotal.length == 2) limitNombre = 16;
