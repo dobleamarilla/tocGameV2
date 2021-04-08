@@ -305,13 +305,13 @@ var testEze = function (event, texto)
 }
 var mostrarVisor = function(event, data) {
     // Limito el texto a 14, ya que la línea completa tiene 20 espacios. (1-14 -> artículo, 15 -> espacio en blanco, 16-20 -> precio)
-    data.texto = "hola " + data.texto.substring(0, 14);
-    data.texto += " " + data.precio;
     var datosExtra = data.dependienta.substring(0, 8) + " " + data.total; 
+    data.texto = datosExtra + data.texto.substring(0, 14);
+    data.texto += " " + data.precio;
     console.log(data.texto)
     // Los caracteres totales que tiene todo el texto en conjunto (articulo + precio)
-    //var caracteresTotales = data.texto.length + datosExtra.length;
-    var caracteresTotales = data.texto.length;
+    var caracteresTotales = data.texto.length + datosExtra.length;
+    //var caracteresTotales = data.texto.length;
     // Espacio total del visor
     const ESPACIOS_TOTALES = 40;
     // Total de espacios a limpiar
