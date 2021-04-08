@@ -327,7 +327,7 @@ var mostrarVisor = function(event, data) {
                 .clear()
                 // Información del artículo (artículo + precio)
                 .text(data.texto)
-                .moveDown()
+                .moveUp()
                 .text(datosExtra)
                 //.text(datosExtra)
                 .close()
