@@ -310,7 +310,7 @@ var mostrarVisor = function(event, data) {
     data.texto += " " + data.precio;
     console.log(data.texto)
     // Los caracteres totales que tiene todo el texto en conjunto (articulo + precio)
-    var caracteresTotales = data.texto.length + datosExtra.length;
+    var caracteresTotales = data.texto.length;
     //var caracteresTotales = data.texto.length;
     // Espacio total del visor
     const ESPACIOS_TOTALES = 40;
