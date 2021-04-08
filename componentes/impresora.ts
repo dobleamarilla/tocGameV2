@@ -318,7 +318,7 @@ var mostrarVisor = function(event, data) {
     var totalLimpiar = ESPACIOS_TOTALES - Number(caracteresTotales);
     // Se rellena esta string con el total de espacios en blanco
     var stringVacia = "";
-    for(var i = 0; i < totalLimpiar; i++) {
+    for(var i = 0; i < ESPACIOS_TOTALES; i++) {
         stringVacia += ' ';
     }
     try 
