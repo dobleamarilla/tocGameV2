@@ -331,7 +331,7 @@ var mostrarVisor = function(event, data) {
 		stopBit: 2
 	}); 
         var options = { encoding: "ISO-8859-1" };
-        var printer = new escpos.Printer(device, options);
+        var printer = new escpos.Screen(device, options);
         device.open(function () 
         {
             printer
