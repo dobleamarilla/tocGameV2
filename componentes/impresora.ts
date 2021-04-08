@@ -309,7 +309,6 @@ var mostrarVisor = function(event, data) {
     var lengthTotal = '';
     var datosExtra = '';
     if(data.total !== undefined) {
-        datosExtra = data.dependienta.substring(0, limitNombre) + " " + data.total + eur; 
         lengthTotal = (data.total).toString();
         if(lengthTotal.length == 1) limitNombre = 17;
         else if(lengthTotal.length == 2) limitNombre = 16;
@@ -318,6 +317,7 @@ var mostrarVisor = function(event, data) {
         else if(lengthTotal.length == 5) limitNombre = 13;
         else if(lengthTotal.length == 6) limitNombre = 12;
         else if(lengthTotal.length == 7) limitNombre = 11;
+        datosExtra = data.dependienta.substring(0, limitNombre) + " " + data.total + eur; 
     }
     if(datosExtra.length <= 2){
         datosExtra = ""; 
