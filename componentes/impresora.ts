@@ -305,7 +305,7 @@ var testEze = function (event, texto)
 }
 var mostrarVisor = function(event, data) {
     // Limito el texto a 14, ya que la línea completa tiene 20 espacios. (1-14 -> artículo, 15 -> espacio en blanco, 16-20 -> precio)
-    var datosExtra = data.dependienta.substring(0, 8) + " " + data.total; 
+    var datosExtra = data.dependienta.substring(0, 13) + " " + data.total; 
     data.texto = datosExtra + data.texto.substring(0, 14);
     data.texto += " " + data.precio;
     console.log(data.texto)
