@@ -1,7 +1,7 @@
 var escpos          = require('escpos');
 var exec            = require('child_process').exec;
 var os              = require('os');
-
+var h = "";
 escpos.USB = require('escpos-usb');
 escpos.Serial = require('escpos-serialport');
 var articulos = require('./schemas/articulos');
