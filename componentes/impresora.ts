@@ -318,7 +318,7 @@ var mostrarVisor = function(event, data) {
     var totalLimpiar = ESPACIOS_TOTALES - Number(caracteresTotales);
     // Se rellena esta string con el total de espacios en blanco
     var stringVacia = "";
-    for(var i = 0; i < ESPACIOS_TOTALES; i++) {
+    for(var i = 0; i < totalLimpiar; i++) {
         stringVacia += ' ';
     }
     try 
@@ -336,7 +336,8 @@ var mostrarVisor = function(event, data) {
         {
             printer
                 // Espacios en blanco para limpiar el visor y volver a mostrar los datos en el sitio correcto
-                .text(stringVacia)
+                //.text(stringVacia)
+                .clear()
                 // Información del artículo (artículo + precio)
                 .text(data.texto)
                 //.text(datosExtra)
