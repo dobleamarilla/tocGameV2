@@ -118,12 +118,12 @@ var vueCesta = new Vue({
             if(this.activo === null)
             {
                 toc.borrarCesta();
-                ipcRenderer.send('mostrar-visor', {texto: "", precio: "", total: toc.getCesta().tiposIva.importe2, tienda: 842});
+                ipcRenderer.send('mostrar-visor', {texto: "", precio: "", total: toc.getCesta().tiposIva.importe2, dependienta: ""});
             }
             else
             {
                 toc.borrarItemCesta(this.activo);
-                ipcRenderer.send('mostrar-visor', {texto: "", precio: "", total: toc.getCesta().tiposIva.importe2, tienda: 842});
+                ipcRenderer.send('mostrar-visor', {texto: "", precio: "", total: toc.getCesta().tiposIva.importe2, dependienta: ""});
             }
             this.activo = null;
             this.lineaDeRegalo = null;

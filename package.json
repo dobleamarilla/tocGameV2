@@ -20,6 +20,7 @@
         "ean13-lib": "0.0.5",
         "escpos": "^3.0.0-alpha.3",
         "escpos-network": "^3.0.0-alpha.5",
+        "escpos-screen": "*",
         "escpos-serialport": "^3.0.0-alpha.2",
         "escpos-usb": "^3.0.0-alpha.4",
         "is-online": "^8.5.1",

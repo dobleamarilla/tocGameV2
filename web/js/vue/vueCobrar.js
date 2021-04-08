@@ -153,7 +153,7 @@ var vueCobrar = new Vue({
             if (!this.esperando && this.esperandoDatafono.display == 'none') {
                 this.setEsperando(false);
                 $('#modalVueCobrar').modal('hide');
-                ipcRenderer.send('mostrar-visor', { texto: 'Muchas gracias!', precio: ':D' });
+                ipcRenderer.send('mostrar-visor', { texto: 'Muchas gracias!', precio: ':D', dependienta: "", total: "" });
                 setTimeout(() => {
                     ipcRenderer.send('mostrar-visor', { texto: 'Bienvenida/o a', precio: '365!' });
                 }, 2500);
