@@ -325,9 +325,10 @@ var mostrarVisor = function(event, data) {
                 // Espacios en blanco para limpiar el visor y volver a mostrar los datos en el sitio correcto
                 //.text(stringVacia)
                 .clear()
+                .moveUp()
                 // Información del artículo (artículo + precio)
                 .text(data.texto)
-                .moveUp()
+                .moveDown()
                 .text(datosExtra)
                 //.text(datosExtra)
                 .close()
