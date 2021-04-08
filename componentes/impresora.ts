@@ -304,11 +304,12 @@ var testEze = function (event, texto)
     }
 }
 var mostrarVisor = function(event, data) {
+    var eur = String.fromCharCode(128);
     // Limito el texto a 14, ya que la línea completa tiene 20 espacios. (1-14 -> artículo, 15 -> espacio en blanco, 16-20 -> precio)
-    var datosExtra = data.dependienta.substring(0, 13) + " " + data.total + String.fromCharCode(128); 
-    if(datosExtra.length <= 1) datosExtra = "";
+    var datosExtra = data.dependienta.substring(0, 13) + " " + data.total + eur; 
+    if(datosExtra.length <= 2) datosExtra = "";
     data.texto = datosExtra + "" + data.texto.substring(0, 14);
-    data.texto += " " + data.precio;
+    data.texto += " " + data.precio + eur;
     try 
     {
         exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
