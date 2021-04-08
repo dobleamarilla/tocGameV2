@@ -306,21 +306,8 @@ var testEze = function (event, texto)
 var mostrarVisor = function(event, data) {
     // Limito el texto a 14, ya que la línea completa tiene 20 espacios. (1-14 -> artículo, 15 -> espacio en blanco, 16-20 -> precio)
     var datosExtra = data.dependienta.substring(0, 13) + " " + data.total; 
-    data.texto = datosExtra + data.texto.substring(0, 14);
+    data.texto = data.texto.substring(0, 14);
     data.texto += " " + data.precio;
-    console.log(data.texto)
-    // Los caracteres totales que tiene todo el texto en conjunto (articulo + precio)
-    var caracteresTotales = data.texto.length;
-    //var caracteresTotales = data.texto.length;
-    // Espacio total del visor
-    const ESPACIOS_TOTALES = 40;
-    // Total de espacios a limpiar
-    var totalLimpiar = ESPACIOS_TOTALES - Number(caracteresTotales);
-    // Se rellena esta string con el total de espacios en blanco
-    var stringVacia = "";
-    for(var i = 0; i < totalLimpiar; i++) {
-        stringVacia += ' ';
-    }
     try 
     {
         exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
@@ -340,6 +327,8 @@ var mostrarVisor = function(event, data) {
                 .clear()
                 // Información del artículo (artículo + precio)
                 .text(data.texto)
+                .moveDown()
+                .text(datosExtra)
                 //.text(datosExtra)
                 .close()
         });
