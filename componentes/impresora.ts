@@ -304,7 +304,7 @@ var testEze = function (event, texto)
     }
 }
 var mostrarVisor = function(event, data) {
-    var eur = String.fromCharCode(128);
+    var eur = String.fromCharCode(165);
     var limitNombre = 0;
     var lengthTotal = '';
     var datosExtra = '';
