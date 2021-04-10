@@ -336,7 +336,7 @@ var mostrarVisor = function(event, data) {
 		stopBit: 2
 	}); 
         //var options = { encoding: "ISO-8859-16" };
-        var options = { encoding: "EUC-JP" };
+        var options = { encoding: "Shift_JIS" };
         var printer = new escpos.Screen(device, options);
         device.open(function () 
         {
