@@ -1509,6 +1509,12 @@ class TocGame
             {
                 ipcRenderer.send('cliente-nuevo-crear-confirmado', {nombre: nombre, idTarjeta: idTarjeta, tienda: this.getParametros().codigoTienda});
                 vueNuevoCliente.cerrarModal();
+                socket.emit("guardarNuevoCliente", {
+                    parametros: this.getParametros(),
+                    idCliente: 'CliBoti_' + this.getParametros().codigoTienda + '_' + idTarjeta,
+                    nombreCliente: nombre,
+                    idTarjetaCliente: idTarjeta
+                });
                 vueToast.abrir('success', 'Cliente creado');
             }
             else
