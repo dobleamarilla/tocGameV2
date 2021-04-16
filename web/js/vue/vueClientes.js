@@ -3,12 +3,13 @@ var vueClientes = new Vue({
     template: 
     /*html*/ `
     <!-- Inicio modal fichar -->
-    <div class="modal" id="modalClientes" tabindex="-1" role="dialog">
+    <div class="modal" id="modalClientes" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
 	<div class="modal-dialog" role="document" style="max-width: 600px">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Seleccionar cliente</h5>
-				</button>
+                <button type="button" class="btn btn-success btn-lg mr-0" @click="nuevoCliente()">NUEVO</button>
+				<button type="button" class="btn btn-danger btn-lg mr-0" @click="reset()">RESET</button>
+				<button type="button" class="btn btn-secondary btn-lg" @click="volver()">SALIR</button>
 			</div>
 			<div class="modal-body">
                 <div class="row">
@@ -38,11 +39,6 @@ var vueClientes = new Vue({
                     </div>
                 </div>
 			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-success btn-lg mr-0" @click="nuevoCliente()">NUEVO</button>
-				<button type="button" class="btn btn-danger btn-lg mr-0" @click="reset()">BORRAR</button>
-				<button type="button" class="btn btn-secondary btn-lg" @click="volver()">SALIR</button>
-			</div>
 		</div>
 	</div>
 </div>
@@ -60,6 +56,7 @@ var vueClientes = new Vue({
             document.getElementById('inputBusqueda').focus();
         },
         cerrarModal() {
+            this.busqueda = '';
             $('#modalClientes').modal('hide');
         },
         buscarCliente() {
@@ -84,6 +81,7 @@ var vueClientes = new Vue({
             toc.quitarClienteSeleccionado();
             toc.limpiarClienteVIP();
             this.busqueda = '';
+            document.getElementById('inputBusqueda').focus();
         },
         nuevoCliente() {
             this.cerrarModal();

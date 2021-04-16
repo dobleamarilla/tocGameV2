@@ -62,12 +62,12 @@ var vueCobrar = new Vue({
                                     <span style="font-size: 25px;">Dinero recibido: {{cuenta.toFixed(2)}} €</span><br>
                                     <span style="font-size: 25px;">Ticket restaurante: {{totalTkrs.toFixed(2)}} €</span><br>
                                     <span v-if="(cuenta+totalTkrs)-total < 0" style="font-size: 25px; color:red;">Faltan: {{((cuenta+totalTkrs)-total).toFixed(2)}} €</span>
-                                    <span v-else style="font-size: 25px; color: green;">Sobran: {{((cuenta+totalTkrs)-total).toFixed(2)}} €</span>
+                                    <span v-else style="font-size: 25px; color: green;">Sobran: {{sobran.toFixed(2)}} €</span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-5">
-                            <div v-if="esVIP === false && esDevolucion === false && esConsumoPersonal === false" class="row">
+                            <div v-if="esVIP === false && esDevolucion === false && esConsumoPersonal === false && botonesCobroActivo" class="row">
                                 <div class="col-md-6 text-center">
                                     <img @click="cobrar('EFECTIVO')" src="assets/imagenes/img-efectivo.png" alt="Cobrar con efectivo" width="225px">
                                 </div>
@@ -116,7 +116,7 @@ var vueCobrar = new Vue({
 			</div>
 			<div class="modal-footer">
                 <button v-if="tkrs" type="button" class="btn btn-primary" style="font-size: 50px" @click="alternarTkrs(false)">Salir de ticket restaurante</button>
-                <button type="button" class="btn btn-primary" style="font-size: 50px" @click="cerrarModal()">Cancelar</button>
+                <button type="button" class="btn btn-danger" style="font-size: 50px" @click="cerrarModal()">Cancelar</button>
 			</div>
 		</div>
     </div>
@@ -138,7 +138,8 @@ var vueCobrar = new Vue({
             cuentaAsistenteTeclado: '',
             cuenta: 0,
             totalTkrs: 0,
-            tkrs: false
+            tkrs: false,
+            botonesCobroActivo: true
         };
     },
     methods: {
@@ -150,6 +151,7 @@ var vueCobrar = new Vue({
             $('#modalVueCobrar').modal();
         },
         cerrarModal() {
+            this.tkrs = false;
             if (!this.esperando && this.esperandoDatafono.display == 'none') {
                 this.setEsperando(false);
                 $('#modalVueCobrar').modal('hide');
@@ -247,6 +249,18 @@ var vueCobrar = new Vue({
             this.totalTkrs = 0;
             this.cuentaAsistente = 0;
             this.cuentaAsistenteTeclado = '';
+        }
+    },
+    computed: {
+        sobran() {
+            let cuenta = this.cuenta + this.totalTkrs - this.total;
+            if (cuenta >= 0 && this.tkrs) {
+                this.botonesCobroActivo = false;
+            }
+            else {
+                this.botonesCobroActivo = true;
+            }
+            return this.cuenta + this.totalTkrs - this.total;
         }
     },
     watch: {
