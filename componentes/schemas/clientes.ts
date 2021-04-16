@@ -62,3 +62,4 @@ exports.insertarClientes     = insertarClientes;
 exports.buscarCliente        = buscarCliente;
 exports.comprobarClienteIdentico           = comprobarClienteIdentico;
 exports.comprobarClienteIdenticoTarjeta    = comprobarClienteIdenticoTarjeta;
+exports.crearNuevo                         = crearNuevo;

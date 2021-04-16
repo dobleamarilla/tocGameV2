@@ -26,7 +26,7 @@ var vueNuevoCliente = new Vue({
 			<div class="modal-footer">
 				<button type="button" class="btn btn-success btn-lg mr-0" @click="crearNuevoCliente()">CREAR</button>
 				<button type="button" class="btn btn-danger btn-lg mr-0" @click="reset()">BORRAR</button>
-				<button type="button" class="btn btn-secondary btn-lg" @click="volver()">SALIR</button>
+				<button type="button" class="btn btn-secondary btn-lg" @click="cerrarModal()">SALIR</button>
 			</div>
 		</div>
 	</div>
@@ -50,7 +50,8 @@ var vueNuevoCliente = new Vue({
         reset() {
             toc.quitarClienteSeleccionado();
             toc.limpiarClienteVIP();
-            this.busqueda = '';
+            this.nombre = '';
+            this.idTarjeta = '';
         },
         crearNuevoCliente() {
             if (this.nombre.length > 3 && this.idTarjeta.length > 5) {
