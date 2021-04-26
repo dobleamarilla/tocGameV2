@@ -115,7 +115,7 @@ var vueCobrar = new Vue({
                 </div>
 			</div>
 			<div class="modal-footer">
-                <button v-if="tkrs" type="button" class="btn btn-primary" style="font-size: 50px" @click="alternarTkrs(false)">Salir de ticket restaurante</button>
+                <button v-if="tkrs" type="button" class="btn btn-primary" style="font-size: 50px" @click="cobrar('TARJETA')">Pagar con Tick.Restaurant</button>
                 <button type="button" class="btn btn-danger" style="font-size: 50px" @click="cerrarModal()">Cancelar</button>
 			</div>
 		</div>
