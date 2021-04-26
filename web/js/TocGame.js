@@ -840,24 +840,18 @@ class TocGame {
             objTicket.infoClienteVip.ciudad = this.infoClienteVip.datos.Ciudad;
             objTicket.infoClienteVip.esVip = true;
         }
-        else {
-            if (tipo === "EFECTIVO") {
-                objTicket.tipoPago = "EFECTIVO";
-                ipcRenderer.send('abrirCajon', this.parametros.tipoImpresora);
-            }
-            else {
-                if (this.esDevolucion) {
-                    objTicket.tipoPago = "DEVOLUCION";
-                }
-                else {
-                    if (tipo === "CONSUMO_PERSONAL") {
-                        objTicket.tipoPago = "CONSUMO_PERSONAL";
-                    }
-                    else {
-                        objTicket.tipoPago = "TARJETA";
-                    }
-                }
-            }
+        if (tipo === "EFECTIVO") {
+            objTicket.tipoPago = "EFECTIVO";
+            ipcRenderer.send('abrirCajon', this.parametros.tipoImpresora);
+        }
+        if (this.esDevolucion) { //REVISAR
+            objTicket.tipoPago = "DEVOLUCION";
+        }
+        if (tipo === "CONSUMO_PERSONAL") {
+            objTicket.tipoPago = "CONSUMO_PERSONAL";
+        }
+        if (tipo === "TARJETA") {
+            objTicket.tipoPago = "TARJETA";
         }
         if (tipo === "EFECTIVO" || tipo === "DEUDA" || tipo === "DEVOLUCION" || tipo === "CONSUMO_PERSONAL") {
             if (tipo === "DEVOLUCION") {
@@ -1073,19 +1067,20 @@ class TocGame {
         for (let i = 0; i < arrayTicketsCaja.length; i++) {
             nClientes++;
             totalTickets += arrayTicketsCaja[i].total;
-            if (arrayTicketsCaja[i].tipoPago == "TARJETA") {
-                totalTarjeta += arrayTicketsCaja[i].total;
-            }
-            else {
-                if (arrayTicketsCaja[i].tipoPago == "EFECTIVO") {
+            switch (arrayTicketsCaja[i].tipoPago) {
+                case "TARJETA":
+                    totalTarjeta += arrayTicketsCaja[i].total;
+                    break;
+                case "EFECTIVO":
                     recaudado += arrayTicketsCaja[i].total;
                     totalEnEfectivo += arrayTicketsCaja[i].total;
-                }
-                else {
-                    if (arrayTicketsCaja[i].tipoPago == "DEUDA") {
-                        totalDeuda += arrayTicketsCaja[i].total;
-                    }
-                }
+                    break;
+                case "DEUDA":
+                    totalDeuda += arrayTicketsCaja[i].total;
+                    break;
+                case "TIQUET_RESTAURANT":
+                    //preguntar a miguel
+                    break;
             }
         }
         this.caja.calaixFetZ = totalTickets;
