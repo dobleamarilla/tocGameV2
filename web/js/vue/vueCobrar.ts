@@ -58,16 +58,15 @@ var vueCobrar = new Vue({
                                     </div>
                                 </div>
                                 <div class="col-md-6 text-center pt-2" style="background-color: #F9FFF4">
-                                    <span style="font-size: 25px;">Total a cobrar: {{total.toFixed(2)}} €</span><br>
-                                    <span style="font-size: 25px;">Dinero recibido: {{cuenta.toFixed(2)}} €</span><br>
-                                    <span style="font-size: 25px;">Ticket restaurante: {{totalTkrs.toFixed(2)}} €</span><br>
+                                    <span style="font-size: 25px;">Total: {{total.toFixed(2)}} €</span><br>
+                                    <span style="font-size: 25px;">Dinero recibido: {{(cuenta+totalTkrs).toFixed(2)}} €</span><br>
+                                    <span style="font-size: 25px;">Valor T.Restaurant: {{totalTkrs.toFixed(2)}} €</span><br>
                                     <span v-if="(cuenta+totalTkrs)-total < 0" style="font-size: 25px; color:red;">Faltan: {{((cuenta+totalTkrs)-total).toFixed(2)}} €</span>
-                                    <span v-else style="font-size: 25px; color: green;">Sobran: {{sobran.toFixed(2)}} €</span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-5">
-                            <div v-if="esVIP === false && esDevolucion === false && esConsumoPersonal === false && botonesCobroActivo" class="row">
+                            <div v-if="esVIP === false && esDevolucion === false && esConsumoPersonal === false && botonesCobroActivo && tkrs === false" class="row">
                                 <div class="col-md-6 text-center">
                                     <img @click="cobrar('EFECTIVO')" src="assets/imagenes/img-efectivo.png" alt="Cobrar con efectivo" width="225px">
                                 </div>
@@ -95,7 +94,7 @@ var vueCobrar = new Vue({
                             </div>
                             <div class="row p-1">
                                 <div class="col-md-12 text-center">
-                                    <span class="verTotal">{{total.toFixed(2)}} €</span>
+                                    <span class="verTotal">Cobrar {{cobrarVariable}} €</span>
                                 </div>
                             </div>
                             <div class="row p-1">
@@ -115,7 +114,7 @@ var vueCobrar = new Vue({
                 </div>
 			</div>
 			<div class="modal-footer">
-                <button v-if="tkrs" type="button" class="btn btn-primary" style="font-size: 50px" @click="cobrar('EFECTIVO')">Pagar con Tick.Restaurant</button>
+                <button v-if="tkrs" type="button" class="btn btn-primary" style="font-size: 50px" @click="cobrar('TICKET_RESTAURANT')">Pagar con Tick.Restaurant</button>
                 <button type="button" class="btn btn-danger" style="font-size: 50px" @click="cerrarModal()">Cancelar</button>
 			</div>
 		</div>
@@ -156,6 +155,7 @@ var vueCobrar = new Vue({
         cerrarModal()
         {
             this.tkrs = false;
+            this.botonesCobroActivo = true;
             if(!this.esperando && this.esperandoDatafono.display == 'none')
             {
                 this.setEsperando(false);
@@ -169,6 +169,12 @@ var vueCobrar = new Vue({
             {
                 vueToast.abrir('warning', 'Hay una operación pendiente')
             }
+        },
+        mostrarModal(){
+            $('#modalVueCobrar').modal();
+        },
+        ocultarModal(){
+            $('#modalVueCobrar').modal('hide');
         },
         agregarTecla(x: string)
         {
@@ -199,26 +205,27 @@ var vueCobrar = new Vue({
         {
             if(!this.esperando)
             {
-                this.setEsperando(true);
-                //if(this.totalTkrs > 0) tipo += ' TKRS';
-                toc.crearTicket(tipo, this.totalTkrs);       
+                if(this.tkrs){
+                    this.setEsperando(true);
+                    toc.crearTicket(tipo, this.total, {tkrs: true, totalTkrs: this.totalTkrs, tipoPago: tipo});       
+                } else {
+                    this.setEsperando(true);
+                    toc.crearTicket(tipo, this.total, {tkrs: false});
+                }
+
             }
             else
             {
                 vueToast.abrir('danger', 'Ya existe una operación en curso');
             }
         },
-        ticketTkrs() {
-            if(this.cuentaAsistente == 0) {
-                vueToast.abrir('error', "No puedes cobrar un ticket restaurante con el valor de 0");
-            } else {
-                this.totalTkrs += this.cuentaAsistente - this.totalTkrs;
-                this.cuenta -= this.cuentaAsistente;
-                this.cuentaAsistente = 0;
-            }
+        setTotalTkrs(x: number){
+            this.totalTkrs = x;
         },
         alternarTkrs(estado: boolean) {
             this.tkrs = estado;
+            this.ocultarModal();
+            vueTecladoTkrs.abreModal();
         },
         setEsperando(res: boolean)
         {
@@ -271,16 +278,31 @@ var vueCobrar = new Vue({
         }
     },
     computed: {
+        cobrarVariable(){
+            if(this.total-this.totalTkrs <= 0){
+                return "0.00";
+            } else {
+                return (this.total-this.totalTkrs).toFixed(2)
+            }
+        },
       sobran(){
-          let cuenta = this.cuenta+this.totalTkrs-this.total;
-          if(cuenta >= 0 && this.tkrs) {
-            this.botonesCobroActivo = false;
-          }
-          else {
-            this.botonesCobroActivo = true;
-          }
-          return this.cuenta+this.totalTkrs-this.total;
-      }  
+        //   let cuenta = this.cuenta+this.totalTkrs-this.total;
+        //   if(cuenta >= 0 && this.tkrs) {
+        //     this.botonesCobroActivo = false;
+        //   }
+        //   else {
+        //     this.botonesCobroActivo = true;
+        //   }
+        //   return this.cuenta+this.totalTkrs-this.total;
+        if(this.tkrs){
+            if((this.total - this.totalTkrs) > 0){ // FALTA PAGAR ALGO
+                this.botonesCobroActivo = true;
+            } else { //NO FALTA NADA, O SOBRA
+                this.botonesCobroActivo = false;
+            }
+        }
+        return this.total - this.totalTkrs;
+      }
     },
     watch: {
         cuentaAsistente()

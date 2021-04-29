@@ -191,7 +191,8 @@ interface Ticket
         cp: string,
         direccion: string,
         ciudad: string
-    }
+    },
+    cantidadTkrs?: number
 }
 
 interface Movimientos

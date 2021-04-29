@@ -59,7 +59,8 @@ var schemaTickets = new conexion.mongoose.Schema({
         cp: String,
         direccion: String,
         ciudad: String
-    }
+    },
+    cantidadTkrs: Number
 });
 var Tickets = conexion.mongoose.model('tickets', schemaTickets);
 

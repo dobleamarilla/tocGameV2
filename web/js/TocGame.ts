@@ -1014,13 +1014,8 @@ class TocGame
         }
     }
     
-    crearTicket(tipo: string, totalTkrs: number)
+    crearTicket(tipo: string, total: number, infoTkrs: {tkrs: boolean;totalTkrs?: any; tipoPago?: string;})
     {
-        let total = 0;
-        for(let i = 0; i < this.cesta.lista.length; i++)
-        {
-            total += this.cesta.lista[i].subtotal;
-        }
         const infoTrabajador: Trabajador = this.getCurrentTrabajador();
         const nuevoIdTicket = this.getUltimoTicket()+1;
         
@@ -1041,10 +1036,23 @@ class TocGame
                 direccion: '',
                 ciudad: ''
             }
-        }   
-        if(totalTkrs > 0) {
-            total -= Number(totalTkrs);
-            this.nuevaSalidaDinero(Number(totalTkrs.toFixed(2)), `Pagat TkRs (TkRs): ${objTicket._id}`, 'TARJETA', true, objTicket._id);
+        }
+
+        if(tipo === "TICKET_RESTAURANT" || infoTkrs.tkrs === true) {
+            if(infoTkrs.totalTkrs > 0) {
+                objTicket["cantidadTkrs"] = infoTkrs.totalTkrs;
+                const diferencia = total - infoTkrs.totalTkrs;
+                if(diferencia >= 0){ //NO SOBRA NADA
+                    this.nuevaSalidaDinero(Number(total.toFixed(2)), `Pagat TkRs (TkRs): ${objTicket._id}`, 'TKRS_SIN_EXCESO', true, objTicket._id);
+                }
+                else { //HAY EXCESO
+                    this.nuevaSalidaDinero(Number((diferencia*-1).toFixed(2)), `Pagat TkRs (TkRs): ${objTicket._id}`, 'TKRS_CON_EXCESO', true, objTicket._id);
+                    this.nuevaSalidaDinero(Number(total.toFixed(2)), `Pagat TkRs (TkRs): ${objTicket._id}`, 'TKRS_SIN_EXCESO', true, objTicket._id);
+                }
+                
+            } else {
+                vueToast('error', 'Error. Importe TICKET RESTAURANT incorrecto'); 
+            }
         }
         
         if(tipo === "DEUDA"){
@@ -1059,7 +1067,7 @@ class TocGame
 
         if(tipo === "EFECTIVO") {
             objTicket.tipoPago = "EFECTIVO";
-            ipcRenderer.send('abrirCajon', this.parametros.tipoImpresora)
+            //ipcRenderer.send('abrirCajon', this.parametros.tipoImpresora)
         }
 
         if(this.esDevolucion) { //REVISAR
@@ -1074,7 +1082,7 @@ class TocGame
             objTicket.tipoPago = "TARJETA"; 
         }
         
-        if(tipo === "EFECTIVO" || tipo === "DEUDA" || tipo === "DEVOLUCION" || tipo === "CONSUMO_PERSONAL")
+        if(tipo === "EFECTIVO" || tipo === 'TICKET_RESTAURANT' || tipo === "DEUDA" || tipo === "DEVOLUCION" || tipo === "CONSUMO_PERSONAL")
         {
             if(tipo === "DEVOLUCION")
             {
@@ -1334,8 +1342,9 @@ class TocGame
                     totalEnEfectivo += arrayTicketsCaja[i].total;
                     break;
                 case "DEUDA": totalDeuda += arrayTicketsCaja[i].total; break;
-                case "TIQUET_RESTAURANT": 
-                    //preguntar a miguel
+                case "TICKET_RESTAURANT": 
+                    recaudado += arrayTicketsCaja[i].total;
+                    totalEnEfectivo += arrayTicketsCaja[i].total;
                     break;
             }
 
