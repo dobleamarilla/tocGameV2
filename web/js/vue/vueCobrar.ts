@@ -179,9 +179,7 @@ var vueCobrar = new Vue({
         },
         agregarTecla(x: string)
         {
-            if(this.tkrs) this.totalTkrs = String(Number(this.totalTkrs + x));
-            else this.cuentaAsistenteTeclado = String(Number(this.cuentaAsistenteTeclado + x));
-            
+            this.cuentaAsistenteTeclado = String(Number(this.cuentaAsistenteTeclado + x));
         },
         agregarComa()
         {
