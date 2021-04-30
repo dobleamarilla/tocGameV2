@@ -17,7 +17,7 @@ var vueTecladoTkrs = new Vue({
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" @click="volverAPago()">CANCELAR</button>
+				<button type="button" class="btn btn-danger" @click="cancelar()">CANCELAR</button>
 				<button type="button" class="btn btn-success" @click="configurarCantidad()">ACEPTAR</button>
 			</div>
 		</div>
@@ -49,8 +49,16 @@ var vueTecladoTkrs = new Vue({
             }
 
         },
+        cancelar(){
+            this.cantidad = '';
+            this.cerrarModal();
+            vueCobrar.cerrarModal();
+            vueCobrar.mostrarModal();
+            
+        },
         volverAPago()
         {
+            this.cantidad = '';
             this.cerrarModal();
             vueCobrar.mostrarModal();
         }

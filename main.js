@@ -692,6 +692,12 @@ app.on('ready', () => {
     ipcMain.on('imprimirCierreCaja', (event, args) => {
         impresora.imprimirTicketCierreCaja(args, event);
     });
+    ipcMain.on('imprimirTestImpresora', (event, args) => {
+        impresora.imprimirTestImpresora(args, event);
+    });
+    ipcMain.on('mostrarTestVisor', (event, args) => {
+        impresora.mostrarTestVisor(args, event);
+    });
     ipcMain.on('cerrarToc', (event, args) => {
         acciones.cerrar(ventanaPrincipal);
     });

@@ -62,6 +62,7 @@ var vueCobrar = new Vue({
                                     <span style="font-size: 25px;">Dinero recibido: {{(cuenta+totalTkrs).toFixed(2)}} €</span><br>
                                     <span style="font-size: 25px;">Valor T.Restaurant: {{totalTkrs.toFixed(2)}} €</span><br>
                                     <span v-if="(cuenta+totalTkrs)-total < 0" style="font-size: 25px; color:red;">Faltan: {{((cuenta+totalTkrs)-total).toFixed(2)}} €</span>
+                                    <span v-else style="font-size: 25px; color: green;">Sobran: {{sobran.toFixed(2)}} €</span>
                                 </div>
                             </div>
                         </div>
@@ -267,8 +268,7 @@ var vueCobrar = new Vue({
         },
         agregar(valor: number)
         {   
-            if(this.tkrs) this.totalTkrs += valor;
-            else this.cuentaAsistente += valor;
+            this.cuentaAsistente += valor;
         },
         resetAsistente()
         {
@@ -286,19 +286,12 @@ var vueCobrar = new Vue({
             }
         },
       sobran(){
-        //   let cuenta = this.cuenta+this.totalTkrs-this.total;
-        //   if(cuenta >= 0 && this.tkrs) {
-        //     this.botonesCobroActivo = false;
-        //   }
-        //   else {
-        //     this.botonesCobroActivo = true;
-        //   }
-        //   return this.cuenta+this.totalTkrs-this.total;
         if(this.tkrs){
             if((this.total - this.totalTkrs) > 0){ // FALTA PAGAR ALGO
                 this.botonesCobroActivo = true;
             } else { //NO FALTA NADA, O SOBRA
                 this.botonesCobroActivo = false;
+                return this.cuenta;                
             }
         }
         return this.total - this.totalTkrs;
