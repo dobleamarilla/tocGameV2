@@ -16,6 +16,8 @@ var vueMenuTecnico = new Vue({
                         <button type="button" @click="abrirConfigurador()" class="btn btn-dark btn-block w-100 ml-0" style="font-size: 25px; text-align: left !important;">1 - Configuración</button>
                         <button type="button" @click="quitarLicencia()" class="btn btn-success btn-block w-100 ml-0" style="font-size: 25px; text-align: left !important;">2 - Quitar licencia</button>
                         <button type="button" @click="actualizarTrabajadores()" class="btn btn-info btn-block w-100 ml-0" style="font-size: 25px; text-align: left !important;">3 - Actualizar trabajadores</button>
+                        <button type="button" @click="testImpresora()" class="btn btn-info btn-block w-100 ml-0" style="font-size: 25px; text-align: left !important;">4 - Testear impresora</button>
+                        <button type="button" @click="testVisor()" class="btn btn-info btn-block w-100 ml-0" style="font-size: 25px; text-align: left !important;">5 - Testear visor</button>
                     </div>
                 </div>
 			</div>
@@ -56,6 +58,12 @@ var vueMenuTecnico = new Vue({
         quitarLicencia()
         {
             ipcRenderer.send("borrar-database");
+        },
+        testImpresora() {
+            ipcRenderer.send("imprimirTestImpresora", {impresora: toc.getTipoImpresora()});
+        },
+        testVisor() {
+            ipcRenderer.send("mostrarTestVisor");
         }
     }
 });

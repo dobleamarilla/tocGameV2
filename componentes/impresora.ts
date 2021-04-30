@@ -303,8 +303,69 @@ var testEze = function (event, texto)
         errorImpresora(err, event);
     }
 }
+var testImpresoraSanty = function (event, tipoImpresora) 
+{
+    try 
+    {
+        var device;
+        exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
+        if(tipoImpresora === 'USB') {
+            device = new escpos.USB('0x4B8', '0x202'); //USB
+        }
+        else {
+            if(tipoImpresora === 'SERIE') {
+                device = new escpos.Serial('/dev/ttyS0', {
+                    baudRate: 115000,
+                    stopBit: 2
+                })
+            }
+        }
+
+
+        var options = { encoding: "GB18030" };
+        var printer = new escpos.Printer(device, options);
+        device.open(function () 
+        {
+            printer
+                .text('aaaAAAaAaA')
+                .text('bbbBBBbBbB')
+                .text('cccCCCcCcC')
+                .text('dddDDDdDdD')
+                .text('eeeEEEeEeE')
+                .text('fffFFFfFfF')
+                .text('gggGGGgGgG')
+                .text('hhhHHHhHhH')
+                .text('iiiIIIiIiI')
+                .text('jjjJJJjJjJ')
+                .text('kkkKKKkKkK')
+                .text('lllLLLlLlL')
+                .text('mmmMMMmMmM')
+                .text('nnnNNNnNnN')
+                .text('ñññÑÑÑñÑñÑ')
+                .text('oooOOOoOoO')
+                .text('pppPPPpPpP')
+                .text('qqqQQQqQqQ')
+                .text('rrrRRRrRrR')
+                .text('sssSSSsSsS')
+                .text('tttTTTtTtT')
+                .text('uuuUUUuUuU')
+                .text('vvvVVVvVvV')
+                .text('wwwWWWwWwW')
+                .text('xxxXXXxXxX')
+                .text('yyyYYYyYyY')
+                .text('zzzZZZzZzZ')
+                .text('0 1 2 3 4 5 6 7 8 9')
+                .text('Test impresora')
+                .close()
+        });
+    }
+    catch (err) 
+    {
+        errorImpresora(err, event);
+    }
+}
 var mostrarVisor = function(event, data) {
-    var eur = String.fromCharCode(165);
+    var eur = String.fromCharCode(128);
     var limitNombre = 0;
     var lengthTotal = '';
     var datosExtra = '';
@@ -335,8 +396,7 @@ var mostrarVisor = function(event, data) {
 		baudRate: 9600,
 		stopBit: 2
 	}); 
-        //var options = { encoding: "ISO-8859-16" };
-        var options = { encoding: "Shift_JIS" };
+        var options = { encoding: "ISO-8859-1" };
         var printer = new escpos.Screen(device, options);
         device.open(function () 
         {
@@ -561,6 +621,13 @@ function errorCajon(err, event)
         }
     }
 }
+function testImpresora(event, tipoImpresora) {
+    abrirCajon(event, tipoImpresora);
+    testImpresoraSanty(event, tipoImpresora);
+}
+function testVisor(event) {
+    mostrarVisor(event, "Visor 0123456789€");
+}
 
 exports.imprimirTicket = function (req, event) 
 {
@@ -595,4 +662,10 @@ exports.testEze = function (texto, event)
 }
 exports.mostrarVisorEvent = function (data, event) {
     mostrarVisor(event, data);
+}
+exports.imprimirTestImpresora = function(req, event) {
+    testImpresora(event, req.impresora);
+}
+exports.mostrarTestVisor = function(data, event) {
+    testVisor(event);
 }
