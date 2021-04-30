@@ -61,8 +61,8 @@ var vueCobrar = new Vue({
                                     <span style="font-size: 25px;">Total: {{total.toFixed(2)}} €</span><br>
                                     <span style="font-size: 25px;">Dinero recibido: {{(cuenta+totalTkrs).toFixed(2)}} €</span><br>
                                     <span style="font-size: 25px;">Valor T.Restaurant: {{totalTkrs.toFixed(2)}} €</span><br>
-                                    <span v-if="(cuenta+totalTkrs)-total < 0" style="font-size: 25px; color:red;">Faltan: {{((cuenta+totalTkrs)-total).toFixed(2)}} €</span>
-                                    <span v-else style="font-size: 25px; color: green;">Sobran: {{sobran.toFixed(2)}} €</span>
+                                    <span v-if="faltaOSobra" style="font-size: 25px; color:red;">Faltan: {{((cuenta+totalTkrs)-total).toFixed(2)}} €</span>
+                                    <span v-else style="font-size: 25px; color: green;">Sobran: {{sobranX.toFixed(2)}} €</span>
                                 </div>
                             </div>
                         </div>
@@ -264,17 +264,28 @@ var vueCobrar = new Vue({
                 return (this.total - this.totalTkrs).toFixed(2);
             }
         },
-        sobran() {
+        sobranX() {
             if (this.tkrs) {
                 if ((this.total - this.totalTkrs) > 0) { // FALTA PAGAR ALGO
                     this.botonesCobroActivo = true;
+                    return this.cuenta + this.totalTkrs - this.total;
                 }
                 else { //NO FALTA NADA, O SOBRA
                     this.botonesCobroActivo = false;
                     return this.cuenta;
                 }
             }
-            return this.total - this.totalTkrs;
+            else {
+                return this.cuenta + this.totalTkrs - this.total;
+            }
+        },
+        faltaOSobra() {
+            if (this.cuenta + this.totalTkrs - this.total < 0) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     },
     watch: {
