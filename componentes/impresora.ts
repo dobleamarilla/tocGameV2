@@ -66,6 +66,7 @@ var imprimirTicketVenta = async function (event, numFactura, arrayCompra, total,
 
         var detalles = '';
         var pagoTarjeta = '';
+        var pagoTkrs = '';
         var detalleClienteVip = '';
         if(infoClienteVip.esVip)
         {
@@ -110,6 +111,10 @@ var imprimirTicketVenta = async function (event, numFactura, arrayCompra, total,
         if (tipoPago == "TARJETA") 
         {
             pagoTarjeta = '----------- PAGADO CON TARJETA ---------\n';
+        }
+        if (tipoPago == "TICKET_RESTAURANT") 
+        {
+            pagoTkrs    = '----- PAGADO CON TICKET RESTAURANT -----\n';
         }
         var pagoDevolucion: string = '';
 
@@ -165,6 +170,7 @@ var imprimirTicketVenta = async function (event, numFactura, arrayCompra, total,
                 .align('LT')
                 .text(detalles)
                 .text(pagoTarjeta)
+                .text(pagoTkrs)
                 .text(infoConsumoPersonal)
                 .size(1, 1)
                 .text(pagoDevolucion)

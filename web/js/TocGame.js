@@ -1144,7 +1144,7 @@ class TocGame {
             tiposIva: infoTicket.tiposIva,
             cabecera: paramsTicket[0] !== undefined ? paramsTicket[0].valorDato : '',
             pie: paramsTicket[1] !== undefined ? paramsTicket[1].valorDato : '',
-            nombreTrabajador: infoTrabajador.nombre,
+            nombreTrabajador: infoTrabajador.nombreCorto,
             impresora: this.parametros.tipoImpresora,
             infoClienteVip: infoTicket.infoClienteVip
         };
