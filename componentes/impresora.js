@@ -61,6 +61,7 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoP
             var printer = new escpos.Printer(device);
             var detalles = '';
             var pagoTarjeta = '';
+            var pagoTkrs = '';
             var detalleClienteVip = '';
             if (infoClienteVip.esVip) {
                 detalleClienteVip = `Nom: ${infoClienteVip.nombre}\nNIF: ${infoClienteVip.nif}\nCP: ${infoClienteVip.cp}\nCiutat: ${infoClienteVip.ciudad}\nAdr: ${infoClienteVip.direccion}\n`;
@@ -94,6 +95,9 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoP
             var fecha = new Date();
             if (tipoPago == "TARJETA") {
                 pagoTarjeta = '----------- PAGADO CON TARJETA ---------\n';
+            }
+            if (tipoPago == "TICKET_RESTAURANT") {
+                pagoTkrs = '----- PAGADO CON TICKET RESTAURANT -----\n';
             }
             var pagoDevolucion = '';
             if (tipoPago == "DEVOLUCION") {
@@ -137,7 +141,10 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoP
                     .text('-----------------------------------------')
                     .align('LT')
                     .text(detalles)
+                    .align('CT')
                     .text(pagoTarjeta)
+                    .text(pagoTkrs)
+                    .align('LT')
                     .text(infoConsumoPersonal)
                     .size(1, 1)
                     .text(pagoDevolucion)
@@ -411,24 +418,26 @@ var entradaDinero = function (event, totalIngresado, cajaActual, fecha, nombreDe
 };
 var abrirCajon = function (event, tipoImpresora) {
     try {
-        exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
-        if (tipoImpresora === 'USB') {
-            var device = new escpos.USB('0x4B8', '0x202'); //USB
-        }
-        else {
-            if (tipoImpresora === 'SERIE') {
-                var device = new escpos.Serial('/dev/ttyS0', {
-                    baudRate: 115000,
-                    stopBit: 2
-                });
+        if (os.platform() === 'linux') {
+            exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
+            if (tipoImpresora === 'USB') {
+                var device = new escpos.USB('0x4B8', '0x202'); //USB
             }
+            else {
+                if (tipoImpresora === 'SERIE') {
+                    var device = new escpos.Serial('/dev/ttyS0', {
+                        baudRate: 115000,
+                        stopBit: 2
+                    });
+                }
+            }
+            var printer = new escpos.Printer(device);
+            device.open(function () {
+                printer
+                    .cashdraw(2)
+                    .close();
+            });
         }
-        var printer = new escpos.Printer(device);
-        device.open(function () {
-            printer
-                .cashdraw(2)
-                .close();
-        });
     }
     catch (err) {
         errorCajon(err, event);

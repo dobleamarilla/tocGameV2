@@ -473,30 +473,32 @@ var abrirCajon = function (event, tipoImpresora)
 {
     try 
     {
-        exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
-        if(tipoImpresora === 'USB')
-        {
-            var device = new escpos.USB('0x4B8', '0x202'); //USB
-        }
-        else
-        {
-            if(tipoImpresora === 'SERIE')
+        if(os.platform() === 'linux'){
+            exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
+            if(tipoImpresora === 'USB')
             {
-                var device = new escpos.Serial('/dev/ttyS0', {
-                    baudRate: 115000,
-                    stopBit: 2
-                  });
+                var device = new escpos.USB('0x4B8', '0x202'); //USB
             }
+            else
+            {
+                if(tipoImpresora === 'SERIE')
+                {
+                    var device = new escpos.Serial('/dev/ttyS0', {
+                        baudRate: 115000,
+                        stopBit: 2
+                      });
+                }
+            }
+    
+            var printer = new escpos.Printer(device);
+    
+            device.open(function () 
+            {
+                printer
+                    .cashdraw(2)
+                    .close()
+            });
         }
-
-        var printer = new escpos.Printer(device);
-
-        device.open(function () 
-        {
-            printer
-                .cashdraw(2)
-                .close()
-        });
     }
     catch (err) 
     {

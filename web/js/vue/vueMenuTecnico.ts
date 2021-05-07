@@ -18,6 +18,7 @@ var vueMenuTecnico = new Vue({
                         <button type="button" @click="actualizarTrabajadores()" class="btn btn-info btn-block w-100 ml-0" style="font-size: 25px; text-align: left !important;">3 - Actualizar trabajadores</button>
                         <button type="button" @click="testImpresora()" class="btn btn-info btn-block w-100 ml-0" style="font-size: 25px; text-align: left !important;">4 - Testear impresora</button>
                         <button type="button" @click="testVisor()" class="btn btn-info btn-block w-100 ml-0" style="font-size: 25px; text-align: left !important;">5 - Testear visor</button>
+                        <button type="button" @click="actualizarTeclados()" class="btn btn-success btn-block w-100 ml-0" style="font-size: 25px; text-align: left !important;">6 - Actualizar teclado</button>
                     </div>
                 </div>
 			</div>
@@ -54,6 +55,13 @@ var vueMenuTecnico = new Vue({
         {
             toc.actualizarTrabajadores();
             this.cerrarModal();            
+        },
+        actualizarTeclados()
+        {
+            if(toc.todoListo())
+            {
+                toc.actualizarTeclado();
+            }
         },
         quitarLicencia()
         {
