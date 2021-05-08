@@ -652,8 +652,15 @@ app.on('ready', () => {
         //     event.returnValue = res;
         // })
     });
+    ipcMain.on('resetContadorCodBarras', (event, args) => {
+        codiBarra.resetContador();
+        event.returnValue = 0;
+    });
     ipcMain.on('confirmar-envio', (event, args) => {
         tick.confirmarEnvio(args);
+    });
+    ipcMain.on('confirmar-envio-devolucion', (event, args) => {
+        devolu.confirmarEnvioDevo(args);
     });
     ipcMain.on('confirmar-envio-fichaje', (event, data) => {
         sincroFicha.confirmarEnvioFichajes(data);
@@ -684,6 +691,12 @@ app.on('ready', () => {
     });
     ipcMain.on('imprimirCierreCaja', (event, args) => {
         impresora.imprimirTicketCierreCaja(args, event);
+    });
+    ipcMain.on('imprimirTestImpresora', (event, args) => {
+        impresora.imprimirTestImpresora(args, event);
+    });
+    ipcMain.on('mostrarTestVisor', (event, args) => {
+        impresora.mostrarTestVisor(args, event);
     });
     ipcMain.on('cerrarToc', (event, args) => {
         acciones.cerrar(ventanaPrincipal);

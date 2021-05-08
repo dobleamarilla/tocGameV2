@@ -11,6 +11,7 @@ var exec = require('child_process').exec;
 var os = require('os');
 escpos.USB = require('escpos-usb');
 escpos.Serial = require('escpos-serialport');
+escpos.Screen = require('escpos-screen');
 var articulos = require('./schemas/articulos');
 const TIPO_ENTRADA_DINERO = 'ENTRADA';
 const TIPO_SALIDA_DINERO = 'SALIDA';
@@ -257,22 +258,91 @@ var testEze = function (event, texto) {
         errorImpresora(err, event);
     }
 };
-var mostrarVisor = function (event, data) {
-    // Limito el texto a 14, ya que la línea completa tiene 20 espacios. (1-14 -> artículo, 16 -> espacio en blanco, 17-20 -> precio)
-    data.texto = data.texto.substring(0, 14);
-    data.texto += " " + data.precio + data.dependienta.substring(0, 8) + " " + data.total;
-    console.log(data.texto);
-    // Los caracteres totales que tiene todo el texto en conjunto (articulo + precio)
-    var caracteresTotales = data.texto.length;
-    // Espacio total del visor
-    const ESPACIOS_TOTALES = 40;
-    // Total de espacios a limpiar
-    var totalLimpiar = ESPACIOS_TOTALES - Number(caracteresTotales);
-    // Se rellena esta string con el total de espacios en blanco
-    var stringVacia = "";
-    for (var i = 0; i < totalLimpiar; i++) {
-        stringVacia += ' ';
+var testImpresoraSanty = function (event, tipoImpresora) {
+    try {
+        var device;
+        exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
+        if (tipoImpresora === 'USB') {
+            device = new escpos.USB('0x4B8', '0x202'); //USB
+        }
+        else {
+            if (tipoImpresora === 'SERIE') {
+                device = new escpos.Serial('/dev/ttyS0', {
+                    baudRate: 115000,
+                    stopBit: 2
+                });
+            }
+        }
+        var options = { encoding: "GB18030" };
+        var printer = new escpos.Printer(device, options);
+        device.open(function () {
+            printer
+                .text('aaaAAAaAaA')
+                .text('bbbBBBbBbB')
+                .text('cccCCCcCcC')
+                .text('dddDDDdDdD')
+                .text('eeeEEEeEeE')
+                .text('fffFFFfFfF')
+                .text('gggGGGgGgG')
+                .text('hhhHHHhHhH')
+                .text('iiiIIIiIiI')
+                .text('jjjJJJjJjJ')
+                .text('kkkKKKkKkK')
+                .text('lllLLLlLlL')
+                .text('mmmMMMmMmM')
+                .text('nnnNNNnNnN')
+                .text('ñññÑÑÑñÑñÑ')
+                .text('oooOOOoOoO')
+                .text('pppPPPpPpP')
+                .text('qqqQQQqQqQ')
+                .text('rrrRRRrRrR')
+                .text('sssSSSsSsS')
+                .text('tttTTTtTtT')
+                .text('uuuUUUuUuU')
+                .text('vvvVVVvVvV')
+                .text('wwwWWWwWwW')
+                .text('xxxXXXxXxX')
+                .text('yyyYYYyYyY')
+                .text('zzzZZZzZzZ')
+                .text('0 1 2 3 4 5 6 7 8 9')
+                .text('Test impresora')
+                .close();
+        });
     }
+    catch (err) {
+        errorImpresora(err, event);
+    }
+};
+var mostrarVisor = function (event, data) {
+    var eur = String.fromCharCode(128);
+    var limitNombre = 0;
+    var lengthTotal = '';
+    var datosExtra = '';
+    if (data.total !== undefined) {
+        lengthTotal = (data.total).toString();
+        if (lengthTotal.length == 1)
+            limitNombre = 17;
+        else if (lengthTotal.length == 2)
+            limitNombre = 16;
+        else if (lengthTotal.length == 3)
+            limitNombre = 15;
+        else if (lengthTotal.length == 4)
+            limitNombre = 14;
+        else if (lengthTotal.length == 5)
+            limitNombre = 13;
+        else if (lengthTotal.length == 6)
+            limitNombre = 12;
+        else if (lengthTotal.length == 7)
+            limitNombre = 11;
+        datosExtra = data.dependienta.substring(0, limitNombre) + " " + data.total + eur;
+    }
+    if (datosExtra.length <= 2) {
+        datosExtra = "";
+        eur = "";
+    }
+    // Limito el texto a 14, ya que la línea completa tiene 20 espacios. (1-14 -> artículo, 15 -> espacio en blanco, 16-20 -> precio)
+    data.texto = datosExtra + "" + data.texto.substring(0, 14);
+    data.texto += " " + data.precio + eur;
     try {
         exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
         //var device = new escpos.USB('067b','2303');
@@ -281,13 +351,18 @@ var mostrarVisor = function (event, data) {
             stopBit: 2
         });
         var options = { encoding: "ISO-8859-1" };
-        var printer = new escpos.Printer(device, options);
+        var printer = new escpos.Screen(device, options);
         device.open(function () {
             printer
                 // Espacios en blanco para limpiar el visor y volver a mostrar los datos en el sitio correcto
-                .text(stringVacia)
+                //.text(stringVacia)
+                .clear()
+                //.moveUp()
                 // Información del artículo (artículo + precio)
                 .text(data.texto)
+                //.moveDown()
+                //.text(datosExtra)
+                //.text(datosExtra)
                 .close();
         });
     }
@@ -458,6 +533,13 @@ function errorCajon(err, event) {
         }
     }
 }
+function testImpresora(event, tipoImpresora) {
+    abrirCajon(event, tipoImpresora);
+    testImpresoraSanty(event, tipoImpresora);
+}
+function testVisor(event) {
+    mostrarVisor(event, "Visor 0123456789€");
+}
 exports.imprimirTicket = function (req, event) {
     imprimirTicketVenta(event, req.numFactura, req.arrayCompra, req.total, req.visa, req.tiposIva, req.cabecera, req.pie, req.nombreTrabajador, req.impresora, req.infoClienteVip);
 };
@@ -481,5 +563,11 @@ exports.testEze = function (texto, event) {
 };
 exports.mostrarVisorEvent = function (data, event) {
     mostrarVisor(event, data);
+};
+exports.imprimirTestImpresora = function (req, event) {
+    testImpresora(event, req.impresora);
+};
+exports.mostrarTestVisor = function (data, event) {
+    testVisor(event);
 };
 //# sourceMappingURL=impresora.js.map
