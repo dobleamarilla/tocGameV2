@@ -619,7 +619,8 @@ function enviarEmail(info)
                                       <strong>Total salidas:</strong> ${info.caja.infoExtra.totalSalidas.toFixed(2)} €
                                       </span>
                                     </td>
-                                  </tr>																
+                                  </tr>						
+
                                   <tr>
                                     <td class="attributes_item">
                                       <span class="f-fallback">
@@ -627,6 +628,28 @@ function enviarEmail(info)
                                       </span>
                                     </td>
                                   </tr>
+                                  <tr>
+                                    <td class="attributes_item">
+                                      <span class="f-fallback">
+                                      <strong>Deuda Deliveroo:</strong> ${info.deudaDeliveroo.toFixed(2)} €
+                                      </span>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="attributes_item">
+                                      <span class="f-fallback">
+                                      <strong>Deuda Glovo:</strong> ${info.deudaGlovo.toFixed(2)} €
+                                      </span>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="attributes_item">
+                                      <span class="f-fallback">
+                                      <strong>Total T.Restaurant:</strong> ${info.totalTkrs.toFixed(2)} €
+                                      </span>
+                                    </td>
+                                  </tr>
+
                                   <tr>
                                     <td class="attributes_item">
                                       <span class="f-fallback">

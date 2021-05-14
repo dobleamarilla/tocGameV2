@@ -355,6 +355,30 @@ app.on('ready', () => {
     });
     //FINAL BUSCAR ARTÍCULO
 
+    //GET DEUDA DELIVEROO
+    ipcMain.on('getDedudaDeliveroo', (ev, data) => {
+        tick.getDedudaDeliveroo(data).then(respuesta => {
+            ev.returnValue = respuesta;
+        });
+    });
+    //FINAL DEUDA DELIVEROO
+
+    //GET DEUDA GLOVO
+    ipcMain.on('getDedudaGlovo', (ev, data) => {
+        tick.getDedudaGlovo(data).then(respuesta => {
+            ev.returnValue = respuesta;
+        });
+    });
+    //FINAL DEUDA GLOVO
+
+    //GET TOTAL TKRS
+    ipcMain.on('getTotalTkrs', (ev, data) => {
+        tick.getTotalTicketRestaurant(data).then(respuesta => {
+            ev.returnValue = respuesta;
+        });
+    });
+    //FINAL TOTAL TKRS
+
     //BUSCAR TRABAJADOR
     ipcMain.on('buscar-trabajador-sincrono', (ev, data) => {
         trabaj.buscarTrabajador(data).then(respuesta => {

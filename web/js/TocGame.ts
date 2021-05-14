@@ -1273,12 +1273,36 @@ class TocGame
         this.caja.totalDatafono3G   = totalDatafono3G;
         this.caja.totalClearOne     = totalClearOne;
         this.caja = this.calcularDatosCaja(this.caja);
+
+        var infoDeliveroo = ipcRenderer.sendSync('getDedudaDeliveroo', {inicio: this.caja.inicioTime, final: this.caja.finalTime});
+        var deudaDeliveroo = 0;
+
+        var infoGlovo = ipcRenderer.sendSync('getDedudaGlovo', {inicio: this.caja.inicioTime, final: this.caja.finalTime});
+        var deudaGlovo = 0;
+
+        var infoTkrs = ipcRenderer.sendSync('getTotalTkrs', {inicio: this.caja.inicioTime, final: this.caja.finalTime});
+        var totalTkrs = 0;
+
+
+        if(infoDeliveroo.length > 0){
+            deudaDeliveroo = infoDeliveroo[0].suma;
+        }
+        if(infoGlovo.length > 0){
+            deudaGlovo = infoGlovo[0].suma;
+        }
+        if(infoTkrs.length > 0){
+            totalTkrs = infoTkrs[0].suma;
+        }
         let objEmail = {
             caja: this.caja,
             nombreTienda: this.getParametros().nombreTienda,
             nombreDependienta: this.getCurrentTrabajador().nombre,
-            arrayMovimientos: ipcRenderer.sendSync('get-rango-movimientos', {fechaInicio: this.caja.inicioTime, fechaFinal: this.caja.finalTime})
+            arrayMovimientos: ipcRenderer.sendSync('get-rango-movimientos', {fechaInicio: this.caja.inicioTime, fechaFinal: this.caja.finalTime}),
+            deudaGlovo: deudaGlovo,
+            deudaDeliveroo: deudaDeliveroo,
+            totalTkrs: totalTkrs
         }
+
         ipcRenderer.send('guardarCajaSincro', this.caja);
         
         ipcRenderer.send('enviar-email', objEmail);
