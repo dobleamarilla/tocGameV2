@@ -888,7 +888,7 @@ class TocGame {
                 }
                 else {
                     if (tipo === "DEUDA") {
-                        this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Deute', 'DEUDA', true);
+                        this.nuevaSalidaDinero(Number((total).toFixed(2)), `Deute client: ${objTicket._id}`, 'DEUDA', true);
                     }
                 }
                 ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
