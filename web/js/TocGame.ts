@@ -1197,9 +1197,15 @@ class TocGame
     controlRespuestaDatafono(respuesta)
     {
         vueCobrar.desactivoEsperaDatafono();
-        if(respuesta.data[1] === 48) //Primero STX, segundo estado transacción: correcta = 48, incorrecta != 48
-        {
-
+        let respuestaTexto = "";
+        for(let i = 0; i < respuesta.data.length; i++){
+            respuestaTexto += String.fromCharCode(respuesta.data[i])
+        }
+        //Primero STX, segundo estado transacción: correcta = 48, incorrecta != 48
+        if(respuestaTexto.includes("DENEGADA") || respuestaTexto.includes("denegada") || respuesta.data[1] != 48) { //SERÁ DENEGADA
+            vueToast.abrir('error', 'Operación DENEGADA');
+            ipcRenderer.send('change-pinpad');
+        } else { //SERÁ ACEPTADA
             this.nuevaSalidaDinero(this.auxTotalDatafono, 'Targeta', 'TARJETA', true, respuesta.objTicket._id);
             ipcRenderer.send('set-ticket', respuesta.objTicket);
             ipcRenderer.send('set-ultimo-ticket-parametros', respuesta.objTicket._id);
@@ -1209,12 +1215,6 @@ class TocGame
             this.borrarCesta();
             vueCobrar.cerrarModal();
             vueToast.abrir('success', 'Ticket creado');
-        }
-        else
-        {
-
-            vueToast.abrir('error', 'Operación DENEGADA');
-            ipcRenderer.send('change-pinpad');
         }
         this.quitarClienteSeleccionado();
     }
