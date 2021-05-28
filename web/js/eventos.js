@@ -90,7 +90,6 @@ ipcRenderer.on('res-sincronizar-toc', (ev, data) => {
         parametros: toc.getParametros(),
         arrayTickets: data
     };
-    console.log("Sincronizar: ", data);
     if (objEnviar.arrayTickets.length > 0) {
         socket.emit('sincronizar-tickets-tocgame', objEnviar);
     }
