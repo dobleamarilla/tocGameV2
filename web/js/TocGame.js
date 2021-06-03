@@ -803,140 +803,149 @@ class TocGame {
         }
     }
     crearTicket(tipo, total, infoTkrs) {
-        const infoTrabajador = this.getCurrentTrabajador();
-        const nuevoIdTicket = this.getUltimoTicket() + 1;
-        var objTicket = {
-            _id: nuevoIdTicket,
-            timestamp: Date.now(),
-            total: total,
-            lista: this.cesta.lista,
-            tipoPago: tipo,
-            idTrabajador: infoTrabajador._id,
-            tiposIva: this.cesta.tiposIva,
-            cliente: this.hayClienteSeleccionado() ? this.clienteSeleccionado.id : null,
-            infoClienteVip: {
-                esVip: false,
-                nif: '',
-                nombre: '',
-                cp: '',
-                direccion: '',
-                ciudad: ''
-            }
-        };
-        if (tipo === "TICKET_RESTAURANT" || infoTkrs.tkrs === true) {
-            if (infoTkrs.totalTkrs > 0) {
-                objTicket["cantidadTkrs"] = infoTkrs.totalTkrs;
-                const diferencia = total - infoTkrs.totalTkrs;
-                if (diferencia >= 0) { //NO SOBRA NADA
-                    this.nuevaSalidaDinero(Number(total.toFixed(2)), `Pagat TkRs (TkRs): ${objTicket._id}`, 'TKRS_SIN_EXCESO', true, objTicket._id);
+        if (this.cesta.lista.length > 0) {
+            const infoTrabajador = this.getCurrentTrabajador();
+            const nuevoIdTicket = this.getUltimoTicket() + 1;
+            var objTicket = {
+                _id: nuevoIdTicket,
+                timestamp: Date.now(),
+                total: total,
+                lista: this.cesta.lista,
+                tipoPago: tipo,
+                idTrabajador: infoTrabajador._id,
+                tiposIva: this.cesta.tiposIva,
+                cliente: this.hayClienteSeleccionado() ? this.clienteSeleccionado.id : null,
+                infoClienteVip: {
+                    esVip: false,
+                    nif: '',
+                    nombre: '',
+                    cp: '',
+                    direccion: '',
+                    ciudad: ''
                 }
-                else { //HAY EXCESO
-                    this.nuevaSalidaDinero(Number((diferencia * -1).toFixed(2)), `Pagat TkRs (TkRs): ${objTicket._id}`, 'TKRS_CON_EXCESO', true, objTicket._id);
-                    this.nuevaSalidaDinero(Number(total.toFixed(2)), `Pagat TkRs (TkRs): ${objTicket._id}`, 'TKRS_SIN_EXCESO', true, objTicket._id);
-                }
-            }
-            else {
-                vueToast('error', 'Error. Importe TICKET RESTAURANT incorrecto');
-            }
-        }
-        if (tipo === "DEUDA") {
-            objTicket.tipoPago = "DEUDA";
-            objTicket.infoClienteVip.nif = this.infoClienteVip.datos.nif;
-            objTicket.infoClienteVip.nombre = this.infoClienteVip.datos.nombre;
-            objTicket.infoClienteVip.cp = this.infoClienteVip.datos.cp;
-            objTicket.infoClienteVip.direccion = this.infoClienteVip.datos.direccion;
-            objTicket.infoClienteVip.ciudad = this.infoClienteVip.datos.Ciudad;
-            objTicket.infoClienteVip.esVip = true;
-        }
-        if (tipo === "EFECTIVO") {
-            objTicket.tipoPago = "EFECTIVO";
-            ipcRenderer.send('abrirCajon', this.parametros.tipoImpresora);
-        }
-        if (this.esDevolucion) { //REVISAR
-            objTicket.tipoPago = "DEVOLUCION";
-        }
-        if (tipo === "CONSUMO_PERSONAL") {
-            objTicket.tipoPago = "CONSUMO_PERSONAL";
-        }
-        if (tipo === "TARJETA") {
-            objTicket.tipoPago = "TARJETA";
-        }
-        if (tipo === "EFECTIVO" || tipo === 'TICKET_RESTAURANT' || tipo === "DEUDA" || tipo === "DEVOLUCION" || tipo === "CONSUMO_PERSONAL") {
-            if (tipo === "DEVOLUCION") {
-                objTicket._id = Date.now();
-                ipcRenderer.send('guardarDevolucion', objTicket);
-                const paramsTicket = ipcRenderer.sendSync('get-params-ticket');
-                const infoClienteVip = { esVip: false };
-                const paraImprimir = {
-                    numFactura: 0,
-                    arrayCompra: objTicket.lista,
-                    total: objTicket.total,
-                    visa: objTicket.tipoPago,
-                    tiposIva: objTicket.tiposIva,
-                    cabecera: paramsTicket[0] !== undefined ? paramsTicket[0].valorDato : '',
-                    pie: paramsTicket[1] !== undefined ? paramsTicket[1].valorDato : '',
-                    nombreTrabajador: this.getCurrentTrabajador().nombre,
-                    impresora: this.parametros.tipoImpresora,
-                    infoClienteVip: infoClienteVip
-                };
-                ipcRenderer.send('imprimir', paraImprimir);
-            }
-            else {
-                if (tipo === "CONSUMO_PERSONAL") {
-                    objTicket.total = 0;
-                    //this.nuevaSalidaDinero(0, 'Consum personal', 'CONSUMO_PERSONAL', true);
-                }
-                else {
-                    if (tipo === "DEUDA") {
-                        this.nuevaSalidaDinero(Number((total).toFixed(2)), `Deute client: ${objTicket._id}`, 'DEUDA', true);
+            };
+            if (tipo === "TICKET_RESTAURANT" || infoTkrs.tkrs === true) {
+                if (infoTkrs.totalTkrs > 0) {
+                    objTicket["cantidadTkrs"] = infoTkrs.totalTkrs;
+                    const diferencia = total - infoTkrs.totalTkrs;
+                    if (diferencia >= 0) { //NO SOBRA NADA
+                        this.nuevaSalidaDinero(Number(total.toFixed(2)), `Pagat TkRs (TkRs): ${objTicket._id}`, 'TKRS_SIN_EXCESO', true, objTicket._id);
+                    }
+                    else { //HAY EXCESO
+                        this.nuevaSalidaDinero(Number((diferencia * -1).toFixed(2)), `Pagat TkRs (TkRs): ${objTicket._id}`, 'TKRS_CON_EXCESO', true, objTicket._id);
+                        this.nuevaSalidaDinero(Number(total.toFixed(2)), `Pagat TkRs (TkRs): ${objTicket._id}`, 'TKRS_SIN_EXCESO', true, objTicket._id);
                     }
                 }
-                ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
-                ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
+                else {
+                    vueToast('error', 'Error. Importe TICKET RESTAURANT incorrecto');
+                }
             }
+            if (tipo === "DEUDA") {
+                objTicket.tipoPago = "DEUDA";
+                objTicket.infoClienteVip.nif = this.infoClienteVip.datos.nif;
+                objTicket.infoClienteVip.nombre = this.infoClienteVip.datos.nombre;
+                objTicket.infoClienteVip.cp = this.infoClienteVip.datos.cp;
+                objTicket.infoClienteVip.direccion = this.infoClienteVip.datos.direccion;
+                objTicket.infoClienteVip.ciudad = this.infoClienteVip.datos.Ciudad;
+                objTicket.infoClienteVip.esVip = true;
+            }
+            if (tipo === "EFECTIVO") {
+                objTicket.tipoPago = "EFECTIVO";
+                ipcRenderer.send('abrirCajon', this.parametros.tipoImpresora);
+            }
+            if (this.esDevolucion) { //REVISAR
+                objTicket.tipoPago = "DEVOLUCION";
+            }
+            if (tipo === "CONSUMO_PERSONAL") {
+                objTicket.tipoPago = "CONSUMO_PERSONAL";
+            }
+            if (tipo === "TARJETA") {
+                objTicket.tipoPago = "TARJETA";
+            }
+            if (tipo === "EFECTIVO" || tipo === 'TICKET_RESTAURANT' || tipo === "DEUDA" || tipo === "DEVOLUCION" || tipo === "CONSUMO_PERSONAL") {
+                if (tipo === "DEVOLUCION") {
+                    objTicket._id = Date.now();
+                    ipcRenderer.send('guardarDevolucion', objTicket);
+                    const paramsTicket = ipcRenderer.sendSync('get-params-ticket');
+                    const infoClienteVip = { esVip: false };
+                    const paraImprimir = {
+                        numFactura: 0,
+                        arrayCompra: objTicket.lista,
+                        total: objTicket.total,
+                        visa: objTicket.tipoPago,
+                        tiposIva: objTicket.tiposIva,
+                        cabecera: paramsTicket[0] !== undefined ? paramsTicket[0].valorDato : '',
+                        pie: paramsTicket[1] !== undefined ? paramsTicket[1].valorDato : '',
+                        nombreTrabajador: this.getCurrentTrabajador().nombre,
+                        impresora: this.parametros.tipoImpresora,
+                        infoClienteVip: infoClienteVip
+                    };
+                    ipcRenderer.send('imprimir', paraImprimir);
+                }
+                else {
+                    if (tipo === "CONSUMO_PERSONAL") {
+                        objTicket.total = 0;
+                        //this.nuevaSalidaDinero(0, 'Consum personal', 'CONSUMO_PERSONAL', true);
+                    }
+                    else {
+                        if (tipo === "DEUDA") {
+                            this.nuevaSalidaDinero(Number((total).toFixed(2)), `Deute client: ${objTicket._id}`, 'DEUDA', true);
+                        }
+                    }
+                    ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
+                    ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
+                }
+                this.borrarCesta();
+                vueCobrar.setEsperando(false);
+                vueCobrar.cerrarModal();
+                vueToast.abrir('success', 'Ticket creado');
+                this.quitarClienteSeleccionado();
+            }
+            else {
+                if (tipo === "TARJETA") {
+                    if (this.parametros.tipoDatafono === TIPO_CLEARONE && !this.datafonoForzado3G) {
+                        vueCobrar.activoEsperaDatafono();
+                        ipcRenderer.send('ventaDatafono', {
+                            objTicket: objTicket,
+                            nombreDependienta: infoTrabajador.nombre,
+                            idTicket: nuevoIdTicket,
+                            total: Number((total * 100).toFixed(2)).toString(),
+                            clearOneCliente: this.parametros.clearOneCliente,
+                            clearOneTienda: this.parametros.clearOneTienda,
+                            clearOneTpv: this.parametros.clearOneTpv
+                        });
+                        this.auxTotalDatafono = Number((total).toFixed(2));
+                    }
+                    else {
+                        if (this.parametros.tipoDatafono === TIPO_3G || this.datafonoForzado3G) {
+                            ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
+                            ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
+                            this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Targeta 3G', 'TARJETA', true, objTicket._id);
+                            /*let pagadoTarjeta = `Pagat Targeta: ${objTicket._id}`;
+                            this.nuevaSalidaDinero(Number((total).toFixed(2)), pagadoTarjeta, pagadoTarjeta, true);*/
+                            this.borrarCesta();
+                            vueToast.abrir('success', 'Ticket creado');
+                            this.quitarClienteSeleccionado();
+                            vueCobrar.setEsperando(false);
+                            vueCobrar.cerrarModal();
+                        }
+                    }
+                }
+            }
+            if (this.parametros.licencia == 872)
+                toc.imprimirTicket(objTicket._id);
+            this.datafonoForzado3G = false;
+            this.resetEstados();
+            if (tipo != "TARJETA" || this.datafonoForzado3G) {
+                vueCobrar.resetEstados();
+            }
+        }
+        else {
+            vueToast.abrir('error', 'Error. No se ha podido crear el ticket');
             this.borrarCesta();
             vueCobrar.setEsperando(false);
             vueCobrar.cerrarModal();
-            vueToast.abrir('success', 'Ticket creado');
             this.quitarClienteSeleccionado();
-        }
-        else {
-            if (tipo === "TARJETA") {
-                if (this.parametros.tipoDatafono === TIPO_CLEARONE && !this.datafonoForzado3G) {
-                    vueCobrar.activoEsperaDatafono();
-                    ipcRenderer.send('ventaDatafono', {
-                        objTicket: objTicket,
-                        nombreDependienta: infoTrabajador.nombre,
-                        idTicket: nuevoIdTicket,
-                        total: Number((total * 100).toFixed(2)).toString(),
-                        clearOneCliente: this.parametros.clearOneCliente,
-                        clearOneTienda: this.parametros.clearOneTienda,
-                        clearOneTpv: this.parametros.clearOneTpv
-                    });
-                    this.auxTotalDatafono = Number((total).toFixed(2));
-                }
-                else {
-                    if (this.parametros.tipoDatafono === TIPO_3G || this.datafonoForzado3G) {
-                        ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
-                        ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
-                        this.nuevaSalidaDinero(Number((total).toFixed(2)), 'Targeta 3G', 'TARJETA', true, objTicket._id);
-                        /*let pagadoTarjeta = `Pagat Targeta: ${objTicket._id}`;
-                        this.nuevaSalidaDinero(Number((total).toFixed(2)), pagadoTarjeta, pagadoTarjeta, true);*/
-                        this.borrarCesta();
-                        vueToast.abrir('success', 'Ticket creado');
-                        this.quitarClienteSeleccionado();
-                        vueCobrar.setEsperando(false);
-                        vueCobrar.cerrarModal();
-                    }
-                }
-            }
-        }
-        if (this.parametros.licencia == 872)
-            toc.imprimirTicket(objTicket._id);
-        this.datafonoForzado3G = false;
-        this.resetEstados();
-        if (tipo != "TARJETA" || this.datafonoForzado3G) {
-            vueCobrar.resetEstados();
         }
     }
     limpiarDevolucion() {
