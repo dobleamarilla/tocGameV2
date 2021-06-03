@@ -1223,6 +1223,7 @@ class TocGame
             vueCobrar.cerrarModal();
             vueToast.abrir('success', 'Ticket creado');
         } else { //SERÁ DENEGADA
+            console.log("Data clearOne: ", respuesta.data)
             vueToast.abrir('error', 'Operación DENEGADA');
             ipcRenderer.send('change-pinpad');
         }
