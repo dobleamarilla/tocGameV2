@@ -32,6 +32,7 @@ var devolu = require('./componentes/schemas/devoluciones');
 var moned = require('./componentes/schemas/infoMonedas');
 var codiBarra = require('./componentes/schemas/codigoBarras');
 var email = require('./componentes/email');
+var testerror = require('./componentes/schemas/testErrores');
 var eventos = require('events');
 var exec = require('child_process').exec;
 var Ean13Utils = require('ean13-lib').Ean13Utils;
@@ -118,6 +119,11 @@ app.on('ready', () => {
         });
     });
     //FINAL GET PARAMETROS
+    //INSERTAR ERROR
+    ipcMain.on('insertarError', (ev, args) => {
+        testerror.insertarError(args);
+    });
+    //FINAL INSERTAR ERROR
     //GET ENTORNO DSV/PRODUCCION
     ipcMain.on('getEntorno', (ev, args) => {
         if (process.argv[2] == 'test') {

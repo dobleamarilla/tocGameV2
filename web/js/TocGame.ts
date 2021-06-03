@@ -1207,9 +1207,10 @@ class TocGame
     {
         vueCobrar.desactivoEsperaDatafono();
         let respuestaTexto = "";
-        for(let i = 0; i < respuesta.data.length; i++){
+        for(let i = 0; i < respuesta.data.length; i++) {
             respuestaTexto += String.fromCharCode(respuesta.data[i])
         }
+        ipcRenderer.send("insertarError", {error: respuestaTexto, numeroTicket:  respuesta.objTicket._id})
         //Primero STX, segundo estado transacción: correcta = 48, incorrecta != 48
         if(!respuestaTexto.includes("DENEGADA") && !respuestaTexto.includes("denegada") && !respuestaTexto.includes("ERROR") && !respuestaTexto.includes("error") && respuesta.data[1] === 48) { //SERÁ ACEPTADA
             this.nuevaSalidaDinero(this.auxTotalDatafono, 'Targeta', 'TARJETA', true, respuesta.objTicket._id);
