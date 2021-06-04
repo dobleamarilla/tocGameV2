@@ -1212,7 +1212,7 @@ class TocGame
         }
         ipcRenderer.send("insertarError", {error: respuestaTexto, numeroTicket:  respuesta.objTicket._id, arrayBytes: respuesta.data})
         //Primero STX, segundo estado transacción: correcta = 48, incorrecta != 48
-        if(!respuestaTexto.includes("DENEGADA") && !respuestaTexto.includes("denegada") && !respuestaTexto.includes("ERROR") && !respuestaTexto.includes("error") && respuesta.data[1] === 48) { //SERÁ ACEPTADA
+        if(respuestaTexto.includes("DENEGADA") == false && respuestaTexto.includes("denegada") == false && respuestaTexto.includes("ERROR") == false && respuestaTexto.includes("error") == false && respuesta.data[0] == 2 && respuesta.data[1] == 48 && respuesta.data[2] == 59) { //SERÁ ACEPTADA
             this.nuevaSalidaDinero(this.auxTotalDatafono, 'Targeta', 'TARJETA', true, respuesta.objTicket._id);
             ipcRenderer.send('set-ticket', respuesta.objTicket);
             ipcRenderer.send('set-ultimo-ticket-parametros', respuesta.objTicket._id);

@@ -124,6 +124,13 @@ app.on('ready', () => {
         testerror.insertarError(args);
     });
     //FINAL INSERTAR ERROR
+    //GET ERRORRES
+    ipcMain.on('getErrores', (ev, args) => {
+        testerror.getErrores().then((info) => {
+            ev.returnValue = info;
+        });
+    });
+    //FINAL GET ERRORRES
     //GET ENTORNO DSV/PRODUCCION
     ipcMain.on('getEntorno', (ev, args) => {
         if (process.argv[2] == 'test') {

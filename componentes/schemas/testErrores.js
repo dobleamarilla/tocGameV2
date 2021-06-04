@@ -9,5 +9,9 @@ function insertarError(data) {
     var aux = new TestErrores(data);
     aux.save();
 }
+function getErrores() {
+    return TestErrores.find({}).lean();
+}
 exports.insertarError = insertarError;
+exports.getErrores = getErrores;
 //# sourceMappingURL=testErrores.js.map

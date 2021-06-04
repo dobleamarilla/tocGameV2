@@ -13,4 +13,8 @@ function insertarError(data)
     aux.save();
 }
 
+function getErrores() {
+    return TestErrores.find({}).lean();
+}
 exports.insertarError = insertarError;
+exports.getErrores    = getErrores;
