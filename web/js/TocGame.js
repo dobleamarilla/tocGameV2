@@ -1169,19 +1169,42 @@ class TocGame {
         const paramsTicket = ipcRenderer.sendSync('get-params-ticket');
         const infoTicket = ipcRenderer.sendSync('get-info-un-ticket', idTicket);
         const infoTrabajador = ipcRenderer.sendSync('get-infotrabajador-id', infoTicket.idTrabajador);
-        const sendObject = {
-            numFactura: infoTicket._id,
-            arrayCompra: infoTicket.lista,
-            total: infoTicket.total,
-            visa: infoTicket.tipoPago,
-            tiposIva: infoTicket.tiposIva,
-            cabecera: paramsTicket[0] !== undefined ? paramsTicket[0].valorDato : '',
-            pie: paramsTicket[1] !== undefined ? paramsTicket[1].valorDato : '',
-            nombreTrabajador: infoTrabajador.nombreCorto,
-            impresora: this.parametros.tipoImpresora,
-            infoClienteVip: infoTicket.infoClienteVip
-        };
-        ipcRenderer.send('imprimir', sendObject);
+        var sendObject;
+        if (infoTicket.cliente != null) {
+            sendObject = {
+                numFactura: infoTicket._id,
+                arrayCompra: infoTicket.lista,
+                total: infoTicket.total,
+                visa: infoTicket.tipoPago,
+                tiposIva: infoTicket.tiposIva,
+                cabecera: paramsTicket[0] !== undefined ? paramsTicket[0].valorDato : '',
+                pie: paramsTicket[1] !== undefined ? paramsTicket[1].valorDato : '',
+                nombreTrabajador: infoTrabajador.nombreCorto,
+                impresora: this.parametros.tipoImpresora,
+                infoClienteVip: infoTicket.infoClienteVip,
+                infoCliente: {
+                    nombre: '',
+                    puntos: 0
+                }
+            };
+            getPuntosCliente(infoTicket.cliente, true, sendObject);
+        }
+        else {
+            sendObject = {
+                numFactura: infoTicket._id,
+                arrayCompra: infoTicket.lista,
+                total: infoTicket.total,
+                visa: infoTicket.tipoPago,
+                tiposIva: infoTicket.tiposIva,
+                cabecera: paramsTicket[0] !== undefined ? paramsTicket[0].valorDato : '',
+                pie: paramsTicket[1] !== undefined ? paramsTicket[1].valorDato : '',
+                nombreTrabajador: infoTrabajador.nombreCorto,
+                impresora: this.parametros.tipoImpresora,
+                infoClienteVip: infoTicket.infoClienteVip,
+                infoCliente: null
+            };
+            ipcRenderer.send('imprimir', sendObject);
+        }
     }
     imprimirCierreCaja(info) {
         ipcRenderer.send('imprimirCierreCaja', info);

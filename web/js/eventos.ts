@@ -290,6 +290,20 @@ socket.on('get-puntos-cliente', (puntos)=>{
     vueToast.abrir("success", "El cliente tiene " + puntos + " pts.");
 });
 
+socket.on('imprimir-ticket-cliente', (data)=>{
+    if(data.puntos >= 0 && data.puntos <= 100000)
+    {
+        var sendObject = data.infoTicket;
+        sendObject.infoCliente.nombre = '';
+        sendObject.infoCliente.puntos = data.puntos;
+
+        ipcRenderer.send('imprimir', sendObject);
+    }
+
+});
+
+
+
 socket.on('ordenSincronizarTrabajadores', (data)=>{
     if(toc.todoListo())
     {

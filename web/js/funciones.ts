@@ -146,11 +146,13 @@ function elTesteo()
 {
     console.log('El testeo guapo guapo es: ', ipcRenderer.sendSync('testeoGuapo'))
 }
-function getPuntosCliente(idCliente: string)
+function getPuntosCliente(idCliente: string, imprimir: boolean = false, infoParaImprimir = null)
 {
     const objEnviar = {
         parametros: toc.getParametros(),
-        idCliente: idCliente
+        idCliente: idCliente,
+        imprimir: imprimir,
+        infoParaImprimir: infoParaImprimir
     }
     socket.emit('get-puntos-cliente', objEnviar);
 }

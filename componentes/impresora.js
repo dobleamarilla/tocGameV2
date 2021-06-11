@@ -43,7 +43,7 @@ function dateToString2(fecha) {
     }
     return `${finalYear}-${finalMonth}-${finalDay} ${finalHours}:${finalMinutes}:${finalSeconds}`;
 }
-var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoPago, tiposIva, cabecera, pie, nombreDependienta, tipoImpresora, infoClienteVip) {
+var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoPago, tiposIva, cabecera, pie, nombreDependienta, tipoImpresora, infoClienteVip, infoCliente) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             exec('echo sa | sudo -S sh /home/hit/tocGame/scripts/permisos.sh');
@@ -63,8 +63,12 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoP
             var pagoTarjeta = '';
             var pagoTkrs = '';
             var detalleClienteVip = '';
+            var detallePuntosCliente = '';
             if (infoClienteVip.esVip) {
                 detalleClienteVip = `Nom: ${infoClienteVip.nombre}\nNIF: ${infoClienteVip.nif}\nCP: ${infoClienteVip.cp}\nCiutat: ${infoClienteVip.ciudad}\nAdr: ${infoClienteVip.direccion}\n`;
+            }
+            if (infoCliente != null) {
+                detallePuntosCliente = 'PUNTOS: ' + infoCliente.puntos;
             }
             for (let i = 0; i < arrayCompra.length; i++) {
                 if (arrayCompra[i].promocion.esPromo) {
@@ -133,6 +137,7 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoP
                     .text('Factura simplificada N: ' + numFactura)
                     .text('Ates per: ' + nombreDependienta)
                     .text(detalleClienteVip)
+                    .text(detallePuntosCliente)
                     .control('LF')
                     .control('LF')
                     .control('LF')
@@ -550,7 +555,7 @@ function testVisor(event) {
     mostrarVisor(event, "Visor 0123456789€");
 }
 exports.imprimirTicket = function (req, event) {
-    imprimirTicketVenta(event, req.numFactura, req.arrayCompra, req.total, req.visa, req.tiposIva, req.cabecera, req.pie, req.nombreTrabajador, req.impresora, req.infoClienteVip);
+    imprimirTicketVenta(event, req.numFactura, req.arrayCompra, req.total, req.visa, req.tiposIva, req.cabecera, req.pie, req.nombreTrabajador, req.impresora, req.infoClienteVip, req.infoCliente);
 };
 exports.imprimirTicketSalida = function (req, event) {
     salidaDinero(event, req.cantidad, req.cajaActual, req.fecha, req.nombreTrabajador, req.nombreTienda, req.concepto, req.impresora, req.codigoBarras);
