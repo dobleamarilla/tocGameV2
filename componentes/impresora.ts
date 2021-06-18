@@ -68,6 +68,7 @@ var imprimirTicketVenta = async function (event, numFactura, arrayCompra, total,
         var pagoTarjeta = '';
         var pagoTkrs = '';
         var detalleClienteVip = '';
+        var detalleNombreCliente = '';
         var detallePuntosCliente = '';
         if(infoClienteVip.esVip)
         {
@@ -75,6 +76,7 @@ var imprimirTicketVenta = async function (event, numFactura, arrayCompra, total,
         }
 
         if(infoCliente != null) {
+            detalleNombreCliente = infoCliente.nombre;
             detallePuntosCliente = 'PUNTOS: ' + infoCliente.puntos;
         }
 
@@ -167,6 +169,7 @@ var imprimirTicketVenta = async function (event, numFactura, arrayCompra, total,
                 .text('Factura simplificada N: ' + numFactura)
                 .text('Ates per: ' + nombreDependienta)
                 .text(detalleClienteVip)
+                .text(detalleNombreCliente)
                 .text(detallePuntosCliente)
                 .control('LF')
                 .control('LF')

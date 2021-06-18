@@ -1440,6 +1440,15 @@ class TocGame
 
         var sendObject;
         if(infoTicket.cliente != null) {
+            let infoCliente = ipcRenderer.sendSync("getClienteByID", infoTicket.cliente);
+            var auxNombre = '';
+
+            if(infoCliente.length > 0) {
+                auxNombre = infoCliente[0].nombre;
+            } else {
+                auxNombre = '';
+            }
+            
             sendObject = {
                 numFactura: infoTicket._id,
                 arrayCompra: infoTicket.lista,
@@ -1452,7 +1461,7 @@ class TocGame
                 impresora: this.parametros.tipoImpresora,
                 infoClienteVip: infoTicket.infoClienteVip,
                 infoCliente: {
-                    nombre: '',
+                    nombre: auxNombre,
                     puntos: 0
                 }
             };

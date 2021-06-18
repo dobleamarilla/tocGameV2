@@ -249,7 +249,7 @@ socket.on('get-puntos-cliente', (puntos) => {
 socket.on('imprimir-ticket-cliente', (data) => {
     if (data.puntos >= 0 && data.puntos <= 100000) {
         var sendObject = data.infoTicket;
-        sendObject.infoCliente.nombre = '';
+        sendObject.infoCliente.nombre = data.nombre;
         sendObject.infoCliente.puntos = data.puntos;
         ipcRenderer.send('imprimir', sendObject);
     }

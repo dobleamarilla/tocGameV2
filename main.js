@@ -288,6 +288,13 @@ app.on('ready', () => {
         ev.sender.send('res-cargar-tarifa-especial', true);
     }));
     //FINAL CAMBIAR A TARIFA ESPECIAL CLIENTE VIP
+    //GET CLIENTE POR ID
+    ipcMain.on("getClienteByID", (ev, data) => {
+        cliente.getClientById(data).then((res) => {
+            ev.returnValue = res;
+        });
+    });
+    //FINAL GET CLIENTE POR ID
     //GET TECLAS
     ipcMain.on('get-teclas', (ev, data) => {
         tec.getTecladoMain(data).then(respuesta => {

@@ -23,6 +23,10 @@ function buscarCliente(busqueda: string)
 {
     return Clientes.find({$or:[{"nombre": { '$regex': new RegExp(busqueda, 'i')}}, {"tarjetaCliente": busqueda}]}, null, {lean: true, limit: 20});
 }
+
+function getClientById(idCliente) {
+    return Clientes.find({id: idCliente}, null, {lean: true, limit: 1});
+}
 function comprobarClienteIdentico(nombre: string)
 {
     return Clientes.find({nombre: nombre}, null, {lean: true, limit: 1});
@@ -53,7 +57,7 @@ function cargarNuevosClientes(clientes)
 }
 function crearNuevo(datos)
 {
-    var nuevo = new Clientes({id: 'CliBotiga_'+datos.tienda+Date.now(), nombre: datos.nombre, tarjetaCliente: datos.idTarjeta});
+    var nuevo = new Clientes({id: 'CliBotiga_' + datos.tienda + Date.now(), nombre: datos.nombre, tarjetaCliente: datos.idTarjeta});
     nuevo.save();
 }
 
@@ -63,3 +67,4 @@ exports.buscarCliente        = buscarCliente;
 exports.comprobarClienteIdentico           = comprobarClienteIdentico;
 exports.comprobarClienteIdenticoTarjeta    = comprobarClienteIdenticoTarjeta;
 exports.crearNuevo                         = crearNuevo;
+exports.getClientById                      = getClientById;

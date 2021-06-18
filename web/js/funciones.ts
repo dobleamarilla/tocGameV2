@@ -148,11 +148,12 @@ function elTesteo()
 }
 function getPuntosCliente(idCliente: string, imprimir: boolean = false, infoParaImprimir = null)
 {
-    const objEnviar = {
+    var objEnviar = {
         parametros: toc.getParametros(),
         idCliente: idCliente,
         imprimir: imprimir,
-        infoParaImprimir: infoParaImprimir
+        infoParaImprimir: infoParaImprimir,
     }
+
     socket.emit('get-puntos-cliente', objEnviar);
 }

@@ -63,11 +63,13 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoP
             var pagoTarjeta = '';
             var pagoTkrs = '';
             var detalleClienteVip = '';
+            var detalleNombreCliente = '';
             var detallePuntosCliente = '';
             if (infoClienteVip.esVip) {
                 detalleClienteVip = `Nom: ${infoClienteVip.nombre}\nNIF: ${infoClienteVip.nif}\nCP: ${infoClienteVip.cp}\nCiutat: ${infoClienteVip.ciudad}\nAdr: ${infoClienteVip.direccion}\n`;
             }
             if (infoCliente != null) {
+                detalleNombreCliente = infoCliente.nombre;
                 detallePuntosCliente = 'PUNTOS: ' + infoCliente.puntos;
             }
             for (let i = 0; i < arrayCompra.length; i++) {
@@ -137,6 +139,7 @@ var imprimirTicketVenta = function (event, numFactura, arrayCompra, total, tipoP
                     .text('Factura simplificada N: ' + numFactura)
                     .text('Ates per: ' + nombreDependienta)
                     .text(detalleClienteVip)
+                    .text(detalleNombreCliente)
                     .text(detallePuntosCliente)
                     .control('LF')
                     .control('LF')
