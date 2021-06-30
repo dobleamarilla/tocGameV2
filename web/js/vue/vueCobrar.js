@@ -77,6 +77,9 @@ var vueCobrar = new Vue({
                                 <div class="col-md-6 text-center">
                                     <img @click="alternarTkrs(true)" src="assets/imagenes/img-restaurant.png" alt="Cobrar con ticket restaurante" width="225px" style="margin-top: 5px;">
                                 </div>
+                                <div class="col-md-6 text-center">
+                                    <img @click="crearEncargo()" src="assets/imagenes/img-restaurant.png" alt="Crear encargo" width="225px" style="margin-top: 5px;">
+                                </div>
                             </div>
                             <div v-if="esVIP === true" class="row">
                                 <div class="col text-center">
@@ -212,6 +215,10 @@ var vueCobrar = new Vue({
             this.tkrs = estado;
             this.ocultarModal();
             vueTecladoTkrs.abreModal();
+        },
+        crearEncargo() {
+            vueMenuEncargo.abreModal();
+            this.cerrarModal();
         },
         setEsperando(res) {
             this.esperando = res;
