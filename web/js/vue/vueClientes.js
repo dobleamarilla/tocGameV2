@@ -47,25 +47,33 @@ var vueClientes = new Vue({
     data() {
         return {
             clientes: [],
-            busqueda: ''
+            busqueda: '',
+            encargo: false
         };
     },
     methods: {
-        abrirModal() {
+        abrirModal(clienteEncargo = false) {
+            this.encargo = clienteEncargo;
             $('#modalClientes').modal();
             document.getElementById('inputBusqueda').focus();
         },
         cerrarModal() {
             this.busqueda = '';
+            this.encargo = false;
             $('#modalClientes').modal('hide');
         },
         buscarCliente() {
             ipcRenderer.send('buscar-clientes', this.busqueda);
         },
         seleccionar(cliente) {
-            this.cerrarModal();
             toc.seleccionarCliente(cliente);
             this.buscarCliente();
+            if (this.encargo) {
+                vueToast.abrir('success', "Entro en el if");
+                vueMenuEncargo.abreModal();
+                this.encargo = false;
+            }
+            this.cerrarModal();
         },
         volver() {
             this.cerrarModal();

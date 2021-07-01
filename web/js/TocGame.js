@@ -1227,6 +1227,9 @@ class TocGame {
         };
         socket.emit('comprobarClienteVIP', objEnviar);
     }
+    getCliente() {
+        return this.clienteSeleccionado;
+    }
     seleccionarArticulo(producto) {
         let peso = (producto.esSumable) ? false : true;
         let datosProducto = { idArticle: producto._id, idBoton: 'tecla0' };

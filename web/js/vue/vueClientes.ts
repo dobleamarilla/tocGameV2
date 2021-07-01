@@ -48,19 +48,22 @@ var vueClientes = new Vue({
     {
         return {
             clientes: [],
-            busqueda: ''
+            busqueda: '',
+            encargo: false
         }
     },
     methods: 
     {
-        abrirModal() 
+        abrirModal(clienteEncargo = false) 
         {
+            this.encargo = clienteEncargo;
             $('#modalClientes').modal();
             document.getElementById('inputBusqueda').focus();
         },
         cerrarModal()
         {
             this.busqueda = '';
+            this.encargo = false;
             $('#modalClientes').modal('hide');
         },
         buscarCliente() //COMPROBADA
@@ -69,9 +72,13 @@ var vueClientes = new Vue({
         },
         seleccionar(cliente) // COMPROBADA
         {
-            this.cerrarModal();
             toc.seleccionarCliente(cliente);
             this.buscarCliente();
+            if(this.encargo) {
+                vueMenuEncargo.abreModal();
+                this.encargo = false;
+            }
+            this.cerrarModal();
         },
         volver()
         {

@@ -11,41 +11,48 @@ var vueMenuEncargo = new Vue({
 				</div>
 				<div class="modal-body">
                     <div class="row">
-                        <div class="col-md-10">
-                            <h1>Nombre del cliente</h1>
+                        <div class="col text-center">
+                            <h1 v-if="nombreCliente !== null">{{nombreCliente}}</h1>
+                            <input v-else type="button" value="Selecciona un cliente" class="btn btn-primary btn-block" style="height: 70px; font-size: 22px;" @click="abreModalClientes()">
+                            <br/>
+                            <br/>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-5">
-                            <input type="radio" id="hoy" name="opcion" value="hoy" @change="changeOption($event)" checked="hoy">
-                            <label for="hoy">Hoy</label>
+                            <input type="radio" id="hoy" class="btn-check" name="opcion" value="hoy" @change="changeOption($event)" :checked="hoy" autocomplete="off">
+                            <label class="btn btn-outline-info" for="hoy">Hoy</label>
                             <br/>
-                            <input type="radio" id="dia" name="opcion" value="dia" @change="changeOption($event)" checked="dia">
-                            <label for="dia">Otro día</label>
+                            <input type="radio" id="dia" class="btn-check" name="opcion" value="dia" @change="changeOption($event)" :checked="dia" autocomplete="off">
+                            <label class="btn btn-outline-info" for="dia">Otro día</label>
                             <br/>
-                            <input type="radio" id="repeticion" name="opcion" value="repeticion" @change="changeOption($event)" checked="repeticion">
-                            <label for="repeticion">Cada...</label>
+                            <input type="radio" id="repeticion" class="btn-check" name="opcion" value="repeticion" @change="changeOption($event)" :checked="repeticion" autocomplete="off">
+                            <label class="btn btn-outline-info" for="repeticion">Cada...</label>
+                            <br/>
                             <br/>
                         </div>
                         <div class="col-md-5">
                             <input type="date" v-if="dia">
-                            <div v-if="repeticion" v-for="(item, index) in dias" :key="index">
-                                <input type="checkbox" :id="item">
-                                <label>{{ item }}</label>
+                            <div v-if="repeticion">
+                                <div v-for="(item, index) in dias" :key="index">
+                                    <input type="checkbox" :id="item">
+                                    <label>{{ item }}</label>
+                                </div>
+                                <br/>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md">
-                            <input type="number" id="cuenta" placeholder="0" min="0">
                             <label for="cuenta">Deja a cuenta</label>
+                            <input type="number" id="cuenta" placeholder="0" min="0">
                         </div>
                         <div class="col-md">
                             <input type="text" placeholder="Comentario">
                         </div>
                         <div class="col-md">
-                            <input type="button" value="Salir" @click="cerrarModal()">
-                            <input type="button" value="Crear encargo" @click="crearEncargo()">
+                            <input type="button" value="Salir" class="btn btn-danger btn-lg" @click="cerrarModal()">
+                            <input type="button" value="Crear encargo" class="btn btn-primary btn-lg" @click="crearEncargo()">
                         </div>
                     </div>
                 </div>                
@@ -65,6 +72,7 @@ var vueMenuEncargo = new Vue({
     },
     methods: {
         abreModal() {
+            this.nombreCliente = toc.getCliente() != null ? toc.getCliente().nombre : null;
             $('#vueMenuEncargo').modal();
         },
         cerrarModal() {
@@ -92,6 +100,10 @@ var vueMenuEncargo = new Vue({
         crearEncargo() {
             // Crear encargo
             this.cerrarModal();
+        },
+        abreModalClientes() {
+            $("#vueMenuEncargo").modal('hide');
+            vueClientes.abrirModal(true);
         },
     }
   });
