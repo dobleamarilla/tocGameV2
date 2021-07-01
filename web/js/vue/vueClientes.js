@@ -69,7 +69,6 @@ var vueClientes = new Vue({
             toc.seleccionarCliente(cliente);
             this.buscarCliente();
             if (this.encargo) {
-                vueToast.abrir('success', "Entro en el if");
                 vueMenuEncargo.abreModal();
                 this.encargo = false;
             }

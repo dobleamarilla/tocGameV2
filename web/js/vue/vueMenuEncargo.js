@@ -11,9 +11,9 @@ var vueMenuEncargo = new Vue({
 				</div>
 				<div class="modal-body">
                     <div class="row">
-                        <div class="col text-center">
-                            <h1 v-if="nombreCliente !== null">{{nombreCliente}}</h1>
-                            <input v-else type="button" value="Selecciona un cliente" class="btn btn-primary btn-block" style="height: 70px; font-size: 22px;" @click="abreModalClientes()">
+                        <div class="col">
+                            <h1 v-if="nombreCliente !== null">{{nombreCliente}} <input type="button" value="Cambiar cliente" class="btn btn-dark btn-sm" style="font-size: 18px;" @click="abreModalClientes()"></h1>
+                            <input v-else type="button" value="Selecciona un cliente" class="btn btn-dark btn-block" style="height: 70px; font-size: 22px;" @click="abreModalClientes()">
                             <br/>
                             <br/>
                         </div>
@@ -44,11 +44,12 @@ var vueMenuEncargo = new Vue({
                     </div>
                     <div class="row">
                         <div class="col-md">
-                            <label for="cuenta">Deja a cuenta</label>
-                            <input type="number" id="cuenta" placeholder="0" min="0">
+                            <small id="emailHelp" class="form-text text-muted">Deja a cuenta:</small>
+                            <input type="number" class="form-control" id="cuenta" placeholder="0" min="0">
                         </div>
                         <div class="col-md">
-                            <input type="text" placeholder="Comentario">
+                            <small id="emailHelp" class="form-text text-muted">Comentario:</small>
+                            <input type="text" class="form-control" placeholder="Introduce aquí el comentario">
                         </div>
                         <div class="col-md">
                             <input type="button" value="Salir" class="btn btn-danger btn-lg" @click="cerrarModal()">
@@ -67,7 +68,11 @@ var vueMenuEncargo = new Vue({
             nombreCliente: null,
             hoy: true,
             dia: false,
-            repeticion: false
+            repeticion: false,
+            articulos: [],
+            precioEncargo: 0,
+            dejaACuenta: 0,
+            comentario: ''
         };
     },
     methods: {
@@ -77,10 +82,7 @@ var vueMenuEncargo = new Vue({
         },
         cerrarModal() {
             $('#vueMenuEncargo').modal('hide');
-            this.nombreCliente = null;
-            this.hoy = true;
-            this.dia = false;
-            this.repeticion = false;
+            this.reset();
         },
         changeOption(event) {
             if (event.target.value == 'hoy') {
@@ -107,6 +109,16 @@ var vueMenuEncargo = new Vue({
             $("#vueMenuEncargo").modal('hide');
             vueClientes.abrirModal(true);
         },
+        reset() {
+            this.nombreCliente = null;
+            this.hoy = true;
+            this.dia = false;
+            this.repeticion = false;
+            this.articulos = [];
+            this.precioEncargo = 0;
+            this.dejaACuenta = 0;
+            this.comentario = '';
+        }
     }
 });
 //# sourceMappingURL=vueMenuEncargo.js.map
