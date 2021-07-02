@@ -4,7 +4,7 @@ var schemaEncargos = new conexion.mongoose.Schema({
     nombreCliente: String,
     precioEncargo: Number,
     dejaACuenta: Number,
-    fechaEncargo: String,
+    fechaEncargo: Number,
     comentario: String,
     articulos: [{
             idProducto: Number,
