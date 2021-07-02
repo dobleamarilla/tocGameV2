@@ -9,6 +9,9 @@ const TIPO_CLEARONE = 'CLEARONE';
 const TIPO_3G = '3G';
 const TIPO_ENTRADA = 'ENTRADA';
 const TIPO_SALIDA = 'SALIDA';
+const GLOVO = 'CliBoti_000_{A83B364B-252F-464B-B0C3-AA89DA258F64}';
+const DELIVERO = 'CliBoti_000_{3F7EF049-80E2-4935-9366-0DB6DED30B67}';
+
 class TocGame 
 {
     private arrayFichados: Trabajador[];
@@ -927,7 +930,16 @@ class TocGame
                 miCesta.tiposIva = construirObjetoIvas(infoArticulo, unidades, miCesta.tiposIva, infoAPeso);
             }            
         }
-        this.buscarOfertas(miCesta, viejoIva);
+        if (toc.clienteSeleccionado === null) {
+            this.buscarOfertas(miCesta, viejoIva);
+        } 
+        else {
+            if(this.clienteSeleccionado.id != GLOVO && this.clienteSeleccionado.id != DELIVERO) {
+                this.buscarOfertas(miCesta, viejoIva);
+            }
+        }
+
+        
     }
     getInfoArticulo(idArticulo: number): Articulo
     {
