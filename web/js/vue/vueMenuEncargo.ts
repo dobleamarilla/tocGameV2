@@ -45,11 +45,11 @@ var vueMenuEncargo = new Vue({
                     <div class="row">
                         <div class="col-md">
                             <small id="emailHelp" class="form-text text-muted">Deja a cuenta:</small>
-                            <input type="number" class="form-control" id="cuenta" placeholder="0" min="0">
+                            <input type="number" class="form-control" id="cuenta" name="dejaACuenta" placeholder="0" min="0" v-model="dejaACuenta">
                         </div>
                         <div class="col-md">
                             <small id="emailHelp" class="form-text text-muted">Comentario:</small>
-                            <input type="text" class="form-control" placeholder="Introduce aquí el comentario">
+                            <input type="text" class="form-control" name="comentario" placeholder="Introduce aquí el comentario" v-model="comentario">
                         </div>
                         <div class="col-md">
                             <input type="button" value="Salir" class="btn btn-danger btn-lg" @click="cerrarModal()">
@@ -77,7 +77,7 @@ var vueMenuEncargo = new Vue({
     },
     methods: {
         abreModal() {
-            this.nombreCliente = toc.getCliente() != null ? toc.getCliente().nombre : null;
+            this.nombreCliente = toc.getCliente();
             $('#vueMenuEncargo').modal();
         },
         cerrarModal() {
@@ -101,7 +101,10 @@ var vueMenuEncargo = new Vue({
         },
         crearEncargo() {
             // Crear encargo
+            console.log(this.comentario);
+            console.log(this.dejaACuenta);
             this.cerrarModal();
+            
         },
         abreModalClientes() {
             $("#vueMenuEncargo").modal('hide');

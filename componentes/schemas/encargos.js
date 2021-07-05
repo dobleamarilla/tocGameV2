@@ -2,9 +2,10 @@ var conexion = require('../conexion');
 var schemaEncargos = new conexion.mongoose.Schema({
     _id: Number,
     nombreCliente: String,
+    idCliente: Number,
     precioEncargo: Number,
     dejaACuenta: Number,
-    fechaEncargo: Number,
+    fechaEncargo: [],
     comentario: String,
     articulos: [{
             idProducto: Number,
