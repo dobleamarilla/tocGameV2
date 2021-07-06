@@ -12,7 +12,7 @@ var vueMenuEncargo = new Vue({
 				<div class="modal-body">
                     <div class="row">
                         <div class="col">
-                            <h1 v-if="nombreCliente !== null">{{nombreCliente}} <input type="button" value="Cambiar cliente" class="btn btn-dark btn-sm" style="font-size: 18px;" @click="abreModalClientes()"></h1>
+                            <h1 v-if="cliente !== null">{{cliente.nombre}} <input type="button" value="Cambiar cliente" class="btn btn-dark btn-sm" style="font-size: 18px;" @click="abreModalClientes()"></h1>
                             <input v-else type="button" value="Selecciona un cliente" class="btn btn-dark btn-block" style="height: 70px; font-size: 22px;" @click="abreModalClientes()">
                             <br/>
                             <br/>
@@ -35,8 +35,8 @@ var vueMenuEncargo = new Vue({
                             <input type="date" v-if="dia">
                             <div v-if="repeticion">
                                 <div v-for="(item, index) in dias" :key="index">
-                                    <input type="checkbox" :id="item">
-                                    <label>{{ item }}</label>
+                                    <input type="checkbox" :id="item.dia" v-model="item.checked">
+                                    <label>{{ item.dia }}</label>
                                 </div>
                                 <br/>
                             </div>
@@ -45,11 +45,11 @@ var vueMenuEncargo = new Vue({
                     <div class="row">
                         <div class="col-md">
                             <small id="emailHelp" class="form-text text-muted">Deja a cuenta:</small>
-                            <input type="number" class="form-control" id="cuenta" name="dejaACuenta" placeholder="0" min="0" v-model="dejaACuenta" @input="guardarDatos">
+                            <input type="number" class="form-control" id="cuenta" name="dejaACuenta" placeholder="0" min="0" v-model="dejaACuenta">
                         </div>
                         <div class="col-md">
                             <small id="emailHelp" class="form-text text-muted">Comentario:</small>
-                            <input type="text" class="form-control" name="comentario" placeholder="Introduce aquí el comentario" v-model="comentario" @input="guardarDatos">
+                            <input type="text" class="form-control" name="comentario" placeholder="Introduce aquí el comentario" v-model="comentario">
                         </div>
                         <div class="col-md">
                             <input type="button" value="Salir" class="btn btn-danger btn-lg" @click="cerrarModal()">
@@ -64,8 +64,16 @@ var vueMenuEncargo = new Vue({
     `,
     data() {
         return {
-            dias: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
-            nombreCliente: null,
+            dias: [
+                { dia: 'Lunes', nDia: 0, checked: false },
+                { dia: 'Martes', nDia: 1, checked: false },
+                { dia: 'Miércoles', nDia: 2, checked: false },
+                { dia: 'Jueves', nDia: 3, checked: false },
+                { dia: 'Viernes', nDia: 4, checked: false },
+                { dia: 'Sábado', nDia: 5, checked: false },
+                { dia: 'Domingo', nDia: 6, checked: false }
+            ],
+            cliente: null,
             hoy: true,
             dia: false,
             repeticion: false,
@@ -77,7 +85,9 @@ var vueMenuEncargo = new Vue({
     },
     methods: {
         abreModal() {
-            this.nombreCliente = toc.getCliente();
+            this.resetDias();
+            this.cliente = toc.getCliente();
+            console.log(this.cliente);
             $('#vueMenuEncargo').modal();
         },
         cerrarModal() {
@@ -102,21 +112,26 @@ var vueMenuEncargo = new Vue({
             }
         },
         crearEncargo() {
-            // Crear encargo
-            console.log(this.comentario);
-            console.log(this.dejaACuenta);
+            let datos = {
+                cliente: this.cliente.nombre,
+                idCliente: 2
+            };
             this.cerrarModal();
         },
         abreModalClientes() {
             $("#vueMenuEncargo").modal('hide');
             vueClientes.abrirModal(true);
         },
-        guardarDatos(event) {
-            //this[event.target.name] = event.target.value;
-            //console.log(this.comentario, this.dejaACuenta)
+        getDiasSeleccionados() {
+            return this.dias.filter(dia => dia.checked).map(dia => dia.nDia);
+        },
+        resetDias() {
+            Object.keys(this.dias).forEach((index) => {
+                this.dias[index].checked = false;
+            });
         },
         reset() {
-            this.nombreCliente = null;
+            this.cliente = null;
             this.hoy = true;
             this.dia = false;
             this.repeticion = false;

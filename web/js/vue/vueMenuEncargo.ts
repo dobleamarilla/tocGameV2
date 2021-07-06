@@ -12,7 +12,7 @@ var vueMenuEncargo = new Vue({
 				<div class="modal-body">
                     <div class="row">
                         <div class="col">
-                            <h1 v-if="nombreCliente !== null">{{nombreCliente}} <input type="button" value="Cambiar cliente" class="btn btn-dark btn-sm" style="font-size: 18px;" @click="abreModalClientes()"></h1>
+                            <h1 v-if="cliente !== null">{{cliente.nombre}} <input type="button" value="Cambiar cliente" class="btn btn-dark btn-sm" style="font-size: 18px;" @click="abreModalClientes()"></h1>
                             <input v-else type="button" value="Selecciona un cliente" class="btn btn-dark btn-block" style="height: 70px; font-size: 22px;" @click="abreModalClientes()">
                             <br/>
                             <br/>
@@ -35,8 +35,8 @@ var vueMenuEncargo = new Vue({
                             <input type="date" v-if="dia">
                             <div v-if="repeticion">
                                 <div v-for="(item, index) in dias" :key="index">
-                                    <input type="checkbox" :id="item">
-                                    <label>{{ item }}</label>
+                                    <input type="checkbox" :id="item.dia" v-model="item.checked">
+                                    <label>{{ item.dia }}</label>
                                 </div>
                                 <br/>
                             </div>
@@ -64,20 +64,30 @@ var vueMenuEncargo = new Vue({
     `,
     data () {
       return {
-          dias: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
-          nombreCliente: null,
-          hoy: true,
-          dia: false,
-          repeticion: false,
-          articulos: [],
-          precioEncargo: 0,
-          dejaACuenta: 0,
-          comentario: ''
-      }
-    },
-    methods: {
-        abreModal() {
-            this.nombreCliente = toc.getCliente();
+        dias: [
+            {dia: 'Lunes', nDia: 0, checked: false},
+            {dia: 'Martes', nDia: 1, checked: false},
+            {dia: 'Miércoles', nDia: 2, checked: false},
+            {dia: 'Jueves', nDia: 3, checked: false},
+            {dia: 'Viernes', nDia: 4, checked: false},
+            {dia: 'Sábado', nDia: 5, checked: false},
+            {dia: 'Domingo', nDia: 6, checked: false}
+        ],
+        cliente: null,
+        hoy: true,
+        dia: false,
+        repeticion: false,
+        articulos: [],
+        precioEncargo: 0,
+        dejaACuenta: 0,
+        comentario: ''
+    }
+},
+methods: {
+    abreModal() {
+            this.resetDias();
+            this.cliente = toc.getCliente();
+            console.log(this.cliente);
             $('#vueMenuEncargo').modal();
         },
         cerrarModal() {
@@ -100,18 +110,32 @@ var vueMenuEncargo = new Vue({
             }
         },
         crearEncargo() {
-            // Crear encargo
-            console.log(this.comentario);
-            console.log(this.dejaACuenta);
+            let {nombre, idCliente} = this.cliente;
+            let datos = {
+                nombreCliente: nombre,
+                idCliente: idCliente,
+                precioEncargo: 0,
+                dejaACuenta: this.dejaACuenta,
+                fechaEncargo: [],
+                comentario: this.comentario,
+                articulos: [] 
+            }
             this.cerrarModal();
-            
         },
         abreModalClientes() {
             $("#vueMenuEncargo").modal('hide');
             vueClientes.abrirModal(true);
         },
+        getDiasSeleccionados() {
+            return this.dias.filter(dia => dia.checked).map(dia => dia.nDia);
+        },
+        resetDias() {
+            Object.keys(this.dias).forEach((index) => {
+                this.dias[index].checked = false;
+            });
+        },
         reset() {
-            this.nombreCliente = null;
+            this.cliente = null;
             this.hoy = true;
             this.dia = false;
             this.repeticion = false;
