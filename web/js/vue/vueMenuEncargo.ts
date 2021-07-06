@@ -114,11 +114,11 @@ methods: {
             let datos = {
                 nombreCliente: nombre,
                 idCliente: idCliente,
-                precioEncargo: 0,
+                precioEncargo: 0, // Cogerlo de la cesta
                 dejaACuenta: this.dejaACuenta,
-                fechaEncargo: [],
+                fechaEncargo: [], // Comprobar previamente si es un encargo de repetición
                 comentario: this.comentario,
-                articulos: [] 
+                articulos: [] // Cogerlo de la cesta
             }
             this.cerrarModal();
         },
