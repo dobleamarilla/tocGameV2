@@ -8,15 +8,7 @@ var schemaEncargos = new conexion.mongoose.Schema({
     dejaACuenta: Number,
     fechaEncargo: [],
     comentario: String,
-    articulos: [{
-        idProducto: Number,
-        nombre: String,
-        precioConIva: Number,
-        precioBase: Number,
-        tipoIva: Number,
-        esSumable: Boolean,
-        familia: String
-    }]
+    articulos: []
 });
 var Encargos = conexion.mongoose.model('encargos', schemaEncargos);
 

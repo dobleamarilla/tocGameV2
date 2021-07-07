@@ -32,7 +32,10 @@ var vueMenuEncargo = new Vue({
                             <br/>
                         </div>
                         <div class="col-md-5">
-                            <input type="date" v-if="dia">
+                            <div v-if="dia">
+                                <input type="date" id="fechaEncargo" v-model="fechaInput">
+                                <input type="time" id="horaEncargo" v-model="horaInput">                            
+                            </div>
                             <div v-if="repeticion">
                                 <div v-for="(item, index) in dias" :key="index">
                                     <input type="checkbox" :id="item.dia" v-model="item.checked">
@@ -77,8 +80,11 @@ var vueMenuEncargo = new Vue({
         hoy: true,
         dia: false,
         repeticion: false,
+        fechaEncargo: [],
         articulos: [],
         precioEncargo: 0,
+        fechaInput: '',
+        horaInput: '',
         dejaACuenta: 0,
         comentario: ''
     }
@@ -87,7 +93,6 @@ methods: {
     abreModal() {
             this.resetDias();
             this.cliente = toc.getCliente();
-            console.log(this.cliente);
             $('#vueMenuEncargo').modal();
         },
         cerrarModal() {
@@ -95,31 +100,32 @@ methods: {
             this.reset();
         },
         changeOption(event) {
-            if(event.target.value == 'hoy') {
+            if(event.target.value === 'hoy') {
                 this.hoy = true;
                 this.dia = false;
                 this.repeticion = false;
-            } else if(event.target.value == 'dia') {
+            } else if(event.target.value === 'dia') {
                 this.hoy = false;
                 this.dia = true;
                 this.repeticion = false;
-            } else if(event.target.value == 'repeticion') {
+            } else if(event.target.value === 'repeticion') {
                 this.hoy = false;
                 this.dia = false;
                 this.repeticion = true;
             }
         },
         crearEncargo() {
-            let {nombre, idCliente} = this.cliente;
+            let {nombre, id} = this.cliente;
             let datos = {
                 nombreCliente: nombre,
-                idCliente: idCliente,
-                precioEncargo: 0, // Cogerlo de la cesta
+                idCliente: id,
+                precioEncargo: Number(vueCesta.getTotal), // Cogerlo de la cesta
                 dejaACuenta: this.dejaACuenta,
-                fechaEncargo: [], // Comprobar previamente si es un encargo de repetición
+                fechaEncargo: this.getFechaEncargo(), // Comprobar previamente si es un encargo de repetición
                 comentario: this.comentario,
-                articulos: [] // Cogerlo de la cesta
+                articulos: toc.getCesta().lista // Cogerlo de la cesta
             }
+            console.log(datos)
             this.cerrarModal();
         },
         abreModalClientes() {
@@ -128,6 +134,13 @@ methods: {
         },
         getDiasSeleccionados() {
             return this.dias.filter(dia => dia.checked).map(dia => dia.nDia);
+        },
+        getFechaEncargo() {
+            if(this.hoy) {
+                return [new Date().getDay()]
+            } 
+            if(this.repeticion) return this.getDiasSeleccionados();
+            return [new Date(`${this.fechaInput} ${this.horaInput}`).getTime()];
         },
         resetDias() {
             Object.keys(this.dias).forEach((index) => {
