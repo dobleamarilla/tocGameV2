@@ -125,7 +125,6 @@ methods: {
                 comentario: this.comentario,
                 articulos: toc.getCesta().lista // Cogerlo de la cesta
             }
-            console.log(datos)
             this.cerrarModal();
         },
         abreModalClientes() {
