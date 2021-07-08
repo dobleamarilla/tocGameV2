@@ -25,6 +25,7 @@ var moned       = require('./componentes/schemas/infoMonedas');
 var codiBarra   = require('./componentes/schemas/codigoBarras');
 var email       = require('./componentes/email');
 var testerror   = require('./componentes/schemas/testErrores');
+var encargos    = require('./componentes/schemas/encargos');
 var eventos     = require('events');
 var exec        = require('child_process').exec;
 var Ean13Utils  = require('ean13-lib').Ean13Utils;
@@ -837,4 +838,10 @@ app.on('ready', () => {
     ipcMain.on('refreshToc', (event: any, args: any) => {
         acciones.refresh(ventanaPrincipal);
     });
+    ipcMain.on('crear-encargo', (event: any, data: any) => {
+        encargos.insertarEncargo(data).then((info) => {
+            event.sender.send('nuevo-toast', {tipo: 'success', mensaje: 'Encargo creado correctamente'});
+            event.sender.send('res-crear-encargo', data);
+        })
+    })
 });

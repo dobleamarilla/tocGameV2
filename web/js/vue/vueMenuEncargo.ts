@@ -32,6 +32,12 @@ var vueMenuEncargo = new Vue({
                             <br/>
                         </div>
                         <div class="col-md-5">
+                            <div v-if="hoy">
+                            <input type="radio" id="am" class="btn-check" name="franja" value="am" :checked="am" v-model="franja" autocomplete="off">
+                            <label class="btn btn-outline-info" for="am">Durante la mañana</label>
+                            <input type="radio" id="pm" class="btn-check" name="franja" value="pm" :checked="pm" v-model="franja" autocomplete="off">
+                            <label class="btn btn-outline-info" for="pm">Durante la tarde</label>
+                            </div>
                             <div v-if="dia">
                                 <input type="date" id="fechaEncargo" v-model="fechaInput">
                                 <input type="time" id="horaEncargo" v-model="horaInput">                            
@@ -80,6 +86,9 @@ var vueMenuEncargo = new Vue({
         hoy: true,
         dia: false,
         repeticion: false,
+        am: true,
+        pm: false,
+        franja: '',
         fechaEncargo: [],
         articulos: [],
         precioEncargo: 0,
@@ -119,12 +128,14 @@ methods: {
             let datos = {
                 nombreCliente: nombre,
                 idCliente: id,
+                idDependienta: toc.getCurrentTrabajador()._id,
                 precioEncargo: Number(vueCesta.getTotal), // Cogerlo de la cesta
                 dejaACuenta: this.dejaACuenta,
                 fechaEncargo: this.getFechaEncargo(), // Comprobar previamente si es un encargo de repetición
                 comentario: this.comentario,
                 articulos: toc.getCesta().lista // Cogerlo de la cesta
             }
+            ipcRenderer.send('crear-encargo', datos);
             this.cerrarModal();
         },
         abreModalClientes() {

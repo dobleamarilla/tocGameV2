@@ -156,6 +156,10 @@ ipcRenderer.on('res-sincronizar-caja', (ev, data) => {
         socket.emit('guardar-caja', objEnviar);
     }
 });
+ipcRenderer.on('res-crear-encargo', (ev, data) => {
+    const objEnviar = Object.assign({}, data, { codigoTienda: toc.getParametros().codigoTienda });
+    socket.emit('crear-encargo', objEnviar);
+});
 socket.on('install-licencia', (data) => {
     if (!data.error) {
         console.log(data);
