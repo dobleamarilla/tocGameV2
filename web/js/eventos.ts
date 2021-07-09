@@ -188,7 +188,8 @@ ipcRenderer.on('res-sincronizar-caja', (ev, data) => {
 ipcRenderer.on('res-crear-encargo', (ev, data) => {
     const objEnviar = {
         ...data,
-        codigoTienda: toc.getParametros().codigoTienda
+        codigoTienda: toc.getParametros().codigoTienda,
+        database: toc.getParametros().database
     }
     socket.emit('crear-encargo', objEnviar);
 })

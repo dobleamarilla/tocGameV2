@@ -149,7 +149,7 @@ var vueMenuEncargo = new Vue({
         },
         getFechaEncargo() {
             if (this.hoy) {
-                return [new Date().getDay()];
+                return [new Date().getDay(), this.franja];
             }
             if (this.repeticion)
                 return this.getDiasSeleccionados();
