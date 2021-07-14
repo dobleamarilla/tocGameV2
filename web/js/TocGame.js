@@ -1179,7 +1179,7 @@ class TocGame {
         const infoTicket = ipcRenderer.sendSync('get-info-un-ticket', idTicket);
         const infoTrabajador = ipcRenderer.sendSync('get-infotrabajador-id', infoTicket.idTrabajador);
         var sendObject;
-        if (infoTicket.cliente != null) {
+        if (infoTicket.cliente != null && infoTicket.tipoPago != 'DEUDA') {
             let infoCliente = ipcRenderer.sendSync("getClienteByID", infoTicket.cliente);
             var auxNombre = '';
             if (infoCliente.length > 0) {
@@ -1220,6 +1220,7 @@ class TocGame {
                 infoClienteVip: infoTicket.infoClienteVip,
                 infoCliente: null
             };
+            console.log(sendObject);
             ipcRenderer.send('imprimir', sendObject);
         }
     }

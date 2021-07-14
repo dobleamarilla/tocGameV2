@@ -1451,7 +1451,7 @@ class TocGame
         const infoTrabajador: Trabajador = ipcRenderer.sendSync('get-infotrabajador-id', infoTicket.idTrabajador);
 
         var sendObject;
-        if(infoTicket.cliente != null) {
+        if(infoTicket.cliente != null && infoTicket.tipoPago != 'DEUDA') {
             let infoCliente = ipcRenderer.sendSync("getClienteByID", infoTicket.cliente);
             var auxNombre = '';
 
@@ -1493,7 +1493,7 @@ class TocGame
                 infoClienteVip: infoTicket.infoClienteVip,
                 infoCliente: null
             };
-            
+
             ipcRenderer.send('imprimir', sendObject);
         }
 
