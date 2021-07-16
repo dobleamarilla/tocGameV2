@@ -1220,7 +1220,6 @@ class TocGame {
                 infoClienteVip: infoTicket.infoClienteVip,
                 infoCliente: null
             };
-            console.log(sendObject);
             ipcRenderer.send('imprimir', sendObject);
         }
     }

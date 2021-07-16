@@ -3,8 +3,8 @@ var vueCobrar = new Vue({
     template: 
     /*html*/`
 <div class="modal" id="modalVueCobrar" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
-	<div class="modal-dialog" role="document" style="max-width: 1350px">
-		<div class="modal-content">
+	<div class="modal-dialog modDialog" role="document" style="max-width: 100%">
+		<div class="modal-content modContent">
 			<div class="modal-body">
                 <div class="container-fluid">
                     <div class="row">
@@ -68,14 +68,31 @@ var vueCobrar = new Vue({
                         </div>
                         <div class="col-md-5">
                             <div v-if="esVIP === false && esDevolucion === false && esConsumoPersonal === false && botonesCobroActivo && tkrs === false" class="row">
-                                <div class="col-md-6 text-center">
-                                    <img @click="cobrar('EFECTIVO')" src="assets/imagenes/img-efectivo.png" alt="Cobrar con efectivo" width="225px">
+                                <div class="col-md-4 text-center">
+                                    <img v-if="metodoPagoActivo == 'EFECTIVO'" @click="setMetodoPago('EFECTIVO')" src="assets/imagenes/img-efectivo.png" alt="Cobrar con efectivo" width="190px">
+                                    <img v-else @click="setMetodoPago('EFECTIVO')" src="assets/imagenes/img-efectivo-disabled.png" alt="Cobrar con efectivo" width="190px">
                                 </div>
-                                <div class="col-md-6 text-center">
-                                    <img @click="cobrar('TARJETA')" src="assets/imagenes/img-tarjetas.png" alt="Cobrar con tarjeta" width="225px">
+                                <div class="col-md-4 text-center">
+                                    <img v-if="metodoPagoActivo == 'TARJETA'" @click="setMetodoPago('TARJETA')" src="assets/imagenes/img-tarjetas.png" alt="Cobrar con tarjeta" width="190px">
+                                    <img v-else @click="setMetodoPago('TARJETA')" src="assets/imagenes/img-tarjetas-disabled.png" alt="Cobrar con tarjeta" width="190px">
                                 </div>
-                                <div class="col-md-6 text-center">
-                                    <img @click="alternarTkrs(true)" src="assets/imagenes/img-restaurant.png" alt="Cobrar con ticket restaurante" width="225px" style="margin-top: 5px;">
+                                <div class="col-md-4 text-center">
+                                    <img v-if="metodoPagoActivo == 'TARJETA 3G'" @click="setMetodoPago('TARJETA 3G')" src="assets/imagenes/img-3g.png" alt="Cobrar con tarjeta" width="190px">
+                                    <img v-else @click="setMetodoPago('TARJETA 3G')" src="assets/imagenes/img-3g-disabled.png" alt="Cobrar con tarjeta" width="190px">
+                                </div>
+                            </div>
+                            <div v-if="esVIP === false && esDevolucion === false && esConsumoPersonal === false && botonesCobroActivo && tkrs === false" class="row mt-2">
+                                <div class="col-md-4 text-center">
+                                    <img v-if="tkrs" @click="alternarTkrs()" src="assets/imagenes/img-restaurant.png" alt="Cobrar con efectivo" width="190px">
+                                    <img v-else @click="alternarTkrs()" src="assets/imagenes/img-restaurant-disabled.png" alt="Cobrar con efectivo" width="190px">
+                                </div>
+                                <div class="col-md-4 text-center">
+                                    <img v-if="glovo" @click="alternarGlovo()" src="assets/imagenes/img-glovo.png" alt="Alternar Glovo" width="190px">
+                                    <img v-else @click="alternarGlovo()" src="assets/imagenes/img-glovo-disabled.png" alt="Alternar Glovo" width="190px">
+                                </div>
+                                <div class="col-md-4 text-center">
+                                    <img v-if="delivero" @click="alternarDelivero()" src="assets/imagenes/img-delivero.png" alt="Alternar Delivero" width="190px">
+                                    <img v-else @click="alternarDelivero()" src="assets/imagenes/img-delivero-disabled.png" alt="Alternar Delivero" width="190px">
                                 </div>
                             </div>
                             <div v-if="esVIP === true" class="row">
@@ -116,6 +133,7 @@ var vueCobrar = new Vue({
 			</div>
 			<div class="modal-footer">
                 <button v-if="tkrs" type="button" class="btn btn-primary" style="font-size: 50px" @click="cobrar('TICKET_RESTAURANT')">Pagar con Tick.Restaurant</button>
+                <button type="button" class="btn btn-success" style="font-size: 50px" @click="cobrar()">Cobrar</button>
                 <button type="button" class="btn btn-danger" style="font-size: 50px" @click="cerrarModal()">Cancelar</button>
 			</div>
 		</div>
@@ -140,7 +158,10 @@ var vueCobrar = new Vue({
           cuenta: 0,
           totalTkrs: 0,
           tkrs: false,
-          botonesCobroActivo: true
+          botonesCobroActivo: true,
+          metodoPagoActivo: 'EFECTIVO',
+          glovo: false,
+          delivero: false
       }
     },
     methods: 
@@ -181,6 +202,22 @@ var vueCobrar = new Vue({
         {
             this.cuentaAsistenteTeclado = String(Number(this.cuentaAsistenteTeclado + x));
         },
+        alternarGlovo() {
+            if (this.glovo) {
+                this.glovo = false;
+            } else {
+                this.glovo = true;
+                this.delivero = false;
+            }
+        },
+        alternarDelivero() {
+            if (this.delivero) {
+                this.delivero = false;
+            } else {
+                this.delivero = true;
+                this.glovo = false;
+            }
+        },
         agregarComa()
         {
             if(this.tkrs) this.totalTkrs = this.totalTkrs.replace('.', '') + '.';
@@ -199,6 +236,9 @@ var vueCobrar = new Vue({
         {
             this.total = total;
             this.arrayFichados = arrayFichados;
+        },
+        setMetodoPago(tipoNuevo: string) {
+            this.metodoPagoActivo = tipoNuevo;
         },
         cobrar(tipo: string)
         {
@@ -221,8 +261,13 @@ var vueCobrar = new Vue({
         setTotalTkrs(x: number){
             this.totalTkrs = x;
         },
-        alternarTkrs(estado: boolean) {
-            this.tkrs = estado;
+        alternarTkrs() {
+            if (this.tkrs) {
+                this.tkrs = false;
+            } else {
+                this.tkrs = true;
+            }
+
             this.ocultarModal();
             vueTecladoTkrs.abreModal();
         },

@@ -91,3 +91,16 @@ body {
   padding-right: 5px;
   margin: 0 70px 0px 70px;
 }
+
+.modDialog {
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0;
+  padding: 0;
+}
+
+.modContent {
+  height: auto;
+  min-height: 100%;
+  border-radius: 0;
+}
