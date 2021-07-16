@@ -4,9 +4,11 @@ var vueClientes = new Vue({
     /*html*/`
     <!-- Inicio modal fichar -->
     <div class="modal" id="modalClientes" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
-	<div class="modal-dialog" role="document" style="max-width: 600px">
+	<div class="modal-dialog" role="document" style="max-width: 650px">
 		<div class="modal-content">
 			<div class="modal-header">
+                <button type="button" class="btn btn-warning btn-lg mr-0" @click="selectGlovo()">Glovo</button>
+                <button type="button" class="btn btn-info btn-lg mr-0" @click="selectDeliveroo()">Deliveroo</button>
                 <button type="button" class="btn btn-success btn-lg mr-0" @click="nuevoCliente()">NUEVO</button>
 				<button type="button" class="btn btn-danger btn-lg mr-0" @click="reset()">RESET</button>
 				<button type="button" class="btn btn-secondary btn-lg" @click="volver()">SALIR</button>
@@ -97,6 +99,14 @@ var vueClientes = new Vue({
         {
             this.cerrarModal();
             vueNuevoCliente.abrirModal();
+        },
+        selectGlovo() {
+            this.seleccionar({id: 'CliBoti_000_{A83B364B-252F-464B-B0C3-AA89DA258F64}', nombre: 'GLOVOAPP23, S.L.', tarjetaCliente: ''});
+            toc.peticionActivarTarifaEspecial();
+        },
+        selectDeliveroo() {
+            this.seleccionar({id: 'CliBoti_000_{3F7EF049-80E2-4935-9366-0DB6DED30B67}', nombre: 'ROOFOODS SPAIN, S.L.U.- DELIVEROO', tarjetaCliente: ''});
+            toc.peticionActivarTarifaEspecial();
         }
     },
     watch: 

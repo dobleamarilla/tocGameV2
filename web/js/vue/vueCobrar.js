@@ -95,6 +95,20 @@ var vueCobrar = new Vue({
                                     <img v-else @click="alternarDelivero()" src="assets/imagenes/img-delivero-disabled.png" alt="Alternar Delivero" width="190px">
                                 </div>
                             </div>
+                            <div v-if="esVIP === false && esDevolucion === false && esConsumoPersonal === false && botonesCobroActivo && tkrs === false" class="row mt-2">
+                                <div class="col-md-4 text-center">
+                                    <img v-if="tkrs" @click="alternarTkrs()" src="assets/imagenes/img-restaurant.png" alt="Cobrar con efectivo" width="190px">
+                                    <img v-else @click="alternarTkrs()" src="assets/imagenes/img-restaurant-disabled.png" alt="Cobrar con efectivo" width="190px">
+                                </div>
+                                <div class="col-md-4 text-center">
+                                    <img v-if="glovo" @click="alternarGlovo()" src="assets/imagenes/img-glovo.png" alt="Alternar Glovo" width="190px">
+                                    <img v-else @click="alternarGlovo()" src="assets/imagenes/img-glovo-disabled.png" alt="Alternar Glovo" width="190px">
+                                </div>
+                                <div class="col-md-4 text-center">
+                                    <img v-if="delivero" @click="alternarDelivero()" src="assets/imagenes/img-delivero.png" alt="Alternar Delivero" width="190px">
+                                    <img v-else @click="alternarDelivero()" src="assets/imagenes/img-delivero-disabled.png" alt="Alternar Delivero" width="190px">
+                                </div>
+                            </div>
                             <div v-if="esVIP === true" class="row">
                                 <div class="col text-center">
                                     <button @click="cobrar('DEUDA')" class="btn btn-danger" style="font-size: 40px">CREAR ALBARÁN</button>
