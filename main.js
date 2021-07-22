@@ -92,7 +92,7 @@ app.on('ready', () => {
         });
         client.on('error', function (err) {
             console.log(err);
-            event.sender.send('pregunta-cambio-datafono');
+            event.sender.send('desactivar-espera-datafono');
             event.sender.send('nuevo-toast', { tipo: 'error', mensaje: 'Datáfono no configurado' });
         });
         client.on('data', function (data) {
@@ -141,12 +141,12 @@ app.on('ready', () => {
         }
     });
     //FINAL GET ENTORNO DSV/PRODUCCION
-    //PREGUNTAR CAMBIO DATAFONO
-    ipcMain.on('change-pinpad', (ev, args) => {
-        ev.sender.send('pregunta-cambio-datafono');
-        ev.sender.send('nuevo-toast', { tipo: 'error', mensaje: 'Datáfono no configurado' });
-    });
-    //FINAL PREGUNTAR CAMBIO DATAFONO
+    // //PREGUNTAR CAMBIO DATAFONO
+    // ipcMain.on('change-pinpad', (ev, args) => {
+    //     ev.sender.send('pregunta-cambio-datafono');
+    //     ev.sender.send('nuevo-toast', {tipo: 'error', mensaje: 'Datáfono no configurado'});
+    // });
+    // //FINAL PREGUNTAR CAMBIO DATAFONO
     //GUARDAR SINCRO FICHAJES
     ipcMain.on('guardar-sincro-fichaje', (ev, data) => {
         sincroFicha.nuevoItem(data);

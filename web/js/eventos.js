@@ -123,17 +123,8 @@ ipcRenderer.on('res-configuracion-nueva', (ev, data) => {
 ipcRenderer.on('nuevo-toast', (ev, data) => {
     vueToast.abrir(data.tipo, data.mensaje);
 });
-ipcRenderer.on('pregunta-cambio-datafono', (ev, data) => {
+ipcRenderer.on('desactivar-espera-datafono', (ev, data) => {
     vueCobrar.desactivoEsperaDatafono();
-    let options = {
-        buttons: ["&SÍ", "&NO"],
-        message: "Cambiar a datáfono 3G (manual)?"
-    };
-    dialog.showMessageBox(remote.getCurrentWindow(), options, (res) => {
-        if (res === 0) {
-            toc.datafonoForzado3G = true;
-        }
-    });
 });
 ipcRenderer.on('borrar-database', (ev, data) => {
     toc.iniciar();
@@ -171,7 +162,8 @@ socket.on('install-licencia', (data) => {
             tipoDatafono: toc.getTipoDatafono(),
             botonesConPrecios: data.botonesConPrecios,
             prohibirBuscarArticulos: data.prohibirBuscarArticulos,
-            ultimoTicket: data.ultimoTicket
+            ultimoTicket: data.ultimoTicket,
+            token: data.token
         };
         vueToast.abrir("success", "OK!");
         toc.setupToc(misParams);

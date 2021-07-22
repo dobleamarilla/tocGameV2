@@ -57,8 +57,14 @@
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/socket.io.js"></script>
 	<script>
+        
 		const tipoEntorno = ipcRenderer.sendSync('getEntorno');
-        const socket = io(tipoEntorno);
+        const parametros = ipcRenderer.sendSync('getParametros');
+        const socket = (parametros == null || typeof parametros.token === 'undefined') ? io.connect(tipoEntorno) : (io.connect(tipoEntorno, {query: `token=${parametros.token}`}));
+        // if (parametros == null || typeof parametros.token === 'undefined') {
+
+        // }
+        
     </script>
     <script src="assets/js/vue.js"></script>
     <script src="assets/js/jqbtk.min.js"></script>

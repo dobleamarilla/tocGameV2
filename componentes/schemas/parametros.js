@@ -14,7 +14,8 @@ var params = new conexion.mongoose.Schema({
     clearOneTienda: Number,
     clearOneTpv: Number,
     botonesConPrecios: String,
-    prohibirBuscarArticulos: String
+    prohibirBuscarArticulos: String,
+    token: String
 });
 var Parametros = conexion.mongoose.model('Parametros', params);
 function insertParams(data) {

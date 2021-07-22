@@ -81,47 +81,27 @@ var vueCobrar = new Vue({
                                     <img v-else @click="setMetodoPago('TARJETA 3G')" src="assets/imagenes/img-3g-disabled.png" alt="Cobrar con tarjeta" width="190px">
                                 </div>
                             </div>
+
                             <div v-if="esVIP === false && esDevolucion === false && esConsumoPersonal === false && botonesCobroActivo && tkrs === false" class="row mt-2">
-                                <div class="col-md-4 text-center">
+                                <div class="col-md-12 text-center">
                                     <img v-if="tkrs" @click="alternarTkrs()" src="assets/imagenes/img-restaurant.png" alt="Cobrar con efectivo" width="190px">
                                     <img v-else @click="alternarTkrs()" src="assets/imagenes/img-restaurant-disabled.png" alt="Cobrar con efectivo" width="190px">
-                                </div>
-                                <div class="col-md-4 text-center">
-                                    <img v-if="glovo" @click="alternarGlovo()" src="assets/imagenes/img-glovo.png" alt="Alternar Glovo" width="190px">
-                                    <img v-else @click="alternarGlovo()" src="assets/imagenes/img-glovo-disabled.png" alt="Alternar Glovo" width="190px">
-                                </div>
-                                <div class="col-md-4 text-center">
-                                    <img v-if="delivero" @click="alternarDelivero()" src="assets/imagenes/img-delivero.png" alt="Alternar Delivero" width="190px">
-                                    <img v-else @click="alternarDelivero()" src="assets/imagenes/img-delivero-disabled.png" alt="Alternar Delivero" width="190px">
-                                </div>
+                                </div>                                
                             </div>
-                            <div v-if="esVIP === false && esDevolucion === false && esConsumoPersonal === false && botonesCobroActivo && tkrs === false" class="row mt-2">
-                                <div class="col-md-4 text-center">
-                                    <img v-if="tkrs" @click="alternarTkrs()" src="assets/imagenes/img-restaurant.png" alt="Cobrar con efectivo" width="190px">
-                                    <img v-else @click="alternarTkrs()" src="assets/imagenes/img-restaurant-disabled.png" alt="Cobrar con efectivo" width="190px">
-                                </div>
-                                <div class="col-md-4 text-center">
-                                    <img v-if="glovo" @click="alternarGlovo()" src="assets/imagenes/img-glovo.png" alt="Alternar Glovo" width="190px">
-                                    <img v-else @click="alternarGlovo()" src="assets/imagenes/img-glovo-disabled.png" alt="Alternar Glovo" width="190px">
-                                </div>
-                                <div class="col-md-4 text-center">
-                                    <img v-if="delivero" @click="alternarDelivero()" src="assets/imagenes/img-delivero.png" alt="Alternar Delivero" width="190px">
-                                    <img v-else @click="alternarDelivero()" src="assets/imagenes/img-delivero-disabled.png" alt="Alternar Delivero" width="190px">
-                                </div>
-                            </div>
+
                             <div v-if="esVIP === true" class="row">
                                 <div class="col text-center">
-                                    <button @click="cobrar('DEUDA')" class="btn btn-danger" style="font-size: 40px">CREAR ALBARÁN</button>
+                                    <button @click="cobrar()" class="btn btn-danger" style="font-size: 40px">CREAR ALBARÁN</button>
                                 </div>
                             </div>
                             <div v-if="esDevolucion === true" class="row">
                                 <div class="col text-center">
-                                    <button @click="cobrar('DEVOLUCION')" class="btn btn-danger" style="font-size: 40px">CREAR DEVOLUCIÓN</button>
+                                    <button @click="cobrar()" class="btn btn-danger" style="font-size: 40px">CREAR DEVOLUCIÓN</button>
                                 </div>
                             </div>
                             <div v-if="esConsumoPersonal === true" class="row">
                                 <div class="col text-center">
-                                    <button @click="cobrar('CONSUMO_PERSONAL')" class="btn btn-danger" style="font-size: 40px">CONSUMO PERSONAL</button>
+                                    <button @click="cobrar()" class="btn btn-danger" style="font-size: 40px">CONSUMO PERSONAL</button>
                                 </div>
                             </div>
                             <div class="row p-1">
@@ -146,8 +126,8 @@ var vueCobrar = new Vue({
                 </div>
 			</div>
 			<div class="modal-footer">
-                <button v-if="tkrs" type="button" class="btn btn-primary" style="font-size: 50px" @click="cobrar('TICKET_RESTAURANT')">Pagar con Tick.Restaurant</button>
-                <button type="button" class="btn btn-success" style="font-size: 50px" @click="cobrar()">Cobrar</button>
+                <button v-if="tkrs" type="button" class="btn btn-primary" style="font-size: 50px" @click="cobrar()">Pagar con Tick.Restaurant</button>
+                <button v-if="!tkrs && metodoPagoActivo != 'DEVOLUCION' && metodoPagoActivo != 'CONSUMO_PERSONAL' && metodoPagoActivo != 'DEUDA'" type="button" class="btn btn-success" style="font-size: 50px" @click="cobrar()">Cobrar</button>
                 <button type="button" class="btn btn-danger" style="font-size: 50px" @click="cerrarModal()">Cancelar</button>
 			</div>
 		</div>
@@ -173,8 +153,6 @@ var vueCobrar = new Vue({
             tkrs: false,
             botonesCobroActivo: true,
             metodoPagoActivo: 'EFECTIVO',
-            glovo: false,
-            delivero: false
         };
     },
     methods: {
@@ -209,24 +187,22 @@ var vueCobrar = new Vue({
         agregarTecla(x) {
             this.cuentaAsistenteTeclado = String(Number(this.cuentaAsistenteTeclado + x));
         },
-        alternarGlovo() {
-            if (this.glovo) {
-                this.glovo = false;
-            }
-            else {
-                this.glovo = true;
-                this.delivero = false;
-            }
-        },
-        alternarDelivero() {
-            if (this.delivero) {
-                this.delivero = false;
-            }
-            else {
-                this.delivero = true;
-                this.glovo = false;
-            }
-        },
+        // alternarGlovo() {
+        //     if (this.glovo) {
+        //         this.glovo = false;
+        //     } else {
+        //         this.glovo = true;
+        //         this.delivero = false;
+        //     }
+        // },
+        // alternarDelivero() {
+        //     if (this.delivero) {
+        //         this.delivero = false;
+        //     } else {
+        //         this.delivero = true;
+        //         this.glovo = false;
+        //     }
+        // },
         agregarComa() {
             if (this.tkrs)
                 this.totalTkrs = this.totalTkrs.replace('.', '') + '.';
@@ -246,15 +222,15 @@ var vueCobrar = new Vue({
         setMetodoPago(tipoNuevo) {
             this.metodoPagoActivo = tipoNuevo;
         },
-        cobrar(tipo) {
+        cobrar() {
             if (!this.esperando) {
-                if (this.tkrs) {
+                if (this.tkrs) { /* Ticket restaurant activo */
                     this.setEsperando(true);
-                    toc.crearTicket(tipo, this.total, { tkrs: true, totalTkrs: this.totalTkrs, tipoPago: tipo });
+                    toc.crearTicket(this.metodoPagoActivo, this.total, { tkrs: true, totalTkrs: this.totalTkrs, tipoPago: this.metodoPagoActivo });
                 }
                 else {
                     this.setEsperando(true);
-                    toc.crearTicket(tipo, this.total, { tkrs: false });
+                    toc.crearTicket(this.metodoPagoActivo, this.total, { tkrs: false });
                 }
             }
             else {
@@ -267,8 +243,10 @@ var vueCobrar = new Vue({
         alternarTkrs() {
             if (this.tkrs) {
                 this.tkrs = false;
+                this.metodoPagoActivo = 'EFECTIVO';
             }
             else {
+                this.metodoPagoActivo = 'TICKET_RESTAURANT';
                 this.tkrs = true;
             }
             this.ocultarModal();
@@ -279,6 +257,7 @@ var vueCobrar = new Vue({
         },
         setEsDevolucion(data) {
             this.esDevolucion = data;
+            this.setMetodoPago('DEVOLUCION');
         },
         activoEsperaDatafono() {
             this.setEsperando(true);
@@ -290,6 +269,7 @@ var vueCobrar = new Vue({
         },
         activarConsumoPersonal() {
             this.esConsumoPersonal = true;
+            this.setMetodoPago('CONSUMO_PERSONAL');
         },
         desactivarConsumoPersonal() {
             this.esConsumoPersonal = false;
@@ -300,6 +280,7 @@ var vueCobrar = new Vue({
             this.esConsumoPersonal = false;
             this.trabajadorActivo = false;
             this.esperando = false;
+            this.metodoPagoActivo = 'EFECTIVO';
         },
         limpiarClienteVip() {
             this.esVIP = false;

@@ -141,7 +141,8 @@ interface Parametros
     clearOneTienda?: number,
     clearOneTpv?: number,
     botonesConPrecios: string,
-    prohibirBuscarArticulos: string
+    prohibirBuscarArticulos: string,
+    token: string
 }
 
 interface Trabajador

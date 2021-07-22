@@ -64,8 +64,8 @@ class TocGame
                 clearOneTienda: 0,
                 clearOneTpv: 0,
                 botonesConPrecios: 'No',
-                prohibirBuscarArticulos: 'No'
-
+                prohibirBuscarArticulos: 'No',
+                token: ''
             }
         }
         
@@ -212,7 +212,7 @@ class TocGame
     setImpresoraCafeteria(data) {
         this.parametros.impresoraCafeteria = data;
     }
-    setParametros(licencia: number, codigoTienda: number, database: string, nombreEmpresa: string, nombreTienda: string, tipoImpresora: string, impresoraCafeteria: string, tipoDatafono: string, botonesConPrecios: string, prohibirBuscarArticulos: string): void //COMPROBADA
+    setParametros(licencia: number, codigoTienda: number, database: string, nombreEmpresa: string, nombreTienda: string, tipoImpresora: string, impresoraCafeteria: string, tipoDatafono: string, botonesConPrecios: string, prohibirBuscarArticulos: string, token: string): void //COMPROBADA
     {
         this.parametros.licencia                = licencia;
         this.parametros.codigoTienda            = codigoTienda;
@@ -224,13 +224,14 @@ class TocGame
         this.parametros.tipoDatafono            = tipoDatafono;
         this.parametros.botonesConPrecios       = botonesConPrecios;
         this.parametros.prohibirBuscarArticulos = prohibirBuscarArticulos;
+        this.parametros.token                   = token;
     }
     setupToc(info): void //COMPROBADA
     {
-        if (info.licencia > 0 && info.codigoTienda > 0 && info.database.length > 0 && info.nombreEmpresa.length > 0 && info.nombreTienda.length > 0 && info.tipoImpresora.length > 0 && info.tipoDatafono.length > 0) 
+        if (info.licencia > 0 && info.codigoTienda > 0 && info.database.length > 0 && info.nombreEmpresa.length > 0 && info.nombreTienda.length > 0 && info.tipoImpresora.length > 0 && info.tipoDatafono.length > 0 && info.token.length > 0) 
         {
             ipcRenderer.send('setParametros', info);
-            this.setParametros(info.licencia, info.codigoTienda, info.database, info.nombreEmpresa, info.nombreTienda, info.tipoImpresora, info.impresoraCafeteria, info.tipoDatafono, info.botonesConPrecios, info.prohibirBuscarArticulos);
+            this.setParametros(info.licencia, info.codigoTienda, info.database, info.nombreEmpresa, info.nombreTienda, info.tipoImpresora, info.impresoraCafeteria, info.tipoDatafono, info.botonesConPrecios, info.prohibirBuscarArticulos, info.token);
             this.descargarDatos();
         }
     }
@@ -1028,6 +1029,12 @@ class TocGame
     
     crearTicket(tipo: string, total: number, infoTkrs: {tkrs: boolean;totalTkrs?: any; tipoPago?: string;})
     {
+        console.log(tipo);
+        switch (tipo) {
+            case 'TARJETA 3G': this.parametros.tipoDatafono = TIPO_3G; break;
+            case 'TARJETA': this.parametros.tipoDatafono = TIPO_CLEARONE; break;
+        }
+
         if(this.cesta.lista.length > 0) {
             const infoTrabajador: Trabajador = this.getCurrentTrabajador();
             const nuevoIdTicket = this.getUltimoTicket()+1;
@@ -1068,7 +1075,7 @@ class TocGame
                 }
             }
             
-            if(tipo === "DEUDA"){
+            if(tipo === "DEUDA") {
                 objTicket.tipoPago                  = "DEUDA";
                 objTicket.infoClienteVip.nif        = this.infoClienteVip.datos.nif;       
                 objTicket.infoClienteVip.nombre     = this.infoClienteVip.datos.nombre;
@@ -1142,9 +1149,9 @@ class TocGame
             }
             else
             {
-                if(tipo === "TARJETA")
+                if(tipo === "TARJETA" || tipo === 'TARJETA 3G')
                 {
-                    if(this.parametros.tipoDatafono === TIPO_CLEARONE && !this.datafonoForzado3G)
+                    if(this.parametros.tipoDatafono === TIPO_CLEARONE)
                     {
                         vueCobrar.activoEsperaDatafono();
 
@@ -1161,7 +1168,7 @@ class TocGame
                     }
                     else
                     {
-                        if(this.parametros.tipoDatafono === TIPO_3G || this.datafonoForzado3G)
+                        if(this.parametros.tipoDatafono === TIPO_3G)
                         {
                             ipcRenderer.send('set-ticket', objTicket); //esto inserta un nuevo ticket, nombre malo
                             ipcRenderer.send('set-ultimo-ticket-parametros', objTicket._id);
@@ -1237,7 +1244,7 @@ class TocGame
         } else { //SERÁ DENEGADA
             console.log("Data clearOne: ", respuesta.data)
             vueToast.abrir('error', 'Operación DENEGADA');
-            ipcRenderer.send('change-pinpad');
+            // ipcRenderer.send('change-pinpad');
         }
         this.quitarClienteSeleccionado();
     }
@@ -1540,6 +1547,7 @@ class TocGame
         this.desactivarDevolucion();
         this.desactivarConsumoPersonal();
         this.infoClienteVip = data;
+        vueCobrar.setMetodoPago('DEUDA');
         this.esVIP = true;
         vueMenuVip.abreModal();
     }
