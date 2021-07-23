@@ -213,11 +213,8 @@ socket.on('confirmarEnvioTicket', (data) => {
 socket.on('confirmarEnvioDevolucion', (data) => {
     ipcRenderer.send('confirmar-envio-devolucion', data);
 });
-socket.on('orden-actualizar-toc', (licencia) => {
-    if(Number(licencia) === toc.getParametros().licencia) 
-    {
-        ipcRenderer.send('update-toc-cerbero');
-    }
+socket.on('actualizarTocGame', (licencia) => {
+    ipcRenderer.send('update-toc-cerbero');
 });
 socket.on('res-descargar-clientes-finales', (data) => {
     vueToast.abrir('warning', 'Insertando clientes nuevos');
