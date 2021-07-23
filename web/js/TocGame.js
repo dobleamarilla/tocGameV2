@@ -831,7 +831,7 @@ class TocGame {
                 timestamp: Date.now(),
                 total: total,
                 lista: this.cesta.lista,
-                tipoPago: tipo,
+                tipoPago: (tipo == 'TARJETA 3G') ? 'TARJETA' : (tipo),
                 idTrabajador: infoTrabajador._id,
                 tiposIva: this.cesta.tiposIva,
                 cliente: this.hayClienteSeleccionado() ? this.clienteSeleccionado.id : null,
