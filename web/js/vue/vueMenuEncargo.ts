@@ -136,6 +136,8 @@ methods: {
                 articulos: toc.getCesta().lista // Cogerlo de la cesta
             }
             ipcRenderer.send('crear-encargo', datos);
+            toc.quitarClienteSeleccionado();
+            toc.borrarCesta();
             this.cerrarModal();
         },
         abreModalClientes() {
