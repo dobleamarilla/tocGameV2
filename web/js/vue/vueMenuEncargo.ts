@@ -146,9 +146,7 @@ methods: {
             return this.dias.filter(dia => dia.checked).map(dia => dia.nDia);
         },
         getFechaEncargo() {
-            if(this.hoy) {
-                return [new Date().getDay(), this.franja];
-            } 
+            if(this.hoy) return [new Date().getDay(), this.franja];
             if(this.repeticion) return this.getDiasSeleccionados();
             return [new Date(`${this.fechaInput} ${this.horaInput}`).getTime()];
         },
