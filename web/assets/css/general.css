@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Alegreya&display=swap');
 body {
     background-color: #fff5e9;
 }
@@ -7,6 +8,12 @@ body {
   }
 .fuenteIvan{
     font-family: 'Poppins', sans-serif;
+}
+.encargos {
+  font-family: 'Alegreya', serif;
+  background-image: url('../imagenes/fondoEncargo.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 .estiloActivoTicketCaja {
     background-color: #ffb5bc85 !important;

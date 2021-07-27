@@ -5,7 +5,7 @@ var vueMenuEncargo = new Vue({
 <div>
 	<div class="modal" id="vueMenuEncargo" tabindex="-1" role="dialog">
 		<div class="modal-dialog" style="max-width: 80%" role="document">
-			<div class="modal-content">
+			<div class="modal-content encargos">
 				<div class="modal-header">
 					<h5 class="modal-title">Nuevo encargo</h5>
 				</div>
