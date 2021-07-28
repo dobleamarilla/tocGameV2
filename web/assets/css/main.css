@@ -169,3 +169,25 @@ thead tr:nth-child(1) th
     max-height: 150px;
     overflow-y: scroll;
 }
+/* MENU ENCARGOS */
+.btnEncargo {
+    margin-top: 20px;
+    width: 100px;
+    height: 80px;
+    border-radius: 30% 70% 39% 61% / 30% 69% 31% 70%;
+    background: rgb(53, 21, 10);
+    border: 3px solid rgb(53, 21, 10);
+    color: rgb(228, 212, 185);
+    font-size: 32px;
+}
+.lgEncargo {
+    width: 200px;
+    height: 120px;
+    font-size: 24px;
+    border-radius: 19% 81% 28% 72% / 57% 33% 67% 43%;
+}
+.hrEncargo {
+    height: 1.5px;
+    background-color: rgb(173, 150, 122);
+    border: none;
+}

@@ -6,18 +6,22 @@ var vueMenuEncargo = new Vue({
 	<div class="modal" id="vueMenuEncargo" tabindex="-1" role="dialog">
 		<div class="modal-dialog" style="max-width: 80%" role="document">
 			<div class="modal-content encargos">
-				<div class="modal-header">
+				<!--<div class="modal-header"> btn btn-dark btn-block 
 					<h5 class="modal-title">Nuevo encargo</h5>
-				</div>
+				</div>-->
 				<div class="modal-body">
                     <div class="row">
                         <div class="col">
-                            <h1 v-if="cliente !== null">{{cliente.nombre}} <input type="button" value="Cambiar cliente" class="btn btn-dark btn-sm" style="font-size: 18px;" @click="abreModalClientes()"></h1>
-                            <input v-else type="button" value="Selecciona un cliente" class="btn btn-dark btn-block" style="height: 70px; font-size: 22px;" @click="abreModalClientes()">
+                            <img src="assets/imagenes/logoEncargo.png">
+                        </div>
+                        <div class="col">
+                            <h1 v-if="cliente !== null"><button class="btnEncargo lgEncargo float-right" @click="abreModalClientes()">{{cliente.nombre}}</button></h1>
+                            <button v-else class="btnEncargo float-right" @click="abreModalClientes()"><i class="fas fa-search"></i></button>
                             <br/>
                             <br/>
                         </div>
                     </div>
+                    <hr class="hrEncargo"/>
                     <div class="row">
                         <div class="col-md-5">
                             <input type="radio" id="hoy" class="btn-check" name="opcion" value="hoy" @change="changeOption($event)" :checked="hoy" autocomplete="off">
@@ -51,6 +55,7 @@ var vueMenuEncargo = new Vue({
                             </div>
                         </div>
                     </div>
+                    <hr class="hrEncargo"/>
                     <div class="row">
                         <div class="col-md">
                             <small id="emailHelp" class="form-text text-muted">Deja a cuenta:</small>
