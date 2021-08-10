@@ -732,7 +732,7 @@ function enviarEmail(info)
     }
     else
     {
-      destinatarios = 'ezequiel@solucionesit365.com, atena@silemabcn.com';
+      destinatarios = 'ezequiel@solucionesit365.com';
     }
     let mailOptions = {
     from: 'mensajestocgame@gmail.com',
