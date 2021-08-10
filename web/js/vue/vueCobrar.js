@@ -69,23 +69,23 @@ var vueCobrar = new Vue({
                         <div class="col-md-5">
                             <div v-if="esVIP === false && esDevolucion === false && esConsumoPersonal === false && botonesCobroActivo && tkrs === false" class="row">
                                 <div class="col-md-4 text-center">
-                                    <img v-if="metodoPagoActivo == 'EFECTIVO'" @click="setMetodoPago('EFECTIVO')" src="assets/imagenes/img-efectivo.png" alt="Cobrar con efectivo" width="190px">
-                                    <img v-else @click="setMetodoPago('EFECTIVO')" src="assets/imagenes/img-efectivo-disabled.png" alt="Cobrar con efectivo" width="190px">
+                                    <img v-if="metodoPagoActivo == 'EFECTIVO'" @click="setMetodoPago('EFECTIVO')" src="assets/imagenes/img-efectivo.png" alt="Cobrar con efectivo" width="185px">
+                                    <img v-else @click="setMetodoPago('EFECTIVO')" src="assets/imagenes/img-efectivo-disabled.png" alt="Cobrar con efectivo" width="185px">
                                 </div>
                                 <div class="col-md-4 text-center">
-                                    <img v-if="metodoPagoActivo == 'TARJETA'" @click="setMetodoPago('TARJETA')" src="assets/imagenes/img-tarjetas.png" alt="Cobrar con tarjeta" width="190px">
-                                    <img v-else @click="setMetodoPago('TARJETA')" src="assets/imagenes/img-tarjetas-disabled.png" alt="Cobrar con tarjeta" width="190px">
+                                    <img v-if="metodoPagoActivo == 'TARJETA'" @click="setMetodoPago('TARJETA')" src="assets/imagenes/img-tarjetas.png" alt="Cobrar con tarjeta" width="185px">
+                                    <img v-else @click="setMetodoPago('TARJETA')" src="assets/imagenes/img-tarjetas-disabled.png" alt="Cobrar con tarjeta" width="185px">
                                 </div>
                                 <div class="col-md-4 text-center">
-                                    <img v-if="metodoPagoActivo == 'TARJETA 3G'" @click="setMetodoPago('TARJETA 3G')" src="assets/imagenes/img-3g.png" alt="Cobrar con tarjeta" width="190px">
-                                    <img v-else @click="setMetodoPago('TARJETA 3G')" src="assets/imagenes/img-3g-disabled.png" alt="Cobrar con tarjeta" width="190px">
+                                    <img v-if="metodoPagoActivo == 'TARJETA 3G'" @click="setMetodoPago('TARJETA 3G')" src="assets/imagenes/img-3g.png" alt="Cobrar con tarjeta" width="185px">
+                                    <img v-else @click="setMetodoPago('TARJETA 3G')" src="assets/imagenes/img-3g-disabled.png" alt="Cobrar con tarjeta" width="185px">
                                 </div>
                             </div>
 
                             <div v-if="esVIP === false && esDevolucion === false && esConsumoPersonal === false && botonesCobroActivo && tkrs === false" class="row mt-2">
                                 <div class="col-md-12 text-center">
-                                    <img v-if="tkrs" @click="alternarTkrs()" src="assets/imagenes/img-restaurant.png" alt="Cobrar con efectivo" width="190px">
-                                    <img v-else @click="alternarTkrs()" src="assets/imagenes/img-restaurant-disabled.png" alt="Cobrar con efectivo" width="190px">
+                                    <img v-if="tkrs" @click="alternarTkrs()" src="assets/imagenes/img-restaurant.png" alt="Cobrar con efectivo" width="185px">
+                                    <img v-else @click="alternarTkrs()" src="assets/imagenes/img-restaurant-disabled.png" alt="Cobrar con efectivo" width="185px">
                                 </div>                                
                             </div>
 
