@@ -180,14 +180,88 @@ thead tr:nth-child(1) th
     color: rgb(228, 212, 185);
     font-size: 32px;
 }
+.opcionesEncargo {
+    margin-top: 20px;
+    width: 100px;
+    height: 80px;
+    background: rgba(53, 21, 10, .3);
+    color: rgb(228, 212, 185);
+    font-size: 20px;
+    line-height: 70px;
+    text-align: center;
+}
 .lgEncargo {
     width: 200px;
     height: 120px;
     font-size: 24px;
     border-radius: 19% 81% 28% 72% / 57% 33% 67% 43%;
+    line-height: 100px;
+    text-align: center;
+}
+.fancyBorder1 {
+    border-radius: 58% 42% 42% 58% / 69% 56% 44% 31%;
+}
+.fancyBorder2 {
+    border-radius: 55% 45% 30% 70% / 65% 46% 54% 35%;
+}
+.fancyBorder3 {
+    border-radius: 55% 45% 55% 45% / 45% 72% 28% 55%;
+}
+.fancyBorder4 {
+    border-radius: 51% 49% 61% 39% / 52% 52% 48% 48%;
+    margin-right: 70px;
+}
+.fancyBorder5 {
+    border-radius: 29% 71% 30% 70% / 61% 43% 57% 39%;
 }
 .hrEncargo {
     height: 1.5px;
     background-color: rgb(173, 150, 122);
     border: none;
+}
+.hideCircleButton, .hideCircleButton2 {
+    display: none;
+}
+#hoy:checked ~ .optionHoy,
+#dia:checked ~ .optionDia,
+#repeticion:checked ~ .optionRepeticion {
+    background: rgb(53, 21, 10);
+}
+#am:checked ~ .optionAm,
+#pm:checked ~ .optionPm {
+    background: rgb(53, 21, 10);
+}
+#fechaEncargo, #horaEncargo {
+    border: none;
+    background: rgb(53, 21, 10);
+    border-radius: 5px;
+    height: 50px;
+    width: 175px;
+    color: rgb(228, 212, 185);
+    text-align: center;
+    font-size: 20px;
+}
+#fechaEncargo:focus, #horaEncargo:focus {
+    outline: none;
+    border: none;
+}
+.round-checkbox {
+    width: 1.3em;
+    height: 1.3em;
+    background-color: rgb(228, 212, 185);
+    border-radius: 50%;
+    vertical-align: middle;
+    border: 1px solid #ddd;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    cursor: pointer;
+}
+.round-checkbox:checked {
+    background-color: rgb(53, 21, 10);
+    border: 2px solid rgb(182, 159, 121);
+}
+.diaCheckbox {
+    color: rgb(53, 21, 10);
+    font-size: 24px;
 }

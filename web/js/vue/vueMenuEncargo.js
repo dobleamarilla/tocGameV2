@@ -22,25 +22,25 @@ var vueMenuEncargo = new Vue({
                         </div>
                     </div>
                     <hr class="hrEncargo"/>
-                    <div class="row">
+                    <div class="row align-items-center">
                         <div class="col-md-5">
-                            <input type="radio" id="hoy" class="btn-check" name="opcion" value="hoy" @change="changeOption($event)" :checked="hoy" autocomplete="off">
-                            <label class="btn btn-outline-info" for="hoy">Hoy</label>
+                            <input type="radio" id="hoy" class="btn-check hideCircleButton" name="opcion" value="hoy" @change="changeOption($event)" :checked="hoy" autocomplete="off">
+                            <label class="opcionesEncargo fancyBorder1 optionHoy" for="hoy">Hoy</label>
                             <br/>
-                            <input type="radio" id="dia" class="btn-check" name="opcion" value="dia" @change="changeOption($event)" :checked="dia" autocomplete="off">
-                            <label class="btn btn-outline-info" for="dia">Otro día</label>
+                            <input type="radio" id="dia" class="btn-check hideCircleButton" name="opcion" value="dia" @change="changeOption($event)" :checked="dia" autocomplete="off">
+                            <label class="opcionesEncargo fancyBorder2 optionDia" for="dia">Otro día</label>
                             <br/>
-                            <input type="radio" id="repeticion" class="btn-check" name="opcion" value="repeticion" @change="changeOption($event)" :checked="repeticion" autocomplete="off">
-                            <label class="btn btn-outline-info" for="repeticion">Cada...</label>
+                            <input type="radio" id="repeticion" class="btn-check hideCircleButton" name="opcion" value="repeticion" @change="changeOption($event)" :checked="repeticion" autocomplete="off">
+                            <label class="opcionesEncargo fancyBorder3 optionRepeticion" for="repeticion">Cada...</label>
                             <br/>
                             <br/>
                         </div>
                         <div class="col-md-5">
                             <div v-if="hoy">
-                            <input type="radio" id="am" class="btn-check" name="franja" value="am" :checked="am" v-model="franja" autocomplete="off">
-                            <label class="btn btn-outline-info" for="am">Durante la mañana</label>
-                            <input type="radio" id="pm" class="btn-check" name="franja" value="pm" :checked="pm" v-model="franja" autocomplete="off">
-                            <label class="btn btn-outline-info" for="pm">Durante la tarde</label>
+                            <input type="radio" id="am" class="btn-check hideCircleButton2" name="franja" value="am" :checked="am" v-model="franja" autocomplete="off">
+                            <label class="opcionesEncargo lgEncargo fancyBorder4 optionAm" for="am">Durante la mañana</label>
+                            <input type="radio" id="pm" class="btn-check hideCircleButton2" name="franja" value="pm" :checked="pm" v-model="franja" autocomplete="off">
+                            <label class="opcionesEncargo lgEncargo fancyBorder5 optionPm" for="pm">Durante la tarde</label>
                             </div>
                             <div v-if="dia">
                                 <input type="date" id="fechaEncargo" v-model="fechaInput">
@@ -48,8 +48,8 @@ var vueMenuEncargo = new Vue({
                             </div>
                             <div v-if="repeticion">
                                 <div v-for="(item, index) in dias" :key="index">
-                                    <input type="checkbox" :id="item.dia" v-model="item.checked">
-                                    <label>{{ item.dia }}</label>
+                                    <input type="checkbox" class="round-checkbox" :id="item.dia" v-model="item.checked">
+                                    <label class="diaCheckbox">{{ item.dia }}</label>
                                 </div>
                                 <br/>
                             </div>
@@ -175,6 +175,8 @@ var vueMenuEncargo = new Vue({
             this.precioEncargo = 0;
             this.dejaACuenta = 0;
             this.comentario = '';
+            this.fechaInput = '';
+            this.horaInput = '';
         }
     }
 });
