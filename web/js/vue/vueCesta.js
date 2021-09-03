@@ -86,6 +86,15 @@ var vueCesta = new Vue({
         }
     },
     methods: {
+        getTotalEstatico() {
+            let suma = 0;
+            for (let i = 0; i < this.cesta.lista.length; i++) {
+                if (i !== this.lineaDeRegalo) {
+                    suma += this.cesta.lista[i].subtotal;
+                }
+            }
+            return suma.toFixed(2);
+        },
         getCesta() {
             this.cesta = toc.getCesta();
         },

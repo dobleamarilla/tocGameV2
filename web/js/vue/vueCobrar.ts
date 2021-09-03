@@ -226,7 +226,7 @@ var vueCobrar = new Vue({
         },
         prepararModalVenta(total: number, arrayFichados: any)
         {
-            this.total = total;
+            this.total = Number(vueCesta.getTotalEstatico());
             this.arrayFichados = arrayFichados;
         },
         setMetodoPago(tipoNuevo: string) {
@@ -237,11 +237,13 @@ var vueCobrar = new Vue({
             {
                 if (this.tkrs) { /* Ticket restaurant activo */
                     this.setEsperando(true);
-                    toc.crearTicket(this.metodoPagoActivo, this.total, {tkrs: true, totalTkrs: this.totalTkrs, tipoPago: this.metodoPagoActivo});       
+                    toc.crearTicket(this.metodoPagoActivo, Number(vueCesta.getTotalEstatico()), {tkrs: true, totalTkrs: this.totalTkrs, tipoPago: this.metodoPagoActivo});       
                 } else {
                     this.setEsperando(true);
-                    toc.crearTicket(this.metodoPagoActivo, this.total, {tkrs: false});
+                    
+                    toc.crearTicket(this.metodoPagoActivo, Number(vueCesta.getTotalEstatico()), {tkrs: false});
                 }
+                console.log("el total es: ", Number(vueCesta.getTotalEstatico()));
             }
             else
             {
