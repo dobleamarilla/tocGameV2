@@ -2,7 +2,7 @@ var vueSalidaDinero = new Vue({
     el: '#vueSalidaDinero',
     template: 
     /*html*/ `
-<div class="modal" id="modalSalidaDinero" tabindex="-1" role="dialog">
+    <div class="modal" id="modalSalidaDinero" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">

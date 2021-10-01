@@ -16,7 +16,7 @@ body {
   background-repeat: no-repeat;
 }
 .estiloActivoTicketCaja {
-    background-color: #ffb5bc85 !important;
+  background-color: #ffb5bc85 !important;
 }
 
 @media (min-width: 768px){

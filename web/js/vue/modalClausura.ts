@@ -2,7 +2,7 @@ var vueClausura = new Vue({
     el: '#vueClausura',
     template: 
     /*html*/`
-<div class="modal" id="vueModalClausura" tabindex="-1" role="dialog">
+    <div class="modal" id="vueModalClausura" tabindex="-1" role="dialog">
 	<div class="modal-dialog" style="max-width:80%" role="document">
 		<div class="modal-content">
 			<div class="modal-header">

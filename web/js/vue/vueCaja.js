@@ -68,6 +68,7 @@ var vueCaja = new Vue({
         },
         cargarListaTickets(arrayTickets) {
             this.listaTickets = arrayTickets;
+            console.log(this.listaTickets);
         },
         setItemCajaActivo(x) {
             this.ticketActivo = x;
